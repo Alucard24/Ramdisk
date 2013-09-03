@@ -1074,6 +1074,11 @@ on property:init.svc.bootanim=stopped
     setprop selinux.reload_policy 1
     start auditd
 
+service post-init /sbin/ext/post-init.sh
+    class core
+    user root
+    oneshot
+
 # SISO-ANDR-PERF :: START Changing scheduler to cfq after boot complete
 on property:sys.boot_completed=1
     write /sys/block/mmcblk0/queue/scheduler cfq
