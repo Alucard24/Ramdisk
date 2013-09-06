@@ -3,6 +3,6 @@
 #
 ro.secure=1
 ro.allow.mock.location=0
-ro.debuggable=0
+ro.debuggable=1
 ro.adb.secure=1
-persist.sys.usb.config=mtp
+persist.sys.usb.config=mtp,adb
