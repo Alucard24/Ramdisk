@@ -97,5 +97,10 @@ fi
 chmod 755 /res/uci.sh
 /res/uci.sh apply
 
+(
+	# disabling knox security at boot
+	$BB pm disable com.sec.knox.seandroid;
+)&
+
 $BB mount -t rootfs -o remount,ro rootfs
 mount -o remount,ro /system
