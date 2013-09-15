@@ -4,7 +4,7 @@
 
 REVISION=`cat /res/customconfig/config.revision`
 
-PROFILE_PATH=/data/.adamkernel
+PROFILE_PATH=/data/.alucard
 REVISION_PATH=$PROFILE_PATH/config.version
 INIT_PROFILE=/res/customconfig/init.profile
 DEFAULT_PROFILE=$PROFILE_PATH/init.profile
