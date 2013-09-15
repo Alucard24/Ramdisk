@@ -14,8 +14,23 @@ if [ ! -f /system/xbin/su ]; then
 mv  /res/su /system/xbin/su
 fi
 
+if [ ! -f /system/xbin/daemonsu ]; then
+mv  /res/daemonsu /system/xbin/daemonsu
+fi
+
+mv  /res/.has_su_daemon /system/etc/.has_su_daemon
+chmod 0644 /system/etc/.has_su_daemon
+
+mv  /res/.installed_su_daemon /system/etc/.installed_su_daemon
+chmod 0644 /system/etc/.installed_su_daemon
+
+mv  /res/install-recovery.sh /system/etc/install-recovery.sh
+chmod 0755 /system/etc/install-recovery.sh
+
 chown 0.0 /system/xbin/su
 chmod 06755 /system/xbin/su
+chown 0.0 /system/xbin/daemonsu
+chmod 06755 /system/xbin/daemonsu
 symlink /system/xbin/su /system/bin/su
 
 if [ ! -f /system/app/Superuser.apk ]; then
@@ -26,13 +41,13 @@ chown 0.0 /system/app/Superuser.apk
 chmod 0644 /system/app/Superuser.apk
 
 if [ ! -f /system/xbin/busybox ]; then
-ln -s $BB /system/xbin/busybox
-ln -s $BB /system/xbin/pkill
+ln -s /sbin/busybox /system/xbin/busybox
+ln -s /sbin/busybox /system/xbin/pkill
 fi
 
 if [ ! -f /system/bin/busybox ]; then
-ln -s $BB /system/bin/busybox
-ln -s $BB /system/bin/pkill
+ln -s /sbin/busybox /system/bin/busybox
+ln -s /sbin/busybox /system/bin/pkill
 fi
 
 if [ ! -f /system/app/STweaks.apk ]; then
@@ -69,17 +84,16 @@ mount -o mode=0777,gid=1000 -t tmpfs tmpfs /mnt/ntfs
 
 sync
 
+# disabling knox security at boot
+/system/xbin/daemonsu --auto-daemon &
+pm disable com.sec.knox.seandroid
+
 if [ -d /system/etc/init.d ]; then
   $BB run-parts /system/etc/init.d
 fi
 
 chmod 755 /res/uci.sh
-$BB sh /res/uci.sh apply
-
-(
-	# disabling knox security at boot
-	$BB pm disable com.sec.knox.seandroid
-)&
+/res/uci.sh apply
 
 $BB mount -t rootfs -o remount,ro rootfs
 mount -o remount,ro /system
