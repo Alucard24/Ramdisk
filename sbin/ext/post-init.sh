@@ -4,7 +4,7 @@
 BB=/sbin/busybox
 
 mount -o remount,rw /system;
-$BB mount -t rootfs -o remount,rw rootfs;
+$BB mount -o remount,rw /;
 
 # some nice thing for dev
 $BB ln -s /sys/devices/system/cpu/cpu0/cpufreq /cpufreq;
@@ -52,9 +52,9 @@ if [ ! -f /system/bin/busybox ]; then
 fi;
 
 if [ ! -f /system/app/STweaks.apk ]; then
-  cat /res/STweaks.apk > /system/app/STweaks.apk;
-  chown 0.0 /system/app/STweaks.apk;
-  $BB chmod 644 /system/app/STweaks.apk;
+	cat /res/STweaks.apk > /system/app/STweaks.apk;
+	chown 0.0 /system/app/STweaks.apk;
+	$BB chmod 644 /system/app/STweaks.apk;
 fi;
 
 $BB chmod 755 /res/customconfig/actions/controlswitch;
@@ -91,18 +91,18 @@ sync;
 pm disable com.sec.knox.seandroid;
 
 if [ -d /system/etc/init.d ]; then
-  $BB run-parts /system/etc/init.d;
+	$BB run-parts /system/etc/init.d;
 fi;
 
 (
 	sleep 20;
-	$BB mount -o remount,rw rootfs;
+	$BB mount -o remount,rw /;
 	$BB chown -R root:system /res/customconfig/actions/;
 	$BB chmod -R 6755 /res/customconfig/actions/;
 	$BB chmod 6755 /res/uci.sh;
 	$BB sh /res/uci.sh apply;
 	mount -o remount,ro /system;
-	mount -t rootfs -o remount,ro rootfs;
+	mount -o remount,ro /;
 	#mount -o remount,rw /system;
 	#mount -o remount,rw /;
 )&
