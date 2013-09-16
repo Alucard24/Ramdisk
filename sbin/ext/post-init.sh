@@ -6,6 +6,10 @@ BB=/sbin/busybox
 mount -o remount,rw /system
 $BB mount -t rootfs -o remount,rw rootfs
 
+# setup the sbin as global environment
+#PATH=$PATH:/sbin
+#export PATH
+
 # some nice thing for dev
 $BB ln -s /sys/devices/system/cpu/cpu0/cpufreq /cpufreq;
 $BB ln -s /sys/devices/system/cpu/cpufreq/ /cpugov;
@@ -27,6 +31,7 @@ chmod 0644 /system/etc/.installed_su_daemon
 mv  /res/install-recovery.sh /system/etc/install-recovery.sh
 chmod 0755 /system/etc/install-recovery.sh
 
+chmod -R 6755 /sbin
 chown 0.0 /system/xbin/su
 chmod 06755 /system/xbin/su
 chown 0.0 /system/xbin/daemonsu
@@ -68,6 +73,7 @@ chmod 755 /res/customconfig/customconfig.xml.generate
 
 rm /data/.alucard/customconfig.xml
 rm /data/.alucard/action.cache
+chmod -R 6777 /data/.alucard
 
 /system/bin/setprop pm.sleep_mode 1
 /system/bin/setprop ro.ril.disable.power.collapse 0
@@ -92,8 +98,10 @@ if [ -d /system/etc/init.d ]; then
   $BB run-parts /system/etc/init.d
 fi
 
-chmod 755 /res/uci.sh
-/res/uci.sh apply
-
-$BB mount -t rootfs -o remount,ro rootfs
-mount -o remount,ro /system
+(
+	sleep 20
+	chmod 755 /res/uci.sh
+	$BB sh /res/uci.sh apply
+	$BB mount -t rootfs -o remount,ro rootfs
+	mount -o remount,ro /system
+)&
