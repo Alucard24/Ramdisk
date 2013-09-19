@@ -103,7 +103,5 @@ fi;
 	$BB sh /res/uci.sh apply;
 	mount -o remount,ro /system;
 	mount -o remount,ro /;
-	#mount -o remount,rw /system;
-	#mount -o remount,rw /;
 )&
 
