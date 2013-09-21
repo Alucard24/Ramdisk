@@ -1,8 +1,7 @@
 #!/sbin/busybox sh
 
-# use this script only if you are tuning existing file
-# script check if $2 really exist
-# and you need to set or 0 or 1 to tuned file.
+# use this script if you want cortex to do something based on profile
+# this script only set new value in profile for cortex.
 
 if [ "a$2" != "a" ]; then
 
@@ -16,15 +15,5 @@ if [ "a$2" != "a" ]; then
 		eval $evalcmd;
 		evalcmd='eval "echo \$$filename"';
 		eval $evalcmd;
-		if [ -f $2 ]; then
-			case "$3" in
-				off)
-					echo "0" > $2;
-				;;
-				on)
-					echo "1" > $2;
-				;;
-			esac;
-		fi;
 	fi;
 fi;

@@ -1,18 +1,22 @@
 #!/sbin/busybox sh
 
-if [ -f $2 ];then
-	FILEVAR=$(basename $2)
+# use this script only if you are tuning existing file!
+# script check if $2 really exist.
 
-	if [ -z $3 ]; then
-		evalcmd='eval echo \$$FILEVAR'
-		if [ "a`eval $evalcmd`" == "a" ]; then
-			eval $FILEVAR=`cat $2`
-			echo $FILEVAR=`cat $2` >> $DEFAULT_PROFILE
-		fi
+if [ "a$2" != "a" ]; then
+
+	filename=$(basename "$2");
+
+	if [ "a$3" == "a" ]; then
+		evalcmd='eval "echo \$$filename"';
+		eval $evalcmd;
 	else
-		echo $3 > $2
-		eval $FILEVAR=`cat $2`
-	fi
-
-	eval echo \$$FILEVAR
-fi
+		evalcmd='eval "$filename=$3"';
+		eval $evalcmd;
+		evalcmd='eval "echo \$$filename"';
+		eval $evalcmd;
+		if [ -f $2 ]; then
+			echo "$3" > $2;
+		fi;
+	fi;
+fi;

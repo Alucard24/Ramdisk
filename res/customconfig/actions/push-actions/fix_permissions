@@ -1,0 +1,11 @@
+#!/sbin/busybox sh
+export PATH="/res/customconfig/actions/push-actions:${PATH}";
+
+(
+	if [ `pgrep -f "fix_permissions" |  wc -l` \< 5 ]; then
+		echo "Fixing permissions started! please leave the phone alone for 3min, no need to reboot.!";
+		/sbin/fix_permissions -l -r -v > /dev/null 2>&1;
+	else
+		echo "fix_permissions still running, please wait";
+	fi;
+)&

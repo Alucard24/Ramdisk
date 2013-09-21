@@ -1,0 +1,25 @@
+#!/sbin/busybox sh
+
+(
+	/sbin/ext/cortexbrain-tune.sh apply_hotplug changes > /dev/null;
+
+	INTELLI_VALUE_TMP=`cat /sys/module/intelli_plug/parameters/intelli_plug_active`;
+	ALUCARD_VALUE_TMP=`cat /sys/devices/system/cpu/cpufreq/alucard_hotplug/hotplug_enable`;
+
+	if [ "$ALUCARD_VALUE_TMP" -eq "1" ]; then
+		cd /sys/devices/system/cpu/cpufreq/alucard_hotplug/;
+		echo "Tuning applied to 'Alucard Hotplug' core!" > /data/.alucard/cpu_hotplug;
+		grep "." * >> /data/.alucard/cpu_hotplug;
+		cd /;
+	elif [ "$INTELLI_VALUE_TMP" -eq "1" ]; then
+		cd /sys/module/intelli_plug/parameters/;
+		echo "Tuning applied to 'Intelliplug' core!" > /data/.alucard/cpu_hotplug;
+		grep "." * >> /data/.alucard/cpu_hotplug;
+		cd /;
+	else
+		echo "Tuning applied to 'MSM MPDecision' core!" > /data/.alucard/cpu_hotplug;
+	fi; 
+)&
+sleep 1;
+CPU_LOG=`cat /data/.alucard/cpu_hotplug`;
+echo $CPU_LOG;

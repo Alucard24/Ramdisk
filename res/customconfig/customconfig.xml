@@ -1,0 +1,417 @@
+<settingsRoot>
+<settingsTab name="CPU">
+
+	<settingsPane description="The following settings are for all global CPU configuration, use it only if you know what you are doing." name="CPU Global Settings">
+
+		<seekBar description="Maximum CPU-Speed for all cpus. CPU Frequency steps by 108.000 kHz, from 162.000 kHz to 1.890.000 kHz! (Default: 1.890.000 kHz)" name="Max Normal Frequency" action="genericfreq /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq_all_cpus" unit="kHz" min="162000" reversed="false" step="108000" max="1890000"/>
+
+		<seekBar description="Minimum CPU-Speed for all cpus. CPU Frequency step by 108.000 kHz are valid from 162.000 kHz to 1.890.000 kHz! (Default: 378.000 kHz)" name="Min Frequency" action="genericfreq /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq_all_cpus" unit="kHz" min="162000" reversed="false" step="108000" max="1890000"/>
+
+	</settingsPane>
+
+	<settingsPane description="Here you can set all the settings for power save!" name="CPU Idle and Power Settings">
+
+		<seekBar description="Maximum DEEP SLEEP CPU speed. (Default: 702.000 kHz). Depends on CortexBrain-Background-Process !!!" name="scaling_max_suspend_freq" action="generic_cortex /tmp/scaling_max_suspend_freq" unit="kHz" min="162000" reversed="false" step="108000" max="1890000"/>
+
+		<seekBar description="Minimum DEEP SLEEP CPU speed. (Default: 378.000 kHz). Depends on CortexBrain-Background-Process !!!" name="scaling_min_suspend_freq" action="generic_cortex /tmp/scaling_min_suspend_freq" unit="kHz" min="162000" reversed="false" step="108000" max="1890000"/>
+
+		<seekBar description="Minimum STANDBY or ON CALL (on call and screen off) CPU speed. (Default: 378.000 kHz). Depends on CortexBrain-Background-Process !!!" name="scaling_min_standby_freq" action="generic_cortex /tmp/standby_freq" unit="kHz" min="162000" reversed="false" step="108000" max="1890000"/>
+
+	</settingsPane>
+
+</settingsTab>
+
+<settingsTab name="CPU-TUNING (AWAKE)">
+
+	<settingsPane description="Here you can manage advanced governor settings. These settings are active only if the screen is on. !!! Depends on CortexBrain-Background-Process and CortexBrain-CPU-Tweaks!!!" name="Governor Parameters tuning">
+
+		<spinner description="This will set the AWAKE (screen ON) CPU governor. Default CPU governor will only be set during early stages of booting (before init.d execution), and can be overridden by any other scripts or applications." name="Default CPU Governor" action="generic /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor_all_cpus">
+			<spinnerItem name="conservative" value="conservative"/> 
+			<spinnerItem name="darkness" value="darkness"/> 
+			<spinnerItem name="interactive" value="interactive"/> 
+			<spinnerItem name="nightmare" value="nightmare"/> 
+			<spinnerItem name="ondemand" value="ondemand"/> 
+			<spinnerItem name="pegasusq" value="pegasusq"/> 
+		</spinner>
+
+		<button description="Use this button to push all new changes to GOV core in real time! The sleep tuning will be auto added on screen off, to screen off governor." name="GOV Policy Install" action="push-actions/cpu_tuning_update" label="Push CPU Tuning To GOV Core"/>
+
+	</settingsPane>
+
+	<settingsPane description="Global Govs Configuration, see descriptions" name="GLOBAL GOV CONFIGURATON">
+
+		<seekBar description="Measured as percentage, when load on CPU is equal to above up threshold, CPU is scaled Up. Lower value - early scale up, and vice-verse. (Only for HYPER, Ondemand, PegasusQ, Conservative) (Default: 70%)" name="up_threshold" action="generic_cortex /tmp/up_threshold" unit="%" min="1" reversed="false" step="1" max="100"/>
+
+		<seekBar description="This threshold is used as up threshold while sampling at frequencies less than freq_for_responsiveness. Above that, normal up_threshold is used. This gives us an option to make scaling aggressive or relaxed until a frequency and normal for higher frequencies. Again, during calculation of optimal frequency which should not trigger up policy, down threshold to consider is difference between up_threshold_at_min_freq and down_differential. (Only for HYPER, Ondemand and PegasusQ) (Default: 60%)" name="up_threshold_at_min_freq" action="generic_cortex /tmp/up_threshold_at_min_freq" unit="%" min="1" reversed="false" step="1" max="100"/>
+
+		<seekBar description="Measured in uS and actual meaning being Sampling Interval, this factor determines how often the governor should poll for CPU usage in terms of frequency and load percentage to make scaling decisions - either scale CPU Up or scale it Down. (Only for HYPER, OnDemand, PegasusQ, Conservative, Nightmare, Darkness) (Default: 60.000 uS)" name="sampling_rate" action="generic_cortex /tmp/sampling_rate" unit="uS" min="10000" reversed="false" step="10000" max="200000"/>
+
+		<seekBar description="Acts as a multiplier for sampling interval for re-evaluating the load when CPU is truly busy and is on highest clock frequency (policy max). Setting to 1 makes no difference and causes CPU to immediately scale down from highest frequency. Sampling down factor is NOT valid for lower frequencies and low load conditions. Note that CPU is scaled up to max frequency when max_load_freq is greater than up_threshold X current frequency. (or to cur_freq + (freq_step X policy.max_freq) whichever is smaller) Max_load_freq is an arbitrary frequency calculated as the maximum of load_frequencies. (Only for HYPER, Ondemand, PegasusQ, Conservartive) (Default: 1)" name="sampling_down_factor" action="generic_cortex /tmp/sampling_down_factor" unit="int" min="1" reversed="false" step="1" max="10"/>
+
+		<seekBar description="Defines how much as a percentage of maximum frequency, governor should increase CPU frequency each time CPU load reaches up_threshold or inc_cpu_load. (Only for HYPER, Ondemand, PegasusQ, Nightmare, Conservative) (Default: 20%)" name="freq_step" action="generic_cortex /tmp/freq_step" unit="%" min="5" reversed="false" step="1" max="100"/>
+
+		<seekBar description="After spending sampling_down_factor X sampling_rate micro seconds at maximum frequency on high load, governor samples the load again to calculate an approx target frequency to scale-down-to which should not trigger up_threshold in the next sample. (Triggering up threshold may cause jumping to max frequency again). Max_load_freq is checked against (up_threshold - down_differential) X current frequency. If found to be smaller, CPU is scaled down to a target frequency as described above. Down_differential also act as the factor to prevent aggressive scale down. (Only for HYPER, Ondemand, PegasusQ, Sleepy) (default: 5)" name="down_differential" action="generic_cortex /tmp/down_differential" unit="int" min="1" reversed="false" step="1" max="80"/>
+
+		<seekBar description="Until freq_for_responsiveness, Up Threshold considered for sampling load is up_threshold_at_min_freq. Also during the part where CPU is at maximum load frequency, governor need to find the optimal frequency as the next frequency - which should not trigger up_threshold in the next sampling. When such a frequency_next is found to be a) less than freq_for_responsiveness b) will not trigger down_threshold in the next sample, then the optimal frequency is set to freq_for_responsiveness. (Only for HYPER, PegasusQ, Nightmare) (Default: 486.000 kHz)" name="freq_for_responsiveness" action="generic_cortex /tmp/freq_for_responsiveness" unit="kHz" min="162000" reversed="false" step="108000" max="1890000"/>
+
+		<seekBar description="This is same as the up_threshold found for the Ondemand governor but for the opposite direction. For example when set to its default value of 30 it means that if the CPU usage needs to be below 30% between samples to have the frequency decreased. (Only for Conservative) (Default: 30%)" name="down_threshold" action="generic_cortex /tmp/down_threshold" unit="%" min="1" reversed="false" step="1" max="100"/>
+
+	</settingsPane>
+
+	<settingsPane description="Nightmare and Darkness Gov Configuration, see descriptions" name="NIGHTMARE | DARKNESS GOV CONFIGURATON">
+
+		<seekBar description="This threshold is used as up threshold while sampling at frequencies less than freq_for_responsiveness. Above that, normal inc_cpu_load is used. This gives us an option to make scaling aggressive/relaxed until a frequency and normal for higher frequencies. (Only for Nightmare). (Default: 60%)" name="inc_cpu_load_at_min_freq" action="generic_cortex /tmp/inc_cpu_load_at_min_freq" unit="%" min="1" reversed="false" step="1" max="100"/>
+
+		<seekBar description="The frequency at which governor scales CPU up. Load big or equal inc_cpu_load: cpu scaled up. (Only for Nightmare). (Default: 70%)" name="inc_cpu_load" action="generic_cortex /tmp/inc_cpu_load" unit="%" min="10" reversed="false" step="1" max="100"/>
+
+		<seekBar description="The frequency at which governor scales CPU down. Load less than dec_cpu_load: cpu scaled down. (Only for Nightmare). (Default: 50%)" name="dec_cpu_load" action="generic_cortex /tmp/dec_cpu_load" unit="%" min="10" reversed="false" step="1" max="100"/>
+
+		<seekBar description="When current freq is greater than freq_for_responsiviness_max, freq_step_dec will be equal to freq_step_dec_at_max_freq. (Only for Nightmare). (Default: 1890.000 kHz)" name="freq_for_responsiveness_max" action="generic_cortex /tmp/freq_for_responsiveness_max" unit="kHz" min="162000" reversed="false" step="108000" max="1890000"/>
+
+		<seekBar description="Defines how much as a percentage of maximum frequency, governor should increase CPU frequency each time CPU load reaches inc_cpu_load_at_min_freq. (Only for nightmare). (Default: 20%)" name="freq_step_at_min_freq" action="generic_cortex /tmp/freq_step_at_min_freq" unit="%" min="5" reversed="false" step="1" max="100"/>
+
+		<seekBar description="Brake scale up frequency when load big or equal inc_cpu_load_at_min_freq. (Only for Nightmare). (Default: 30)" name="freq_up_brake_at_min_freq" action="generic_cortex /tmp/freq_up_brake_at_min_freq" unit="step" min="0" reversed="false" step="1" max="100"/>
+
+		<seekBar description="Brake scale up frequency when load big or equal inc_cpu_load. (Only for Nightmare). (Default: 30)" name="freq_up_brake" action="generic_cortex /tmp/freq_up_brake" unit="step" min="0" reversed="false" step="1" max="100"/>
+
+		<seekBar description="Defines how much as a percentage of maximum frequency, governor should decrease CPU frequency each time CPU load reaches dec_cpu_load.  (Only for Nightmare). (Default: 10%)" name="freq_step_dec" action="generic_cortex /tmp/freq_step_dec" unit="%" min="0" reversed="false" step="1" max="100"/>
+
+		<seekBar description="Defines how much as a percentage of maximum frequency, governor should decrease CPU frequency each time CPU load reaches dec_cpu_load and current freq is greater than freq_for_responsiviness_max. (Only for Nightmare). (Default: 10%)" name="freq_step_dec_at_max_freq" action="generic_cortex /tmp/freq_step_dec_at_max_freq" unit="%" min="0" reversed="false" step="1" max="100"/>
+
+		<seekBar description="Min Frequency limit for cpu0. Respecting policy. (Default: 378.000 kHz)" name="min_freq_limit_0" action="generic_cortex /tmp/min_freq_limit_0" unit="kHz" min="162000" reversed="false" step="108000" max="1890000"/>
+
+		<seekBar description="Min Frequency limit for cpu1. Respecting policy. (Default: 378.000 kHz)" name="min_freq_limit_1" action="generic_cortex /tmp/min_freq_limit_1" unit="kHz" min="162000" reversed="false" step="108000" max="1890000"/>
+
+		<seekBar description="Min Frequency limit for cpu2. Respecting policy. (Default: 378.000 kHz)" name="min_freq_limit_2" action="generic_cortex /tmp/min_freq_limit_2" unit="kHz" min="162000" reversed="false" step="108000" max="1890000"/>
+
+		<seekBar description="Min Frequency limit for cpu3. Respecting policy. (Default: 378.000 kHz)" name="min_freq_limit_3" action="generic_cortex /tmp/min_freq_limit_3" unit="kHz" min="162000" reversed="false" step="108000" max="1890000"/>
+
+		<seekBar description="Max Frequency limit for cpu0. Respecting policy. (Default: 1890.000 kHz)" name="max_freq_limit_0" action="generic_cortex /tmp/max_freq_limit_0" unit="kHz" min="162000" reversed="false" step="108000" max="1890000"/>
+
+		<seekBar description="Max Frequency limit for cpu1. Respecting policy. (Default: 1890.000 kHz)" name="max_freq_limit_1" action="generic_cortex /tmp/max_freq_limit_1" unit="kHz" min="162000" reversed="false" step="108000" max="1890000"/>
+
+		<seekBar description="Max Frequency limit for cpu2. Respecting policy. (Default: 1890.000 kHz)" name="max_freq_limit_2" action="generic_cortex /tmp/max_freq_limit_2" unit="kHz" min="162000" reversed="false" step="108000" max="1890000"/>
+
+		<seekBar description="Max Frequency limit for cpu3. Respecting policy. (Default: 1890.000 kHz)" name="max_freq_limit_3" action="generic_cortex /tmp/max_freq_limit_3" unit="kHz" min="162000" reversed="false" step="108000" max="1890000"/>
+
+	</settingsPane>
+
+</settingsTab>
+
+<settingsTab name="CPU-TUNING (SLEEP)">
+
+	<settingsPane description="Here you can manage advanced governor settings. These settings are only active when the screen is off. !!! Depends on CortexBrain-Background-Process and CortexBrain-CPU-Tweaks!!!" name="Governor Parameters tuning">
+
+		<spinner description="This will set the DEEP SLEEP (screen off) CPU governor." name="Deep-Sleep! CPU Governor" action="generic_cortex /tmp/scaling_governor_all_cpus_sleep">
+			<spinnerItem name="conservative" value="conservative"/> 
+			<spinnerItem name="darkness" value="darkness"/> 
+			<spinnerItem name="interactive" value="interactive"/> 
+			<spinnerItem name="nightmare" value="nightmare"/> 
+			<spinnerItem name="ondemand" value="ondemand"/> 
+			<spinnerItem name="pegasusq" value="pegasusq"/> 
+		</spinner>
+
+	</settingsPane>
+
+	<settingsPane description="Global Govs Configuration, see descriptions" name="GLOBAL GOV CONFIGURATON">
+
+		<seekBar description="Measured as percentage, when load on CPU is equal to above up threshold, CPU is scaled Up. Lower value - early scale up, and vice-verse. (Only for HYPER, Ondemand, PegasusQ, Conservative) (Default: 70%)" name="up_threshold_sleep" action="generic_cortex /tmp/up_threshold_sleep" unit="%" min="1" reversed="false" step="1" max="100"/>
+
+		<seekBar description="This threshold is used as up threshold while sampling at frequencies less than freq_for_responsiveness. Above that, normal up_threshold is used. This gives us an option to make scaling aggressive or relaxed until a frequency and normal for higher frequencies. Again, during calculation of optimal frequency which should not trigger up policy, down threshold to consider is difference between up_threshold_at_min_freq and down_differential. (Only for HYPER, Ondemand and PegasusQ) (Default: 60%)" name="up_threshold_at_min_freq_sleep" action="generic_cortex /tmp/up_threshold_at_min_freq_sleep" unit="%" min="1" reversed="false" step="1" max="100"/>
+
+		<seekBar description="Measured in uS and actual meaning being Sampling Interval, this factor determines how often the governor should poll for CPU usage in terms of frequency and load percentage to make scaling decisions - either scale CPU Up or scale it Down. (Only for HYPER, OnDemand, PegasusQ, Conservative, Nightmare, Darkness) (Default: 60.000 uS)" name="sampling_rate_sleep" action="generic_cortex /tmp/sampling_rate_sleep" unit="uS" min="10000" reversed="false" step="10000" max="200000"/>
+
+		<seekBar description="Acts as a multiplier for sampling interval for re-evaluating the load when CPU is truly busy and is on highest clock frequency (policy max). Setting to 1 makes no difference and causes CPU to immediately scale down from highest frequency. Sampling down factor is NOT valid for lower frequencies and low load conditions. Note that CPU is scaled up to max frequency when max_load_freq is greater than up_threshold X current frequency. (or to cur_freq + (freq_step X policy.max_freq) whichever is smaller) Max_load_freq is an arbitrary frequency calculated as the maximum of load_frequencies. (Only for HYPER, Ondemand, PegasusQ, Conservartive) (Default: 1)" name="sampling_down_factor_sleep" action="generic_cortex /tmp/sampling_down_factor_sleep" unit="int" min="1" reversed="false" step="1" max="10"/>
+
+		<seekBar description="Defines how much as a percentage of maximum frequency, governor should increase CPU frequency each time CPU load reaches up_threshold or inc_cpu_load. (Only for HYPER, Ondemand, PegasusQ, Nightmare, Conservative) (Default: 20%)" name="freq_step_sleep" action="generic_cortex /tmp/freq_step_sleep" unit="%" min="0" reversed="false" step="1" max="100"/>
+
+		<seekBar description="After spending sampling_down_factor X sampling_rate micro seconds at maximum frequency on high load, governor samples the load again to calculate an approx target frequency to scale-down-to which should not trigger up_threshold in the next sample. (Triggering up threshold may cause jumping to max frequency again). Max_load_freq is checked against (up_threshold - down_differential) X current frequency. If found to be smaller, CPU is scaled down to a target frequency as described above. Down_differential also act as the factor to prevent aggressive scale down. (Only for HYPER, Ondemand, PegasusQ, Sleepy) (Default: 5)" name="down_differential_sleep" action="generic_cortex /tmp/down_differential_sleep" unit="int" min="1" reversed="false" step="1" max="80"/>
+
+		<seekBar description="Until freq_for_responsiveness, Up Threshold considered for sampling load is up_threshold_at_min_freq. Also during the part where CPU is at maximum load frequency, governor need to find the optimal frequency as the next frequency - which should not trigger up_threshold in the next sampling. When such a frequency_next is found to be a) less than freq_for_responsiveness b) will not trigger down_threshold in the next sample, then the optimal frequency is set to freq_for_responsiveness. (Only for HYPER, PegasusQ, Nightmare) (Default: 486.000 kHz)" name="freq_for_responsiveness_sleep" action="generic_cortex /tmp/freq_for_responsiveness_sleep" unit="kHz" min="162000" reversed="false" step="108000" max="1890000"/>
+
+		<seekBar description="This is same as the up_threshold found for the Ondemand governor but for the opposite direction. For example when set to its default value of 30 it means that if the CPU usage needs to be below 30% between samples to have the frequency decreased. (Only for Conservative) (Default: 30%)" name="down_threshold_sleep" action="generic_cortex /tmp/down_threshold_sleep" unit="%" min="1" reversed="false" step="1" max="100"/>
+
+	</settingsPane>
+
+	<settingsPane description="Nightmare and Darkness Gov Configuration, see descriptions" name="NIGHTMARE | DARKNESS GOV CONFIGURATON">
+
+		<seekBar description="This threshold is used as up threshold while sampling at frequencies less than freq_for_responsiveness. Above that, normal inc_cpu_load is used. This gives us an option to make scaling aggressive/relaxed until a frequency and normal for higher frequencies. (Only for Nightmare). (Default: 60%)" name="inc_cpu_load_at_min_freq_sleep" action="generic_cortex /tmp/inc_cpu_load_at_min_freq_sleep" unit="%" min="1" reversed="false" step="1" max="100"/>
+
+		<seekBar description="The frequency at which governor scales CPU up. Load big or equal inc_cpu_load: cpu scaled up. (Only for Nightmare). (Default: 70%)" name="inc_cpu_load_sleep" action="generic_cortex /tmp/inc_cpu_load_sleep" unit="%" min="10" reversed="false" step="1" max="100"/>
+
+		<seekBar description="The frequency at which governor scales CPU down. Load less than dec_cpu_load: cpu scaled down. (Only for Nightmare). (Default: 60%)" name="dec_cpu_load_sleep" action="generic_cortex /tmp/dec_cpu_load_sleep" unit="%" min="10" reversed="false" step="1" max="100"/>
+
+		<seekBar description="When current freq is greater than freq_for_responsiviness_max, freq_step_dec will be equal to freq_step_dec_at_max_freq. (Only for Nightmare). (Default: 1890.000 kHz)" name="freq_for_responsiveness_max_sleep" action="generic_cortex /tmp/freq_for_responsiveness_max_sleep" unit="kHz" min="162000" reversed="false" step="108000" max="1890000"/>
+
+		<seekBar description="Defines how much as a percentage of maximum frequency, governor should increase CPU frequency each time CPU load reaches inc_cpu_load_at_min_freq. (Only for Nightmare). (Default: 20%)" name="freq_step_at_min_freq_sleep" action="generic_cortex /tmp/freq_step_at_min_freq_sleep" unit="%" min="5" reversed="false" step="1" max="100"/>
+
+		<seekBar description="Brake scale up frequency when load big or equal inc_cpu_load_at_min_freq. (Only for Nightmare). (Default: 30)" name="freq_up_brake_at_min_freq_sleep" action="generic_cortex /tmp/freq_up_brake_at_min_freq_sleep" unit="step" min="0" reversed="false" step="1" max="100"/>
+
+		<seekBar description="Brake scale up frequency when load big or equal inc_cpu_load. (Only for Nightmare). (Default: 30)" name="freq_up_brake_sleep" action="generic_cortex /tmp/freq_up_brake_sleep" unit="step" min="0" reversed="false" step="1" max="100"/>
+
+		<seekBar description="Defines how much as a percentage of maximum frequency, governor should decrease CPU frequency each time CPU load reaches dec_cpu_load.  (Only for Nightmare). (Default: 10%)" name="freq_step_dec_sleep" action="generic_cortex /tmp/freq_step_dec_sleep" unit="%" min="0" reversed="false" step="1" max="100"/>
+
+		<seekBar description="Defines how much as a percentage of maximum frequency, governor should decrease CPU frequency each time CPU load reaches dec_cpu_load and current freq is greater than freq_for_responsiviness_max. (Only for Nightmare). (Default: 10%)" name="freq_step_dec_at_max_freq_sleep" action="generic_cortex /tmp/freq_step_dec_at_max_freq_sleep" unit="%" min="0" reversed="false" step="1" max="100"/>
+
+		<seekBar description="Min Frequency limit for cpu0. Respecting policy. (Default: 378.000 kHz)" name="min_freq_limit_0_sleep" action="generic_cortex /tmp/min_freq_limit_0_sleep" unit="kHz" min="162000" reversed="false" step="108000" max="1890000"/>
+
+		<seekBar description="Min Frequency limit for cpu1. Respecting policy. (Default: 378.000 kHz)" name="min_freq_limit_1_sleep" action="generic_cortex /tmp/min_freq_limit_1_sleep" unit="kHz" min="162000" reversed="false" step="108000" max="1890000"/>
+
+		<seekBar description="Min Frequency limit for cpu2. Respecting policy. (Default: 378.000 kHz)" name="min_freq_limit_2_sleep" action="generic_cortex /tmp/min_freq_limit_2_sleep" unit="kHz" min="162000" reversed="false" step="108000" max="1890000"/>
+
+		<seekBar description="Min Frequency limit for cpu3. Respecting policy. (Default: 378.000 kHz)" name="min_freq_limit_3_sleep" action="generic_cortex /tmp/min_freq_limit_3_sleep" unit="kHz" min="162000" reversed="false" step="108000" max="1890000"/>
+
+		<seekBar description="Max Frequency limit for cpu0. Respecting policy. (Default: 702.000 kHz)" name="max_freq_limit_0_sleep" action="generic_cortex /tmp/max_freq_limit_0_sleep" unit="kHz" min="162000" reversed="false" step="108000" max="1890000"/>
+
+		<seekBar description="Max Frequency limit for cpu1. Respecting policy. (Default: 702.000 kHz)" name="max_freq_limit_1_sleep" action="generic_cortex /tmp/max_freq_limit_1_sleep" unit="kHz" min="162000" reversed="false" step="108000" max="1890000"/>
+
+		<seekBar description="Max Frequency limit for cpu2. Respecting policy. (Default: 702.000 kHz)" name="max_freq_limit_2_sleep" action="generic_cortex /tmp/max_freq_limit_2_sleep" unit="kHz" min="162000" reversed="false" step="108000" max="1890000"/>
+
+		<seekBar description="Max Frequency limit for cpu3. Respecting policy. (Default: 702.000 kHz)" name="max_freq_limit_3_sleep" action="generic_cortex /tmp/max_freq_limit_3_sleep" unit="kHz" min="162000" reversed="false" step="108000" max="1890000"/>
+
+	</settingsPane>
+
+</settingsTab>
+
+<settingsTab name="CPU-HOTPLUGGING (AWAKE)">
+
+	<settingsPane description="Here you can tune cpu hotplugging" name="Cpu hotplug Tuning">
+
+		<spinner description="Here you can set the cpu hotplugging system" name="cpu hotplugging" action="generic_cortex /tmp/cpuhotplugging">
+			<spinnerItem name="MSM MPDecision" value="1"/> 
+			<spinnerItem name="Intelliplug" value="2"/> 
+			<spinnerItem name="Alucard Hotplug" value="3"/> 
+		</spinner>
+
+		<button description="Use this button to push all new changes to cpu hotplugging system in real time! The sleep tuning will be auto added on screen off." name="Cpu Hotplug Policy Install" action="push-actions/cpu_tuning_hotplug" label="Push Tuning to cpu hotplugging core"/>
+
+	</settingsPane>
+
+	<settingsPane description="Here you can tune Intelliplug" name="Intelliplug Tuning">
+
+		<spinner description="Here you can set eco mode tweaks. (Default: Disabled)" name="eco_mode_active" action="generic /sys/module/intelli_plug/parameters/eco_mode_active">
+			<spinnerItem name="Enabled" value="1"/> 
+			<spinnerItem name="Disabled" value="0"/> 
+		</spinner>
+
+	</settingsPane>
+
+	<settingsPane description="Here you can tune alucard hotplug" name="alucard hotplug Tuning">
+
+		<seekBar description="Measured in uS and actual meaning being Sampling Interval, this factor determines how often the governor should poll for CPU usage in terms of frequency and load percentage to make hotplugging decisions. (Default: 60.000 uS)" name="hotplug_sampling_rate" action="generic_cortex /tmp/hotplug_sampling_rate" unit="uS" min="10000" reversed="false" step="10000" max="120000"/>
+
+		<seekBar description="No of samples to evaluate load to scale CPU Up. After cpu_up_rate samples are finished for a frequency, CPU scale-Up logic is executed. In other words - before scaling Up, cpu_up_rate X up_sample_time micro seconds are spend at a frequency. (Default: 10)" name="cpu_up_rate" action="generic_cortex /tmp/cpu_up_rate" unit="int" min="1" reversed="false" step="1" max="40"/>
+
+		<seekBar description="No of samples to evaluate load to scale CPU Down. After CPU_down_rate samples are finished for a frequency, CPU scale-Down logic is executed. In other words - before scaling Down, cpu_down_rate X down_sample_time micro seconds are spend at a frequency. (Default: 20)" name="cpu_down_rate" action="generic_cortex /tmp/cpu_down_rate" unit="int" min="1" reversed="false" step="1" max="40"/>
+
+		<seekBar description="Up threshold frequency to turn second core On, when some other conditions is also met. ie If (minimum frequency greater than or equal to hotplug_freq 1 1) Hotplug IN Second Core. Higher value correpsonds to delay in turning on second core. (Default: 702.000 kHz)" name="hotplug_freq_1_1" action="generic_cortex /tmp/hotplug_freq_1_1" unit="kHz" min="162000" reversed="false" step="108000" max="1890000"/>
+
+		<seekBar description="Down threshold frequency to turn second core Off, when some other conditions is also met. ie If (maximum frequency less than hotplug_freq 2 0) Hotplug OUT Second Core. Lower value correpsonds to delay in turning off second core. (Default: 486.000 kHz)" name="hotplug_freq_2_0" action="generic_cortex /tmp/hotplug_freq_2_0" unit="kHz" min="162000" reversed="false" step="108000" max="1890000"/>
+
+		<seekBar description="Up threshold frequency to turn third core On, when some other conditions is also met. ie If (minimum frequency greater than or equal to hotplug_freq 2 1) Hotplug IN Third Core. Higher value correpsonds to delay in turning on Third core. (Default: 702.000 kHz)" name="hotplug_freq_2_1" action="generic_cortex /tmp/hotplug_freq_2_1" unit="kHz" min="162000" reversed="false" step="108000" max="1890000"/>
+
+		<seekBar description="Down threshold frequency to turn third core Off, when some other conditions is also met. ie If (maximum frequency less than hotplug_freq 3 0) Hotplug OUT Third Core. Lower value correpsonds to delay in turning off third core. (Default: 486.000 kHz)" name="hotplug_freq_3_0" action="generic_cortex /tmp/hotplug_freq_3_0" unit="kHz" min="162000" reversed="false" step="108000" max="1890000"/>
+
+		<seekBar description="Up threshold frequency to turn fourth core On, when some other conditions is also met. ie If (minimum frequency greater than or equal to hotplug_freq 3 1) Hotplug IN thirdthirdFourth Core. Higher value correpsonds to delay in turning on Fourth core. (Default: 702.000 kHz)" name="hotplug_freq_3_1" action="generic_cortex /tmp/hotplug_freq_3_1" unit="kHz" min="162000" reversed="false" step="108000" max="1890000"/>
+
+		<seekBar description="Down threshold frequency to turn fourth core Off, when some other conditions is also met. ie If (maximum frequency less than hotplug_freq 4 0) Hotplug OUT Fourth Core. Lower value correpsonds to delay in turning off fourth core. (Default: 486.000 kHz)" name="hotplug_freq_4_0" action="generic_cortex /tmp/hotplug_freq_4_0" unit="kHz" min="162000" reversed="false" step="108000" max="1890000"/>
+
+		<seekBar description="The frequency at which governor scales CPU up. Cur Load equal or greater than up_load: Cpu Hotplug IN. Value corresponding to 101 causes not HOTPLUG IN. (Default: 65%)" name="hotplug_load_1_1" action="generic_cortex /tmp/hotplug_load_1_1" unit="%" min="10" reversed="false" step="1" max="101"/>
+
+		<seekBar description="The frequency at which governor scales CPU down. Cur Load less than down_load: Cpu Hotplug OUT. Value corresponding to 101 causes immediately HOTPLUG OUT. (Default: 30%)" name="hotplug_load_2_0" action="generic_cortex /tmp/hotplug_load_2_0" unit="%" min="0" reversed="false" step="1" max="101"/>
+
+		<seekBar description="The frequency at which governor scales CPU up. Cur Load equal or greater than up_load: Cpu Hotplug IN. Value corresponding to 101 causes not HOTPLUG IN. (Default: 65%)" name="hotplug_load_2_1" action="generic_cortex /tmp/hotplug_load_2_1" unit="%" min="10" reversed="false" step="1" max="101"/>
+
+		<seekBar description="The frequency at which governor scales CPU down. Cur Load less than down_load: Cpu Hotplug OUT. Value corresponding to 101 causes immediately HOTPLUG OUT. (Default: 30%)" name="hotplug_load_3_0" action="generic_cortex /tmp/hotplug_load_3_0" unit="%" min="0" reversed="false" step="1" max="101"/>
+
+		<seekBar description="The frequency at which governor scales CPU up. Cur Load equal or greater than up_load: Cpu Hotplug IN. Value corresponding to 101 causes not HOTPLUG IN. (Default: 65%)" name="hotplug_load_3_1" action="generic_cortex /tmp/hotplug_load_3_1" unit="%" min="10" reversed="false" step="1" max="101"/>
+
+		<seekBar description="The frequency at which governor scales CPU down. Cur Load less than down_load: Cpu Hotplug OUT. Value corresponding to 101 causes immediately HOTPLUG OUT. (Default: 30%)" name="hotplug_load_4_0" action="generic_cortex /tmp/hotplug_load_4_0" unit="%" min="0" reversed="false" step="1" max="101"/>
+
+		<seekBar description="Max cpus hotplugging limit. (Default: 4)" name="maxcoreslimit" action="generic_cortex /tmp/maxcoreslimit" unit="int" min="1" reversed="false" step="1" max="4"/>
+
+	</settingsPane>
+
+</settingsTab>
+
+<settingsTab name="CPU-HOTPLUGGING (SLEEP)">
+
+	<settingsPane description="Here you can tune Intelliplug" name="Intelliplug Tuning">
+
+		<spinner description="Here you can set eco mode tweaks. (Default: Enabled)" name="eco_mode_active_sleep" action="generic /eco_mode_active_sleep">
+			<spinnerItem name="Enabled" value="1"/> 
+			<spinnerItem name="Disabled" value="0"/> 
+		</spinner>
+
+	</settingsPane>
+
+	<settingsPane description="Here you can tune alucard hotplug for sleeping" name="alucard hotplug Tuning">
+
+		<seekBar description="Measured in uS and actual meaning being Sampling Interval, this factor determines how often the governor should poll for CPU usage in terms of frequency and load percentage to make hotplugging decisions. (Default: 60.000 uS)" name="hotplug_sampling_rate_sleep" action="generic_cortex /tmp/hotplug_sampling_rate_sleep" unit="uS" min="10000" reversed="false" step="10000" max="120000"/>
+
+		<seekBar description="No of samples to evaluate load to scale CPU Up. After cpu_up_rate samples are finished for a frequency, CPU scale-Up logic is executed. In other words - before scaling Up, cpu_up_rate X up_sample_time micro seconds are spend at a frequency. (Default: 10)" name="cpu_up_rate_sleep" action="generic_cortex /tmp/cpu_up_rate_sleep" unit="int" min="1" reversed="false" step="1" max="40"/>
+
+		<seekBar description="No of samples to evaluate load to scale CPU Down. After CPU_down_rate samples are finished for a frequency, CPU scale-Down logic is executed. In other words - before scaling Down, cpu_down_rate X down_sample_time micro seconds are spend at a frequency. (Default: 20)" name="cpu_down_rate_sleep" action="generic_cortex /tmp/cpu_down_rate_sleep" unit="int" min="1" reversed="false" step="1" max="40"/>
+
+		<seekBar description="Up threshold frequency to turn second core On, when some other conditions is also met. ie If (minimum frequency greater than or equal to hotplug_freq 1 1) Hotplug IN Second Core. Higher value correpsonds to delay in turning on second core. (Default: 702.000 kHz)" name="hotplug_freq_1_1_sleep" action="generic_cortex /tmp/hotplug_freq_1_1_sleep" unit="kHz" min="162000" reversed="false" step="108000" max="1890000"/>
+
+		<seekBar description="Down threshold frequency to turn second core Off, when some other conditions is also met. ie If (maximum frequency less than hotplug_freq 2 0) Hotplug OUT Second Core. Lower value correpsonds to delay in turning off second core. (Default: 486.000 kHz)" name="hotplug_freq_2_0_sleep" action="generic_cortex /tmp/hotplug_freq_2_0_sleep" unit="kHz" min="162000" reversed="false" step="108000" max="1890000"/>
+
+		<seekBar description="Up threshold frequency to turn third core On, when some other conditions is also met. ie If (minimum frequency greater than or equal to hotplug_freq 2 1) Hotplug IN Third Core. Higher value correpsonds to delay in turning on Third core. (Default: 702.000 kHz)" name="hotplug_freq_2_1_sleep" action="generic_cortex /tmp/hotplug_freq_2_1_sleep" unit="kHz" min="162000" reversed="false" step="108000" max="1890000"/>
+
+		<seekBar description="Down threshold frequency to turn third core Off, when some other conditions is also met. ie If (maximum frequency less than hotplug_freq 3 0) Hotplug OUT Third Core. Lower value correpsonds to delay in turning off third core. (Default: 486.000 kHz)" name="hotplug_freq_3_0_sleep" action="generic_cortex /tmp/hotplug_freq_3_0_sleep" unit="kHz" min="162000" reversed="false" step="108000" max="1890000"/>
+
+		<seekBar description="Up threshold frequency to turn fourth core On, when some other conditions is also met. ie If (minimum frequency greater than or equal to hotplug_freq 3 1) Hotplug IN thirdthirdFourth Core. Higher value correpsonds to delay in turning on Fourth core. (Default: 702.000 kHz)" name="hotplug_freq_3_1_sleep" action="generic_cortex /tmp/hotplug_freq_3_1_sleep" unit="kHz" min="162000" reversed="false" step="108000" max="1890000"/>
+
+		<seekBar description="Down threshold frequency to turn fourth core Off, when some other conditions is also met. ie If (maximum frequency less than hotplug_freq 4 0) Hotplug OUT Fourth Core. Lower value correpsonds to delay in turning off fourth core. (Default: 486.000 kHz)" name="hotplug_freq_4_0_sleep" action="generic_cortex /tmp/hotplug_freq_4_0_sleep" unit="kHz" min="162000" reversed="false" step="108000" max="1890000"/>
+
+		<seekBar description="The frequency at which governor scales CPU up. Cur Load equal or greater than up_load: Cpu Hotplug IN. Value corresponding to 101 causes not HOTPLUG IN. (Default: 65%)" name="hotplug_load_1_1_sleep" action="generic_cortex /tmp/hotplug_load_1_1_sleep" unit="%" min="10" reversed="false" step="1" max="101"/>
+
+		<seekBar description="The frequency at which governor scales CPU down. Cur Load less than down_load: Cpu Hotplug OUT. Value corresponding to 101 causes immediately HOTPLUG OUT. (Default: 30%)" name="hotplug_load_2_0_sleep" action="generic_cortex /tmp/hotplug_load_2_0_sleep" unit="%" min="0" reversed="false" step="1" max="101"/>
+
+		<seekBar description="The frequency at which governor scales CPU up. Cur Load equal or greater than up_load: Cpu Hotplug IN. Value corresponding to 101 causes not HOTPLUG IN. (Default: 65%)" name="hotplug_load_2_1_sleep" action="generic_cortex /tmp/hotplug_load_2_1_sleep" unit="%" min="10" reversed="false" step="1" max="101"/>
+
+		<seekBar description="The frequency at which governor scales CPU down. Cur Load less than down_load: Cpu Hotplug OUT. Value corresponding to 101 causes immediately HOTPLUG OUT. (Default: 30%)" name="hotplug_load_3_0_sleep" action="generic_cortex /tmp/hotplug_load_3_0_sleep" unit="%" min="0" reversed="false" step="1" max="101"/>
+
+		<seekBar description="The frequency at which governor scales CPU up. Cur Load equal or greater than up_load: Cpu Hotplug IN. Value corresponding to 101 causes not HOTPLUG IN. (Default: 65%)" name="hotplug_load_3_1_sleep" action="generic_cortex /tmp/hotplug_load_3_1_sleep" unit="%" min="10" reversed="false" step="1" max="101"/>
+
+		<seekBar description="The frequency at which governor scales CPU down. Cur Load less than down_load: Cpu Hotplug OUT. Value corresponding to 101 causes immediately HOTPLUG OUT. (Default: 30%)" name="hotplug_load_4_0_sleep" action="generic_cortex /tmp/hotplug_load_4_0_sleep" unit="%" min="0" reversed="false" step="1" max="101"/>
+
+		<seekBar description="Max cpus hotplugging limit. (Default: 1)" name="maxcoreslimit_sleep" action="generic_cortex /tmp/maxcoreslimit_sleep" unit="int" min="1" reversed="false" step="1" max="4"/>
+
+	</settingsPane>
+
+</settingsTab>
+
+<settingsTab name="IO">
+
+	<settingsPane description="Here you can tune IO settings managed by Kernel" name="IO Tuning">
+
+		<spinner description="Maximum number of kilobytes to read-ahead for EXTERNAL SDCARD! file systems on this device. Works only if IO-Tweaks tweak is enabled! (Default: 128 kB) !!! Depends on CortexBrain-Background-Process !!!" name="kilobytes to read-ahead" action="generic_cortex /tmp/cortexbrain_read_ahead_kb">
+			<spinnerItem name="128 kB" value="128"/> 
+			<spinnerItem name="256 kB" value="256"/> 
+			<spinnerItem name="512 kB" value="512"/> 
+			<spinnerItem name="1024 kB" value="1024"/> 
+			<spinnerItem name="2048 kB" value="2048"/> 
+			<spinnerItem name="2560 kB" value="2560"/> 
+		</spinner>
+
+		<spinner description="This will set the default AWAKE IO scheduler for internal sdcard. (Default: CFQ)" name="Default Awake IO Scheduler Int." action="iosched internal /sys/block/mmcblk0/queue/scheduler">
+			<spinnerItem name="CFQ" value="cfq"/> 
+			<spinnerItem name="DEADLINE" value="deadline"/> 
+			<spinnerItem name="NOOP" value="noop"/> 
+			<spinnerItem name="ROW" value="row"/> 
+			<spinnerItem name="SIO" value="sio"/> 
+			<spinnerItem name="FIFO" value="fifo"/> 
+		</spinner>
+
+		<spinner description="This will set the default AWAKE IO scheduler for external sdcard. (Default: CFQ)" name="Default Awake IO Scheduler Ext." action="iosched sd /sys/block/mmcblk1/queue/scheduler">
+			<spinnerItem name="CFQ" value="cfq"/> 
+			<spinnerItem name="DEADLINE" value="deadline"/> 
+			<spinnerItem name="NOOP" value="noop"/> 
+			<spinnerItem name="ROW" value="row"/> 
+			<spinnerItem name="SIO" value="sio"/> 
+			<spinnerItem name="FIFO" value="fifo"/> 
+		</spinner>
+
+		<spinner description="This will set the DEEPSLEEP IO scheduler for internal sdcard. (Default: CFQ) !!! Depends on CortexBrain-Background-Process !!!" name="DEEPSLEEP IO Scheduler Int." action="generic_cortex /tmp/internal_iosched_sleep">
+			<spinnerItem name="CFQ" value="cfq"/> 
+			<spinnerItem name="DEADLINE" value="deadline"/> 
+			<spinnerItem name="NOOP" value="noop"/> 
+			<spinnerItem name="ROW" value="row"/> 
+			<spinnerItem name="SIO" value="sio"/> 
+			<spinnerItem name="FIFO" value="fifo"/> 
+		</spinner>
+
+		<spinner description="This will set the DEEPSLEEP IO scheduler for external sdcard. (Default: CFQ) !!! Depends on CortexBrain-Background-Process !!!" name="DEEPSLEEP IO Scheduler Ext." action="generic_cortex /tmp/sd_iosched_sleep">
+			<spinnerItem name="CFQ" value="cfq"/> 
+			<spinnerItem name="DEADLINE" value="deadline"/> 
+			<spinnerItem name="NOOP" value="noop"/> 
+			<spinnerItem name="ROW" value="row"/> 
+			<spinnerItem name="SIO" value="sio"/> 
+			<spinnerItem name="FIFO" value="fifo"/> 
+		</spinner>
+
+	</settingsPane>
+
+</settingsTab>
+
+<settingsTab name="Other">
+
+	<settingsPane description="Android Additional Logs" name="Logger">
+
+		<checkbox description="Enable or Disable Android Additional Logs (needs reboot)" name="Android Logger" action="generic_cortex /tmp/logger" label="Android Logger"/>
+
+		<seekBar description="Vibration force level. (Default: 75)" name="Vibration force" action="generic /sys/vibrator/pwm_val" unit="%" min="0" reversed="false" step="5" max="100"/>
+
+	</settingsPane>
+
+</settingsTab>
+
+<settingsTab name="Tweaks">
+
+	<settingsPane description="This script will manipulate many kernel settings, based on chosen STweaks profile + settings and on screen state (ON or OFF) and we call it CortexBrain. To reset the kernel-settings, after you disable a tweak, you must reboot!" name="CortexBrain Tweaks">
+
+		<spinner description="Enable or Disable the background-process from CortexBrain. If you disable it, you will lose the function that set different settings for screen state (ON or OFF)." name="Cortexbrain-Background-Process" action="cortexbrain_background_process">
+			<spinnerItem name="Enable" value="1"/> 
+			<spinnerItem name="Disable" value="0"/> 
+		</spinner>
+
+		<button description="Click to see if the CortexBrain-Background-Process is running or not." name="Check Background-Process" action="push-actions/cortexbrain_background_process_check" label="CHECK SERVICE"/>
+
+		<spinner description="Here you can control android logger logcat. If you set it to AUTO, then you will have logs only on screen is on. When screen will be off, logger will be disabled to save battery. If you set DEBUG, it will be working no matter what! If set to DISABLED, logging will be off, no matter what. If USB or Charger is connected and logger is set to AUTO, logging will not be disabled so we can debug. !!! Depends on CortexBrain-Background-Process !!!" name="Android Logger control" action="android_logger">
+			<spinnerItem name="AUTO" value="auto"/> 
+			<spinnerItem name="DEBUG" value="debug"/> 
+			<spinnerItem name="DISABLED" value="disabled"/> 
+		</spinner>
+
+		<checkbox description="Enable or Disable CPU-Tweaks (reboot needed)." name="CPU-Tweaks" action="generic_cortex /tmp/cortexbrain_cpu" label="CPU-Tweaks"/>
+
+		<checkbox description="Enable or Disable Battery-Tweaks (reboot needed)." name="Battery-Tweaks" action="generic_cortex /tmp/cortexbrain_battery" label="Battery-Tweaks"/>
+
+		<checkbox description="Enable or Disable IO-Tweaks (reboot needed)." name="IO-Tweaks" action="generic_cortex /tmp/cortexbrain_io" label="IO-Tweaks"/>
+
+	</settingsPane>
+
+</settingsTab>
+
+<settingsTab name="PROFILES">
+
+	<settingsPane description="You can check what profile is used right now." name="Online Profile">
+
+		<button description="This displays your currently used profile." name="Profile Check" action="push-actions/profile" label="Profile Check"/>
+
+	</settingsPane>
+
+	<settingsPane description="Here you can choose some profiles. You can also switch the default profiles (battery, default, performance) via Kernel-Recovery." name="STweaks Profiles">
+
+		<button description="extreme_battery.profile" name="extreme_battery.profile" action="push-actions/config_backup_restore 6" label="EXTREME BATTERY"/>
+
+		<button description="battery.profile" name="battery.profile" action="push-actions/config_backup_restore 3" label="BATTERY"/>
+
+		<button description="default.profile" name="default.profile" action="push-actions/config_backup_restore 4" label="DEFAULT"/>
+
+		<button description="performance.profile" name="performance.profile" action="push-actions/config_backup_restore 5" label="PERFORMANCE"/>
+
+		<button description="extreme_performance.profile" name="extreme_performance.profile" action="push-actions/config_backup_restore 7" label="EXTREME PERFORMANCE"/>
+
+	</settingsPane>
+
+</settingsTab>
+
+<settingsTab name="BACKUP or RESTORE">
+
+	<settingsPane description="Here you can backup or restore your profile after installing new kernel. When you restore your configuration, please wait till this app restarts with the new settings. Some settings will work only after reboot! Restore will take up to 30 sec, just wait here!" name="STweaks Settings Backup or Restore">
+
+		<button description="Backup STweaks User Settings!" name="Settings Backup" action="push-actions/config_backup_restore 1" label="BACKUP NOW"/>
+
+		<button description="Restore STweaks User Settings!" name="Settings Restore" action="push-actions/config_backup_restore 2" label="RESTORE NOW"/>
+
+	</settingsPane>
+
+</settingsTab>
+
+<!--force profiles reset- version 1.2-->
+
+</settingsRoot>
+
