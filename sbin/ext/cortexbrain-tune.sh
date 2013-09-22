@@ -651,7 +651,6 @@ LOGGER()
 	log -p i -t $FILE_NAME "*** LOGGER ***: $state";
 }
 
-
 CENTRAL_CPU_FREQ()
 {
 	local state="$1";

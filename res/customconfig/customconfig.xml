@@ -342,6 +342,10 @@
 
 		<checkbox description="Enable or Disable Android Additional Logs (needs reboot)" name="Android Logger" action="generic_cortex /tmp/logger" label="Android Logger"/>
 
+	</settingsPane>
+
+	<settingsPane description="Vibration tweaks" name="Vibration">
+
 		<seekBar description="Vibration force level. (Default: 75)" name="Vibration force" action="generic /sys/vibrator/pwm_val" unit="%" min="0" reversed="false" step="5" max="100"/>
 
 	</settingsPane>
