@@ -187,5 +187,4 @@ fi;
 
 	mount -o remount,rw /system;
 	mount -o remount,rw /;
-
 )&
