@@ -78,22 +78,6 @@
 
 		<seekBar description="Defines how much as a percentage of maximum frequency, governor should decrease CPU frequency each time CPU load reaches dec_cpu_load and current freq is greater than freq_for_responsiviness_max. (Only for Nightmare). (Default: 10%)" name="freq_step_dec_at_max_freq" action="generic_cortex /tmp/freq_step_dec_at_max_freq" unit="%" min="0" reversed="false" step="1" max="100"/>
 
-		<seekBar description="Min Frequency limit for cpu0. Respecting policy. (Default: 378.000 kHz)" name="min_freq_limit_0" action="generic_cortex /tmp/min_freq_limit_0" unit="kHz" min="162000" reversed="false" step="108000" max="1890000"/>
-
-		<seekBar description="Min Frequency limit for cpu1. Respecting policy. (Default: 378.000 kHz)" name="min_freq_limit_1" action="generic_cortex /tmp/min_freq_limit_1" unit="kHz" min="162000" reversed="false" step="108000" max="1890000"/>
-
-		<seekBar description="Min Frequency limit for cpu2. Respecting policy. (Default: 378.000 kHz)" name="min_freq_limit_2" action="generic_cortex /tmp/min_freq_limit_2" unit="kHz" min="162000" reversed="false" step="108000" max="1890000"/>
-
-		<seekBar description="Min Frequency limit for cpu3. Respecting policy. (Default: 378.000 kHz)" name="min_freq_limit_3" action="generic_cortex /tmp/min_freq_limit_3" unit="kHz" min="162000" reversed="false" step="108000" max="1890000"/>
-
-		<seekBar description="Max Frequency limit for cpu0. Respecting policy. (Default: 1890.000 kHz)" name="max_freq_limit_0" action="generic_cortex /tmp/max_freq_limit_0" unit="kHz" min="162000" reversed="false" step="108000" max="1890000"/>
-
-		<seekBar description="Max Frequency limit for cpu1. Respecting policy. (Default: 1890.000 kHz)" name="max_freq_limit_1" action="generic_cortex /tmp/max_freq_limit_1" unit="kHz" min="162000" reversed="false" step="108000" max="1890000"/>
-
-		<seekBar description="Max Frequency limit for cpu2. Respecting policy. (Default: 1890.000 kHz)" name="max_freq_limit_2" action="generic_cortex /tmp/max_freq_limit_2" unit="kHz" min="162000" reversed="false" step="108000" max="1890000"/>
-
-		<seekBar description="Max Frequency limit for cpu3. Respecting policy. (Default: 1890.000 kHz)" name="max_freq_limit_3" action="generic_cortex /tmp/max_freq_limit_3" unit="kHz" min="162000" reversed="false" step="108000" max="1890000"/>
-
 	</settingsPane>
 
 </settingsTab>
@@ -152,24 +136,6 @@
 		<seekBar description="Defines how much as a percentage of maximum frequency, governor should decrease CPU frequency each time CPU load reaches dec_cpu_load.  (Only for Nightmare). (Default: 10%)" name="freq_step_dec_sleep" action="generic_cortex /tmp/freq_step_dec_sleep" unit="%" min="0" reversed="false" step="1" max="100"/>
 
 		<seekBar description="Defines how much as a percentage of maximum frequency, governor should decrease CPU frequency each time CPU load reaches dec_cpu_load and current freq is greater than freq_for_responsiviness_max. (Only for Nightmare). (Default: 10%)" name="freq_step_dec_at_max_freq_sleep" action="generic_cortex /tmp/freq_step_dec_at_max_freq_sleep" unit="%" min="0" reversed="false" step="1" max="100"/>
-
-		<seekBar description="Min Frequency limit for cpu0. Respecting policy. (Default: 378.000 kHz)" name="min_freq_limit_0_sleep" action="generic_cortex /tmp/min_freq_limit_0_sleep" unit="kHz" min="162000" reversed="false" step="108000" max="1890000"/>
-
-		<seekBar description="Min Frequency limit for cpu1. Respecting policy. (Default: 378.000 kHz)" name="min_freq_limit_1_sleep" action="generic_cortex /tmp/min_freq_limit_1_sleep" unit="kHz" min="162000" reversed="false" step="108000" max="1890000"/>
-
-		<seekBar description="Min Frequency limit for cpu2. Respecting policy. (Default: 378.000 kHz)" name="min_freq_limit_2_sleep" action="generic_cortex /tmp/min_freq_limit_2_sleep" unit="kHz" min="162000" reversed="false" step="108000" max="1890000"/>
-
-		<seekBar description="Min Frequency limit for cpu3. Respecting policy. (Default: 378.000 kHz)" name="min_freq_limit_3_sleep" action="generic_cortex /tmp/min_freq_limit_3_sleep" unit="kHz" min="162000" reversed="false" step="108000" max="1890000"/>
-
-		<seekBar description="Max Frequency limit for cpu0. Respecting policy. (Default: 702.000 kHz)" name="max_freq_limit_0_sleep" action="generic_cortex /tmp/max_freq_limit_0_sleep" unit="kHz" min="162000" reversed="false" step="108000" max="1890000"/>
-
-		<seekBar description="Max Frequency limit for cpu1. Respecting policy. (Default: 702.000 kHz)" name="max_freq_limit_1_sleep" action="generic_cortex /tmp/max_freq_limit_1_sleep" unit="kHz" min="162000" reversed="false" step="108000" max="1890000"/>
-
-		<seekBar description="Max Frequency limit for cpu2. Respecting policy. (Default: 702.000 kHz)" name="max_freq_limit_2_sleep" action="generic_cortex /tmp/max_freq_limit_2_sleep" unit="kHz" min="162000" reversed="false" step="108000" max="1890000"/>
-
-		<seekBar description="Max Frequency limit for cpu3. Respecting policy. (Default: 702.000 kHz)" name="max_freq_limit_3_sleep" action="generic_cortex /tmp/max_freq_limit_3_sleep" unit="kHz" min="162000" reversed="false" step="108000" max="1890000"/>
-
-	</settingsPane>
 
 </settingsTab>
 

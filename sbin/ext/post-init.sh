@@ -23,11 +23,11 @@ if [ -f /data/.alucard/restore_running ]; then
 	rm -f /data/.alucard/restore_running;
 fi;
 
-#ccxmlsum=`md5sum /res/customconfig/customconfig.xml | awk '{print $1}'`
-#if [ "a$ccxmlsum" != "a`cat /data/.alucard/.ccxmlsum`" ]; then
-#	rm -f /data/.alucard/*.profile;
-#	echo "$ccxmlsum" > /data/.alucard/.ccxmlsum;
-#fi;
+ccxmlsum=`md5sum /res/customconfig/customconfig.xml | awk '{print $1}'`
+if [ "a$ccxmlsum" != "a`cat /data/.alucard/.ccxmlsum`" && "a$ccxmlsum" != "a" ]; then
+	rm -f /data/.alucard/*.profile;
+	echo "$ccxmlsum" > /data/.alucard/.ccxmlsum;
+fi;
 
 [ ! -f /data/.alucard/default.profile ] && cp -a /res/customconfig/default.profile /data/.alucard/default.profile;
 [ ! -f /data/.alucard/battery.profile ] && cp -a /res/customconfig/battery.profile /data/.alucard/battery.profile;
