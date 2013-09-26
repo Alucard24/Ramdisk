@@ -16,6 +16,7 @@ done;
 
 if [ ! -d /data/.alucard ]; then
 	$BB mkdir -p /data/.alucard;
+	$BB chmod -R 0777 /data/.alucard/;
 fi;
 
 # reset config-backup-restore
@@ -24,7 +25,7 @@ if [ -f /data/.alucard/restore_running ]; then
 fi;
 
 ccxmlsum=`md5sum /res/customconfig/customconfig.xml | awk '{print $1}'`
-if [ "a$ccxmlsum" != "a`cat /data/.alucard/.ccxmlsum`" && "a$ccxmlsum" != "a" ]; then
+if [ "a$ccxmlsum" != "a`cat /data/.alucard/.ccxmlsum`" ]; then
 	rm -f /data/.alucard/*.profile;
 	echo "$ccxmlsum" > /data/.alucard/.ccxmlsum;
 fi;
@@ -34,8 +35,6 @@ fi;
 [ ! -f /data/.alucard/performance.profile ] && cp -a /res/customconfig/performance.profile /data/.alucard/performance.profile;
 [ ! -f /data/.alucard/extreme_performance.profile ] && cp -a /res/customconfig/extreme_performance.profile /data/.alucard/extreme_performance.profile;
 [ ! -f /data/.alucard/extreme_battery.profile ] && cp -a /res/customconfig/extreme_battery.profile /data/.alucard/extreme_battery.profile;
-
-$BB chmod -R 0777 /data/.alucard/;
 
 . /res/customconfig/customconfig-helper;
 read_defaults;
