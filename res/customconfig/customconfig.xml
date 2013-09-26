@@ -137,6 +137,8 @@
 
 		<seekBar description="Defines how much as a percentage of maximum frequency, governor should decrease CPU frequency each time CPU load reaches dec_cpu_load and current freq is greater than freq_for_responsiviness_max. (Only for Nightmare). (Default: 10%)" name="freq_step_dec_at_max_freq_sleep" action="generic_cortex /tmp/freq_step_dec_at_max_freq_sleep" unit="%" min="0" reversed="false" step="1" max="100"/>
 
+	</settingsPane>
+
 </settingsTab>
 
 <settingsTab name="CPU-HOTPLUGGING (AWAKE)">
