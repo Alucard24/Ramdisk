@@ -288,6 +288,36 @@ CPU_HOTPLUG_TWEAKS()
 		hotplug_load_4_0_tmp="/dev/null";
 	fi;
 
+	local hotplug_rq_1_1_tmp="/sys/devices/system/cpu/cpufreq/alucard_hotplug/hotplug_rq_1_1";
+	if [ ! -e $hotplug_rq_1_1_tmp ]; then
+		hotplug_rq_1_1_tmp="/dev/null";
+	fi;
+
+	local hotplug_rq_2_0_tmp="/sys/devices/system/cpu/cpufreq/alucard_hotplug/hotplug_rq_2_0";
+	if [ ! -e $hotplug_rq_2_0_tmp ]; then
+		hotplug_rq_2_0_tmp="/dev/null";
+	fi;
+
+	local hotplug_rq_2_1_tmp="/sys/devices/system/cpu/cpufreq/alucard_hotplug/hotplug_rq_2_1";
+	if [ ! -e $hotplug_rq_2_1_tmp ]; then
+		hotplug_rq_2_1_tmp="/dev/null";
+	fi;
+
+	local hotplug_rq_3_0_tmp="/sys/devices/system/cpu/cpufreq/alucard_hotplug/hotplug_rq_3_0";
+	if [ ! -e $hotplug_rq_3_0_tmp ]; then
+		hotplug_rq_3_0_tmp="/dev/null";
+	fi;
+
+	local hotplug_rq_3_1_tmp="/sys/devices/system/cpu/cpufreq/alucard_hotplug/hotplug_rq_3_1";
+	if [ ! -e $hotplug_rq_3_1_tmp ]; then
+		hotplug_rq_3_1_tmp="/dev/null";
+	fi;
+
+	local hotplug_rq_4_0_tmp="/sys/devices/system/cpu/cpufreq/alucard_hotplug/hotplug_rq_4_0";
+	if [ ! -e $hotplug_rq_4_0_tmp ]; then
+		hotplug_rq_4_0_tmp="/dev/null";
+	fi;
+
 	local maxcoreslimit_tmp="/sys/devices/system/cpu/cpufreq/alucard_hotplug/maxcoreslimit";
 	if [ ! -e $maxcoreslimit_tmp ]; then
 		maxcoreslimit_tmp="/dev/null";
@@ -374,6 +404,12 @@ CPU_HOTPLUG_TWEAKS()
 			echo "$hotplug_load_3_0_sleep" > $hotplug_load_3_0_tmp;
 			echo "$hotplug_load_3_1_sleep" > $hotplug_load_3_1_tmp;
 			echo "$hotplug_load_4_0_sleep" > $hotplug_load_4_0_tmp;
+			echo "$hotplug_rq_1_1_sleep" > $hotplug_rq_1_1_tmp;
+			echo "$hotplug_rq_2_0_sleep" > $hotplug_rq_2_0_tmp;
+			echo "$hotplug_rq_2_1_sleep" > $hotplug_rq_2_1_tmp;
+			echo "$hotplug_rq_3_0_sleep" > $hotplug_rq_3_0_tmp;
+			echo "$hotplug_rq_3_1_sleep" > $hotplug_rq_3_1_tmp;
+			echo "$hotplug_rq_4_0_sleep" > $hotplug_rq_4_0_tmp;
 			echo "$maxcoreslimit_sleep" > $maxcoreslimit_tmp;
 		# awake-settings
 		elif [ "$state" == "awake" ]; then
@@ -392,6 +428,12 @@ CPU_HOTPLUG_TWEAKS()
 			echo "$hotplug_load_3_0" > $hotplug_load_3_0_tmp;
 			echo "$hotplug_load_3_1" > $hotplug_load_3_1_tmp;
 			echo "$hotplug_load_4_0" > $hotplug_load_4_0_tmp;
+			echo "$hotplug_rq_1_1" > $hotplug_rq_1_1_tmp;
+			echo "$hotplug_rq_2_0" > $hotplug_rq_2_0_tmp;
+			echo "$hotplug_rq_2_1" > $hotplug_rq_2_1_tmp;
+			echo "$hotplug_rq_3_0" > $hotplug_rq_3_0_tmp;
+			echo "$hotplug_rq_3_1" > $hotplug_rq_3_1_tmp;
+			echo "$hotplug_rq_4_0" > $hotplug_rq_4_0_tmp;
 			echo "$maxcoreslimit" > $maxcoreslimit_tmp;
 		fi;
 
