@@ -36,52 +36,15 @@ fi;
 read_defaults;
 read_config;
 
-(
-	if [ ! -f /system/xbin/su ]; then
-		mv  /res/su /system/xbin/su;
-	fi;
-
-	if [ ! -f /system/xbin/daemonsu ]; then
-		mv  /res/daemonsu /system/xbin/daemonsu;
-	fi;
-
-	mv  /res/.has_su_daemon /system/etc/.has_su_daemon;
-	$BB chmod 644 /system/etc/.has_su_daemon;
-
-	mv  /res/.installed_su_daemon /system/etc/.installed_su_daemon;
-	$BB chmod 644 /system/etc/.installed_su_daemon;
-
-	mv  /res/install-recovery.sh /system/etc/install-recovery.sh;
-	$BB chmod 755 /system/etc/install-recovery.sh;
-
-	$BB chmod 6755 /system/xbin/su;
-	$BB chmod 6755 /system/xbin/daemonsu;
-	symlink /system/xbin/su /system/bin/su;
-
-	if [ ! -f /system/app/Superuser.apk ]; then
-		mv /res/Superuser.apk /system/app/Superuser.apk;
-	fi
-
-	$BB chmod 644 /system/app/Superuser.apk;
-
-	if [ ! -f /system/xbin/busybox ]; then
-		ln -s /sbin/busybox /system/xbin/busybox;
-		ln -s /sbin/busybox /system/xbin/pkill;
-	fi
-
-	if [ ! -f /system/bin/busybox ]; then
-		ln -s /sbin/busybox /system/bin/busybox;
-		ln -s /sbin/busybox /system/bin/pkill;
-	fi;
-
-	if [ ! -f /system/app/STweaks.apk ]; then
-		cat /res/STweaks.apk > /system/app/STweaks.apk;
-		$BB chmod 644 /system/app/STweaks.apk;
-	fi;
-
-	# EFS Backup
-	$BB sh /sbin/ext/efs-backup.sh;
-)&
+# STweaks check su only at /system/xbin/su make it so
+if [ -e /system/xbin/su ]; then
+	echo "root for STweaks found";
+elif [ -e /system/bin/su ]; then
+	cp /system/bin/su /system/xbin/su;
+	chmod 6755 /system/xbin/su;
+else
+	echo "ROM without ROOT";
+fi;
 
 # busybox addons
 if [ -e /system/xbin/busybox ]; then
@@ -115,6 +78,14 @@ fi;
 
 # for ntfs automounting
 mount -t tmpfs -o mode=0777,gid=1000 tmpfs /mnt/ntfs
+
+(
+	# Apps Install
+	$BB sh /sbin/ext/install.sh;
+
+	# EFS Backup
+	$BB sh /sbin/ext/efs-backup.sh;
+)&
 
 echo "0" > /tmp/uci_done;
 chmod 666 /tmp/uci_done;
