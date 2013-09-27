@@ -2,12 +2,8 @@
 
 BB=/sbin/busybox
 
-$BB mount -o remount,rw /system;
-$BB mount -t rootfs -o remount,rw rootfs;
-
-$BB chmod -R 6755 /sbin;
-$BB chmod -R 6755 /res;
-$BB chmod -R 6777 /tmp;
+# first mod the partitions then boot
+$BB sh /sbin/ext/system_tune_on_init.sh;
 
 PIDOFINIT=`pgrep -f "/sbin/ext/post-init.sh"`;
 for i in $PIDOFINIT; do
