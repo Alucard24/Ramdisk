@@ -5,10 +5,25 @@ BB=/sbin/busybox
 # first mod the partitions then boot
 $BB sh /sbin/ext/system_tune_on_init.sh;
 
+# oom and mem perm fix, we have auto adj code, do not allow changes in adj
+$BB chmod 777 /sys/module/lowmemorykiller/parameters/cost;
+$BB chmod 444 /sys/module/lowmemorykiller/parameters/adj;
+$BB chmod 777 /proc/sys/vm/mmap_min_addr;
+
+# protect init from oom
+echo "-1000" > /proc/1/oom_score_adj;
+
+# set sysrq to 2 = enable control of console logging level as with CM-KERNEL
+echo "2" > /proc/sys/kernel/sysrq;
+
 PIDOFINIT=`pgrep -f "/sbin/ext/post-init.sh"`;
 for i in $PIDOFINIT; do
 	echo "-600" > /proc/${i}/oom_score_adj;
 done;
+
+# allow user and admin to use all free mem.
+echo 0 > /proc/sys/vm/user_reserve_kbytes;
+echo 8192 > /proc/sys/vm/admin_reserve_kbytes;
 
 if [ ! -d /data/.alucard ]; then
 	$BB mkdir -p /data/.alucard;
@@ -54,6 +69,9 @@ fi;
 # some nice thing for dev
 $BB ln -s /sys/devices/system/cpu/cpu0/cpufreq /cpufreq;
 $BB ln -s /sys/devices/system/cpu/cpufreq/ /cpugov;
+
+# enable kmem interface for everyone by GM
+echo "0" > /proc/sys/kernel/kptr_restrict;
 
 # Cortex parent should be ROOT/INIT and not STweaks
 nohup /sbin/ext/cortexbrain-tune.sh;
@@ -153,4 +171,8 @@ fi;
 
 	mount -o remount,rw /system;
 	mount -o remount,rw /;
+
+	# correct oom tuning, if changed by apps/rom
+	$BB sh /res/uci.sh oom_config_screen_on $oom_config_screen_on;
+	$BB sh /res/uci.sh oom_config_screen_off $oom_config_screen_off;
 )&
