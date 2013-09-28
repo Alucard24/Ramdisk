@@ -27,7 +27,8 @@
 
 		<spinner description="This will set the AWAKE (screen ON) CPU governor. Default CPU governor will only be set during early stages of booting (before init.d execution), and can be overridden by any other scripts or applications. (Default: Darkness)" name="Default CPU Governor" action="generic /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor_all_cpus">
 			<spinnerItem name="conservative" value="conservative"/> 
-			<spinnerItem name="darkness" value="darkness"/> 
+			<spinnerItem name="darkness" value="darkness"/>
+			<spinnerItem name="HYPER" value="HYPER"/>
 			<spinnerItem name="interactive" value="interactive"/> 
 			<spinnerItem name="nightmare" value="nightmare"/> 
 			<spinnerItem name="ondemand" value="ondemand"/> 
@@ -88,7 +89,8 @@
 
 		<spinner description="This will set the DEEP SLEEP (screen off) CPU governor." name="Deep-Sleep! CPU Governor" action="generic_cortex /tmp/scaling_governor_all_cpus_sleep">
 			<spinnerItem name="conservative" value="conservative"/> 
-			<spinnerItem name="darkness" value="darkness"/> 
+			<spinnerItem name="darkness" value="darkness"/>
+			<spinnerItem name="HYPER" value="HYPER"/>
 			<spinnerItem name="interactive" value="interactive"/> 
 			<spinnerItem name="nightmare" value="nightmare"/> 
 			<spinnerItem name="ondemand" value="ondemand"/> 
@@ -145,10 +147,10 @@
 
 	<settingsPane description="Here you can tune cpu hotplugging" name="Cpu hotplug Tuning">
 
-		<spinner description="Here you can set the cpu hotplugging system. (Default: MSM MPDecision)" name="cpu hotplugging" action="generic_cortex /tmp/cpuhotplugging">
-			<spinnerItem name="MSM MPDecision" value="1"/> 
-			<spinnerItem name="Intelliplug" value="2"/> 
-			<spinnerItem name="Alucard Hotplug" value="3"/> 
+		<spinner description="Here you can set the cpu hotplugging system. (Default: ALUCARD HOTPLUG)" name="cpu hotplugging" action="generic_cortex /tmp/cpuhotplugging">
+			<spinnerItem name="MSM MPDECISION" value="1"/> 
+			<spinnerItem name="INTELLIPLUG" value="2"/> 
+			<spinnerItem name="ALUCARD HOTPLUG" value="3"/> 
 		</spinner>
 
 		<button description="Use this button to push all new changes to cpu hotplugging system in real time! The sleep tuning will be auto added on screen off." name="Cpu Hotplug Policy Install" action="push-actions/cpu_tuning_hotplug" label="Push Tuning to cpu hotplugging core"/>
@@ -324,6 +326,7 @@
 		</spinner>
 
 		<spinner description="This will set the default AWAKE IO scheduler for internal sdcard. (Default: CFQ)" name="Default Awake IO Scheduler Int." action="iosched internal /sys/block/mmcblk0/queue/scheduler">
+			<spinnerItem name="BFQ" value="bfq"/>
 			<spinnerItem name="CFQ" value="cfq"/> 
 			<spinnerItem name="DEADLINE" value="deadline"/> 
 			<spinnerItem name="NOOP" value="noop"/> 
@@ -333,6 +336,7 @@
 		</spinner>
 
 		<spinner description="This will set the default AWAKE IO scheduler for external sdcard. (Default: CFQ)" name="Default Awake IO Scheduler Ext." action="iosched sd /sys/block/mmcblk1/queue/scheduler">
+			<spinnerItem name="BFQ" value="bfq"/>
 			<spinnerItem name="CFQ" value="cfq"/> 
 			<spinnerItem name="DEADLINE" value="deadline"/> 
 			<spinnerItem name="NOOP" value="noop"/> 
@@ -342,6 +346,7 @@
 		</spinner>
 
 		<spinner description="This will set the DEEPSLEEP IO scheduler for internal sdcard. (Default: CFQ) !!! Depends on CortexBrain-Background-Process !!!" name="DEEPSLEEP IO Scheduler Int." action="generic_cortex /tmp/internal_iosched_sleep">
+			<spinnerItem name="BFQ" value="bfq"/>
 			<spinnerItem name="CFQ" value="cfq"/> 
 			<spinnerItem name="DEADLINE" value="deadline"/> 
 			<spinnerItem name="NOOP" value="noop"/> 
@@ -351,6 +356,7 @@
 		</spinner>
 
 		<spinner description="This will set the DEEPSLEEP IO scheduler for external sdcard. (Default: CFQ) !!! Depends on CortexBrain-Background-Process !!!" name="DEEPSLEEP IO Scheduler Ext." action="generic_cortex /tmp/sd_iosched_sleep">
+			<spinnerItem name="BFQ" value="bfq"/>
 			<spinnerItem name="CFQ" value="cfq"/> 
 			<spinnerItem name="DEADLINE" value="deadline"/> 
 			<spinnerItem name="NOOP" value="noop"/> 
