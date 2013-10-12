@@ -426,7 +426,7 @@
 
 		<seekBar description="Vibration force level. (Default: 75)" name="Vibration force" action="generic /sys/vibrator/pwm_val" unit="%" min="0" reversed="false" step="5" max="100"/>
 
-		<spinner description="This will force fast charging if it is enabled. (Default: Disabled)" name="Force Fast Charging" action="generic /sys/kernel/fast_charge/force_fast_charge">
+		<spinner description="This will force fast charging if it is enabled. If it is enabled, USB MTP will be disabled!  (Default: Disabled)" name="Force Fast Charging" action="generic /sys/kernel/fast_charge/force_fast_charge">
 			<spinnerItem name="Enabled" value="1"/> 
 			<spinnerItem name="Disabled" value="0"/> 
 		</spinner>
@@ -513,6 +513,18 @@
 		<button description="Backup STweaks User Settings!" name="Settings Backup" action="push-actions/config_backup_restore 1" label="BACKUP NOW"/>
 
 		<button description="Restore STweaks User Settings!" name="Settings Restore" action="push-actions/config_backup_restore 2" label="RESTORE NOW"/>
+
+	</settingsPane>
+
+</settingsTab>
+
+<settingsTab name="BUG-REPORT">
+
+	<settingsPane description="Debug to SD-Card sdcard" name="Bug-Report">
+
+		<button description="Bug-Report for Kernel" name="Kernel-Bug" action="push-actions/debug_to_sd 1" label="KERNEL-BUG"/>
+
+		<button description="Bug-Report for Apps" name="App-Bug" action="push-actions/debug_to_sd 2" label="APP-BUG"/>
 
 	</settingsPane>
 
