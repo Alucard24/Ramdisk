@@ -935,10 +935,12 @@ LOGGER()
 MOUNT_SD_CARD()
 {
 	if [ "$auto_mount_sd" == "on" ]; then
-		echo "/dev/block/vold/179:32" > /sys/devices/virtual/android_usb/android0/f_mass_storage/lun0/file;
-		if [ -e /dev/block/vold/179:33 ]; then
-			echo "/dev/block/vold/179:33" > /sys/devices/virtual/android_usb/android0/f_mass_storage/lun1/file;
+		if [ -e /dev/block/vold/179:32 ]; then
+			echo "/dev/block/vold/179:32" > /sys/devices/virtual/android_usb/android0/f_mass_storage/lun0/file;
 		fi;
+		#if [ -e /dev/block/vold/179:33 ]; then
+		#	echo "/dev/block/vold/179:33" > /sys/devices/virtual/android_usb/android0/f_mass_storage/lun1/file;
+		#fi;
 
 		log -p i -t $FILE_NAME "*** MOUNT_SD_CARD ***";
 	fi;
