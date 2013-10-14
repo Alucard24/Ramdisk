@@ -938,9 +938,9 @@ MOUNT_SD_CARD()
 		if [ -e /dev/block/vold/179:32 ]; then
 			echo "/dev/block/vold/179:32" > /sys/devices/virtual/android_usb/android0/f_mass_storage/lun0/file;
 		fi;
-		#if [ -e /dev/block/vold/179:33 ]; then
+		# if [ -e /dev/block/vold/179:33 ]; then
 		#	echo "/dev/block/vold/179:33" > /sys/devices/virtual/android_usb/android0/f_mass_storage/lun1/file;
-		#fi;
+		# fi;
 
 		log -p i -t $FILE_NAME "*** MOUNT_SD_CARD ***";
 	fi;
@@ -1173,7 +1173,7 @@ MOUNT_FIX()
 		mount -o remount,rw,nosuid,nodev,noexec /storage/extSdCard;
 	 fi;
 
-	mount -o remount,rw,nosuid,nodev,noexec /storage/emulated/legacy;
+	# mount -o remount,rw,nosuid,nodev,noexec /storage/emulated/legacy;
 }
 
 # ==============================================================
