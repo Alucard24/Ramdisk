@@ -21,6 +21,58 @@
 
 </settingsTab>
 
+<settingsTab name="CPU-VOLTAGE">
+
+	<settingsPane description="CPU Voltage Controls. Voltage Range is 800.000~1300.000V. Lower or higher are NOT SUPPORTED. All is done to prevent BUGS and SODS. USE this interface AT YOUR OWN RISK! If you get SOD before you can load this interface and cannot fix your error, flash another kernel or my cleaning script to reset profiles from recovery!" name="CPU Voltage Controls">
+
+		<checkbox description="Main switch for Voltage Control! If disabled, all below settings have no effect! If you are using an external application or script to configure CPU voltage, do not tick this checkbox. Do not start to mod voltage before you enable this switch! It will not make any effect and you will have to set all to default, and tune again!" name="CPU Voltage Main Switch" action="generic_cortex /tmp/cpu_voltage_switch" label="CPU Voltage Main Switch"/>
+
+		<button description="Use this button to see what CPU Voltage is used right now!" name="Check Active CPU Voltage" action="push-actions/check_cpu_voltage" label="Check CPU Voltage"/>
+
+		<seekBar description="CPU Voltage for 1890 MHz." name="CPU Voltage 1890 MHz" action="cpu-voltage 1" unit="V" min="1050000" reversed="false" step="12500" max="1300000"/>
+
+		<seekBar description="CPU Voltage for 1782 MHz." name="CPU Voltage 1782 MHz" action="cpu-voltage 2" unit="V" min="1025000" reversed="false" step="12500" max="1225000"/>
+
+		<seekBar description="CPU Voltage for 1674 MHz." name="CPU Voltage 1674 MHz" action="cpu-voltage 3" unit="V" min="1000000" reversed="false" step="12500" max="1175000"/>
+
+		<seekBar description="CPU Voltage for 1566 MHz." name="CPU Voltage 1566 MHz" action="cpu-voltage 4" unit="V" min="975000" reversed="false" step="12500" max="1125000"/>
+
+		<seekBar description="CPU Voltage for 1458 MHz." name="CPU Voltage 1458 MHz" action="cpu-voltage 5" unit="V" min="962500" reversed="false" step="12500" max="1100000"/>
+
+		<seekBar description="CPU Voltage for 1350 MHz." name="CPU Voltage 1350 MHz" action="cpu-voltage 6" unit="V" min="950000" reversed="false" step="12500" max="1062500"/>
+
+		<seekBar description="CPU Voltage for 1242 MHz." name="CPU Voltage 1242 MHz" action="cpu-voltage 7" unit="V" min="937500" reversed="false" step="12500" max="1037500"/>
+
+		<seekBar description="CPU Voltage for 1134 MHz." name="CPU Voltage 1134 MHz" action="cpu-voltage 8" unit="V" min="925000" reversed="false" step="12500" max="1025000"/>
+
+		<seekBar description="CPU Voltage for 1026 MHz." name="CPU Voltage 1026 MHz" action="cpu-voltage 9" unit="V" min="900000" reversed="false" step="12500" max="1000000"/>
+
+		<seekBar description="CPU Voltage for 918 MHz." name="CPU Voltage 918 MHz" action="cpu-voltage 10" unit="V" min="887500" reversed="false" step="12500" max="975000"/>
+
+		<seekBar description="CPU Voltage for 810 MHz." name="CPU Voltage 810 MHz" action="cpu-voltage 11" unit="V" min="875000" reversed="false" step="12500" max="962500"/>
+
+		<seekBar description="CPU Voltage for 702 MHz." name="CPU Voltage 702 MHz" action="cpu-voltage 12" unit="V" min="850000" reversed="false" step="12500" max="950000"/>
+
+		<seekBar description="CPU Voltage for 594 MHz." name="CPU Voltage 594 MHz" action="cpu-voltage 13" unit="V" min="850000" reversed="false" step="12500" max="950000"/>
+
+		<seekBar description="CPU Voltage for 486 MHz." name="CPU Voltage 486 MHz" action="cpu-voltage 14" unit="V" min="850000" reversed="false" step="12500" max="950000"/>
+
+		<seekBar description="CPU Voltage for 384 MHz." name="CPU Voltage 384 MHz" action="cpu-voltage 15" unit="V" min="850000" reversed="false" step="12500" max="950000"/>
+
+		<seekBar description="CPU Voltage for 378 MHz." name="CPU Voltage 378 MHz" action="cpu-voltage 16" unit="V" min="825000" reversed="false" step="12500" max="925000"/>
+
+		<seekBar description="CPU Voltage for 324 MHz." name="CPU Voltage 324 MHz" action="cpu-voltage 17" unit="V" min="825000" reversed="false" step="12500" max="925000"/>
+
+		<seekBar description="CPU Voltage for 270 MHz." name="CPU Voltage 270 MHz" action="cpu-voltage 18" unit="V" min="800000" reversed="false" step="12500" max="900000"/>
+
+		<seekBar description="CPU Voltage for 216 MHz." name="CPU Voltage 216 MHz" action="cpu-voltage 19" unit="V" min="800000" reversed="false" step="12500" max="900000"/>
+
+		<seekBar description="CPU Voltage for 162 MHz." name="CPU Voltage 162 MHz" action="cpu-voltage 20" unit="V" min="800000" reversed="false" step="12500" max="900000"/>
+
+	</settingsPane>
+
+</settingsTab>
+
 <settingsTab name="CPU-TUNING (AWAKE)">
 
 	<settingsPane description="Here you can manage advanced governor settings. These settings are active only if the screen is on. !!! Depends on CortexBrain-Background-Process and CortexBrain-CPU-Tweaks!!!" name="Governor Parameters tuning">
@@ -430,6 +482,20 @@
 			<spinnerItem name="Enabled" value="1"/> 
 			<spinnerItem name="Disabled" value="0"/> 
 		</spinner>
+
+	</settingsPane>
+
+	<settingsPane description="USB and SDCARD settings and options." name="USB - SDCARD">
+
+		<spinner description="Change USB connection mode. Either leave it as default or force it to mass storage mode (you will see your sdcards as disks) or MTP." name="USB mass storage mode" action="usb-mode">
+			<spinnerItem name="Default" value="default"/> 
+			<spinnerItem name="Force Mass Storage Mode" value="mass_storage-adb"/> 
+			<spinnerItem name="Force MTP Mode" value="mtp-adb"/> 
+		</spinner>
+
+		<checkbox description="If checked, Mass-Storage-SDCARDS will be auto-mounted when USB connected. then you can transfer files on high speed from PC to device. (Default: On) !!! Depends on CortexBrain-Background-Process !!!" name="Auto Mount USB Drives" action="generic_cortex /tmp/auto_mount_sd" label="Auto Mount USB Drives"/>
+
+		<button description="Dual Mount-SDCARD and MMC via USB. After USB is disconnected, Dual Mount is disabled! This tweak is working automatically. Plug USB, turn off the screen and then turn ON, and you get working mounts. To scan your new MEDIA files, use some app to force Media Scan." name="DUAL MOUNT" action="push-actions/dualmount" label="Dual Mount"/>
 
 	</settingsPane>
 

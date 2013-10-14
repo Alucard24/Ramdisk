@@ -29,8 +29,8 @@ NOW_CALL_STATE=0;
 USB_POWER=0;
 TELE_DATA=init;
 # read sd-card size, set via boot
-#EXTERNAL_SDCARD_CM=`mount | grep "/storage/sdcard1" | wc -l`;
-#EXTERNAL_SDCARD_STOCK=`mount | grep "/storage/extSdCard" | wc -l`;
+EXTERNAL_SDCARD_CM=`mount | grep "/storage/sdcard1" | wc -l`;
+EXTERNAL_SDCARD_STOCK=`mount | grep "/storage/extSdCard" | wc -l`;
 
 # ==============================================================
 # INITIATE
@@ -931,6 +931,39 @@ LOGGER()
 	log -p i -t $FILE_NAME "*** LOGGER ***: $state";
 }
 
+# mount sdcard and emmc, if usb mass storage is used
+MOUNT_SD_CARD()
+{
+	if [ "$auto_mount_sd" == "on" ]; then
+		echo "/dev/block/vold/179:32" > /sys/devices/virtual/android_usb/android0/f_mass_storage/lun0/file;
+		if [ -e /dev/block/vold/179:33 ]; then
+			echo "/dev/block/vold/179:33" > /sys/devices/virtual/android_usb/android0/f_mass_storage/lun1/file;
+		fi;
+
+		log -p i -t $FILE_NAME "*** MOUNT_SD_CARD ***";
+	fi;
+}
+
+VFS_CACHE_PRESSURE()
+{
+	local state="$1";
+	local sys_vfs_cache="/proc/sys/vm/vfs_cache_pressure";
+
+	if [ -e $sys_vfs_cache ]; then
+		if [ "$state" == "awake" ]; then
+			echo "50" > $sys_vfs_cache;
+		elif [ "$state" == "sleep" ]; then
+			echo "10" > $sys_vfs_cache;
+		fi;
+
+		log -p i -t $FILE_NAME "*** VFS_CACHE_PRESSURE: $state ***";
+
+		return 0;
+	fi;
+
+	return 1;
+}
+
 CENTRAL_CPU_FREQ()
 {
 	local state="$1";
@@ -1117,6 +1150,30 @@ VIBRATE_FIX()
 	log -p i -t $FILE_NAME "*** VIBRATE_FIX: $pwm_val ***";
 }
 
+MOUNT_FIX()
+{
+	# local CHECK_SYSTEM=`mount | grep /system | grep ro | wc -l`;
+	# local CHECK_DATA=`mount | grep /data | cut -c 26-27 | grep ro | grep -v ec | wc -l`;
+	# local PRELOAD_CHECK=`mount | grep /preload | grep ro | wc -l`;
+
+	# if [ "$CHECK_SYSTEM" -eq "1" ]; then
+	# 	mount -o remount,rw /system;
+	# fi;
+	# if [ "$CHECK_DATA" -eq "1" ]; then
+	# 	mount -o remount,rw /data;
+	# fi;
+	# if [ "$PRELOAD_CHECK" -eq "1" ]; then
+	# 	mount -o remount,rw /preload;
+	# fi;
+	 if [ "$EXTERNAL_SDCARD_CM" -eq "1" ]; then
+	 	mount -o remount,rw,nosuid,nodev,noexec /storage/sdcard1;
+	 elif [ "$EXTERNAL_SDCARD_STOCK" -eq "1" ]; then
+		mount -o remount,rw,nosuid,nodev,noexec /storage/extSdCard;
+	 fi;
+
+	mount -o remount,rw,nosuid,nodev,noexec /storage/sdcard0;
+}
+
 # ==============================================================
 # TWEAKS: if Screen-ON
 # ==============================================================
@@ -1125,6 +1182,7 @@ AWAKE_MODE()
 	# Do not touch this
 	CALL_STATE;
 	VIBRATE_FIX;
+	MOUNT_SD_CARD;
 
 	# Check call state, if on call dont sleep
 	if [ "$NOW_CALL_STATE" -eq "1" ]; then
@@ -1142,9 +1200,11 @@ AWAKE_MODE()
 			ENTROPY "awake";
 			VFS_CACHE_PRESSURE "awake";
 			CENTRAL_CPU_FREQ "awake_normal";
+			MOUNT_FIX;
 		else
 			# Was powered by USB, and half sleep
 			CENTRAL_CPU_FREQ "awake_normal";
+			MOUNT_FIX;
 			USB_POWER=0;
 
 			log -p i -t $FILE_NAME "*** USB_POWER_WAKE: done ***";

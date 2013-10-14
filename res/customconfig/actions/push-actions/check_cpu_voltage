@@ -1,0 +1,6 @@
+#!/sbin/busybox sh
+
+(
+	CPU_VOT=`cat /sys/devices/system/cpu/cpufreq/vdd_table/vdd_levels`;
+	echo "$CPU_VOT";
+)&
