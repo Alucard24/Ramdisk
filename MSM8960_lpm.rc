@@ -2,6 +2,7 @@ on early-init
     start ueventd
 
 on init
+    symlink /system/vendor /vendor
 
 sysclktz 0
 

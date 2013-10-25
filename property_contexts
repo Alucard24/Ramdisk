@@ -1,4 +1,4 @@
-#line 1 "external/sepolicy/property_contexts"
+#line 1 "vendor/samsung/common/sepolicy/nsa/property_contexts"
 ##########################
 # property service keys
 #
@@ -69,3 +69,4 @@ service.camera.running		u:object_r:camera_prop:s0
 setupwizard.mode	u:object_r:setupwizard_prop:s0
 sys.mobicoredaemon.enable	u:object_r:mobicore_prop:s0
 vpnclientpm.	u:object_r:vpn_prop:s0
+persist.security.ams.       u:object_r:container_mgmt_prop:s0

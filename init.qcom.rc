@@ -191,7 +191,7 @@ on post-fs-data
 # we will remap this as /storage/container with the sdcard fuse tool
     mkdir /data/container 0770 system system
     chown system system /data/container
-    
+
     mkdir /data/misc/bluetooth 0770 bluetooth bluetooth
 
     # Create the directories used by the Wireless subsystem
@@ -202,9 +202,14 @@ on post-fs-data
     chown dhcp dhcp /data/misc/dhcp
 
     # for WIFI TRP/TIS
-    write /data/.psm.info 1
     chown system root /data/.psm.info
-    chmod 0660 /data/.psm.info
+    chmod 0664 /data/.psm.info
+
+    # for WIFI Cert
+    chmod 0664 /data/.bustxglom.info
+    chmod 0664 /data/.roamoff.info
+    chmod 0664 /data/.frameburst.info
+    chmod 0664 /data/.txbf.info
 
     # for WIFI MAC address
     mkdir /efs/wifi 0775 radio system
@@ -269,6 +274,10 @@ on post-fs-data
     setprop vold.post_fs_data_done 1
 
     chown root radio /sys/module/rmnet_usb/parameters/dump_ctrl_msg
+
+# GPIO DVS
+    chown radio system /sys/class/secgpio_check/secgpio_check_all/secgpio_ctrl
+
 # Export GPIO56 for fusion targets to enable/disable hub
 service usbhub_init /system/bin/usbhub_init
    class late_start
@@ -468,6 +477,11 @@ service wpa_supplicant /system/bin/wpa_supplicant \
     oneshot
 
 service dhcpcd_wlan0 /system/bin/dhcpcd -ABKL
+    class late_start
+    disabled
+    oneshot
+
+service dhcpcd_ibss /system/bin/dhcpcd -BKM
     class late_start
     disabled
     oneshot
@@ -728,13 +742,8 @@ on property:persist.sys.ssr.restart_level=3
     write /sys/module/subsystem_restart/parameters/restart_level 3
 
 on property:service.bootanim.exit=1
-    write /sys/module/rmnet_usb/parameters/dump_ctrl_msg 2
+    write /sys/module/rmnet_usb/parameters/dump_ctrl_msg 6
     write /proc/sys/net/ipv6/conf/rmnet_usb0/accept_ra 2
     write /proc/sys/net/ipv6/conf/rmnet_usb1/accept_ra 2
     write /proc/sys/net/ipv6/conf/rmnet_usb2/accept_ra 2
     write /proc/sys/net/ipv6/conf/rmnet_usb3/accept_ra 2
-    write /proc/sys/net/ipv6/conf/rmnet_usb0/accept_ra_defrtr 0
-    write /proc/sys/net/ipv6/conf/rmnet_usb1/accept_ra_defrtr 0
-    write /proc/sys/net/ipv6/conf/rmnet_usb2/accept_ra_defrtr 0
-    write /proc/sys/net/ipv6/conf/rmnet_usb3/accept_ra_defrtr 0
-

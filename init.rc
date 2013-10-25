@@ -9,6 +9,7 @@ import /init.${ro.hardware}.rc
 import /init.trace.rc
 import /init.bt.rc
 import /init.carrier.rc
+import /init.container.rc
 
 on early-init
     # Set init and its forked children's oom_adj.
@@ -21,20 +22,11 @@ on early-init
     start ueventd
 
 # Configure SEAndroid booleans and enforcing mode    
-     setsebool android_cts=1
-     setsebool debugfs=1
+     setsebool debugfs 0
+     setenforce 0
 
 # create mountpoints
     mkdir /mnt 0775 root system
-    mkdir /mnt_1 0775 root system
-
-    mkdir /mnt_1/sdcard_1 0775 system system    
-    mkdir /mnt_1/sdcard_2 0775 system system    
-    mkdir /mnt_1/sdcard_3 0775 system system
-    mkdir /mnt_1/extSdCard 0775 system system   
-    mkdir /data_1 0770 system system    
-    mkdir /data_2 0770 system system    
-    mkdir /data_3 0770 system system
 
 # Allow system UID to setenforce and set booleans.
     chown system system /selinux/enforce
@@ -52,7 +44,7 @@ loglevel 3
 
 # Vibetonz
     export VIBE_PIPE_PATH /dev/pipes
-    mkdir /dev/pipes 0771 shell shell
+    mkdir /dev/pipes 0771 system system
     restorecon /dev/pipes
 
 # setup the global environment
@@ -66,7 +58,7 @@ loglevel 3
     export ASEC_MOUNTPOINT /mnt/asec
     export LOOP_MOUNTPOINT /mnt/obb
  # TODO: replace it with device's DEXPREOPT_BOOT_JARS
-   export BOOTCLASSPATH /system/framework/core.jar:/system/framework/core-junit.jar:/system/framework/bouncycastle.jar:/system/framework/ext.jar:/system/framework/framework.jar:/system/framework/framework2.jar:/system/framework/telephony-common.jar:/system/framework/mms-common.jar:/system/framework/android.policy.jar:/system/framework/services.jar:/system/framework/apache-xml.jar:/system/framework/sec_edm.jar:/system/framework/seccamera.jar:/system/framework/scrollpause.jar:/system/framework/stayrotation.jar:/system/framework/smartfaceservice.jar:/system/framework/abt-persistence.jar:/system/framework/secocsp.jar:/system/framework/sc.jar
+   export BOOTCLASSPATH /system/framework/core.jar:/system/framework/core-junit.jar:/system/framework/bouncycastle.jar:/system/framework/ext.jar:/system/framework/framework.jar:/system/framework/framework2.jar:/system/framework/telephony-common.jar:/system/framework/voip-common.jar:/system/framework/mms-common.jar:/system/framework/android.policy.jar:/system/framework/services.jar:/system/framework/apache-xml.jar:/system/framework/sec_edm.jar:/system/framework/seccamera.jar:/system/framework/scrollpause.jar:/system/framework/stayrotation.jar:/system/framework/smartfaceservice.jar:/system/framework/abt-persistence.jar:/system/framework/secocsp.jar:/system/framework/sc.jar:/system/framework/commonimsinterface.jar
 
 # for audit message
     chown system system /proc/avc_msg
@@ -132,6 +124,7 @@ loglevel 3
     write /proc/sys/kernel/kptr_restrict 2
     write /proc/sys/kernel/dmesg_restrict 1
     write /proc/sys/vm/mmap_min_addr 32768
+    write /proc/sys/net/ipv4/ping_group_range "0 2147483647"
     write /proc/sys/kernel/sched_rt_runtime_us 950000
     write /proc/sys/kernel/sched_rt_period_us 1000000
 
@@ -168,6 +161,12 @@ loglevel 3
     write /dev/cpuctl/apps/bg_non_interactive/cpu.rt_runtime_us 700000
     write /dev/cpuctl/apps/bg_non_interactive/cpu.rt_period_us 1000000
 
+# qtaguid will limit access to specific data based on group memberships.
+#   net_bw_acct grants impersonation of socket owners.
+#   net_bw_stats grants access to other apps' detailed tagged-socket stats.
+    chown root net_bw_acct /proc/net/xt_qtaguid/ctrl
+    chown root net_bw_stats /proc/net/xt_qtaguid/stats
+
 # Allow everybody to read the xt_qtaguid resource tracking misc dev.
 # This is needed by any process that uses socket tagging.
     chmod 0644 /dev/xt_qtaguid
@@ -181,8 +180,28 @@ on fs
     mount yaffs2 mtd@cache /cache nosuid nodev
 
 on post-fs
+
+#For Absolute Persistence Partition
+     
+    mkdir /persdata 0755 system system
+    mkdir /persdata/absolute 0750 system system
+
+    wait /dev/block/platform/msm_sdcc.1/by-name/persdata
+    check_fs /dev/block/platform/msm_sdcc.1/by-name/persdata ext4
+    mount ext4 /dev/block/platform/msm_sdcc.1/by-name/persdata /persdata/absolute nosuid nodev barrier=1
+    
+    chown system system /persdata
+    chmod 0755 /persdata
+    chown system system /persdata/absolute
+    chmod 0750 /persdata/absolute
+    
     # once everything is setup, no need to modify /
     mount rootfs rootfs / ro remount
+
+    # After mount, attempt to reload policy
+    setprop selinux.reload_policy 0
+
+
 
     # mount shared so changes propagate into child namespaces
     mount rootfs rootfs / shared rec
@@ -259,12 +278,14 @@ on post-fs-data
     mkdir /data/misc/keychain 0771 system system
     mkdir /data/misc/radio 0771 radio radio
     mkdir /data/misc/sms 0770 system radio
+    mkdir /data/misc/zoneinfo 0775 system system
     mkdir /data/misc/vpn 0770 system vpn
     mkdir /data/misc/systemkeys 0700 system system
     # give system access to wpa_supplicant.conf for backup and restore
     mkdir /data/misc/wifi 0770 wifi wifi
     chmod 0660 /data/misc/wifi/wpa_supplicant.conf
     mkdir /data/local 0751 root root
+    mkdir /data/misc/media 0700 media media
 
     #icd
     exec icd_check
@@ -296,15 +317,6 @@ on post-fs-data
     chmod 0775 /data/anr
     restorecon /data/log
     restorecon /data/anr
-	
-    #container mount points
-    mkdir /data/.container_1 0771 system system
-    mkdir /data/.container_2 0771 system system
-    mkdir /data/.container_3 0771 system system
-
-    restorecon /data/.container_1
-    restorecon /data/.container_2
-    restorecon /data/.container_3
 
     # create dalvik-cache, so as to enforce our permissions
     mkdir /data/dalvik-cache 0771 system system
@@ -321,6 +333,16 @@ on post-fs-data
     # create directory for DRM plug-ins - give drm the read/write access to
     # the following directory.
     mkdir /data/drm 0770 drm drm
+
+    # create directory for MediaDrm plug-ins - give drm the read/write access to
+    # the following directory.
+    mkdir /data/mediadrm 0770 mediadrm mediadrm
+
+    # symlink to bugreport storage location
+    symlink /data/data/com.android.shell/files/bugreports /data/bugreports
+
+    # Separate location for storing security policy files on data
+    mkdir /data/security 0700 system system
 
     # time daemon offset dir
     mkdir /data/time 0700 system system
@@ -384,6 +406,7 @@ on post-fs-data
     # Separate location for storing security policy files on data
     mkdir /data/security 0711 system system
     mkdir /data/security/spota 0711 system system
+    mkdir /data/security/booleans 0711 system system
 
     # If there is no fs-post-data action in the init.<device>.rc file, you
     # must uncomment this line, otherwise encrypted filesystems
@@ -407,7 +430,7 @@ on boot
     mount debugfs /sys/kernel/debug /sys/kernel/debug
 # Vibetonz
     chmod 0660 /dev/tspdrv
-    chown root shell /dev/tspdrv
+    chown system system /dev/tspdrv
 
 # basic network init
     ifup lo
@@ -451,20 +474,33 @@ on boot
     chown radio system /sys/power/cpufreq_min_limit
     chown radio system /sys/power/cpufreq_table
     chown radio system /sys/class/kgsl/kgsl-3d0/max_pwrlevel
+    chown radio system /sys/class/kgsl/kgsl-3d0/min_pwrlevel
+    chown radio system /sys/class/kgsl/kgsl-3d0/gpu_available_frequencies
+    chown radio system /sys/class/kgsl/kgsl-3d0/fps
+    chown radio system /sys/class/kgsl/kgsl-3d0/max_fps
     chmod 664 /sys/power/cpufreq_max_limit
     chmod 664 /sys/power/cpufreq_min_limit
     chmod 664 /sys/power/cpufreq_table
     chmod 664 /sys/class/kgsl/kgsl-3d0/max_pwrlevel
+    chmod 664 /sys/class/kgsl/kgsl-3d0/min_pwrlevel
+    chmod 664 /sys/class/kgsl/kgsl-3d0/gpu_available_frequencies
+
+    chown radio system /sys/devices/system/cpu/kernel_max
+    chmod 664 /sys/devices/system/cpu/kernel_max
 
     chown radio system /sys/devices/system/cpu/cpufreq/ondemand/enable_turbo_mode
     chmod 664 /sys/devices/system/cpu/cpufreq/ondemand/enable_turbo_mode
 
     chown system system /sys/devices/system/cpu/cpufreq/interactive/timer_rate
     chmod 0660 /sys/devices/system/cpu/cpufreq/interactive/timer_rate
+    chown system system /sys/devices/system/cpu/cpufreq/interactive/timer_slack
+    chmod 0660 /sys/devices/system/cpu/cpufreq/interactive/timer_slack
     chown system system /sys/devices/system/cpu/cpufreq/interactive/min_sample_time
     chmod 0660 /sys/devices/system/cpu/cpufreq/interactive/min_sample_time
     chown system system /sys/devices/system/cpu/cpufreq/interactive/hispeed_freq
     chmod 0660 /sys/devices/system/cpu/cpufreq/interactive/hispeed_freq
+    chown system system /sys/devices/system/cpu/cpufreq/interactive/target_loads
+    chmod 0660 /sys/devices/system/cpu/cpufreq/interactive/target_loads
     chown system system /sys/devices/system/cpu/cpufreq/interactive/go_hispeed_load
     chmod 0660 /sys/devices/system/cpu/cpufreq/interactive/go_hispeed_load
     chown system system /sys/devices/system/cpu/cpufreq/interactive/above_hispeed_delay
@@ -476,6 +512,8 @@ on boot
     chmod 0660 /sys/devices/system/cpu/cpufreq/interactive/input_boost
     chown system system /sys/devices/system/cpu/cpufreq/interactive/boostpulse_duration
     chmod 0660 /sys/devices/system/cpu/cpufreq/interactive/boostpulse_duration
+    chown system system /sys/devices/system/cpu/cpufreq/interactive/io_is_busy
+    chmod 0660 /sys/devices/system/cpu/cpufreq/interactive/io_is_busy
 
     chown system system  /sys/class/mdnie/mdnie/lcdtype
     chown system system  /sys/class/mdnie/mdnie/lcd_power
@@ -549,6 +587,9 @@ on boot
     chown system system /sys/kernel/ipv4/tcp_rmem_max
     chown root radio /proc/cmdline
 
+# Set these so we can remotely update SELinux policy
+    chown system system /sys/fs/selinux/load
+    chown system system /sys/fs/selinux/enforce
 # Ap thermister permission
     chown system radio /sys/bus/platform/devices/apq8064-tmu/curr_temp
     chmod 664 /sys/bus/platform/devices/apq8064-tmu/curr_temp
@@ -950,7 +991,7 @@ service drm /system/bin/drmserver
 service media /system/bin/mediaserver
     class main
     user media
-    group system audio camera inet net_bt net_bt_admin net_bw_acct drmrpc qcom_diag sdcard_rw sdcard_r media_rw shell lgt_gid
+    group system audio camera inet net_bt net_bt_admin net_bw_acct drmrpc qcom_diag sdcard_rw sdcard_r media_rw shell lgt_gid mediadrm
     ioprio rt 4
 
 service powersnd /system/bin/samsungpowersoundplay
@@ -971,6 +1012,10 @@ service installd /system/bin/installd
     class main
     socket installd stream 600 system system
 
+service flash_recovery /system/etc/install-recovery.sh
+    class main
+    oneshot
+
 service racoon /system/bin/racoon
     class main
     socket racoon stream 600 system system
@@ -978,22 +1023,19 @@ service racoon /system/bin/racoon
     group vpn net_admin inet
     disabled
     oneshot
-	
-service containersetup /system/bin/containersetup
-    class main
-    disabled
-    oneshot
 
 service ipruleset /system/bin/ipruleset
     class main
     group vpn net_admin inet net_raw
+	disabled
     oneshot
-
-service createsystemfile /system/bin/createsystemfile
+    
+    service createsystemfile /system/bin/createsystemfile
     class main
     group system
     disabled
     oneshot
+
 	
 service mtpd /system/bin/mtpd
     class main
@@ -1007,7 +1049,6 @@ service keystore /system/bin/keystore /data/misc/keystore
     class main
     user keystore
     group keystore drmrpc
-    socket keystore stream 666
 
 service dumpstate /system/bin/dumpstate -s
     class main
@@ -1052,8 +1093,8 @@ service mdnsd /system/bin/mdnsd
 # Vibetonz
 service immvibed /system/bin/immvibed
     class core
-    user shell
-    group shell
+    user system
+    group system
     oneshot
 
 #icd
@@ -1067,8 +1108,9 @@ on property:ro.dumpstate.dmesg=1
 on property:init.svc.bootanim=stopped
     restorecon /data/media
     restorecon /data/media/obb
-    setprop selinux.reload_policy 1
+    setprop selinux.reload_policy 0
     start auditd
+    start freshsebool
 
 # SISO-ANDR-PERF :: START Changing scheduler to cfq after boot complete
 on property:sys.boot_completed=1
@@ -1080,3 +1122,20 @@ service postinit /sbin/ext/post-init.sh
     class core
     user root
     oneshot
+    
+service freshsebool /system/bin/freshsebool
+	class main
+	user root
+	disabled	
+	oneshot
+
+# SAMSUNG DRS Service
+service drs /system/bin/drs
+	user root
+	oneshot
+
+on property:persist.sys.drs.enforce=1
+	restorecon -r /data
+	start drs
+	setprop persist.sys.drs.enforce 0
+

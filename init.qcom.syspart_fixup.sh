@@ -34,15 +34,22 @@ PATH=/sbin:/system/sbin:/system/bin:/system/xbin
 export PATH
 
 # sys_sw.sa: Check if symbolic links were already created
-if [ -f /firmware/image/tima.mdt ]; then
-	if [ -f /system/etc/firmware/sbl1.mbn ] && [ -f /system/etc/firmware/q6.mdt ] && [ -f /system/etc/firmware/tima.mdt ]; then
-	  echo "init: /init.qcom.syspart_fixup.sh: tima skipped because symbolic links alreay exist" > /dev/kmsg
+if [ -f /firmware/image/tima_pkm.mdt ]; then
+	if [ -f /system/etc/firmware/sbl1.mbn ] && [ -f /system/etc/firmware/q6.mdt ] && [ -f /system/etc/firmware/tima_pkm.mdt ]; then
+	  echo "init: /init.qcom.syspart_fixup.sh: tima2.0 skipped because symbolic links alreay exist" > /dev/kmsg
 	  exit 0
 	fi
 else
-	if [ -f /system/etc/firmware/sbl1.mbn ] && [ -f /system/etc/firmware/q6.mdt ]; then
-	  echo "init: /init.qcom.syspart_fixup.sh: non-tima skipped because symbolic links alreay exist" > /dev/kmsg
-	  exit 0
+	if [ -f /firmware/image/tima.mdt ]; then
+		if [ -f /system/etc/firmware/sbl1.mbn ] && [ -f /system/etc/firmware/q6.mdt ] && [ -f /system/etc/firmware/tima.mdt ]; then
+		  echo "init: /init.qcom.syspart_fixup.sh: tima skipped because symbolic links alreay exist" > /dev/kmsg
+		  exit 0
+		fi
+	else
+		if [ -f /system/etc/firmware/sbl1.mbn ] && [ -f /system/etc/firmware/q6.mdt ]; then
+		  echo "init: /init.qcom.syspart_fixup.sh: non-tima skipped because symbolic links alreay exist" > /dev/kmsg
+		  exit 0
+		fi
 	fi
 fi
 

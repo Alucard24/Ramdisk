@@ -24,19 +24,6 @@
 # OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
 # ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #
-on init
-
-    # For Absolute Persistence Partition
-    mkdir /persdata 0755 system system
-    mkdir /persdata/absolute 0750 system system
-
-    wait /dev/block/mmcblk0p26
-    mount ext4 /dev/block/mmcblk0p26 /persdata/absolute nosuid nodev barrier=1
-    chown system system /persdata
-    chmod 0755 /persdata
-    chown system system /persdata/absolute
-    chmod 0750 /persdata/absolute
-
 
 on boot
 
@@ -51,7 +38,7 @@ on boot
     chown bluetooth net_bt_stack /sys/class/rfkill/rfkill0/type
 
 # bluetooth LPM
-    chmod 0220 /proc/bluetooth/sleep/lpm
+    chmod 0660 /proc/bluetooth/sleep/lpm
     chmod 0220 /proc/bluetooth/sleep/btwrite
     chown bluetooth net_bt_stack /proc/bluetooth/sleep/lpm
     chown bluetooth net_bt_stack /proc/bluetooth/sleep/btwrite
@@ -70,13 +57,23 @@ service TvoutService_C /system/bin/bintvoutservice
     class main
     user system
     group system
-
 # MM Property
 #on property:sys.qseecomd.enable=true
 #    exec /system/bin/scranton_RD
 
 # Runtime Compcache
-service rtccd /system/bin/rtccd -a 400M
+service rtccd /system/bin/rtccd2 -a 500M
     class core
     user root
+    oneshot
 
+# bluetooth dhcp config
+service dhcpcd_bt-pan /system/bin/dhcpcd -ABKL
+    class main
+    disabled
+    oneshot
+
+service iprenew_bt-pan /system/bin/dhcpcd -n
+    class late_start
+    disabled
+    oneshot

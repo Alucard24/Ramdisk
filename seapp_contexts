@@ -4,9 +4,6 @@ user=bluetooth domain=bluetooth type=bluetooth_data_file
 user=nfc domain=nfc type=nfc_data_file
 user=radio domain=radio type=radio_data_file
 user=_app domain=untrusted_app type=app_data_file
-user=_app name=com.centrify.mdm.samsung seinfo=knox_untrusted domain=knox_untrusted_app type=app_data_file
-user=_app seinfo=keyboard domain=knox_untrusted_app type=app_data_file
-user=_app name=com.baimobile.android.pcsclite.service seinfo=caccard domain=knox_untrusted_app type=app_data_file
 user=_app seinfo=container domain=container_app type=container_app_data_file levelFrom=container sdcard=/mnt_1/sdcard_ sdcardSuffix=_container
 user=_app name=com.sec.android.nearby.mediaserver seinfo=platform domain=platform_app type=platform_media_app_data_file
 user=_app seinfo=platform domain=platform_app type=platform_app_data_file
