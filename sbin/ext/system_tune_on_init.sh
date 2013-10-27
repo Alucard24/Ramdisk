@@ -1,7 +1,7 @@
 #!/sbin/busybox sh
 
 # stop ROM VM from booting!
-#stop;
+# stop;
 
 # set busybox location
 BB=/sbin/busybox
@@ -34,9 +34,10 @@ $BB chmod -R 0400 /data/tombstones;
 
 #BOOT_ROM()
 #{
-	# Start ROM VM boot!
+#	# Start ROM VM boot!
 #	start;
 
 	# start adb shell
 #	start adbd;
 #}
+#BOOT_ROM;

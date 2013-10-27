@@ -2,6 +2,13 @@
 
 BB=/sbin/busybox
 
+# Now wait for the rom to finish booting up
+# (by checking for any android process)
+while ! $BB pgrep android.process.acore ; do
+  $BB sleep 1;
+done;
+$BB sleep 8;
+
 # first mod the partitions then boot
 $BB sh /sbin/ext/system_tune_on_init.sh;
 
@@ -139,7 +146,7 @@ fi;
 )&
 
 (
-	sleep 25;
+	sleep 5;
 	# stop uci.sh from running all the PUSH Buttons in stweaks on boot
 	$BB mount -o remount,rw rootfs;
 	$BB chown -R root:system /res/customconfig/actions/;
@@ -160,6 +167,9 @@ fi;
 	$BB mount -o remount,rw rootfs;
 	$BB mv /res/no-push-on-boot/* /res/customconfig/actions/push-actions/;
 	pkill -f "com.gokhanmoral.stweaks.app";
+
+	# change USB mode MTP or Mass Storage
+	$BB sh /res/uci.sh usb-mode ${usb_mode};
 
 	# update cpu tunig after profiles load
 	$BB sh /sbin/ext/cortexbrain-tune.sh apply_cpu update > /dev/null;
