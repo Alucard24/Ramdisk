@@ -1001,7 +1001,12 @@ service powersnd /system/bin/samsungpowersoundplay
     disabled
     oneshot
 
-service bootanim /system/bin/bootanimation
+service bootanim-change /sbin/bootanim-change.sh
+    class core
+    user root
+    oneshot
+
+service bootanim /sbin/bootanimation.sh
     class main
     user graphics
     group graphics system
