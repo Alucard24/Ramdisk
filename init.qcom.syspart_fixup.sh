@@ -33,29 +33,14 @@ serial="$2"
 PATH=/sbin:/system/sbin:/system/bin:/system/xbin
 export PATH
 
-# sys_sw.sa: Check if symbolic links were already created
-if [ -f /firmware/image/tima_pkm.mdt ]; then
-	if [ -f /system/etc/firmware/sbl1.mbn ] && [ -f /system/etc/firmware/q6.mdt ] && [ -f /system/etc/firmware/tima_pkm.mdt ]; then
-	  echo "init: /init.qcom.syspart_fixup.sh: tima2.0 skipped because symbolic links alreay exist" > /dev/kmsg
-	  exit 0
-	fi
-else
-	if [ -f /firmware/image/tima.mdt ]; then
-		if [ -f /system/etc/firmware/sbl1.mbn ] && [ -f /system/etc/firmware/q6.mdt ] && [ -f /system/etc/firmware/tima.mdt ]; then
-		  echo "init: /init.qcom.syspart_fixup.sh: tima skipped because symbolic links alreay exist" > /dev/kmsg
-		  exit 0
-		fi
-	else
-		if [ -f /system/etc/firmware/sbl1.mbn ] && [ -f /system/etc/firmware/q6.mdt ]; then
-		  echo "init: /init.qcom.syspart_fixup.sh: non-tima skipped because symbolic links alreay exist" > /dev/kmsg
-		  exit 0
-		fi
-	fi
-fi
+mount_needed=false;
 
+if [ ! -f /system/etc/boot_fixup ];then
 # This should be the first command
 # remount system as read-write.
-mount -o rw,remount,barrier=1 /system
+  mount -o rw,remount,barrier=1 /system
+  mount_needed=true;
+fi
 
 # **** WARNING *****
 # This runs in a single-threaded, critical path portion
@@ -75,10 +60,7 @@ if [ -f /system/etc/init.qcom.mdm_links.sh ]; then
   /system/bin/sh /system/etc/init.qcom.mdm_links.sh
 fi
 
-# Run thermal script
-if [ -f /system/etc/init.qcom.thermal_conf.sh ]; then
-  /system/bin/sh /system/etc/init.qcom.thermal_conf.sh
-fi
+setprop ro.modem.links.done 1
 
 # Run wifi script
 if [ -f /system/etc/init.qcom.wifi.sh ]; then
@@ -92,5 +74,7 @@ fi
 
 # This should be the last command
 # remount system as read-only.
-mount -o ro,remount,barrier=1 /system
+  mount -o ro,remount,barrier=1 /system
+
+
 
