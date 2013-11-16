@@ -51,7 +51,7 @@ on fs_selinux
     mount_all fstab.qcom
     setprop ro.crypto.fuse_sdcard true
     # SEPolicy Reload check should be done after mount data partition
-    setprop selinux.reload_policy 1
+    setprop selinux.reload_policy 0
 
     chown system radio /efs
     chmod 0771 /efs
@@ -409,14 +409,14 @@ service qcamerasvr /system/bin/mm-qcamera-daemon
     user media
     group system camera inet input graphics
 
-#service thermald /system/bin/thermald
-#    class main
-#    user root
-#    group root
+service thermald /system/bin/thermald
+    class main
+    user root
+    group root
 
-#service mpdecision /system/bin/mpdecision --no_sleep --avg_comp
-#    user root
-#    disabled
+service mpdecision /system/bin/mpdecision --no_sleep --avg_comp
+    user root
+    disabled
 
 service kickstart /system/bin/qcks -i /firmware-mdm/image/
     user root
