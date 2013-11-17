@@ -521,6 +521,11 @@ CPU_GOV_TWEAKS()
 			inc_cpu_load_at_min_freq_tmp="/dev/null";
 		fi;
 
+		local dec_cpu_load_at_min_freq_tmp="/sys/devices/system/cpu/cpufreq/$SYSTEM_GOVERNOR/dec_cpu_load_at_min_freq";
+		if [ ! -e $dec_cpu_load_at_min_freq_tmp ]; then
+			dec_cpu_load_at_min_freq_tmp="/dev/null";
+		fi;
+
 		local down_threshold_tmp="/sys/devices/system/cpu/cpufreq/$SYSTEM_GOVERNOR/down_threshold";
 		if [ ! -e $down_threshold_tmp ]; then
 			down_threshold_tmp="/dev/null";
@@ -597,8 +602,18 @@ CPU_GOV_TWEAKS()
 		fi;
 
 		# merge freq_for_responsiveness_tmp & freq_responsiveness_tmp => freq_for_responsiveness_tmp
-		if [ $freq_for_responsiveness_tmp == "/dev/null" ] && [ $freq_responsiveness_tmp != "/dev/null" ]; then
-			freq_for_responsiveness_tmp=$freq_responsiveness_tmp;
+		# if [ $freq_for_responsiveness_tmp == "/dev/null" ] && [ $freq_responsiveness_tmp != "/dev/null" ]; then
+		# 	freq_for_responsiveness_tmp=$freq_responsiveness_tmp;
+		# fi;
+
+		local pump_inc_step_tmp="/sys/devices/system/cpu/cpufreq/$SYSTEM_GOVERNOR/pump_inc_step";
+		if [ ! -e $pump_inc_step_tmp ]; then
+			pump_inc_step_tmp="/dev/null";
+		fi;
+
+		local pump_dec_step_tmp="/sys/devices/system/cpu/cpufreq/$SYSTEM_GOVERNOR/pump_dec_step";
+		if [ ! -e $pump_dec_step_tmp ]; then
+			pump_dec_step_tmp="/dev/null";
 		fi;
 
 		# sleep-settings
@@ -607,6 +622,7 @@ CPU_GOV_TWEAKS()
 			echo "$up_threshold_sleep" > $up_threshold_tmp;
 			echo "$up_threshold_at_min_freq_sleep" > $up_threshold_at_min_freq_tmp;
 			echo "$inc_cpu_load_at_min_freq_sleep" > $inc_cpu_load_at_min_freq_tmp;
+			echo "$dec_cpu_load_at_min_freq_sleep" > $dec_cpu_load_at_min_freq_tmp;
 			echo "$down_threshold_sleep" > $down_threshold_tmp;
 			echo "$sampling_down_factor_sleep" > $sampling_down_factor_tmp;
 			echo "$down_differential_sleep" > $down_differential_tmp;
@@ -615,11 +631,14 @@ CPU_GOV_TWEAKS()
 			echo "$freq_step_dec_sleep" > $freq_step_dec_tmp;
 			echo "$freq_step_dec_at_max_freq_sleep" > $freq_step_dec_at_max_freq_tmp;
 			echo "$freq_for_responsiveness_sleep" > $freq_for_responsiveness_tmp;
+			echo "$freq_responsiveness_sleep" > $freq_responsiveness_tmp;
 			echo "$freq_for_responsiveness_max_sleep" > $freq_for_responsiveness_max_tmp;
 			echo "$inc_cpu_load_sleep" > $inc_cpu_load_tmp;
 			echo "$dec_cpu_load_sleep" > $dec_cpu_load_tmp;
 			echo "$freq_up_brake_at_min_freq_sleep" > $freq_up_brake_at_min_freq_tmp;
 			echo "$freq_up_brake_sleep" > $freq_up_brake_tmp;
+			echo "$pump_inc_step_sleep" > $pump_inc_step_tmp;
+			echo "$pump_dec_step_sleep" > $pump_dec_step_tmp;
 			CPU_HOTPLUG_TWEAKS "sleep";
 		# awake-settings
 		elif [ "$state" == "awake" ]; then
@@ -627,6 +646,7 @@ CPU_GOV_TWEAKS()
 			echo "$up_threshold" > $up_threshold_tmp;
 			echo "$up_threshold_at_min_freq" > $up_threshold_at_min_freq_tmp;
 			echo "$inc_cpu_load_at_min_freq" > $inc_cpu_load_at_min_freq_tmp;
+			echo "$dec_cpu_load_at_min_freq" > $dec_cpu_load_at_min_freq_tmp;
 			echo "$down_threshold" > $down_threshold_tmp;
 			echo "$sampling_down_factor" > $sampling_down_factor_tmp;
 			echo "$down_differential" > $down_differential_tmp;
@@ -635,11 +655,14 @@ CPU_GOV_TWEAKS()
 			echo "$freq_step_dec" > $freq_step_dec_tmp;
 			echo "$freq_step_dec_at_max_freq" > $freq_step_dec_at_max_freq_tmp;
 			echo "$freq_for_responsiveness" > $freq_for_responsiveness_tmp;
+			echo "$freq_responsiveness" > $freq_responsiveness_tmp;
 			echo "$freq_for_responsiveness_max" > $freq_for_responsiveness_max_tmp;
 			echo "$inc_cpu_load" > $inc_cpu_load_tmp;
 			echo "$dec_cpu_load" > $dec_cpu_load_tmp;
 			echo "$freq_up_brake_at_min_freq" > $freq_up_brake_at_min_freq_tmp;
 			echo "$freq_up_brake" > $freq_up_brake_tmp;
+			echo "$pump_inc_step" > $pump_inc_step_tmp;
+			echo "$pump_dec_step" > $pump_dec_step_tmp;
 			CPU_HOTPLUG_TWEAKS "awake";
 		fi;
 
