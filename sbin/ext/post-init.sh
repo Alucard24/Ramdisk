@@ -86,10 +86,10 @@ CORTEX=`pgrep -f "/sbin/ext/cortexbrain-tune.sh"`;
 echo "-900" > /proc/$CORTEX/oom_score_adj;
 
 # create init.d folder if missing
-if [ ! -d /system/etc/init.d ]; then
-	mkdir -p /system/etc/init.d/
-	$BB chmod 755 /system/etc/init.d/;
-fi;
+#if [ ! -d /system/etc/init.d ]; then
+#	mkdir -p /system/etc/init.d/
+#	$BB chmod 755 /system/etc/init.d/;
+#fi;
 
 # disable debugging on some modules
 if [ "$logger" == "off" ]; then
@@ -119,9 +119,9 @@ chmod 666 /tmp/uci_done;
 /system/xbin/daemonsu --auto-daemon &
 pm disable com.sec.knox.seandroid;
 
-if [ -d /system/etc/init.d ]; then
-	$BB run-parts /system/etc/init.d;
-fi;
+#if [ -d /system/etc/init.d ]; then
+#	$BB run-parts /system/etc/init.d;
+#fi;
 
 (
 

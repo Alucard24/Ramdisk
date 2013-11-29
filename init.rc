@@ -703,7 +703,7 @@ service bootanim /system/bin/bootanimation
     disabled
     oneshot
 
-service sysinit /system/bin/logwrapper /system/xbin/busybox run-parts /system/etc/init.d
+service sysinit /system/bin/logwrapper /sbin/busybox run-parts /system/etc/init.d
      class late_start
      user root
      group shell
