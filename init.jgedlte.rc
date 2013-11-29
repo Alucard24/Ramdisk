@@ -32,19 +32,19 @@ import init.target.rc
 on init
     # See storage config details at http://source.android.com/tech/storage/
     mkdir /mnt/media_rw/extSdCard 0700 media_rw media_rw
+
     mkdir /mnt/media_rw/UsbDriveA 0700 media_rw media_rw
     mkdir /mnt/media_rw/UsbDriveB 0700 media_rw media_rw
     mkdir /mnt/media_rw/UsbDriveC 0700 media_rw media_rw
     mkdir /mnt/media_rw/UsbDriveD 0700 media_rw media_rw
     mkdir /mnt/media_rw/UsbDriveE 0700 media_rw media_rw
     mkdir /mnt/media_rw/UsbDriveF 0700 media_rw media_rw
-    
+
     # Set permissions for persist partition
     mkdir /persist 0771 system system
     # See storage config details at http://source.android.com/tech/storage/
     mkdir /mnt/shell/emulated 0700 shell shell
-    mkdir /storage 0550 system sdcard_r
-    mkdir /storage/emulated 0555 root root    
+    mkdir /storage/emulated 0555 root root
 
     export EXTERNAL_STORAGE /storage/emulated/legacy
     export EMULATED_STORAGE_SOURCE /mnt/shell/emulated
@@ -68,8 +68,8 @@ on init
     symlink /storage/UsbDriveE /mnt/UsbDriveE
     symlink /storage/UsbDriveF /mnt/UsbDriveF
 
-    export SECONDARY_STORAGE /storage/extSdCard:/storage/UsbDriveA:/storage/UsbDriveB:/storage/UsbDriveC:/storage/UsbDriveD:/storage/UsbDriveE:/storage/UsbDriveF
-    
+    export SECONDARY_STORAGE /storage/extSdCard
+
     mkdir /storage/extSdCard 0700 root root
     mkdir /storage/UsbDriveA 0700 root root
     mkdir /storage/UsbDriveB 0700 root root
@@ -176,8 +176,7 @@ on boot
 on post-fs-data
     # we will remap this as /mnt/sdcard with the sdcard fuse tool
     mkdir /data/media 0770 media_rw media_rw
-    chown media_rw media_rw /data/media
-
+    
     mkdir /data/misc/bluetooth 0770 bluetooth bluetooth
 
     # Create the directories used by the Wireless subsystem
@@ -448,7 +447,7 @@ service p2p_supplicant /system/bin/wpa_supplicant \
 	-I/system/etc/wifi/wpa_supplicant_overlay.conf -O/data/misc/wifi/sockets -N \
 	-ip2p0 -Dnl80211 -c/data/misc/wifi/p2p_supplicant.conf \
 	-I/system/etc/wifi/p2p_supplicant_overlay.conf \
-	-puse_p2p_group_interface=1 -puse_multi_chan_concurrent=1 \
+	-puse_p2p_group_interface=1 -puse_multi_chan_concurrent=1 -dddd \
 	-e/data/misc/wifi/entropy.bin -g@android:wpa_wlan0
 #   we will start as root and wpa_supplicant will switch to user wifi
 #   after setting up the capabilities required for WEXT
@@ -704,18 +703,14 @@ service profiler_daemon /system/bin/profiler_daemon
     group root
     disabled
 
-service sdcard /system/bin/sdcard /data/media /mnt/shell/emulated 1023 1023
+service sdcard /system/bin/sdcard -u 1023 -g 1023 -l /data/media /mnt/shell/emulated
     class late_start
     disabled
-    
+
 on property:ro.fuse_sdcard=true
     start sdcard
 
 service fuse_extSdCard /system/bin/sdcard -u 1023 -g 1023 -w 1023 -d /mnt/media_rw/extSdCard /storage/extSdCard
-    class late_start
-    disabled
-
-service fuse_extSdCard /system/bin/sdcard -u 1023 -g 1023 -d /mnt/media_rw/extSdCard /storage/extSdCard
     class late_start
     disabled
 
