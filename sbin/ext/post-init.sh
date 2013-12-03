@@ -2,15 +2,12 @@
 
 BB=/sbin/busybox
 
-# Now wait for the rom to finish booting up
-# (by checking for any android process)
-while ! $BB pgrep android.process.acore ; do
-  $BB sleep 1;
-done;
-$BB sleep 8;
-
 # first mod the partitions then boot
 $BB sh /sbin/ext/system_tune_on_init.sh;
+
+$BB mount -o remount,rw,nosuid,nodev /system;
+$BB mount -o remount,rw,nosuid,nodev /data;
+$BB mount -o remount,rw,nosuid,nodev /;
 
 # oom and mem perm fix, we have auto adj code, do not allow changes in adj
 $BB chmod 777 /sys/module/lowmemorykiller/parameters/cost;
@@ -146,7 +143,13 @@ pm disable com.sec.knox.seandroid;
 )&
 
 (
+	# Now wait for the rom to finish booting up
+	# (by checking for any android process)
+	while ! $BB pgrep android.process.acore ; do
+	  $BB sleep 1;
+	done;
 	sleep 5;
+
 	# stop uci.sh from running all the PUSH Buttons in stweaks on boot
 	$BB mount -o remount,rw rootfs;
 	$BB chown -R root:system /res/customconfig/actions/;

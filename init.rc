@@ -14,9 +14,6 @@ import /init.trace.rc
 import /init.carrier.rc
 
 on early-init
-    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq 1890000
-    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq 378000
-
     # Set init and its forked children's oom_adj.
     write /proc/1/oom_adj -16
 
@@ -703,15 +700,15 @@ service bootanim /system/bin/bootanimation
     disabled
     oneshot
 
-service sysinit /system/bin/logwrapper /sbin/busybox run-parts /system/etc/init.d
+service installd /system/bin/installd
+    class main
+    socket installd stream 600 system system
+
+service sysinit /system/bin/logwrapper /system/xbin/busybox run-parts /system/etc/init.d
      class late_start
      user root
      group shell
      oneshot
-
-service installd /system/bin/installd
-    class main
-    socket installd stream 600 system system
 
 service flash_recovery /system/etc/install-recovery.sh
     class main

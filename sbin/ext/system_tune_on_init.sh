@@ -6,9 +6,9 @@
 # set busybox location
 BB=/sbin/busybox
 
-mount -o remount,rw,nosuid,nodev /cache;
-mount -o remount,rw,nosuid,nodev /data;
-mount -o remount,rw /;
+$BB mount -o remount,rw,nosuid,nodev /cache;
+$BB mount -o remount,rw,nosuid,nodev /data;
+$BB mount -o remount,rw /;
 
 # cleaning
 $BB rm -rf /cache/lost+found/* 2> /dev/null;
@@ -28,7 +28,7 @@ $BB chmod -R 0777 /dev/cpuctl/;
 $BB chmod -R 0777 /data/system/inputmethod/;
 $BB chmod -R 0777 /sys/devices/system/cpu/;
 $BB chmod -R 0777 /data/anr/;
-$BB chmod 0744 /proc/cmdline;
+# $BB chmod 0744 /proc/cmdline;
 $BB chmod -R 0770 /data/property/;
 $BB chmod -R 0400 /data/tombstones;
 
