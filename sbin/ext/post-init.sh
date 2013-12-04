@@ -152,6 +152,7 @@ pm disable com.sec.knox.seandroid;
 
 	# stop uci.sh from running all the PUSH Buttons in stweaks on boot
 	$BB mount -o remount,rw rootfs;
+	$BB chmod -R 777 /tmp/;
 	$BB chown -R root:system /res/customconfig/actions/;
 	$BB chmod -R 6755 /res/customconfig/actions/;
 	$BB mv /res/customconfig/actions/push-actions/* /res/no-push-on-boot/;

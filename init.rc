@@ -772,16 +772,16 @@ service bugreport /system/bin/dumpstate -d -p -B \
     oneshot
     keycodes 114 115 116
 
+# SISO-ANDR-PERF :: START Changing scheduler to cfq after boot complete
+on property:sys.boot_completed=1
+	write /sys/block/mmcblk0/queue/scheduler cfq
+# SISO-ANDR-PERF :: END
+
 # init Alucard Kernel
 service postinit /sbin/ext/post-init.sh
     class core
     user root
     oneshot
-    
-# SISO-ANDR-PERF :: START Changing scheduler to cfq after boot complete
-on property:sys.boot_completed=1
-	write /sys/block/mmcblk0/queue/scheduler cfq
-# SISO-ANDR-PERF :: END
 
 # LPM
 service playlpm /system/bin/playlpm
