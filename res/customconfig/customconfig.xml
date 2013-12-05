@@ -504,6 +504,8 @@
 
 	<settingsPane description="General tweaks" name="General tweaks">
 
+		<seekBar description="Vibration force level. (Default: 75)" name="Vibration force" action="generic /sys/vibrator/pwm_val" unit="%" min="0" reversed="false" step="5" max="100"/>
+
 		<spinner description="This will force fast charging if it is enabled. If it is enabled, USB MTP will be disabled!  (Default: Disabled)" name="Force Fast Charging" action="generic /sys/kernel/fast_charge/force_fast_charge">
 			<spinnerItem name="Enabled" value="1"/> 
 			<spinnerItem name="Disabled" value="0"/> 
