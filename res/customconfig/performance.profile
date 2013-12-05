@@ -133,7 +133,6 @@ dirty_background_ratio=15
 dirty_ratio=20
 swappiness=0
 logger=off
-pwm_val=75
 force_fast_charge=0
 usb_mode=default
 auto_mount_sd=on
