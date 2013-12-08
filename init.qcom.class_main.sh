@@ -1,4 +1,5 @@
-# Copyright (c) 2013, The Linux Foundation. All rights reserved.
+#!/system/bin/sh
+# Copyright (c) 2012, The Linux Foundation. All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions are met:
@@ -7,7 +8,7 @@
 #     * Redistributions in binary form must reproduce the above copyright
 #       notice, this list of conditions and the following disclaimer in the
 #       documentation and/or other materials provided with the distribution.
-#     * Neither the name of Linux Foundation nor
+#     * Neither the name of The Linux Foundation nor
 #       the names of its contributors may be used to endorse or promote
 #       products derived from this software without specific prior written
 #       permission.
@@ -28,67 +29,48 @@
 #
 # start ril-daemon only for targets on which radio is present
 #
-on property:ro.baseband=apq
+baseband=`getprop ro.baseband`
+multirild=`getprop ro.multi.rild`
+dsds=`getprop persist.dsds.enabled`
+netmgr=`getprop ro.use_data_netmgrd`
+sgltecsfb=`getprop persist.radio.sglte_csfb`
+
+case "$baseband" in
+    "apq")
     setprop ro.radio.noril yes
     stop ril-daemon
+esac
 
-#
-# start qmuxd and qmiproxy for appropriate targets
-#
-on property:ro.baseband=msm
+case "$baseband" in
+    "msm" | "csfb" | "svlte2a" | "mdm" | "sglte" | "sglte2" | "dsda2" | "unknown")
     start qmuxd
-
-on property:ro.baseband=csfb
-    start qmuxd
-    start qmiproxy
-
-on property:ro.baseband=svlte2a
-    start qmuxd
-    start qmiproxy
-
-on property:ro.baseband=mdm
-    start qmuxd
-
-on property:ro.baseband=sglte
-    start qmuxd
-    start qmiproxy
-
-on property:ro.baseband=sglte2
-    start qmuxd
-    start qmiproxy
-
-on property:ro.baseband=dsda2
-    start qmuxd
-    setprop persist.radio.multisim.config dsda
-
-on property:ro.baseband=unknown
-    start qmuxd
-
-on property:persist.radio.sglte_csfb=true
-    stop qmiproxy
-    setprop persist.radio.voice.modem.index 0
-
-#
-# start netmgrd
-#
-on property:ro.use_data_netmgrd=true
-    start netmgrd
-
-#
-# start multiple rilds based on multisim property
-#
-on property:persist.radio.multisim.config=dsds
-    stop ril-daemon
-    start ril-daemon
-    start ril-daemon1
-
-on property:persist.radio.multisim.config=dsda
-    stop ril-daemon
-    start ril-daemon
-    start ril-daemon1
-
-on property:persist.radio.multisim.config=tsts
-    stop ril-daemon
-    start ril-daemon
-    start ril-daemon1
-    start ril-daemon2
+    case "$baseband" in
+        "svlte2a" | "csfb")
+        start qmiproxy
+        ;;
+        "sglte" | "sglte2")
+        if [ "x$sgltecsfb" != "xtrue" ]; then
+          start qmiproxy
+        else
+          setprop persist.radio.voice.modem.index 0
+        fi
+        ;;
+        "dsda2")
+          setprop ro.multi.rild true
+          setprop persist.multisim.config dsda
+          stop ril-daemon
+          start ril-daemon
+          start ril-daemon1
+    esac
+    case "$multirild" in
+        "true")
+         case "$dsds" in
+             "true")
+             start ril-daemon1
+         esac
+    esac
+    case "$netmgr" in
+        "true")
+        start netmgrd
+    esac
+esac
