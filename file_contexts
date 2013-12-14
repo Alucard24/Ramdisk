@@ -217,7 +217,7 @@
 # asec containers
 /mnt/asec(/.*)?         u:object_r:asec_apk_file:s0
 /data/app-asec(/.*)?    u:object_r:asec_image_file:s0
-#line 1 "device/qcom/common/sepolicy/file_contexts"
+#line 1 "device/samsung/msm8960-common/sepolicy/file_contexts"
 # GPU device
 /dev/kgsl-3d0       u:object_r:gpu_device:s0
 /dev/msm_rotator    u:object_r:gpu_device:s0
@@ -254,3 +254,12 @@
 
 /system/bin/hci_qcomm_init         u:object_r:hci_exec:s0
 /system/bin/bdAddrLoader           u:object_r:hci_exec:s0
+#line 1 "build/vendor/sepolicy/file_contexts"
+/cache/dalvik-cache(/.*)? u:object_r:dalvikcache_data_file:s0
+
+#############################
+# performance-related sysfs files (CM)
+/sys/kernel/mm/ksm(/.*)?       --          u:object_r:sysfs_writable:s0
+/sys/devices/system/cpu.*/cpufreq(/.*)? --  u:object_r:sysfs_writable:s0
+/sys/block/mmcblk0/queue/scheduler  --    u:object_r:sysfs_writable:s0
+
