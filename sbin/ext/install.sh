@@ -11,7 +11,7 @@ $BB mount -t rootfs -o remount,rw rootfs;
 
 (
 	if [ ! -f /system/xbin/daemonsu ]; then
-		mv /res/daemonsu /system/xbin/daemonsu;
+		$BB mv /res/daemonsu /system/xbin/daemonsu;
 	fi;
 
 	mv  /res/.has_su_daemon /system/etc/.has_su_daemon;
@@ -27,7 +27,7 @@ $BB mount -t rootfs -o remount,rw rootfs;
 	$BB chmod 6755 /system/xbin/daemonsu;
 
 	if [ ! -f /system/app/Superuser.apk ]; then
-		mv /res/Superuser.apk /system/app/Superuser.apk;
+		$BB mv /res/Superuser.apk /system/app/Superuser.apk;
 	fi;
 
 	$BB chmod 644 /system/app/Superuser.apk;
@@ -43,7 +43,7 @@ $BB mount -t rootfs -o remount,rw rootfs;
 	fi;
 
 	if [ ! -f /system/app/STweaks.apk ]; then
-		cat /res/STweaks.apk > /system/app/STweaks.apk;
+		$BB cat /res/STweaks.apk > /system/app/STweaks.apk;
 		$BB chmod 644 /system/app/STweaks.apk;
 	fi;
 )&
