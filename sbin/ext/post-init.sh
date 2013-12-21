@@ -183,8 +183,8 @@ pm disable com.sec.knox.seandroid;
 	# I/O related tweaks
 	# ###############################################################
 
-	mount -o remount,rw /system;
-	mount -o remount,rw /;
+	$BB mount -o remount,rw /system;
+	$BB mount -o remount,rw /;
 
 	# correct oom tuning, if changed by apps/rom
 	$BB sh /res/uci.sh oom_config_screen_on $oom_config_screen_on;
