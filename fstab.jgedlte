@@ -11,7 +11,7 @@
 
 
 #
-/devices/platform/msm_sdcc.2/mmc_host/mmc2			/storage/extSdCard 		auto	default		voldmanaged=sdcard:auto
+/devices/platform/msm_sdcc.2/mmc_host/mmc2          auto                    auto    default     voldmanaged=extSdCard:auto
 /devices/platform/msm_hsusb_host/usb*sda            auto                    auto    default     voldmanaged=UsbDriveA:auto
 /devices/platform/msm_hsusb_host/usb*sdb            auto                    auto    default     voldmanaged=UsbDriveB:auto
 /devices/platform/msm_hsusb_host/usb*sdc            auto                    auto    default     voldmanaged=UsbDriveC:auto
