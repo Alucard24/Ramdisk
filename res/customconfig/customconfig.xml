@@ -419,6 +419,9 @@
 			<spinnerItem name="ROW" value="row"/> 
 			<spinnerItem name="SIO" value="sio"/> 
 			<spinnerItem name="FIFO" value="fifo"/> 
+			<spinnerItem name="FIOPS" value="fiops"/> 
+			<spinnerItem name="VR" value="vr"/> 
+			<spinnerItem name="ZEN" value="zen"/> 
 		</spinner>
 
 		<spinner description="This will set the default AWAKE IO scheduler for external sdcard. (Default: CFQ)" name="Default Awake IO Scheduler Ext." action="iosched sd /sys/block/mmcblk1/queue/scheduler">
@@ -429,6 +432,9 @@
 			<spinnerItem name="ROW" value="row"/> 
 			<spinnerItem name="SIO" value="sio"/> 
 			<spinnerItem name="FIFO" value="fifo"/> 
+			<spinnerItem name="FIOPS" value="fiops"/> 
+			<spinnerItem name="VR" value="vr"/> 
+			<spinnerItem name="ZEN" value="zen"/> 
 		</spinner>
 
 		<spinner description="This will set the DEEPSLEEP IO scheduler for internal sdcard. (Default: CFQ) !!! Depends on CortexBrain-Background-Process !!!" name="DEEPSLEEP IO Scheduler Int." action="generic_cortex /tmp/internal_iosched_sleep">
@@ -439,6 +445,9 @@
 			<spinnerItem name="ROW" value="row"/> 
 			<spinnerItem name="SIO" value="sio"/> 
 			<spinnerItem name="FIFO" value="fifo"/> 
+			<spinnerItem name="FIOPS" value="fiops"/> 
+			<spinnerItem name="VR" value="vr"/> 
+			<spinnerItem name="ZEN" value="zen"/> 
 		</spinner>
 
 		<spinner description="This will set the DEEPSLEEP IO scheduler for external sdcard. (Default: CFQ) !!! Depends on CortexBrain-Background-Process !!!" name="DEEPSLEEP IO Scheduler Ext." action="generic_cortex /tmp/sd_iosched_sleep">
@@ -449,6 +458,9 @@
 			<spinnerItem name="ROW" value="row"/> 
 			<spinnerItem name="SIO" value="sio"/> 
 			<spinnerItem name="FIFO" value="fifo"/> 
+			<spinnerItem name="FIOPS" value="fiops"/> 
+			<spinnerItem name="VR" value="vr"/> 
+			<spinnerItem name="ZEN" value="zen"/> 
 		</spinner>
 
 	</settingsPane>

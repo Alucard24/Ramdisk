@@ -7,20 +7,17 @@ read_defaults;
 read_config;
 
 $BB mount -o remount,rw /system;
-$BB mount -t rootfs -o remount,rw rootfs;
+$BB mount -o remount,rw /;
 
 (
 	if [ ! -f /system/xbin/daemonsu ]; then
 		$BB mv /res/daemonsu /system/xbin/daemonsu;
 	fi;
 
-	mv  /res/.has_su_daemon /system/etc/.has_su_daemon;
+	$BB mv /res/.has_su_daemon /system/etc/.has_su_daemon;
 	$BB chmod 644 /system/etc/.has_su_daemon;
 
-	mv  /res/.installed_su_daemon /system/etc/.installed_su_daemon;
-	$BB chmod 644 /system/etc/.installed_su_daemon;
-
-	mv  /res/install-recovery.sh /system/etc/install-recovery.sh;
+	$BB mv /res/install-recovery.sh /system/etc/install-recovery.sh;
 	$BB chmod 755 /system/etc/install-recovery.sh;
 
 	$BB chmod 6755 /system/xbin/su;
@@ -48,5 +45,5 @@ $BB mount -t rootfs -o remount,rw rootfs;
 	fi;
 )&
 
-$BB mount -t rootfs -o remount,rw rootfs;
+$BB mount -o remount,rw /;
 $BB mount -o remount,rw /system;
