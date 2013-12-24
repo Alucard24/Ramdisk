@@ -101,10 +101,10 @@ fi;
 # for ntfs automounting
 mount -t tmpfs -o mode=0777,gid=1000 tmpfs /mnt/ntfs
 
-(
-	# Apps Install
-	$BB sh /sbin/ext/install.sh;
+# Apps Install
+$BB sh /sbin/ext/install.sh;
 
+(
 	# EFS Backup
 	$BB sh /sbin/ext/efs-backup.sh;
 )&

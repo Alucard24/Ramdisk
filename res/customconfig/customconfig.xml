@@ -132,9 +132,9 @@
 
 		<seekBar description="Until freq_responsiveness, Up Threshold considered for sampling load is inc_cpu_load_at_min_freq. Also during the part where CPU is at maximum load frequency, governor need to find the optimal frequency as the next frequency - which should not trigger up_threshold in the next sampling. When such a frequency_next is found to be a) less than freq_responsiveness b) will not trigger down_threshold in the next sample, then the optimal frequency is set to freq_responsiveness. (Only for Alucard) (Default: 918.000 kHz)" name="freq_responsiveness" action="generic_cortex /tmp/freq_responsiveness" unit="kHz" min="162000" reversed="false" step="108000" max="1890000"/>
 
-		<seekBar description="Governor should increase CPU frequency by n step each time CPU load reaches inc_cpu_load. (Only for Alucard) (Default: 1)" name="pump_inc_step" action="generic_cortex /tmp/pump_inc_step" unit="step" min="1" reversed="false" step="1" max="3"/>
+		<seekBar description="Governor should increase CPU frequency by n step each time CPU load reaches inc_cpu_load. (Only for Alucard) (Default: 2)" name="pump_inc_step" action="generic_cortex /tmp/pump_inc_step" unit="step" min="1" reversed="false" step="1" max="3"/>
 
-		<seekBar description="Governor should decrease CPU frequency by n step each time CPU load reaches dec_cpu_load. (Only for Alucard) (Default: 2)" name="pump_dec_step" action="generic_cortex /tmp/pump_dec_step" unit="step" min="1" reversed="false" step="1" max="3"/>
+		<seekBar description="Governor should decrease CPU frequency by n step each time CPU load reaches dec_cpu_load. (Only for Alucard) (Default: 1)" name="pump_dec_step" action="generic_cortex /tmp/pump_dec_step" unit="step" min="1" reversed="false" step="1" max="3"/>
 
 		<seekBar description="Defines how much as a percentage of maximum frequency, governor should increase CPU frequency each time CPU load reaches inc_cpu_load_at_min_freq. (Only for nightmare). (Default: 20%)" name="freq_step_at_min_freq" action="generic_cortex /tmp/freq_step_at_min_freq" unit="%" min="5" reversed="false" step="1" max="100"/>
 
@@ -201,9 +201,9 @@
 
 		<seekBar description="Until freq_responsiveness, Up Threshold considered for sampling load is inc_cpu_load_at_min_freq. Also during the part where CPU is at maximum load frequency, governor need to find the optimal frequency as the next frequency - which should not trigger up_threshold in the next sampling. When such a frequency_next is found to be a) less than freq_responsiveness b) will not trigger down_threshold in the next sample, then the optimal frequency is set to freq_responsiveness. (Only for Alucard) (Default: 918.000 kHz)" name="freq_responsiveness_sleep" action="generic_cortex /tmp/freq_responsiveness_sleep" unit="kHz" min="162000" reversed="false" step="108000" max="1890000"/>
 
-		<seekBar description="Governor should increase CPU frequency by n step each time CPU load reaches inc_cpu_load. (Only for Alucard) (Default: 1)" name="pump_inc_step_sleep" action="generic_cortex /tmp/pump_inc_step_sleep" unit="step" min="1" reversed="false" step="1" max="3"/>
+		<seekBar description="Governor should increase CPU frequency by n step each time CPU load reaches inc_cpu_load. (Only for Alucard) (Default: 2)" name="pump_inc_step_sleep" action="generic_cortex /tmp/pump_inc_step_sleep" unit="step" min="1" reversed="false" step="1" max="3"/>
 
-		<seekBar description="Governor should decrease CPU frequency by n step each time CPU load reaches dec_cpu_load. (Only for Alucard) (Default: 2)" name="pump_dec_step_sleep" action="generic_cortex /tmp/pump_dec_step_sleep" unit="step" min="1" reversed="false" step="1" max="3"/>
+		<seekBar description="Governor should decrease CPU frequency by n step each time CPU load reaches dec_cpu_load. (Only for Alucard) (Default: 1)" name="pump_dec_step_sleep" action="generic_cortex /tmp/pump_dec_step_sleep" unit="step" min="1" reversed="false" step="1" max="3"/>
 
 		<seekBar description="Defines how much as a percentage of maximum frequency, governor should increase CPU frequency each time CPU load reaches inc_cpu_load_at_min_freq. (Only for Nightmare). (Default: 20%)" name="freq_step_at_min_freq_sleep" action="generic_cortex /tmp/freq_step_at_min_freq_sleep" unit="%" min="5" reversed="false" step="1" max="100"/>
 
