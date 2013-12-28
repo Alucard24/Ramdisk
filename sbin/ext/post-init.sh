@@ -179,6 +179,8 @@ chmod 666 /tmp/uci_done;
 	# I/O related tweaks
 	# ###############################################################
 
+	sleep 15;
+
 	$BB mount -o remount,rw /system;
 	$BB mount -o remount,rw /;
 
