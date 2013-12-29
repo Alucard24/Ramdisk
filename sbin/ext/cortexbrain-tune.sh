@@ -227,6 +227,21 @@ if [ "$cortexbrain_background_process" -eq "0" ]; then
 fi;
 
 # ==============================================================
+# AUTO MOUNTING ROOTFS AS RW
+# ==============================================================
+
+AUTOMOUNT_ROOTFS()
+{
+	sleep 15;
+	mount -o remount,rw /;
+}
+# this needed for mounting root as rw
+automount_rootfs="$2";
+if [ "$automount_rootfs" == "rw" ] || [ "$cortexbrain_background_process" -eq "0" ]; then
+	AUTOMOUNT_ROOTFS;
+fi;
+
+# ==============================================================
 # CPU-TWEAKS
 # ==============================================================
 
