@@ -179,12 +179,12 @@ chmod 666 /tmp/uci_done;
 	# I/O related tweaks
 	# ###############################################################
 
-	sleep 15;
-
 	$BB mount -o remount,rw /system;
 	$BB mount -o remount,rw /;
 
 	# correct oom tuning, if changed by apps/rom
 	$BB sh /res/uci.sh oom_config_screen_on $oom_config_screen_on;
 	$BB sh /res/uci.sh oom_config_screen_off $oom_config_screen_off;
+
+	/sbin/ext/cortexbrain-tune.sh automount_rootfs rw > /dev/null;
 )&

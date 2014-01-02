@@ -57,17 +57,15 @@
 
 		<seekBar description="CPU Voltage for 486 MHz." name="CPU Voltage 486 MHz" action="cpu-voltage 14" unit="V" min="850000" reversed="false" step="12500" max="950000"/>
 
-		<seekBar description="CPU Voltage for 384 MHz." name="CPU Voltage 384 MHz" action="cpu-voltage 15" unit="V" min="850000" reversed="false" step="12500" max="950000"/>
+		<seekBar description="CPU Voltage for 378 MHz." name="CPU Voltage 378 MHz" action="cpu-voltage 15" unit="V" min="825000" reversed="false" step="12500" max="925000"/>
 
-		<seekBar description="CPU Voltage for 378 MHz." name="CPU Voltage 378 MHz" action="cpu-voltage 16" unit="V" min="825000" reversed="false" step="12500" max="925000"/>
+		<seekBar description="CPU Voltage for 324 MHz." name="CPU Voltage 324 MHz" action="cpu-voltage 16" unit="V" min="825000" reversed="false" step="12500" max="925000"/>
 
-		<seekBar description="CPU Voltage for 324 MHz." name="CPU Voltage 324 MHz" action="cpu-voltage 17" unit="V" min="825000" reversed="false" step="12500" max="925000"/>
+		<seekBar description="CPU Voltage for 270 MHz." name="CPU Voltage 270 MHz" action="cpu-voltage 17" unit="V" min="800000" reversed="false" step="12500" max="900000"/>
 
-		<seekBar description="CPU Voltage for 270 MHz." name="CPU Voltage 270 MHz" action="cpu-voltage 18" unit="V" min="800000" reversed="false" step="12500" max="900000"/>
+		<seekBar description="CPU Voltage for 216 MHz." name="CPU Voltage 216 MHz" action="cpu-voltage 18" unit="V" min="800000" reversed="false" step="12500" max="900000"/>
 
-		<seekBar description="CPU Voltage for 216 MHz." name="CPU Voltage 216 MHz" action="cpu-voltage 19" unit="V" min="800000" reversed="false" step="12500" max="900000"/>
-
-		<seekBar description="CPU Voltage for 162 MHz." name="CPU Voltage 162 MHz" action="cpu-voltage 20" unit="V" min="800000" reversed="false" step="12500" max="900000"/>
+		<seekBar description="CPU Voltage for 162 MHz." name="CPU Voltage 162 MHz" action="cpu-voltage 19" unit="V" min="800000" reversed="false" step="12500" max="900000"/>
 
 	</settingsPane>
 
@@ -274,21 +272,21 @@
 
 		<seekBar description="The cpu load at which governor scales CPU down. Cur Load less than down_load and cpu online greater than 1: Cpu Hotplug OUT. Value corresponding to 101 causes immediately HOTPLUG OUT. (Default: 30%)" name="hotplug_load_4_0" action="generic_cortex /tmp/hotplug_load_4_0" unit="%" min="0" reversed="false" step="1" max="101"/>
 
-		<seekBar description="Threshold run queue length for second core to turn on. (Default: 200)" name="hotplug_rq_1_1" action="generic_cortex /tmp/hotplug_rq_1_1" unit="uint" min="0" reversed="false" step="1" max="600"/>
+		<seekBar description="Threshold run queue length for second core to turn on. (Default: 0)" name="hotplug_rq_1_1" action="generic_cortex /tmp/hotplug_rq_1_1" unit="uint" min="0" reversed="false" step="1" max="600"/>
 
-		<seekBar description="Threshold run queue length for second core to turn off. (Default: 200)" name="hotplug_rq_2_0" action="generic_cortex /tmp/hotplug_rq_2_0" unit="uint" min="0" reversed="false" step="1" max="600"/>
+		<seekBar description="Threshold run queue length for second core to turn off. (Default: 0)" name="hotplug_rq_2_0" action="generic_cortex /tmp/hotplug_rq_2_0" unit="uint" min="0" reversed="false" step="1" max="600"/>
 
-		<seekBar description="Threshold run queue length for third core to turn on. (Default: 200)" name="hotplug_rq_2_1" action="generic_cortex /tmp/hotplug_rq_2_1" unit="uint" min="0" reversed="false" step="1" max="600"/>
+		<seekBar description="Threshold run queue length for third core to turn on. (Default: 0)" name="hotplug_rq_2_1" action="generic_cortex /tmp/hotplug_rq_2_1" unit="uint" min="0" reversed="false" step="1" max="600"/>
 
-		<seekBar description="Threshold run queue length for third core to turn off. (Default: 200)" name="hotplug_rq_3_0" action="generic_cortex /tmp/hotplug_rq_3_0" unit="uint" min="0" reversed="false" step="1" max="600"/>
+		<seekBar description="Threshold run queue length for third core to turn off. (Default: 0)" name="hotplug_rq_3_0" action="generic_cortex /tmp/hotplug_rq_3_0" unit="uint" min="0" reversed="false" step="1" max="600"/>
 
-		<seekBar description="Threshold run queue length for fourth core to turn on. (Default: 300)" name="hotplug_rq_3_1" action="generic_cortex /tmp/hotplug_rq_3_1" unit="uint" min="0" reversed="false" step="1" max="600"/>
+		<seekBar description="Threshold run queue length for fourth core to turn on. (Default: 0)" name="hotplug_rq_3_1" action="generic_cortex /tmp/hotplug_rq_3_1" unit="uint" min="0" reversed="false" step="1" max="600"/>
 
-		<seekBar description="Threshold run queue length for fourth core to turn off. (Default: 300)" name="hotplug_rq_4_0" action="generic_cortex /tmp/hotplug_rq_4_0" unit="uint" min="0" reversed="false" step="1" max="600"/>
+		<seekBar description="Threshold run queue length for fourth core to turn off. (Default: 0)" name="hotplug_rq_4_0" action="generic_cortex /tmp/hotplug_rq_4_0" unit="uint" min="0" reversed="false" step="1" max="600"/>
 
 		<seekBar description="Max cpus hotplugging limit. (Default: 4)" name="maxcoreslimit" action="generic_cortex /tmp/maxcoreslimit" unit="int" min="1" reversed="false" step="1" max="4"/>
 
-		<spinner description="Use apu function for getting current core frequency. (Default: Disabled)" name="accuratecpufreq" action="generic_cortex /tmp/accuratecpufreq">
+		<spinner description="Use apu function for getting current core frequency. (Default: Enabled)" name="accuratecpufreq" action="generic_cortex /tmp/accuratecpufreq">
 			<spinnerItem name="Enabled" value="1"/> 
 			<spinnerItem name="Disabled" value="0"/> 
 		</spinner>
@@ -340,21 +338,21 @@
 
 		<seekBar description="The cpu load at which governor scales CPU down. Cur Load less than down_load and cpu online greater than 1: Cpu Hotplug OUT. Value corresponding to 101 causes immediately HOTPLUG OUT. (Default: 30%)" name="hotplug_load_4_0_sleep" action="generic_cortex /tmp/hotplug_load_4_0_sleep" unit="%" min="0" reversed="false" step="1" max="101"/>
 
-		<seekBar description="Threshold run queue length for second core to turn on. (Default: 200)" name="hotplug_rq_1_1_sleep" action="generic_cortex /tmp/hotplug_rq_1_1_sleep" unit="uint" min="0" reversed="false" step="1" max="600"/>
+		<seekBar description="Threshold run queue length for second core to turn on. (Default: 0)" name="hotplug_rq_1_1_sleep" action="generic_cortex /tmp/hotplug_rq_1_1_sleep" unit="uint" min="0" reversed="false" step="1" max="600"/>
 
-		<seekBar description="Threshold run queue length for second core to turn off. (Default: 200)" name="hotplug_rq_2_0_sleep" action="generic_cortex /tmp/hotplug_rq_2_0_sleep" unit="uint" min="0" reversed="false" step="1" max="600"/>
+		<seekBar description="Threshold run queue length for second core to turn off. (Default: 0)" name="hotplug_rq_2_0_sleep" action="generic_cortex /tmp/hotplug_rq_2_0_sleep" unit="uint" min="0" reversed="false" step="1" max="600"/>
 
-		<seekBar description="Threshold run queue length for third core to turn on. (Default: 200)" name="hotplug_rq_2_1_sleep" action="generic_cortex /tmp/hotplug_rq_2_1_sleep" unit="uint" min="0" reversed="false" step="1" max="600"/>
+		<seekBar description="Threshold run queue length for third core to turn on. (Default: 0)" name="hotplug_rq_2_1_sleep" action="generic_cortex /tmp/hotplug_rq_2_1_sleep" unit="uint" min="0" reversed="false" step="1" max="600"/>
 
-		<seekBar description="Threshold run queue length for third core to turn off. (Default: 200)" name="hotplug_rq_3_0_sleep" action="generic_cortex /tmp/hotplug_rq_3_0_sleep" unit="uint" min="0" reversed="false" step="1" max="600"/>
+		<seekBar description="Threshold run queue length for third core to turn off. (Default: 0)" name="hotplug_rq_3_0_sleep" action="generic_cortex /tmp/hotplug_rq_3_0_sleep" unit="uint" min="0" reversed="false" step="1" max="600"/>
 
-		<seekBar description="Threshold run queue length for fourth core to turn on. (Default: 300)" name="hotplug_rq_3_1_sleep" action="generic_cortex /tmp/hotplug_rq_3_1_sleep" unit="uint" min="0" reversed="false" step="1" max="600"/>
+		<seekBar description="Threshold run queue length for fourth core to turn on. (Default: 0)" name="hotplug_rq_3_1_sleep" action="generic_cortex /tmp/hotplug_rq_3_1_sleep" unit="uint" min="0" reversed="false" step="1" max="600"/>
 
-		<seekBar description="Threshold run queue length for fourth core to turn off. (Default: 300)" name="hotplug_rq_4_0_sleep" action="generic_cortex /tmp/hotplug_rq_4_0_sleep" unit="uint" min="0" reversed="false" step="1" max="600"/>
+		<seekBar description="Threshold run queue length for fourth core to turn off. (Default: 0)" name="hotplug_rq_4_0_sleep" action="generic_cortex /tmp/hotplug_rq_4_0_sleep" unit="uint" min="0" reversed="false" step="1" max="600"/>
 
 		<seekBar description="Max cpus hotplugging limit. (Default: 1)" name="maxcoreslimit_sleep" action="generic_cortex /tmp/maxcoreslimit_sleep" unit="int" min="1" reversed="false" step="1" max="4"/>
 
-		<spinner description="Use apu function for getting current core frequency. (Default: Disabled)" name="accuratecpufreq_sleep" action="generic_cortex /tmp/accuratecpufreq_sleep">
+		<spinner description="Use apu function for getting current core frequency. (Default: Enabled)" name="accuratecpufreq_sleep" action="generic_cortex /tmp/accuratecpufreq_sleep">
 			<spinnerItem name="Enabled" value="1"/> 
 			<spinnerItem name="Disabled" value="0"/> 
 		</spinner>

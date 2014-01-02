@@ -254,7 +254,7 @@
 
 /system/bin/hci_qcomm_init         u:object_r:hci_exec:s0
 /system/bin/bdAddrLoader           u:object_r:hci_exec:s0
-#line 1 "build/vendor/sepolicy/file_contexts"
+#line 1 "vendor/cm/sepolicy/file_contexts"
 /cache/dalvik-cache(/.*)? u:object_r:dalvikcache_data_file:s0
 
 #############################
