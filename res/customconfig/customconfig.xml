@@ -396,6 +396,26 @@
 
 </settingsTab>
 
+<settingsTab name="DVFS TOUCH INTERFACE">
+
+	<settingsPane description="Here you can tune DVFS Touch frequency" name="Touch Frequency">
+
+		<seekBar description="Coming soon. From 810.000 kHz to 1.890.000 kHz! (Default: 1.134.000 kHz)" name="dvfs_min_touch_limit" action="genericfreq /sys/kernel/dvfs_touch_if/dvfs_min_touch_limit" unit="kHz" min="810000" reversed="false" step="108000" max="1890000"/>
+
+		<seekBar description="Coming soon. From 702.000 kHz to 1.458.000 kHz! (Default: 810.000 kHz)" name="dvfs_min_touch_limit_second" action="genericfreq /sys/kernel/dvfs_touch_if/dvfs_min_touch_limit_second" unit="kHz" min="702000" reversed="false" step="108000" max="1458000"/>
+
+	</settingsPane>
+
+	<settingsPane description="Here you can tune DVFS Touch time" name="Touch Time">
+
+		<seekBar description="Coming soon. From 200 msecs to 5000 msecs! (Default: 300 msec)" name="syn_touch_booster_off_time" action="generic /sys/kernel/dvfs_touch_if/syn_touch_booster_off_time" unit="msecs" min="200" reversed="false" step="100" max="5000"/>
+
+		<seekBar description="Coming soon. From 100 msecs to 1000 msecs! (Default: 200 msec)" name="syn_touch_booster_chg_time" action="generic /sys/kernel/dvfs_touch_if/syn_touch_booster_chg_time" unit="msecs" min="100" reversed="false" step="100" max="1000"/>
+
+	</settingsPane>
+
+</settingsTab>
+
 <settingsTab name="IO">
 
 	<settingsPane description="Here you can tune IO settings managed by Kernel" name="IO Tuning">
