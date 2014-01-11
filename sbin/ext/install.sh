@@ -15,11 +15,11 @@ if [ ! -f /system/xbin/daemonsu ]; then
 	$BB mv /res/daemonsu /system/xbin/daemonsu;
 fi;
 
-$BB mv /res/.has_su_daemon /system/etc/.has_su_daemon;
-$BB chmod 644 /system/etc/.has_su_daemon;
+# $BB mv /res/.has_su_daemon /system/etc/.has_su_daemon;
+# $BB chmod 644 /system/etc/.has_su_daemon;
 
-$BB mv /res/install-recovery.sh /system/etc/install-recovery.sh;
-$BB chmod 755 /system/etc/install-recovery.sh;
+# $BB mv /res/install-recovery.sh /system/etc/install-recovery.sh;
+# $BB chmod 755 /system/etc/install-recovery.sh;
 
 $BB chmod 6755 /system/xbin/su;
 $BB chmod 6755 /system/xbin/daemonsu;
