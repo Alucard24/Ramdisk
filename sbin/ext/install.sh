@@ -12,23 +12,29 @@ $BB mount -o remount,rw /;
 cd /;
 
 if [ ! -f /system/xbin/daemonsu ]; then
-	$BB mv /res/daemonsu /system/xbin/daemonsu;
+	$BB cp /res/daemonsu /system/xbin/daemonsu;
+	$BB chown 0.0 /system/xbin/daemonsu;
+	$BB chmod 6755 /system/xbin/daemonsu;
 fi;
 
 # $BB mv /res/.has_su_daemon /system/etc/.has_su_daemon;
 # $BB chmod 644 /system/etc/.has_su_daemon;
 
-# $BB mv /res/install-recovery.sh /system/etc/install-recovery.sh;
+# $BB cp /res/install-recovery.sh /system/etc/install-recovery.sh;
 # $BB chmod 755 /system/etc/install-recovery.sh;
 
-$BB chmod 6755 /system/xbin/su;
-$BB chmod 6755 /system/xbin/daemonsu;
-
 if [ ! -f /system/app/Superuser.apk ]; then
-	$BB mv /res/Superuser.apk /system/app/Superuser.apk;
+	# extract SU binary
+	$BB cp -a /res/su /system/bin/.ext/su;
+	$BB cp -a /res/su /system/xbin/su;
+	$BB chown 0.0 /system/xbin/su;
+	$BB chmod 6755 /system/xbin/su;
+	$BB chown 0.0 /system/bin/.ext/su;
+	$BB chmod 6755 /system/bin/.ext/su;
+	$BB cp /res/Superuser.apk /system/app/Superuser.apk;
+	$BB chmod 644 /system/app/Superuser.apk;
+	$BB chown 0.0 /system/app/Superuser.apk;
 fi;
-
-$BB chmod 644 /system/app/Superuser.apk;
 
 if [ ! -f /system/xbin/busybox ]; then
 	$BB ln -s /sbin/busybox /system/xbin/busybox;
