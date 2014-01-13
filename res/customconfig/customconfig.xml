@@ -114,7 +114,6 @@
 
 		<spinner description="Use maximum, average, single cpus load for frequency scaling. (Default: Single)" name="cpus_boost" action="generic_cortex /tmp/cpus_boost">
 			<spinnerItem name="Maximum" value="2"/>
-			<spinnerItem name="Average" value="1"/>
 			<spinnerItem name="Single" value="0"/> 
 		</spinner>
 
