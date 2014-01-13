@@ -15,7 +15,7 @@ ROOT_RW;
 $BB chown -R root:root /tmp;
 $BB chown -R root:root /res;
 $BB chown -R root:root /sbin;
-$BB chown -R root:root /lib;
+# $BB chown -R root:root /lib;
 
 # oom and mem perm fix, we have auto adj code, do not allow changes in adj
 $BB chmod 666 /sys/module/lowmemorykiller/parameters/cost;
@@ -59,6 +59,8 @@ fi;
 [ ! -f /data/.alucard/extreme_battery.profile ] && cp -a /res/customconfig/extreme_battery.profile /data/.alucard/extreme_battery.profile;
 
 $BB chmod -R 0777 /data/.alucard/;
+
+sleep 5;
 
 . /res/customconfig/customconfig-helper;
 read_defaults;
