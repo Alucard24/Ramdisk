@@ -638,11 +638,6 @@ CPU_GOV_TWEAKS()
 			pump_dec_step_tmp="/dev/null";
 		fi;
 
-		local cpus_boost_tmp="/sys/devices/system/cpu/cpufreq/$SYSTEM_GOVERNOR/cpus_boost";
-		if [ ! -e $cpus_boost_tmp ]; then
-			cpus_boost_tmp="/dev/null";
-		fi;
-
 		# sleep-settings
 		if [ "$state" == "sleep" ]; then
 			echo "$sampling_rate_sleep" > $sampling_rate_tmp;
@@ -690,7 +685,6 @@ CPU_GOV_TWEAKS()
 			echo "$freq_up_brake" > $freq_up_brake_tmp;
 			echo "$pump_inc_step" > $pump_inc_step_tmp;
 			echo "$pump_dec_step" > $pump_dec_step_tmp;
-			echo "$cpus_boost" > $cpus_boost_tmp;
 			CPU_HOTPLUG_TWEAKS "awake";
 		fi;
 
