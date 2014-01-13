@@ -60,7 +60,7 @@ fi;
 
 $BB chmod -R 0777 /data/.alucard/;
 
-sleep 5;
+sleep 1;
 
 . /res/customconfig/customconfig-helper;
 read_defaults;
