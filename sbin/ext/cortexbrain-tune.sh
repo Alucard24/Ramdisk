@@ -1195,7 +1195,7 @@ CALL_STATE()
 
 VIBRATE_FIX()
 {
-	echo "$pwm_value" > /sys/devices/virtual/timed_out/vibrator/pwm_value;
+	echo "$pwm_value" > /sys/devices/virtual/timed_output/vibrator/pwm_value;
 
 	log -p i -t $FILE_NAME "*** VIBRATE_FIX: $pwm_value ***";
 }
