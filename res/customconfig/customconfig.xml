@@ -112,11 +112,6 @@
 
 	<settingsPane description="Nightmare and Darkness Gov Configuration, see descriptions" name="NIGHTMARE | DARKNESS | ALUCARD GOV CONFIGURATON">
 
-		<spinner description="Use maximum, average, single cpus load for frequency scaling. (Default: Single)" name="cpus_boost" action="generic_cortex /tmp/cpus_boost">
-			<spinnerItem name="Maximum" value="2"/>
-			<spinnerItem name="Single" value="0"/> 
-		</spinner>
-
 		<seekBar description="This threshold is used as up threshold while sampling at frequencies less than freq_for_responsiveness. Above that, normal inc_cpu_load is used. This gives us an option to make scaling aggressive/relaxed until a frequency and normal for higher frequencies. (Only for Nightmare, Alucard). (Default: 60%)" name="inc_cpu_load_at_min_freq" action="generic_cortex /tmp/inc_cpu_load_at_min_freq" unit="%" min="1" reversed="false" step="1" max="100"/>
 
 		<seekBar description="The frequency at which governor scales CPU up. Load big or equal inc_cpu_load: cpu scaled up. (Only for Nightmare, Alucard). (Default: 80%)" name="inc_cpu_load" action="generic_cortex /tmp/inc_cpu_load" unit="%" min="10" reversed="false" step="1" max="100"/>
