@@ -19,7 +19,7 @@ $BB rm -rf /data/anr/* 2> /dev/null;
 # critical Permissions fix
 $BB chown -R root:root /sys/devices/system/cpu/;
 $BB chown -R system:system /data/anr;
-$BB chown -R root:root /data/property/;
+# $BB chown -R root:root /data/property/;
 $BB chmod -R 777 /tmp/;
 $BB chmod -R 6755 /res;
 $BB chmod -R 6755 /sbin/;
@@ -29,7 +29,7 @@ $BB chmod -R 0777 /data/system/inputmethod/;
 $BB chmod -R 0777 /sys/devices/system/cpu/;
 $BB chmod -R 0777 /data/anr/;
 $BB chmod 0744 /proc/cmdline;
-$BB chmod -R 0770 /data/property/;
+# $BB chmod -R 0770 /data/property/;
 $BB chmod -R 0771 /data/tombstones;
 
 #BOOT_ROM()
