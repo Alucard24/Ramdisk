@@ -112,12 +112,6 @@
 
 	<settingsPane description="Nightmare and Darkness Gov Configuration, see descriptions" name="NIGHTMARE | DARKNESS | ALUCARD GOV CONFIGURATON">
 
-		<spinner description="Use maximum, average, single cpus load for frequency scaling. (Default: Single)" name="cpus_boost" action="generic_cortex /tmp/cpus_boost">
-			<spinnerItem name="Maximum" value="2"/>
-			<spinnerItem name="Average" value="1"/>
-			<spinnerItem name="Single" value="0"/> 
-		</spinner>
-
 		<seekBar description="This threshold is used as up threshold while sampling at frequencies less than freq_for_responsiveness. Above that, normal inc_cpu_load is used. This gives us an option to make scaling aggressive/relaxed until a frequency and normal for higher frequencies. (Only for Nightmare, Alucard). (Default: 60%)" name="inc_cpu_load_at_min_freq" action="generic_cortex /tmp/inc_cpu_load_at_min_freq" unit="%" min="1" reversed="false" step="1" max="100"/>
 
 		<seekBar description="The frequency at which governor scales CPU up. Load big or equal inc_cpu_load: cpu scaled up. (Only for Nightmare, Alucard). (Default: 80%)" name="inc_cpu_load" action="generic_cortex /tmp/inc_cpu_load" unit="%" min="10" reversed="false" step="1" max="100"/>
@@ -256,7 +250,7 @@
 
 		<seekBar description="Down threshold frequency to turn third core Off, when some other conditions is also met. ie If (maximum frequency less than hotplug_freq 3 0) Hotplug OUT Third Core. Lower value correpsonds to delay in turning off third core. (Default: 918.000 kHz)" name="hotplug_freq_3_0" action="generic_cortex /tmp/hotplug_freq_3_0" unit="kHz" min="162000" reversed="false" step="108000" max="1890000"/>
 
-		<seekBar description="Up threshold frequency to turn fourth core On, when some other conditions is also met. ie If (minimum frequency greater than or equal to hotplug_freq 3 1) Hotplug IN thirdthirdFourth Core. Higher value correpsonds to delay in turning on Fourth core. (Default: 1674.000 kHz)" name="hotplug_freq_3_1" action="generic_cortex /tmp/hotplug_freq_3_1" unit="kHz" min="162000" reversed="false" step="108000" max="1890000"/>
+		<seekBar description="Up threshold frequency to turn fourth core On, when some other conditions is also met. ie If (minimum frequency greater than or equal to hotplug_freq 3 1) Hotplug IN Fourth Core. Higher value correpsonds to delay in turning on Fourth core. (Default: 1674.000 kHz)" name="hotplug_freq_3_1" action="generic_cortex /tmp/hotplug_freq_3_1" unit="kHz" min="162000" reversed="false" step="108000" max="1890000"/>
 
 		<seekBar description="Down threshold frequency to turn fourth core Off, when some other conditions is also met. ie If (maximum frequency less than hotplug_freq 4 0) Hotplug OUT Fourth Core. Lower value correpsonds to delay in turning off fourth core. (Default: 1026.000 kHz)" name="hotplug_freq_4_0" action="generic_cortex /tmp/hotplug_freq_4_0" unit="kHz" min="162000" reversed="false" step="108000" max="1890000"/>
 
@@ -272,17 +266,17 @@
 
 		<seekBar description="The cpu load at which governor scales CPU down. Cur Load less than down_load and cpu online greater than 1: Cpu Hotplug OUT. Value corresponding to 101 causes immediately HOTPLUG OUT. (Default: 30%)" name="hotplug_load_4_0" action="generic_cortex /tmp/hotplug_load_4_0" unit="%" min="0" reversed="false" step="1" max="101"/>
 
-		<seekBar description="Threshold run queue length for second core to turn on. (Default: 0)" name="hotplug_rq_1_1" action="generic_cortex /tmp/hotplug_rq_1_1" unit="uint" min="0" reversed="false" step="1" max="600"/>
+		<seekBar description="Threshold run queue length for second core to turn on. (Default: 0)" name="hotplug_rq_1_1" action="generic_cortex /tmp/hotplug_rq_1_1" unit="uint" min="0" reversed="false" step="10" max="600"/>
 
-		<seekBar description="Threshold run queue length for second core to turn off. (Default: 0)" name="hotplug_rq_2_0" action="generic_cortex /tmp/hotplug_rq_2_0" unit="uint" min="0" reversed="false" step="1" max="600"/>
+		<seekBar description="Threshold run queue length for second core to turn off. (Default: 0)" name="hotplug_rq_2_0" action="generic_cortex /tmp/hotplug_rq_2_0" unit="uint" min="0" reversed="false" step="10" max="600"/>
 
-		<seekBar description="Threshold run queue length for third core to turn on. (Default: 0)" name="hotplug_rq_2_1" action="generic_cortex /tmp/hotplug_rq_2_1" unit="uint" min="0" reversed="false" step="1" max="600"/>
+		<seekBar description="Threshold run queue length for third core to turn on. (Default: 0)" name="hotplug_rq_2_1" action="generic_cortex /tmp/hotplug_rq_2_1" unit="uint" min="0" reversed="false" step="10" max="600"/>
 
-		<seekBar description="Threshold run queue length for third core to turn off. (Default: 0)" name="hotplug_rq_3_0" action="generic_cortex /tmp/hotplug_rq_3_0" unit="uint" min="0" reversed="false" step="1" max="600"/>
+		<seekBar description="Threshold run queue length for third core to turn off. (Default: 0)" name="hotplug_rq_3_0" action="generic_cortex /tmp/hotplug_rq_3_0" unit="uint" min="0" reversed="false" step="10" max="600"/>
 
-		<seekBar description="Threshold run queue length for fourth core to turn on. (Default: 0)" name="hotplug_rq_3_1" action="generic_cortex /tmp/hotplug_rq_3_1" unit="uint" min="0" reversed="false" step="1" max="600"/>
+		<seekBar description="Threshold run queue length for fourth core to turn on. (Default: 0)" name="hotplug_rq_3_1" action="generic_cortex /tmp/hotplug_rq_3_1" unit="uint" min="0" reversed="false" step="10" max="600"/>
 
-		<seekBar description="Threshold run queue length for fourth core to turn off. (Default: 0)" name="hotplug_rq_4_0" action="generic_cortex /tmp/hotplug_rq_4_0" unit="uint" min="0" reversed="false" step="1" max="600"/>
+		<seekBar description="Threshold run queue length for fourth core to turn off. (Default: 0)" name="hotplug_rq_4_0" action="generic_cortex /tmp/hotplug_rq_4_0" unit="uint" min="0" reversed="false" step="10" max="600"/>
 
 		<seekBar description="Max cpus hotplugging limit. (Default: 4)" name="maxcoreslimit" action="generic_cortex /tmp/maxcoreslimit" unit="int" min="1" reversed="false" step="1" max="4"/>
 
@@ -322,7 +316,7 @@
 
 		<seekBar description="Down threshold frequency to turn third core Off, when some other conditions is also met. ie If (maximum frequency less than hotplug_freq 3 0) Hotplug OUT Third Core. Lower value correpsonds to delay in turning off third core. (Default: 918.000 kHz)" name="hotplug_freq_3_0_sleep" action="generic_cortex /tmp/hotplug_freq_3_0_sleep" unit="kHz" min="162000" reversed="false" step="108000" max="1890000"/>
 
-		<seekBar description="Up threshold frequency to turn fourth core On, when some other conditions is also met. ie If (minimum frequency greater than or equal to hotplug_freq 3 1) Hotplug IN thirdthirdFourth Core. Higher value correpsonds to delay in turning on Fourth core. (Default: 1674.000 kHz)" name="hotplug_freq_3_1_sleep" action="generic_cortex /tmp/hotplug_freq_3_1_sleep" unit="kHz" min="162000" reversed="false" step="108000" max="1890000"/>
+		<seekBar description="Up threshold frequency to turn fourth core On, when some other conditions is also met. ie If (minimum frequency greater than or equal to hotplug_freq 3 1) Hotplug IN Fourth Core. Higher value correpsonds to delay in turning on Fourth core. (Default: 1674.000 kHz)" name="hotplug_freq_3_1_sleep" action="generic_cortex /tmp/hotplug_freq_3_1_sleep" unit="kHz" min="162000" reversed="false" step="108000" max="1890000"/>
 
 		<seekBar description="Down threshold frequency to turn fourth core Off, when some other conditions is also met. ie If (maximum frequency less than hotplug_freq 4 0) Hotplug OUT Fourth Core. Lower value correpsonds to delay in turning off fourth core. (Default: 1026.000 kHz)" name="hotplug_freq_4_0_sleep" action="generic_cortex /tmp/hotplug_freq_4_0_sleep" unit="kHz" min="162000" reversed="false" step="108000" max="1890000"/>
 
@@ -338,17 +332,17 @@
 
 		<seekBar description="The cpu load at which governor scales CPU down. Cur Load less than down_load and cpu online greater than 1: Cpu Hotplug OUT. Value corresponding to 101 causes immediately HOTPLUG OUT. (Default: 30%)" name="hotplug_load_4_0_sleep" action="generic_cortex /tmp/hotplug_load_4_0_sleep" unit="%" min="0" reversed="false" step="1" max="101"/>
 
-		<seekBar description="Threshold run queue length for second core to turn on. (Default: 0)" name="hotplug_rq_1_1_sleep" action="generic_cortex /tmp/hotplug_rq_1_1_sleep" unit="uint" min="0" reversed="false" step="1" max="600"/>
+		<seekBar description="Threshold run queue length for second core to turn on. (Default: 0)" name="hotplug_rq_1_1_sleep" action="generic_cortex /tmp/hotplug_rq_1_1_sleep" unit="uint" min="0" reversed="false" step="10" max="600"/>
 
-		<seekBar description="Threshold run queue length for second core to turn off. (Default: 0)" name="hotplug_rq_2_0_sleep" action="generic_cortex /tmp/hotplug_rq_2_0_sleep" unit="uint" min="0" reversed="false" step="1" max="600"/>
+		<seekBar description="Threshold run queue length for second core to turn off. (Default: 0)" name="hotplug_rq_2_0_sleep" action="generic_cortex /tmp/hotplug_rq_2_0_sleep" unit="uint" min="0" reversed="false" step="10" max="600"/>
 
-		<seekBar description="Threshold run queue length for third core to turn on. (Default: 0)" name="hotplug_rq_2_1_sleep" action="generic_cortex /tmp/hotplug_rq_2_1_sleep" unit="uint" min="0" reversed="false" step="1" max="600"/>
+		<seekBar description="Threshold run queue length for third core to turn on. (Default: 0)" name="hotplug_rq_2_1_sleep" action="generic_cortex /tmp/hotplug_rq_2_1_sleep" unit="uint" min="0" reversed="false" step="10" max="600"/>
 
-		<seekBar description="Threshold run queue length for third core to turn off. (Default: 0)" name="hotplug_rq_3_0_sleep" action="generic_cortex /tmp/hotplug_rq_3_0_sleep" unit="uint" min="0" reversed="false" step="1" max="600"/>
+		<seekBar description="Threshold run queue length for third core to turn off. (Default: 0)" name="hotplug_rq_3_0_sleep" action="generic_cortex /tmp/hotplug_rq_3_0_sleep" unit="uint" min="0" reversed="false" step="10" max="600"/>
 
-		<seekBar description="Threshold run queue length for fourth core to turn on. (Default: 0)" name="hotplug_rq_3_1_sleep" action="generic_cortex /tmp/hotplug_rq_3_1_sleep" unit="uint" min="0" reversed="false" step="1" max="600"/>
+		<seekBar description="Threshold run queue length for fourth core to turn on. (Default: 0)" name="hotplug_rq_3_1_sleep" action="generic_cortex /tmp/hotplug_rq_3_1_sleep" unit="uint" min="0" reversed="false" step="10" max="600"/>
 
-		<seekBar description="Threshold run queue length for fourth core to turn off. (Default: 0)" name="hotplug_rq_4_0_sleep" action="generic_cortex /tmp/hotplug_rq_4_0_sleep" unit="uint" min="0" reversed="false" step="1" max="600"/>
+		<seekBar description="Threshold run queue length for fourth core to turn off. (Default: 0)" name="hotplug_rq_4_0_sleep" action="generic_cortex /tmp/hotplug_rq_4_0_sleep" unit="uint" min="0" reversed="false" step="10" max="600"/>
 
 		<seekBar description="Max cpus hotplugging limit. (Default: 1)" name="maxcoreslimit_sleep" action="generic_cortex /tmp/maxcoreslimit_sleep" unit="int" min="1" reversed="false" step="1" max="4"/>
 
@@ -411,6 +405,10 @@
 		<seekBar description="Coming soon. From 200 msecs to 5000 msecs! (Default: 300 msec)" name="syn_touch_booster_off_time" action="generic /sys/kernel/dvfs_touch_if/syn_touch_booster_off_time" unit="msecs" min="200" reversed="false" step="100" max="5000"/>
 
 		<seekBar description="Coming soon. From 100 msecs to 1000 msecs! (Default: 200 msec)" name="syn_touch_booster_chg_time" action="generic /sys/kernel/dvfs_touch_if/syn_touch_booster_chg_time" unit="msecs" min="100" reversed="false" step="100" max="1000"/>
+
+		<seekBar description="Coming soon. From 200 msecs to 1000 msecs! (Default: 300 msec)" name="gpio_key_booster_off_time" action="generic /sys/kernel/dvfs_touch_if/gpio_key_booster_off_time" unit="msecs" min="200" reversed="false" step="100" max="1000"/>
+
+		<seekBar description="Coming soon. From 100 msecs to 1000 msecs! (Default: 200 msec)" name="gpio_key_booster_chg_time" action="generic /sys/kernel/dvfs_touch_if/gpio_key_booster_chg_time" unit="msecs" min="100" reversed="false" step="100" max="1000"/>
 
 	</settingsPane>
 
@@ -540,7 +538,7 @@
 
 	<settingsPane description="General tweaks" name="General tweaks">
 
-		<seekBar description="Vibration force level. (Default: 75)" name="Vibration force" action="generic /sys/vibrator/pwm_val" unit="%" min="0" reversed="false" step="5" max="100"/>
+		<seekBar description="Vibration force level. (Default: 75)" name="Vibration force" action="generic /sys/devices/virtual/timed_output/vibrator/pwm_value" unit="%" min="0" reversed="false" step="5" max="100"/>
 
 		<spinner description="This will force fast charging if it is enabled. If it is enabled, USB MTP will be disabled!  (Default: Disabled)" name="Force Fast Charging" action="generic /sys/kernel/fast_charge/force_fast_charge">
 			<spinnerItem name="Enabled" value="1"/> 

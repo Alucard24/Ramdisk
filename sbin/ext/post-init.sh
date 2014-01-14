@@ -5,13 +5,21 @@ BB=/sbin/busybox
 # first mod the partitions then boot
 $BB sh /sbin/ext/system_tune_on_init.sh;
 
-$BB mount -o remount,rw,nosuid,nodev /system;
-$BB mount -o remount,rw,nosuid,nodev /data;
-$BB mount -o remount,rw,nosuid,nodev /;
+ROOT_RW()
+{
+	$BB mount -o remount,rw /;
+}
+ROOT_RW;
+
+# fix owners on critical folders
+$BB chown -R root:root /tmp;
+$BB chown -R root:root /res;
+$BB chown -R root:root /sbin;
+# $BB chown -R root:root /lib;
 
 # oom and mem perm fix, we have auto adj code, do not allow changes in adj
-$BB chmod 777 /sys/module/lowmemorykiller/parameters/cost;
-$BB chmod 444 /sys/module/lowmemorykiller/parameters/adj;
+$BB chmod 666 /sys/module/lowmemorykiller/parameters/cost;
+$BB chmod 666 /sys/module/lowmemorykiller/parameters/adj;
 $BB chmod 777 /proc/sys/vm/mmap_min_addr;
 
 # protect init from oom
@@ -31,7 +39,6 @@ echo 8192 > /proc/sys/vm/admin_reserve_kbytes;
 
 if [ ! -d /data/.alucard ]; then
 	$BB mkdir -p /data/.alucard;
-	$BB chmod -R 0777 /data/.alucard/;
 fi;
 
 # reset config-backup-restore
@@ -51,19 +58,18 @@ fi;
 [ ! -f /data/.alucard/extreme_performance.profile ] && cp -a /res/customconfig/extreme_performance.profile /data/.alucard/extreme_performance.profile;
 [ ! -f /data/.alucard/extreme_battery.profile ] && cp -a /res/customconfig/extreme_battery.profile /data/.alucard/extreme_battery.profile;
 
+$BB chmod -R 0777 /data/.alucard/;
+
+sleep 1;
+
 . /res/customconfig/customconfig-helper;
 read_defaults;
 read_config;
 
-# STweaks check su only at /system/xbin/su make it so
-if [ -e /system/xbin/su ]; then
-	echo "root for STweaks found";
-elif [ -e /system/bin/su ]; then
-	cp /system/bin/su /system/xbin/su;
-	chmod 6755 /system/xbin/su;
-else
-	echo "ROM without ROOT";
-fi;
+# Apps Install
+$BB sh /sbin/ext/install.sh;
+
+ROOT_RW;
 
 # busybox addons
 if [ -e /system/xbin/busybox ]; then
@@ -76,11 +82,6 @@ $BB ln -s /sys/devices/system/cpu/cpufreq/ /cpugov;
 
 # enable kmem interface for everyone by GM
 echo "0" > /proc/sys/kernel/kptr_restrict;
-
-# Cortex parent should be ROOT/INIT and not STweaks
-nohup /sbin/ext/cortexbrain-tune.sh;
-CORTEX=`pgrep -f "/sbin/ext/cortexbrain-tune.sh"`;
-echo "-900" > /proc/$CORTEX/oom_score_adj;
 
 # create init.d folder if missing
 #if [ ! -d /system/etc/init.d ]; then
@@ -100,9 +101,6 @@ fi;
 
 # for ntfs automounting
 mount -t tmpfs -o mode=0777,gid=1000 tmpfs /mnt/ntfs
-
-# Apps Install
-$BB sh /sbin/ext/install.sh;
 
 (
 	# EFS Backup
@@ -161,10 +159,10 @@ chmod 666 /tmp/uci_done;
 	nohup $BB sh /res/uci.sh restore;
 	UCI_PID=`pgrep -f "/res/uci.sh"`;
 	echo "-800" > /proc/$UCI_PID/oom_score_adj;
+	ROOT_RW;
 	echo "1" > /tmp/uci_done;
 
 	# restore all the PUSH Button Actions back to there location
-	$BB mount -o remount,rw rootfs;
 	$BB mv /res/no-push-on-boot/* /res/customconfig/actions/push-actions/;
 	pkill -f "com.gokhanmoral.stweaks.app";
 

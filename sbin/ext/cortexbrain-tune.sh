@@ -265,123 +265,123 @@ CPU_HOTPLUG_TWEAKS()
 	local intelli_value_tmp=`cat /sys/module/intelli_plug/parameters/intelli_plug_active`;
 
 	# Alucard hotplug
-	local hotplug_enable_tmp="/sys/devices/system/cpu/cpufreq/alucard_hotplug/hotplug_enable";
+	local hotplug_enable_tmp="/sys/kernel/alucard_hotplug/hotplug_enable";
 	if [ ! -e $hotplug_enable_tmp ]; then
 			hotplug_enable_tmp="/dev/null";
 	fi;
-	local alucard_value_tmp=`cat /sys/devices/system/cpu/cpufreq/alucard_hotplug/hotplug_enable`;
+	local alucard_value_tmp=`cat /sys/kernel/alucard_hotplug/hotplug_enable`;
 
-	local hotplug_sampling_rate_tmp="/sys/devices/system/cpu/cpufreq/alucard_hotplug/hotplug_sampling_rate";
+	local hotplug_sampling_rate_tmp="/sys/kernel/alucard_hotplug/hotplug_sampling_rate";
 	if [ ! -e $hotplug_sampling_rate_tmp ]; then
 		hotplug_sampling_rate_tmp="/dev/null";
 	fi;
 
-	local cpu_up_rate_tmp="/sys/devices/system/cpu/cpufreq/alucard_hotplug/cpu_up_rate";
+	local cpu_up_rate_tmp="/sys/kernel/alucard_hotplug/cpu_up_rate";
 	if [ ! -e $cpu_up_rate_tmp ]; then
 		cpu_up_rate_tmp="/dev/null";
 	fi;
 
-	local cpu_down_rate_tmp="/sys/devices/system/cpu/cpufreq/alucard_hotplug/cpu_down_rate";
+	local cpu_down_rate_tmp="/sys/kernel/alucard_hotplug/cpu_down_rate";
 	if [ ! -e $cpu_down_rate_tmp ]; then
 		cpu_down_rate_tmp="/dev/null";
 	fi;
 
-	local hotplug_freq_1_1_tmp="/sys/devices/system/cpu/cpufreq/alucard_hotplug/hotplug_freq_1_1";
+	local hotplug_freq_1_1_tmp="/sys/kernel/alucard_hotplug/hotplug_freq_1_1";
 	if [ ! -e $hotplug_freq_1_1_tmp ]; then
 		hotplug_freq_1_1_tmp="/dev/null";
 	fi;
 
-	local hotplug_freq_2_0_tmp="/sys/devices/system/cpu/cpufreq/alucard_hotplug/hotplug_freq_2_0";
+	local hotplug_freq_2_0_tmp="/sys/kernel/alucard_hotplug/hotplug_freq_2_0";
 	if [ ! -e $hotplug_freq_2_0_tmp ]; then
 		hotplug_freq_2_0_tmp="/dev/null";
 	fi;
 
-	local hotplug_freq_2_1_tmp="/sys/devices/system/cpu/cpufreq/alucard_hotplug/hotplug_freq_2_1";
+	local hotplug_freq_2_1_tmp="/sys/kernel/alucard_hotplug/hotplug_freq_2_1";
 	if [ ! -e $hotplug_freq_2_1_tmp ]; then
 		hotplug_freq_2_1_tmp="/dev/null";
 	fi;
 
-	local hotplug_freq_3_0_tmp="/sys/devices/system/cpu/cpufreq/alucard_hotplug/hotplug_freq_3_0";
+	local hotplug_freq_3_0_tmp="/sys/kernel/alucard_hotplug/hotplug_freq_3_0";
 	if [ ! -e $hotplug_freq_3_0_tmp ]; then
 		hotplug_freq_3_0_tmp="/dev/null";
 	fi;
 
-	local hotplug_freq_3_1_tmp="/sys/devices/system/cpu/cpufreq/alucard_hotplug/hotplug_freq_3_1";
+	local hotplug_freq_3_1_tmp="/sys/kernel/alucard_hotplug/hotplug_freq_3_1";
 	if [ ! -e $hotplug_freq_3_1_tmp ]; then
 		hotplug_freq_3_1_tmp="/dev/null";
 	fi;
 
-	local hotplug_freq_4_0_tmp="/sys/devices/system/cpu/cpufreq/alucard_hotplug/hotplug_freq_4_0";
+	local hotplug_freq_4_0_tmp="/sys/kernel/alucard_hotplug/hotplug_freq_4_0";
 	if [ ! -e $hotplug_freq_4_0_tmp ]; then
 		hotplug_freq_4_0_tmp="/dev/null";
 	fi;
 
-	local hotplug_load_1_1_tmp="/sys/devices/system/cpu/cpufreq/alucard_hotplug/hotplug_load_1_1";
+	local hotplug_load_1_1_tmp="/sys/kernel/alucard_hotplug/hotplug_load_1_1";
 	if [ ! -e $hotplug_load_1_1_tmp ]; then
 		hotplug_load_1_1_tmp="/dev/null";
 	fi;
 
-	local hotplug_load_2_0_tmp="/sys/devices/system/cpu/cpufreq/alucard_hotplug/hotplug_load_2_0";
+	local hotplug_load_2_0_tmp="/sys/kernel/alucard_hotplug/hotplug_load_2_0";
 	if [ ! -e $hotplug_load_2_0_tmp ]; then
 		hotplug_load_2_0_tmp="/dev/null";
 	fi;
 
-	local hotplug_load_2_1_tmp="/sys/devices/system/cpu/cpufreq/alucard_hotplug/hotplug_load_2_1";
+	local hotplug_load_2_1_tmp="/sys/kernel/alucard_hotplug/hotplug_load_2_1";
 	if [ ! -e $hotplug_load_2_1_tmp ]; then
 		hotplug_load_2_1_tmp="/dev/null";
 	fi;
 
-	local hotplug_load_3_0_tmp="/sys/devices/system/cpu/cpufreq/alucard_hotplug/hotplug_load_3_0";
+	local hotplug_load_3_0_tmp="/sys/kernel/alucard_hotplug/hotplug_load_3_0";
 	if [ ! -e $hotplug_load_3_0_tmp ]; then
 		hotplug_load_3_0_tmp="/dev/null";
 	fi;
 
-	local hotplug_load_3_1_tmp="/sys/devices/system/cpu/cpufreq/alucard_hotplug/hotplug_load_3_1";
+	local hotplug_load_3_1_tmp="/sys/kernel/alucard_hotplug/hotplug_load_3_1";
 	if [ ! -e $hotplug_load_3_1_tmp ]; then
 		hotplug_load_3_1_tmp="/dev/null";
 	fi;
 
-	local hotplug_load_4_0_tmp="/sys/devices/system/cpu/cpufreq/alucard_hotplug/hotplug_load_4_0";
+	local hotplug_load_4_0_tmp="/sys/kernel/alucard_hotplug/hotplug_load_4_0";
 	if [ ! -e $hotplug_load_4_0_tmp ]; then
 		hotplug_load_4_0_tmp="/dev/null";
 	fi;
 
-	local hotplug_rq_1_1_tmp="/sys/devices/system/cpu/cpufreq/alucard_hotplug/hotplug_rq_1_1";
+	local hotplug_rq_1_1_tmp="/sys/kernel/alucard_hotplug/hotplug_rq_1_1";
 	if [ ! -e $hotplug_rq_1_1_tmp ]; then
 		hotplug_rq_1_1_tmp="/dev/null";
 	fi;
 
-	local hotplug_rq_2_0_tmp="/sys/devices/system/cpu/cpufreq/alucard_hotplug/hotplug_rq_2_0";
+	local hotplug_rq_2_0_tmp="/sys/kernel/alucard_hotplug/hotplug_rq_2_0";
 	if [ ! -e $hotplug_rq_2_0_tmp ]; then
 		hotplug_rq_2_0_tmp="/dev/null";
 	fi;
 
-	local hotplug_rq_2_1_tmp="/sys/devices/system/cpu/cpufreq/alucard_hotplug/hotplug_rq_2_1";
+	local hotplug_rq_2_1_tmp="/sys/kernel/alucard_hotplug/hotplug_rq_2_1";
 	if [ ! -e $hotplug_rq_2_1_tmp ]; then
 		hotplug_rq_2_1_tmp="/dev/null";
 	fi;
 
-	local hotplug_rq_3_0_tmp="/sys/devices/system/cpu/cpufreq/alucard_hotplug/hotplug_rq_3_0";
+	local hotplug_rq_3_0_tmp="/sys/kernel/alucard_hotplug/hotplug_rq_3_0";
 	if [ ! -e $hotplug_rq_3_0_tmp ]; then
 		hotplug_rq_3_0_tmp="/dev/null";
 	fi;
 
-	local hotplug_rq_3_1_tmp="/sys/devices/system/cpu/cpufreq/alucard_hotplug/hotplug_rq_3_1";
+	local hotplug_rq_3_1_tmp="/sys/kernel/alucard_hotplug/hotplug_rq_3_1";
 	if [ ! -e $hotplug_rq_3_1_tmp ]; then
 		hotplug_rq_3_1_tmp="/dev/null";
 	fi;
 
-	local hotplug_rq_4_0_tmp="/sys/devices/system/cpu/cpufreq/alucard_hotplug/hotplug_rq_4_0";
+	local hotplug_rq_4_0_tmp="/sys/kernel/alucard_hotplug/hotplug_rq_4_0";
 	if [ ! -e $hotplug_rq_4_0_tmp ]; then
 		hotplug_rq_4_0_tmp="/dev/null";
 	fi;
 
-	local maxcoreslimit_tmp="/sys/devices/system/cpu/cpufreq/alucard_hotplug/maxcoreslimit";
+	local maxcoreslimit_tmp="/sys/kernel/alucard_hotplug/maxcoreslimit";
 	if [ ! -e $maxcoreslimit_tmp ]; then
 		maxcoreslimit_tmp="/dev/null";
 	fi;
 
-	local accuratecpufreq_tmp="/sys/devices/system/cpu/cpufreq/alucard_hotplug/accuratecpufreq";
+	local accuratecpufreq_tmp="/sys/kernel/alucard_hotplug/accuratecpufreq";
 	if [ ! -e $accuratecpufreq_tmp ]; then
 		accuratecpufreq_tmp="/dev/null";
 	fi;
@@ -638,11 +638,6 @@ CPU_GOV_TWEAKS()
 			pump_dec_step_tmp="/dev/null";
 		fi;
 
-		local cpus_boost_tmp="/sys/devices/system/cpu/cpufreq/$SYSTEM_GOVERNOR/cpus_boost";
-		if [ ! -e $cpus_boost_tmp ]; then
-			cpus_boost_tmp="/dev/null";
-		fi;
-
 		# sleep-settings
 		if [ "$state" == "sleep" ]; then
 			echo "$sampling_rate_sleep" > $sampling_rate_tmp;
@@ -690,7 +685,6 @@ CPU_GOV_TWEAKS()
 			echo "$freq_up_brake" > $freq_up_brake_tmp;
 			echo "$pump_inc_step" > $pump_inc_step_tmp;
 			echo "$pump_dec_step" > $pump_dec_step_tmp;
-			echo "$cpus_boost" > $cpus_boost_tmp;
 			CPU_HOTPLUG_TWEAKS "awake";
 		fi;
 
@@ -1195,9 +1189,9 @@ CALL_STATE()
 
 VIBRATE_FIX()
 {
-	echo "$pwm_val" > /sys/vibrator/pwm_val;
+	echo "$pwm_value" > /sys/devices/virtual/timed_output/vibrator/pwm_value;
 
-	log -p i -t $FILE_NAME "*** VIBRATE_FIX: $pwm_val ***";
+	log -p i -t $FILE_NAME "*** VIBRATE_FIX: $pwm_value ***";
 }
 
 MOUNT_FIX()
