@@ -85,6 +85,44 @@ if [ -e /system/xbin/busybox ]; then
 	ln -s /system/xbin/busybox /sbin/ifconfig;
 fi;
 
+######################################
+# Loading Modules
+######################################
+(
+	sleep 40;
+	# order of modules load is important
+	if [ "$cifs_module" == "on" ]; then
+		if [ -e /system/lib/modules/cifs.ko ]; then
+			$BB insmod /system/lib/modules/cifs.ko;
+		else
+			$BB insmod /lib/modules/cifs.ko;
+		fi;
+	fi;
+	if [ "$exfat_module" == "on" ]; then
+		if [ -e /system/lib/modules/exfat_core.ko ]; then
+			$BB insmod /system/lib/modules/exfat_core.ko;
+			$BB insmod /system/lib/modules/exfat_fs.ko;
+		else
+			$BB insmod /lib/modules/exfat_core.ko;
+			$BB insmod /lib/modules/exfat_fs.ko;
+		fi;
+	fi;
+	if [ "$ntfs_module" == "on" ]; then
+		if [ -e /system/lib/modules/ntfs.ko ]; then
+			$BB insmod /system/lib/modules/ntfs.ko;
+		else
+			$BB insmod /lib/modules/ntfs.ko;
+		fi;
+	fi;
+	if [ "$frandom_module" == "on" ]; then
+		if [ -e /system/lib/modules/frandom.ko ]; then
+			$BB insmod /system/lib/modules/frandom.ko;
+		else
+			$BB insmod /lib/modules/frandom.ko;
+		fi;
+	fi;
+)&
+
 # some nice thing for dev
 $BB ln -s /sys/devices/system/cpu/cpu0/cpufreq /cpufreq;
 $BB ln -s /sys/devices/system/cpu/cpufreq/ /cpugov;

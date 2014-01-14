@@ -610,6 +610,22 @@
 
 </settingsTab>
 
+<settingsTab name="MODULES">
+
+	<settingsPane description="Here you can load on boot kernel modules that will allow some extra functions." name="Kernel Modules">
+
+		<checkbox description="Enable or Disable CIFS Module. This will allow to use apps that can mount internal storage and publish over network. User can access data and system over network. No support, effect only after reboot!" name="CIFS Module" action="generic_cortex /tmp/cifs_module" label="CIFS Module"/>
+
+		<checkbox description="Enable or Disable EXFAT Module. This will allow to support extSdcard formatted as exfat partition. No support, effect only after reboot!" name="EXFAT Module" action="generic_cortex /tmp/exfat_module" label="EXFAT Module"/>
+
+		<checkbox description="Enable or Disable FRANDOM Module. It implements a random number generator, which is 10-50 times faster than what you get from Linux' built-in urandom. No support, effect only after reboot!" name="FRANDOM Module" action="generic_cortex /tmp/frandom_module" label="FRANDOM Module"/>
+
+		<checkbox description="Enable or Disable NTFS Module. This will allow to support extSdcard formatted as ntfs partition. No support, effect only after reboot!" name="NTFS Module" action="generic_cortex /tmp/ntfs_module" label="NTFS Module"/>
+
+	</settingsPane>
+
+</settingsTab>
+
 <settingsTab name="PROFILES">
 
 	<settingsPane description="You can check what profile is used right now." name="Online Profile">
