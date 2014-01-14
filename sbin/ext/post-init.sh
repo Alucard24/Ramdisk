@@ -66,8 +66,17 @@ sleep 1;
 read_defaults;
 read_config;
 
-# Apps Install
-$BB sh /sbin/ext/install.sh;
+ROOT_RW;
+
+if [ ! -f /system/xbin/busybox ]; then
+	$BB ln -s /sbin/busybox /system/xbin/busybox;
+	$BB ln -s /sbin/busybox /system/xbin/pkill;
+fi;
+
+if [ ! -f /system/bin/busybox ]; then
+	$BB ln -s /sbin/busybox /system/bin/busybox;
+	$BB ln -s /sbin/busybox /system/bin/pkill;
+fi;
 
 ROOT_RW;
 
@@ -117,7 +126,7 @@ chmod 666 /tmp/uci_done;
 (
 
 	# tweaks all the dm partitions that hold moved to sdcard apps
-	sleep 30;
+	sleep 5;
 	#DM_COUNT=`ls -d /sys/block/dm* | wc -l`;
 	#if [ "$DM_COUNT" -gt "0" ]; then
 	#	for d in $($BB mount | grep dm | cut -d " " -f1 | grep -v vold); do
