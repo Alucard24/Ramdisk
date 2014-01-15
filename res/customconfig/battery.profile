@@ -159,5 +159,4 @@ cortexbrain_kernel_tweaks=on
 cortexbrain_io=on
 cifs_module=off
 exfat_module=on
-frandom_module=off
 ntfs_module=off

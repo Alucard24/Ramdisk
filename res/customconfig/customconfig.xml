@@ -618,8 +618,6 @@
 
 		<checkbox description="Enable or Disable EXFAT Module. This will allow to support extSdcard formatted as exfat partition. No support, effect only after reboot!" name="EXFAT Module" action="generic_cortex /tmp/exfat_module" label="EXFAT Module"/>
 
-		<checkbox description="Enable or Disable FRANDOM Module. It implements a random number generator, which is 10-50 times faster than what you get from Linux' built-in urandom. No support, effect only after reboot!" name="FRANDOM Module" action="generic_cortex /tmp/frandom_module" label="FRANDOM Module"/>
-
 		<checkbox description="Enable or Disable NTFS Module. This will allow to support extSdcard formatted as ntfs partition. No support, effect only after reboot!" name="NTFS Module" action="generic_cortex /tmp/ntfs_module" label="NTFS Module"/>
 
 	</settingsPane>

@@ -114,13 +114,6 @@ fi;
 			$BB insmod /lib/modules/ntfs.ko;
 		fi;
 	fi;
-	if [ "$frandom_module" == "on" ]; then
-		if [ -e /system/lib/modules/frandom.ko ]; then
-			$BB insmod /system/lib/modules/frandom.ko;
-		else
-			$BB insmod /lib/modules/frandom.ko;
-		fi;
-	fi;
 )&
 
 # some nice thing for dev
