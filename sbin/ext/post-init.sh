@@ -89,7 +89,7 @@ fi;
 # Loading Modules
 ######################################
 (
-	sleep 40;
+	sleep 15;
 	# order of modules load is important
 	if [ "$cifs_module" == "on" ]; then
 		if [ -e /system/lib/modules/cifs.ko ]; then
