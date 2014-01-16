@@ -381,11 +381,6 @@ CPU_HOTPLUG_TWEAKS()
 		maxcoreslimit_tmp="/dev/null";
 	fi;
 
-	local accuratecpufreq_tmp="/sys/kernel/alucard_hotplug/accuratecpufreq";
-	if [ ! -e $accuratecpufreq_tmp ]; then
-		accuratecpufreq_tmp="/dev/null";
-	fi;
-
 	local eco_mode_active_tmp="/sys/module/intelli_plug/parameters/eco_mode_active";
 	if [ ! -e $eco_mode_active_tmp ]; then
 		eco_mode_active_tmp="/dev/null";
@@ -473,7 +468,6 @@ CPU_HOTPLUG_TWEAKS()
 			echo "$hotplug_rq_3_0_sleep" > $hotplug_rq_3_0_tmp;
 			echo "$hotplug_rq_3_1_sleep" > $hotplug_rq_3_1_tmp;
 			echo "$hotplug_rq_4_0_sleep" > $hotplug_rq_4_0_tmp;
-			echo "$accuratecpufreq_sleep" > $accuratecpufreq_tmp;
 			echo "$maxcoreslimit_sleep" > $maxcoreslimit_tmp;
 		# awake-settings
 		elif [ "$state" == "awake" ]; then
@@ -498,7 +492,6 @@ CPU_HOTPLUG_TWEAKS()
 			echo "$hotplug_rq_3_0" > $hotplug_rq_3_0_tmp;
 			echo "$hotplug_rq_3_1" > $hotplug_rq_3_1_tmp;
 			echo "$hotplug_rq_4_0" > $hotplug_rq_4_0_tmp;
-			echo "$accuratecpufreq" > $accuratecpufreq_tmp;
 			echo "$maxcoreslimit" > $maxcoreslimit_tmp;
 		fi;
 
