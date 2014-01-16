@@ -280,11 +280,6 @@
 
 		<seekBar description="Max cpus hotplugging limit. (Default: 4)" name="maxcoreslimit" action="generic_cortex /tmp/maxcoreslimit" unit="int" min="1" reversed="false" step="1" max="4"/>
 
-		<spinner description="Use apu function for getting current core frequency. (Default: Enabled)" name="accuratecpufreq" action="generic_cortex /tmp/accuratecpufreq">
-			<spinnerItem name="Enabled" value="1"/> 
-			<spinnerItem name="Disabled" value="0"/> 
-		</spinner>
-
 	</settingsPane>
 
 </settingsTab>
@@ -345,11 +340,6 @@
 		<seekBar description="Threshold run queue length for fourth core to turn off. (Default: 0)" name="hotplug_rq_4_0_sleep" action="generic_cortex /tmp/hotplug_rq_4_0_sleep" unit="uint" min="0" reversed="false" step="10" max="600"/>
 
 		<seekBar description="Max cpus hotplugging limit. (Default: 1)" name="maxcoreslimit_sleep" action="generic_cortex /tmp/maxcoreslimit_sleep" unit="int" min="1" reversed="false" step="1" max="4"/>
-
-		<spinner description="Use apu function for getting current core frequency. (Default: Enabled)" name="accuratecpufreq_sleep" action="generic_cortex /tmp/accuratecpufreq_sleep">
-			<spinnerItem name="Enabled" value="1"/> 
-			<spinnerItem name="Disabled" value="0"/> 
-		</spinner>
 
 	</settingsPane>
 
