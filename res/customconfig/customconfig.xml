@@ -520,6 +520,12 @@
 
 <settingsTab name="Other">
 
+	<settingsPane description="INIT.D" name="INIT.D">
+
+		<checkbox description="Enable or Disable INIT.D scripts RUN on boot. Many new ROMS are running the init.d scripts automatically. You can also force running the scripts, but if you run them and ROM runs them too, we have a problem: all scripts are running X2 times! To avoid conflicts, Stweaks RUN-control is disabled by default. If you know that your ROM is NOT supporting init.d script running, then turn it ON here and reboot." name="INIT.D Scripts RUN control" action="generic_cortex /tmp/init_d" label="Enable INIT.D scripts RUN-control"/>
+
+	</settingsPane>
+
 	<settingsPane description="Android Additional Logs" name="Logger">
 
 		<checkbox description="Enable or Disable Android Additional Logs (needs reboot)" name="Android Logger" action="generic_cortex /tmp/logger" label="Android Logger"/>

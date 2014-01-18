@@ -135,6 +135,7 @@ oom_config_screen_off=medium
 dirty_background_ratio=15
 dirty_ratio=20
 swappiness=0
+init_d=off
 logger=off
 pwm_value=75
 force_fast_charge=0

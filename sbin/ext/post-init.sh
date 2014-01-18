@@ -124,10 +124,16 @@ $BB ln -s /sys/devices/system/cpu/cpufreq/ /cpugov;
 echo "0" > /proc/sys/kernel/kptr_restrict;
 
 # create init.d folder if missing
-#if [ ! -d /system/etc/init.d ]; then
-#	mkdir -p /system/etc/init.d/
-#	$BB chmod 755 /system/etc/init.d/;
-#fi;
+if [ ! -d /system/etc/init.d ]; then
+	mkdir -p /system/etc/init.d/
+	$BB chmod 755 /system/etc/init.d/;
+fi;
+
+(
+	if [ "$init_d" == "on" ]; then
+		$BB sh /sbin/ext/run-init-scripts.sh;
+	fi;
+)&
 
 # disable debugging on some modules
 if [ "$logger" == "off" ]; then
@@ -149,10 +155,6 @@ mount -t tmpfs -o mode=0777,gid=1000 tmpfs /mnt/ntfs
 
 echo "0" > /tmp/uci_done;
 chmod 666 /tmp/uci_done;
-
-#if [ -d /system/etc/init.d ]; then
-#	$BB run-parts /system/etc/init.d;
-#fi;
 
 (
 
