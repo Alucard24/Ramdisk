@@ -59,13 +59,9 @@
 
 		<seekBar description="CPU Voltage for 378 MHz." name="CPU Voltage 378 MHz" action="cpu-voltage 15" unit="V" min="825000" reversed="false" step="12500" max="925000"/>
 
-		<seekBar description="CPU Voltage for 324 MHz." name="CPU Voltage 324 MHz" action="cpu-voltage 16" unit="V" min="825000" reversed="false" step="12500" max="925000"/>
+		<seekBar description="CPU Voltage for 270 MHz." name="CPU Voltage 270 MHz" action="cpu-voltage 16" unit="V" min="800000" reversed="false" step="12500" max="900000"/>
 
-		<seekBar description="CPU Voltage for 270 MHz." name="CPU Voltage 270 MHz" action="cpu-voltage 17" unit="V" min="800000" reversed="false" step="12500" max="900000"/>
-
-		<seekBar description="CPU Voltage for 216 MHz." name="CPU Voltage 216 MHz" action="cpu-voltage 18" unit="V" min="800000" reversed="false" step="12500" max="900000"/>
-
-		<seekBar description="CPU Voltage for 162 MHz." name="CPU Voltage 162 MHz" action="cpu-voltage 19" unit="V" min="800000" reversed="false" step="12500" max="900000"/>
+		<seekBar description="CPU Voltage for 162 MHz." name="CPU Voltage 162 MHz" action="cpu-voltage 17" unit="V" min="800000" reversed="false" step="12500" max="900000"/>
 
 	</settingsPane>
 
