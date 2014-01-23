@@ -238,9 +238,9 @@
 
 		<seekBar description="Measured in uS and actual meaning being Sampling Interval, this factor determines how often the governor should poll for CPU usage in terms of frequency and load percentage to make hotplugging decisions. (Default: 60.000 uS)" name="hotplug_sampling_rate" action="generic_cortex /tmp/hotplug_sampling_rate" unit="uS" min="10000" reversed="false" step="10000" max="120000"/>
 
-		<seekBar description="No of samples to evaluate load to scale CPU Up. After cpu_up_rate samples are finished for a frequency, CPU scale-Up logic is executed. In other words - before scaling Up, cpu_up_rate X up_sample_time micro seconds are spend at a frequency. (Default: 10)" name="cpu_up_rate" action="generic_cortex /tmp/cpu_up_rate" unit="int" min="1" reversed="false" step="1" max="40"/>
+		<seekBar description="No of samples to evaluate load to scale CPU Up. After cpu_up_rate samples are finished for a frequency, CPU scale-Up logic is executed. In other words - before scaling Up, cpu_up_rate X up_sample_time micro seconds are spend at a frequency. (Default: 2)" name="cpu_up_rate" action="generic_cortex /tmp/cpu_up_rate" unit="int" min="1" reversed="false" step="1" max="40"/>
 
-		<seekBar description="No of samples to evaluate load to scale CPU Down. After CPU_down_rate samples are finished for a frequency, CPU scale-Down logic is executed. In other words - before scaling Down, cpu_down_rate X down_sample_time micro seconds are spend at a frequency. (Default: 10)" name="cpu_down_rate" action="generic_cortex /tmp/cpu_down_rate" unit="int" min="1" reversed="false" step="1" max="40"/>
+		<seekBar description="No of samples to evaluate load to scale CPU Down. After CPU_down_rate samples are finished for a frequency, CPU scale-Down logic is executed. In other words - before scaling Down, cpu_down_rate X down_sample_time micro seconds are spend at a frequency. (Default: 2)" name="cpu_down_rate" action="generic_cortex /tmp/cpu_down_rate" unit="int" min="1" reversed="false" step="1" max="40"/>
 
 		<seekBar description="Up threshold frequency to turn second core On, when some other conditions is also met. ie If (minimum frequency greater than or equal to hotplug_freq 1 1) Hotplug IN Second Core. Higher value correpsonds to delay in turning on second core. (Default: 1242.000 kHz)" name="hotplug_freq_1_1" action="generic_cortex /tmp/hotplug_freq_1_1" unit="kHz" min="162000" reversed="false" step="108000" max="1890000"/>
 
@@ -266,17 +266,17 @@
 
 		<seekBar description="The cpu load at which governor scales CPU down. Cur Load less than down_load and cpu online greater than 1: Cpu Hotplug OUT. Value corresponding to 101 causes immediately HOTPLUG OUT. (Default: 30%)" name="hotplug_load_4_0" action="generic_cortex /tmp/hotplug_load_4_0" unit="%" min="0" reversed="false" step="1" max="101"/>
 
-		<seekBar description="Threshold run queue length for second core to turn on. (Default: 0)" name="hotplug_rq_1_1" action="generic_cortex /tmp/hotplug_rq_1_1" unit="uint" min="0" reversed="false" step="10" max="600"/>
+		<seekBar description="Threshold run queue length for second core to turn on. (Default: 100)" name="hotplug_rq_1_1" action="generic_cortex /tmp/hotplug_rq_1_1" unit="uint" min="0" reversed="false" step="10" max="600"/>
 
-		<seekBar description="Threshold run queue length for second core to turn off. (Default: 0)" name="hotplug_rq_2_0" action="generic_cortex /tmp/hotplug_rq_2_0" unit="uint" min="0" reversed="false" step="10" max="600"/>
+		<seekBar description="Threshold run queue length for second core to turn off. (Default: 100)" name="hotplug_rq_2_0" action="generic_cortex /tmp/hotplug_rq_2_0" unit="uint" min="0" reversed="false" step="10" max="600"/>
 
-		<seekBar description="Threshold run queue length for third core to turn on. (Default: 0)" name="hotplug_rq_2_1" action="generic_cortex /tmp/hotplug_rq_2_1" unit="uint" min="0" reversed="false" step="10" max="600"/>
+		<seekBar description="Threshold run queue length for third core to turn on. (Default: 200)" name="hotplug_rq_2_1" action="generic_cortex /tmp/hotplug_rq_2_1" unit="uint" min="0" reversed="false" step="10" max="600"/>
 
-		<seekBar description="Threshold run queue length for third core to turn off. (Default: 0)" name="hotplug_rq_3_0" action="generic_cortex /tmp/hotplug_rq_3_0" unit="uint" min="0" reversed="false" step="10" max="600"/>
+		<seekBar description="Threshold run queue length for third core to turn off. (Default: 200)" name="hotplug_rq_3_0" action="generic_cortex /tmp/hotplug_rq_3_0" unit="uint" min="0" reversed="false" step="10" max="600"/>
 
-		<seekBar description="Threshold run queue length for fourth core to turn on. (Default: 0)" name="hotplug_rq_3_1" action="generic_cortex /tmp/hotplug_rq_3_1" unit="uint" min="0" reversed="false" step="10" max="600"/>
+		<seekBar description="Threshold run queue length for fourth core to turn on. (Default: 300)" name="hotplug_rq_3_1" action="generic_cortex /tmp/hotplug_rq_3_1" unit="uint" min="0" reversed="false" step="10" max="600"/>
 
-		<seekBar description="Threshold run queue length for fourth core to turn off. (Default: 0)" name="hotplug_rq_4_0" action="generic_cortex /tmp/hotplug_rq_4_0" unit="uint" min="0" reversed="false" step="10" max="600"/>
+		<seekBar description="Threshold run queue length for fourth core to turn off. (Default: 300)" name="hotplug_rq_4_0" action="generic_cortex /tmp/hotplug_rq_4_0" unit="uint" min="0" reversed="false" step="10" max="600"/>
 
 		<seekBar description="Max cpus hotplugging limit. (Default: 4)" name="maxcoreslimit" action="generic_cortex /tmp/maxcoreslimit" unit="int" min="1" reversed="false" step="1" max="4"/>
 
@@ -299,9 +299,9 @@
 
 		<seekBar description="Measured in uS and actual meaning being Sampling Interval, this factor determines how often the governor should poll for CPU usage in terms of frequency and load percentage to make hotplugging decisions. (Default: 60.000 uS)" name="hotplug_sampling_rate_sleep" action="generic_cortex /tmp/hotplug_sampling_rate_sleep" unit="uS" min="10000" reversed="false" step="10000" max="120000"/>
 
-		<seekBar description="No of samples to evaluate load to scale CPU Up. After cpu_up_rate samples are finished for a frequency, CPU scale-Up logic is executed. In other words - before scaling Up, cpu_up_rate X up_sample_time micro seconds are spend at a frequency. (Default: 10)" name="cpu_up_rate_sleep" action="generic_cortex /tmp/cpu_up_rate_sleep" unit="int" min="1" reversed="false" step="1" max="40"/>
+		<seekBar description="No of samples to evaluate load to scale CPU Up. After cpu_up_rate samples are finished for a frequency, CPU scale-Up logic is executed. In other words - before scaling Up, cpu_up_rate X up_sample_time micro seconds are spend at a frequency. (Default: 2)" name="cpu_up_rate_sleep" action="generic_cortex /tmp/cpu_up_rate_sleep" unit="int" min="1" reversed="false" step="1" max="40"/>
 
-		<seekBar description="No of samples to evaluate load to scale CPU Down. After CPU_down_rate samples are finished for a frequency, CPU scale-Down logic is executed. In other words - before scaling Down, cpu_down_rate X down_sample_time micro seconds are spend at a frequency. (Default: 10)" name="cpu_down_rate_sleep" action="generic_cortex /tmp/cpu_down_rate_sleep" unit="int" min="1" reversed="false" step="1" max="40"/>
+		<seekBar description="No of samples to evaluate load to scale CPU Down. After CPU_down_rate samples are finished for a frequency, CPU scale-Down logic is executed. In other words - before scaling Down, cpu_down_rate X down_sample_time micro seconds are spend at a frequency. (Default: 2)" name="cpu_down_rate_sleep" action="generic_cortex /tmp/cpu_down_rate_sleep" unit="int" min="1" reversed="false" step="1" max="40"/>
 
 		<seekBar description="Up threshold frequency to turn second core On, when some other conditions is also met. ie If (minimum frequency greater than or equal to hotplug_freq 1 1) Hotplug IN Second Core. Higher value correpsonds to delay in turning on second core. (Default: 1242.000 kHz)" name="hotplug_freq_1_1_sleep" action="generic_cortex /tmp/hotplug_freq_1_1_sleep" unit="kHz" min="162000" reversed="false" step="108000" max="1890000"/>
 
@@ -327,17 +327,17 @@
 
 		<seekBar description="The cpu load at which governor scales CPU down. Cur Load less than down_load and cpu online greater than 1: Cpu Hotplug OUT. Value corresponding to 101 causes immediately HOTPLUG OUT. (Default: 30%)" name="hotplug_load_4_0_sleep" action="generic_cortex /tmp/hotplug_load_4_0_sleep" unit="%" min="0" reversed="false" step="1" max="101"/>
 
-		<seekBar description="Threshold run queue length for second core to turn on. (Default: 0)" name="hotplug_rq_1_1_sleep" action="generic_cortex /tmp/hotplug_rq_1_1_sleep" unit="uint" min="0" reversed="false" step="10" max="600"/>
+		<seekBar description="Threshold run queue length for second core to turn on. (Default: 100)" name="hotplug_rq_1_1_sleep" action="generic_cortex /tmp/hotplug_rq_1_1_sleep" unit="uint" min="0" reversed="false" step="10" max="600"/>
 
-		<seekBar description="Threshold run queue length for second core to turn off. (Default: 0)" name="hotplug_rq_2_0_sleep" action="generic_cortex /tmp/hotplug_rq_2_0_sleep" unit="uint" min="0" reversed="false" step="10" max="600"/>
+		<seekBar description="Threshold run queue length for second core to turn off. (Default: 100)" name="hotplug_rq_2_0_sleep" action="generic_cortex /tmp/hotplug_rq_2_0_sleep" unit="uint" min="0" reversed="false" step="10" max="600"/>
 
-		<seekBar description="Threshold run queue length for third core to turn on. (Default: 0)" name="hotplug_rq_2_1_sleep" action="generic_cortex /tmp/hotplug_rq_2_1_sleep" unit="uint" min="0" reversed="false" step="10" max="600"/>
+		<seekBar description="Threshold run queue length for third core to turn on. (Default: 200)" name="hotplug_rq_2_1_sleep" action="generic_cortex /tmp/hotplug_rq_2_1_sleep" unit="uint" min="0" reversed="false" step="10" max="600"/>
 
-		<seekBar description="Threshold run queue length for third core to turn off. (Default: 0)" name="hotplug_rq_3_0_sleep" action="generic_cortex /tmp/hotplug_rq_3_0_sleep" unit="uint" min="0" reversed="false" step="10" max="600"/>
+		<seekBar description="Threshold run queue length for third core to turn off. (Default: 200)" name="hotplug_rq_3_0_sleep" action="generic_cortex /tmp/hotplug_rq_3_0_sleep" unit="uint" min="0" reversed="false" step="10" max="600"/>
 
-		<seekBar description="Threshold run queue length for fourth core to turn on. (Default: 0)" name="hotplug_rq_3_1_sleep" action="generic_cortex /tmp/hotplug_rq_3_1_sleep" unit="uint" min="0" reversed="false" step="10" max="600"/>
+		<seekBar description="Threshold run queue length for fourth core to turn on. (Default: 300)" name="hotplug_rq_3_1_sleep" action="generic_cortex /tmp/hotplug_rq_3_1_sleep" unit="uint" min="0" reversed="false" step="10" max="600"/>
 
-		<seekBar description="Threshold run queue length for fourth core to turn off. (Default: 0)" name="hotplug_rq_4_0_sleep" action="generic_cortex /tmp/hotplug_rq_4_0_sleep" unit="uint" min="0" reversed="false" step="10" max="600"/>
+		<seekBar description="Threshold run queue length for fourth core to turn off. (Default: 300)" name="hotplug_rq_4_0_sleep" action="generic_cortex /tmp/hotplug_rq_4_0_sleep" unit="uint" min="0" reversed="false" step="10" max="600"/>
 
 		<seekBar description="Max cpus hotplugging limit. (Default: 1)" name="maxcoreslimit_sleep" action="generic_cortex /tmp/maxcoreslimit_sleep" unit="int" min="1" reversed="false" step="1" max="4"/>
 
