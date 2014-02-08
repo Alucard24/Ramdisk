@@ -179,14 +179,14 @@ BATTERY_TWEAKS()
 	if [ "$cortexbrain_battery" == "on" ]; then
 		# battery-calibration if battery is full
 		local LEVEL=`cat /sys/class/power_supply/battery/capacity`;
-		local CURR_ADC=`cat /sys/class/power_supply/battery/batt_current_adc`;
-		local BATTFULL=`cat /sys/class/power_supply/battery/batt_full_check`;
+		local CURR_ADC=`cat /sys/class/power_supply/battery/chg_current_adc`;
+		local BATTFULL=`cat /sys/class/power_supply/battery/status`;
 		local i="";
 		local bus="";
 
 		log -p i -t $FILE_NAME "*** BATTERY - LEVEL: $LEVEL - CUR: $CURR_ADC ***";
 
-		if [ "$LEVEL" -eq "100" ] && [ "$BATTFULL" -eq "1" ]; then
+		if [ "$LEVEL" -eq "100" ] && [ "$BATTFULL" -eq "Full" ]; then
 			rm -f /data/system/batterystats.bin;
 			log -p i -t $FILE_NAME "battery-calibration done ...";
 		fi;
@@ -955,13 +955,13 @@ LOGGER()
 	local state="$1";
 
 	if [ "$state" == "awake" ]; then
-		if [ "$android_logger" == auto ] || [ "$android_logger" == debug ]; then
+		if [ "$android_logger" == "auto" ] || [ "$android_logger" == "debug" ]; then
 			echo "1" > /sys/module/logger/parameters/log_enabled;
-		elif [ "$android_logger" == disabled ]; then
+		elif [ "$android_logger" == "disabled" ]; then
 			echo "0" > /sys/module/logger/parameters/log_enabled;
 		fi;
 	elif [ "$state" == "sleep" ]; then
-		if [ "$android_logger" == auto ] || [ "$android_logger" == disabled ]; then
+		if [ "$android_logger" == "auto" ] || [ "$android_logger" == "disabled" ]; then
 			echo "0" > /sys/module/logger/parameters/log_enabled;
 		fi;
 	fi;
@@ -1279,10 +1279,10 @@ SLEEP_MODE()
 		SWAPPINESS;
 
 		# for devs use, if debug is on, then finish full sleep with usb connected
-		if [ "$android_logger" == debug ]; then
+		if [ "$android_logger" == "debug" ]; then
 			CHARGING=0;
 		else
-			CHARGING=`cat /sys/class/power_supply/battery/charging_source`;
+			CHARGING=`cat /sys/class/power_supply/battery/batt_charging_source`;
 		fi;
 
 		# check if we powered by USB, if not sleep
