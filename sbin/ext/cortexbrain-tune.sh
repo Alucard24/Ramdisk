@@ -186,10 +186,10 @@ BATTERY_TWEAKS()
 
 		log -p i -t $FILE_NAME "*** BATTERY - LEVEL: $LEVEL - CUR: $CURR_ADC ***";
 
-		if [ "$LEVEL" -eq "100" ] && [ "$BATTFULL" -eq "Full" ]; then
-			rm -f /data/system/batterystats.bin;
-			log -p i -t $FILE_NAME "battery-calibration done ...";
-		fi;
+		# if [ "$LEVEL" -eq "100" ] && [ "$BATTFULL" -eq "Full" ]; then
+		#	rm -f /data/system/batterystats.bin;
+		#	log -p i -t $FILE_NAME "battery-calibration done ...";
+		# fi;
 
 		# USB: power support
 		local POWER_LEVEL=`ls /sys/bus/usb/devices/*/power/control`;
