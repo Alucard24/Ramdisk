@@ -553,6 +553,15 @@
 
 	</settingsPane>
 
+	<settingsPane description="FS tweaks" name="FS tweaks">
+
+		<spinner description="Here, It is possible to enable or disable DYNAMIC FSYNC!  (Default: Enabled)" name="Dyn_fsync_active" action="generic /sys/kernel/dyn_fsync/Dyn_fsync_active">
+			<spinnerItem name="Enabled" value="1"/> 
+			<spinnerItem name="Disabled" value="0"/> 
+		</spinner>
+
+	</settingsPane>
+
 </settingsTab>
 
 <settingsTab name="Tweaks">
