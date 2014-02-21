@@ -346,6 +346,7 @@
 	<settingsPane description="Here you can tune GPU" name="Gpu Tuning">
 
 		<spinner description="This will set GPU governor. (Default: ondemand)" name="GPU Governor" action="generic /sys/devices/platform/kgsl-3d0.0/kgsl/kgsl-3d0/pwrscale/trustzone/governor">
+			<spinnerItem name="conservative" value="conservative"/>
 			<spinnerItem name="ondemand" value="ondemand"/>
 			<spinnerItem name="performance" value="performance"/>
 			<spinnerItem name="simple" value="simple"/> 
