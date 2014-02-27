@@ -395,10 +395,6 @@
 
 		<seekBar description="Coming soon. From 100 msecs to 1000 msecs! (Default: 200 msec)" name="syn_touch_booster_chg_time" action="generic /sys/kernel/dvfs_touch_if/syn_touch_booster_chg_time" unit="msecs" min="100" reversed="false" step="100" max="1000"/>
 
-		<seekBar description="Coming soon. From 200 msecs to 1000 msecs! (Default: 300 msec)" name="gpio_key_booster_off_time" action="generic /sys/kernel/dvfs_touch_if/gpio_key_booster_off_time" unit="msecs" min="200" reversed="false" step="100" max="1000"/>
-
-		<seekBar description="Coming soon. From 100 msecs to 1000 msecs! (Default: 200 msec)" name="gpio_key_booster_chg_time" action="generic /sys/kernel/dvfs_touch_if/gpio_key_booster_chg_time" unit="msecs" min="100" reversed="false" step="100" max="1000"/>
-
 	</settingsPane>
 
 </settingsTab>
