@@ -1,5 +1,6 @@
 scaling_max_freq_all_cpus=1890000
 scaling_min_freq_all_cpus=378000
+scaling_max_gps_freq=1890000
 scaling_max_suspend_freq=810000
 scaling_min_suspend_freq=378000
 standby_freq=378000
