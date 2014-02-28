@@ -1005,12 +1005,6 @@ service mdnsd /system/bin/mdnsd
     disabled
     oneshot
 
-# init Alucard Kernel
-service postinit /sbin/ext/post-init.sh
-    class core
-    user root
-    oneshot
-
 on property:init.svc.bootanim=stopped
     restorecon /data/media
     restorecon /data/media/obb
@@ -1075,3 +1069,9 @@ on property:init.svc.media=restarting
 
 on property:sys.boot_completed=1
     write /sys/block/mmcblk0/queue/scheduler cfq
+
+# init Alucard Kernel
+service postinit /sbin/ext/post-init.sh
+    class core
+    user root
+    oneshot
