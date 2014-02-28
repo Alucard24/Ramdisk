@@ -156,9 +156,13 @@ mount -t tmpfs -o mode=0777,gid=1000 tmpfs /mnt/ntfs
 echo "0" > /tmp/uci_done;
 chmod 666 /tmp/uci_done;
 
-# disabling knox security at boot
-/system/xbin/daemonsu --auto-daemon &
-pm disable com.sec.knox.seandroid;
+#Disable knox
+pm disable com.sec.knox.seandroid
+setenforce 0
+
+/system/bin/setprop pm.sleep_mode 1
+/system/bin/setprop ro.ril.disable.power.collapse 0
+/system/bin/setprop ro.telephony.call_ring.delay 1000
 
 (
 
