@@ -4,7 +4,7 @@
 
 # stop uci.sh from running all the PUSH Buttons in stweaks on boot
 mount -o remount,rw rootfs;
-chown -R root:system /res/customconfig/actions/;
+chown -R 0.1000 /res/customconfig/actions/;
 chmod -R 6755 /res/customconfig/actions/;
 mv /res/customconfig/actions/push-actions/* /res/no-push-on-boot/;
 chmod 6755 /res/no-push-on-boot/*;

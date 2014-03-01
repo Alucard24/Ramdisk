@@ -12,10 +12,10 @@ ROOT_RW()
 ROOT_RW;
 
 # fix owners on critical folders
-$BB chown -R root:root /tmp;
-$BB chown -R root:root /res;
-$BB chown -R root:root /sbin;
-# $BB chown -R root:root /lib;
+$BB chown -R 0.0 /tmp;
+$BB chown -R 0.0 /res;
+$BB chown -R 0.0 /sbin;
+# $BB chown -R 0.0 /lib;
 
 # oom and mem perm fix, we have auto adj code, do not allow changes in adj
 $BB chmod 666 /sys/module/lowmemorykiller/parameters/cost;
@@ -197,7 +197,7 @@ setenforce 0
 	# stop uci.sh from running all the PUSH Buttons in stweaks on boot
 	$BB mount -o remount,rw rootfs;
 	$BB chmod -R 777 /tmp/;
-	$BB chown -R root:system /res/customconfig/actions/;
+	$BB chown -R 0.1000 /res/customconfig/actions/;
 	$BB chmod -R 6755 /res/customconfig/actions/;
 	$BB mv /res/customconfig/actions/push-actions/* /res/no-push-on-boot/;
 	$BB chmod 6755 /res/no-push-on-boot/*;
