@@ -90,15 +90,3 @@
 /sys/devices/virtual/input/input*	enable		0660	system	radio
 # sensorhub
 /dev/ssp_sensorhub        0660   system     system
-
-# for usb printer
-/dev/bus/usb/*         0660        system        usb
-/dev/usb/lp*           0660        system        usb
-
-#permission for dun
-/dev/dun               0660   system     system
-
-# for PL2303 driver
-/dev/ttyUSB*           0660   system     usb
-# for csvt
-/dev/ttyUSB0           0660   system     radio
