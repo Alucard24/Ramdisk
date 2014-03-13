@@ -156,6 +156,8 @@ mount -t tmpfs -o mode=0777,gid=1000 tmpfs /mnt/ntfs
 echo "0" > /tmp/uci_done;
 chmod 666 /tmp/uci_done;
 
+setenforce 0;
+
 (
 
 	# tweaks all the dm partitions that hold moved to sdcard apps

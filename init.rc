@@ -14,8 +14,8 @@ import /init.trace.rc
 import /init.carrier.rc
 
 on early-init
-    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq 1890000
-    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq 378000
+    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq_all_cpus 1890000
+    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq_all_cpus 378000
 
     # Set init and its forked children's oom_adj.
     write /proc/1/oom_adj -16
