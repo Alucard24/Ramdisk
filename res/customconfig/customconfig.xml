@@ -381,30 +381,30 @@
 
 	<settingsPane description="Here you can tune DVFS Touch frequency" name="Touch Frequency">
 
-		<spinner description="Here you can enable or disable dvfs touch frequency. (Default: Enabled)" name="dvfs_touch_booster_enable" action="generic /sys/kernel/dvfs_touch_if/dvfs_touch_booster_enable">
+		<spinner description="Here you can enable or disable dvfs touch frequency. (Default: Enabled)" name="dvfs_enable" action="generic /sys/kernel/dvfs_touch_if/dvfs_enable">
 			<spinnerItem name="Enabled" value="1"/> 
 			<spinnerItem name="Disabled" value="0"/> 
 		</spinner>
 
-		<seekBar description="Coming soon. From 810.000 kHz to 1.890.000 kHz! (Default: 1.134.000 kHz)" name="dvfs_min_touch_limit" action="genericfreq /sys/kernel/dvfs_touch_if/dvfs_min_touch_limit" unit="kHz" min="810000" reversed="false" step="108000" max="1890000"/>
+		<seekBar description="Coming soon. From 810.000 kHz to 1.890.000 kHz! (Default: 1.134.000 kHz)" name="dvfs_min_limit" action="genericfreq /sys/kernel/dvfs_touch_if/dvfs_min_limit" unit="kHz" min="810000" reversed="false" step="108000" max="1890000"/>
 
-		<seekBar description="Coming soon. From 810.000 kHz to 1.890.000 kHz! (Default: 1.890.000 kHz)" name="dvfs_min_touch_high_limit" action="genericfreq /sys/kernel/dvfs_touch_if/dvfs_min_touch_high_limit" unit="kHz" min="810000" reversed="false" step="108000" max="1890000"/>
+		<seekBar description="Coming soon. From 810.000 kHz to 1.890.000 kHz! (Default: 1.890.000 kHz)" name="dvfs_min_high_limit" action="genericfreq /sys/kernel/dvfs_touch_if/dvfs_min_high_limit" unit="kHz" min="810000" reversed="false" step="108000" max="1890000"/>
 
-		<seekBar description="Coming soon. From 702.000 kHz to 1.566.000 kHz! (Default: 810.000 kHz)" name="dvfs_min_touch_limit_second" action="genericfreq /sys/kernel/dvfs_touch_if/dvfs_min_touch_limit_second" unit="kHz" min="486000" reversed="false" step="108000" max="1566000"/>
+		<seekBar description="Coming soon. From 702.000 kHz to 1.566.000 kHz! (Default: 810.000 kHz)" name="dvfs_min_limit_second" action="genericfreq /sys/kernel/dvfs_touch_if/dvfs_min_limit_second" unit="kHz" min="486000" reversed="false" step="108000" max="1566000"/>
 
-		<seekBar description="Coming soon. From 702.000 kHz to 1.566.000 kHz! (Default: 1566.000 kHz)" name="dvfs_min_touch_high_limit_second" action="genericfreq /sys/kernel/dvfs_touch_if/dvfs_min_touch_high_limit_second" unit="kHz" min="486000" reversed="false" step="108000" max="1566000"/>
+		<seekBar description="Coming soon. From 702.000 kHz to 1.566.000 kHz! (Default: 1566.000 kHz)" name="dvfs_min_high_limit_second" action="genericfreq /sys/kernel/dvfs_touch_if/dvfs_min_high_limit_second" unit="kHz" min="486000" reversed="false" step="108000" max="1566000"/>
 
 	</settingsPane>
 
 	<settingsPane description="Here you can tune DVFS Touch time" name="Touch Time">
 
-		<seekBar description="Coming soon. From 200 msecs to 5000 msecs! (Default: 300 msec)" name="syn_touch_booster_off_time" action="generic /sys/kernel/dvfs_touch_if/syn_touch_booster_off_time" unit="msecs" min="200" reversed="false" step="100" max="5000"/>
+		<seekBar description="Coming soon. From 200 msecs to 5000 msecs! (Default: 300 msec)" name="syn_off_time" action="generic /sys/kernel/dvfs_touch_if/syn_off_time" unit="msecs" min="200" reversed="false" step="100" max="5000"/>
 
-		<seekBar description="Coming soon. From 100 msecs to 1000 msecs! (Default: 200 msec)" name="syn_touch_booster_chg_time" action="generic /sys/kernel/dvfs_touch_if/syn_touch_booster_chg_time" unit="msecs" min="100" reversed="false" step="100" max="1000"/>
+		<seekBar description="Coming soon. From 100 msecs to 1000 msecs! (Default: 200 msec)" name="syn_chg_time" action="generic /sys/kernel/dvfs_touch_if/syn_chg_time" unit="msecs" min="100" reversed="false" step="100" max="1000"/>
 
-		<seekBar description="Coming soon. From 200 msecs to 5000 msecs! (Default: 1000 msec)" name="syn_touch_booster_high_off_time" action="generic /sys/kernel/dvfs_touch_if/syn_touch_booster_high_off_time" unit="msecs" min="200" reversed="false" step="100" max="5000"/>
+		<seekBar description="Coming soon. From 200 msecs to 5000 msecs! (Default: 1000 msec)" name="syn_high_off_time" action="generic /sys/kernel/dvfs_touch_if/syn_high_off_time" unit="msecs" min="200" reversed="false" step="100" max="5000"/>
 
-		<seekBar description="Coming soon. From 100 msecs to 1000 msecs! (Default: 500 msec)" name="syn_touch_booster_high_chg_time" action="generic /sys/kernel/dvfs_touch_if/syn_touch_booster_high_chg_time" unit="msecs" min="100" reversed="false" step="100" max="1000"/>
+		<seekBar description="Coming soon. From 100 msecs to 1000 msecs! (Default: 500 msec)" name="syn_high_chg_time" action="generic /sys/kernel/dvfs_touch_if/syn_high_chg_time" unit="msecs" min="100" reversed="false" step="100" max="1000"/>
 
 	</settingsPane>
 
