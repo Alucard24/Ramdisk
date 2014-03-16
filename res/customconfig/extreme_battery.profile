@@ -160,5 +160,4 @@ cortexbrain_battery=on
 cortexbrain_kernel_tweaks=on
 cortexbrain_io=on
 cifs_module=off
-exfat_module=on
 ntfs_module=off

@@ -98,15 +98,6 @@ fi;
 			$BB insmod /lib/modules/cifs.ko;
 		fi;
 	fi;
-	if [ "$exfat_module" == "on" ]; then
-		if [ -e /system/lib/modules/exfat_core.ko ]; then
-			$BB insmod /system/lib/modules/exfat_core.ko;
-			$BB insmod /system/lib/modules/exfat_fs.ko;
-		else
-			$BB insmod /lib/modules/exfat_core.ko;
-			$BB insmod /lib/modules/exfat_fs.ko;
-		fi;
-	fi;
 	if [ "$ntfs_module" == "on" ]; then
 		if [ -e /system/lib/modules/ntfs.ko ]; then
 			$BB insmod /system/lib/modules/ntfs.ko;
@@ -189,7 +180,7 @@ setenforce 0;
 	while ! $BB pgrep android.process.acore ; do
 	  $BB sleep 1;
 	done;
-	sleep 15;
+	sleep 10;
 
 	# stop uci.sh from running all the PUSH Buttons in stweaks on boot
 	$BB mount -o remount,rw rootfs;

@@ -627,8 +627,6 @@
 
 		<checkbox description="Enable or Disable CIFS Module. This will allow to use apps that can mount internal storage and publish over network. User can access data and system over network. No support, effect only after reboot!" name="CIFS Module" action="generic_cortex /tmp/cifs_module" label="CIFS Module"/>
 
-		<checkbox description="Enable or Disable EXFAT Module. This will allow to support extSdcard formatted as exfat partition. No support, effect only after reboot!" name="EXFAT Module" action="generic_cortex /tmp/exfat_module" label="EXFAT Module"/>
-
 		<checkbox description="Enable or Disable NTFS Module. This will allow to support extSdcard formatted as ntfs partition. No support, effect only after reboot!" name="NTFS Module" action="generic_cortex /tmp/ntfs_module" label="NTFS Module"/>
 
 	</settingsPane>
