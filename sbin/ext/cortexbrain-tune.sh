@@ -74,20 +74,20 @@ IO_TWEAKS()
 
 		local i="";
 
-		local ZRM=`ls -d /sys/block/zram*`;
-		for i in $ZRM; do
-			if [ -e $i/queue/rotational ]; then
-				echo "0" > $i/queue/rotational;
-			fi;
+		#local ZRM=`ls -d /sys/block/zram*`;
+		#for i in $ZRM; do
+		#	if [ -e $i/queue/rotational ]; then
+		#		echo "0" > $i/queue/rotational;
+		#	fi;
 
-			if [ -e $i/queue/iostats ]; then
-				echo "0" > $i/queue/iostats;
-			fi;
+		#	if [ -e $i/queue/iostats ]; then
+		#		echo "0" > $i/queue/iostats;
+		#	fi;
 
-			if [ -e $i/queue/rq_affinity ]; then
-				echo "1" > $i/queue/rq_affinity;
-			fi;
-		done;
+		#	if [ -e $i/queue/rq_affinity ]; then
+		#		echo "1" > $i/queue/rq_affinity;
+		#	fi;
+		#done;
 
 		local SD=`ls -d /sys/block/mmcblk0*`;
 		for i in $SD; do
