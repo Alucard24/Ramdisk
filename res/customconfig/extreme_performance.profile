@@ -117,6 +117,7 @@ governor=ondemand
 max_pwrlevel=0
 min_pwrlevel=3
 thermal_pwrlevel=0
+dvfs_enable=1
 dvfs_min_touch_limit=1350000
 dvfs_min_touch_limit_second=810000
 syn_touch_booster_off_time=2000
