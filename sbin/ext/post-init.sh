@@ -207,8 +207,10 @@ setenforce 0;
 	# change USB mode MTP or Mass Storage
 	$BB sh /res/uci.sh usb-mode ${usb_mode};
 
-	# update cpu tunig after profiles load
+	# update cpu tuning after profiles load
 	$BB sh /sbin/ext/cortexbrain-tune.sh apply_cpu update > /dev/null;
+	# update hotplug tuning after profiles load
+	$BB sh /sbin/ext/cortexbrain-tune.sh apply_hotplug changes > /dev/null;
 	$BB rm -f /data/.alucard/booting;
 
 	# ###############################################################
