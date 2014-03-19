@@ -383,6 +383,11 @@
 
 	<settingsPane description="Here you can tune DVFS Touch frequency" name="Touch Frequency">
 
+		<spinner description="Here you can enable or disable dvfs touch frequency. (Default: Enabled)" name="dvfs_enable" action="generic /sys/kernel/dvfs_touch_if/dvfs_enable">
+			<spinnerItem name="Enabled" value="1"/> 
+			<spinnerItem name="Disabled" value="0"/> 
+		</spinner>
+
 		<seekBar description="Coming soon. From 810.000 kHz to 1.890.000 kHz! (Default: 1.134.000 kHz)" name="dvfs_min_touch_limit" action="genericfreq /sys/kernel/dvfs_touch_if/dvfs_min_touch_limit" unit="kHz" min="810000" reversed="false" step="108000" max="1890000"/>
 
 		<seekBar description="Coming soon. From 702.000 kHz to 1.458.000 kHz! (Default: 810.000 kHz)" name="dvfs_min_touch_limit_second" action="genericfreq /sys/kernel/dvfs_touch_if/dvfs_min_touch_limit_second" unit="kHz" min="486000" reversed="false" step="108000" max="1458000"/>
