@@ -177,7 +177,7 @@ setenforce 0;
 	while ! $BB pgrep android.process.acore ; do
 	  $BB sleep 1;
 	done;
-	sleep 10;
+	sleep 15;
 
 	# stop uci.sh from running all the PUSH Buttons in stweaks on boot
 	$BB mount -o remount,rw rootfs;
