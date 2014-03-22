@@ -95,17 +95,6 @@ IO_TWEAKS()
 				echo $internal_iosched > $i/queue/scheduler;
 			fi;
 
-			#if [ -e $i/queue/rotational ]; then
-			#	echo "0" > $i/queue/rotational;
-			#fi;
-
-			#if [ -e $i/queue/iostats ]; then
-			#	echo "0" > $i/queue/iostats;
-			#fi;
-
-			#if [ -e $i/queue/nr_requests ]; then
-			#	echo "64" > $i/queue/nr_requests; # default: 128
-			#fi;
 		done;
 
 		local MMC=`ls -d /sys/block/mmcblk1*`;
@@ -147,33 +136,6 @@ IO_TWEAKS()
 apply_cpu="$2";
 if [ "$apply_cpu" != "update" ]; then
 	IO_TWEAKS;
-fi;
-
-# ==============================================================
-# KERNEL-TWEAKS
-# ==============================================================
-KERNEL_TWEAKS()
-{
-	if [ "$cortexbrain_kernel_tweaks" == "on" ]; then
-		echo "0" > /proc/sys/vm/oom_kill_allocating_task;
-		echo "0" > /proc/sys/vm/panic_on_oom;
-		echo "30" > /proc/sys/kernel/panic;
-
-		log -p i -t $FILE_NAME "*** KERNEL_TWEAKS ***: enabled";
-	else
-		echo "kernel_tweaks disabled";
-	fi;
-	if [ "$cortexbrain_memory" == "on" ]; then
-		echo "32 32" > /proc/sys/vm/lowmem_reserve_ratio;
-
-		log -p i -t $FILE_NAME "*** MEMORY_TWEAKS ***: enabled";
-	else
-		echo "memory_tweaks disabled";
-	fi;
-}
-apply_cpu="$2";
-if [ "$apply_cpu" != "update" ]; then
-	KERNEL_TWEAKS;
 fi;
 
 # ==============================================================
@@ -702,6 +664,7 @@ fi;
 MEMORY_TWEAKS()
 {
 	if [ "$cortexbrain_memory" == "on" ]; then
+		echo "32 32" > /proc/sys/vm/lowmem_reserve_ratio;
 		echo "$dirty_background_ratio" > /proc/sys/vm/dirty_background_ratio; # default: 10
 		echo "$dirty_ratio" > /proc/sys/vm/dirty_ratio; # default: 20
 		echo "4" > /proc/sys/vm/min_free_order_shift; # default: 4
@@ -745,95 +708,6 @@ ENTROPY()
 
 	log -p i -t $FILE_NAME "*** ENTROPY ***: $state - $PROFILE";
 }
-
-# ==============================================================
-# TCP-TWEAKS
-# ==============================================================
-TCP_TWEAKS()
-{
-	if [ "$cortexbrain_tcp" == "on" ]; then
-		echo "0" > /proc/sys/net/ipv4/tcp_timestamps;
-		echo "1" > /proc/sys/net/ipv4/tcp_rfc1337;
-		echo "1" > /proc/sys/net/ipv4/tcp_workaround_signed_windows;
-		echo "1" > /proc/sys/net/ipv4/tcp_low_latency;
-		echo "1" > /proc/sys/net/ipv4/tcp_mtu_probing;
-		echo "2" > /proc/sys/net/ipv4/tcp_frto_response;
-		echo "1" > /proc/sys/net/ipv4/tcp_no_metrics_save;
-		echo "1" > /proc/sys/net/ipv4/tcp_tw_reuse;
-		echo "1" > /proc/sys/net/ipv4/tcp_tw_recycle;
-		echo "30" > /proc/sys/net/ipv4/tcp_fin_timeout;
-		echo "0" > /proc/sys/net/ipv4/tcp_ecn;
-		echo "5" > /proc/sys/net/ipv4/tcp_keepalive_probes;
-		echo "40" > /proc/sys/net/ipv4/tcp_keepalive_intvl;
-		echo "2500" > /proc/sys/net/core/netdev_max_backlog;
-		echo "1" > /proc/sys/net/ipv4/route/flush;
-
-		log -p i -t $FILE_NAME "*** TCP_TWEAKS ***: enabled";
-	else
-		echo "1" > /proc/sys/net/ipv4/tcp_timestamps;
-		echo "0" > /proc/sys/net/ipv4/tcp_rfc1337;
-		echo "0" > /proc/sys/net/ipv4/tcp_workaround_signed_windows;
-		echo "0" > /proc/sys/net/ipv4/tcp_low_latency;
-		echo "0" > /proc/sys/net/ipv4/tcp_mtu_probing;
-		echo "0" > /proc/sys/net/ipv4/tcp_frto_response;
-		echo "0" > /proc/sys/net/ipv4/tcp_no_metrics_save;
-		echo "0" > /proc/sys/net/ipv4/tcp_tw_reuse;
-		echo "0" > /proc/sys/net/ipv4/tcp_tw_recycle;
-		echo "60" > /proc/sys/net/ipv4/tcp_fin_timeout;
-		echo "2" > /proc/sys/net/ipv4/tcp_ecn;
-		echo "9" > /proc/sys/net/ipv4/tcp_keepalive_probes;
-		echo "75" > /proc/sys/net/ipv4/tcp_keepalive_intvl;
-		echo "1000" > /proc/sys/net/core/netdev_max_backlog;
-		echo "0" > /proc/sys/net/ipv4/route/flush;
-
-		log -p i -t $FILE_NAME "*** TCP_TWEAKS ***: disabled";
-	fi;
-
-	if [ "$cortexbrain_tcp_ram" == "on" ]; then
-		echo "4194304" > /proc/sys/net/core/wmem_max;
-		echo "4194304" > /proc/sys/net/core/rmem_max;
-		echo "20480" > /proc/sys/net/core/optmem_max;
-		echo "4096 87380 4194304" > /proc/sys/net/ipv4/tcp_wmem;
-		echo "4096 87380 4194304" > /proc/sys/net/ipv4/tcp_rmem;
-
-		log -p i -t $FILE_NAME "*** TCP_RAM_TWEAKS ***: enabled";
-	else
-		echo "131071" > /proc/sys/net/core/wmem_max;
-		echo "131071" > /proc/sys/net/core/rmem_max;
-		echo "10240" > /proc/sys/net/core/optmem_max;
-		echo "4096 16384 262144" > /proc/sys/net/ipv4/tcp_wmem;
-		echo "4096 87380 704512" > /proc/sys/net/ipv4/tcp_rmem;
-
-		log -p i -t $FILE_NAME "*** TCP_RAM_TWEAKS ***: disable";
-	fi;
-}
-apply_cpu="$2";
-if [ "$apply_cpu" != "update" ]; then
-	TCP_TWEAKS;
-fi;
-
-# ==============================================================
-# FIREWALL-TWEAKS
-# ==============================================================
-FIREWALL_TWEAKS()
-{
-	if [ "$cortexbrain_firewall" == "on" ]; then
-		# ping/icmp protection
-		echo "1" > /proc/sys/net/ipv4/icmp_echo_ignore_broadcasts;
-		echo "1" > /proc/sys/net/ipv4/icmp_echo_ignore_all;
-		echo "1" > /proc/sys/net/ipv4/icmp_ignore_bogus_error_responses;
-
-		log -p i -t $FILE_NAME "*** FIREWALL_TWEAKS ***: enabled";
-
-		return 1;
-	else
-		return 0;
-	fi;
-}
-apply_cpu="$2";
-if [ "$apply_cpu" != "update" ]; then
-	FIREWALL_TWEAKS;
-fi;
 
 # ==============================================================
 # GLOBAL-FUNCTIONS
@@ -1062,30 +936,6 @@ SWAPPINESS()
 }
 SWAPPINESS;
 
-# disable/enable ipv6
-IPV6()
-{
-	local state='';
-
-	if [ -e /data/data/com.cisco.anyconnec* ]; then
-		local CISCO_VPN=1;
-	else
-		local CISCO_VPN=0;
-	fi;
-
-	if [ "$cortexbrain_ipv6" == "on" ] || [ "$CISCO_VPN" -eq "1" ]; then
-		echo "0" > /proc/sys/net/ipv6/conf/wlan0/disable_ipv6;
-		sysctl -w net.ipv6.conf.all.disable_ipv6=0 > /dev/null;
-		local state="enabled";
-	else
-		echo "1" > /proc/sys/net/ipv6/conf/wlan0/disable_ipv6;
-		sysctl -w net.ipv6.conf.all.disable_ipv6=1 > /dev/null;
-		local state="disabled";
-	fi;
-
-	log -p i -t $FILE_NAME "*** IPV6 ***: $state";
-}
-
 NET()
 {
 	local state="$1";
@@ -1207,7 +1057,6 @@ MOUNT_FIX()
 {
 	local CHECK_SYSTEM=`mount | grep /system | grep ro | wc -l`;
 	local CHECK_DATA=`mount | grep /data | cut -c 26-27 | grep ro | grep -v ec | wc -l`;
-	# local PRELOAD_CHECK=`mount | grep /preload | grep ro | wc -l`;
 
 	if [ "$CHECK_SYSTEM" -eq "1" ]; then
 		mount -o remount,rw /system;
@@ -1215,16 +1064,11 @@ MOUNT_FIX()
 	if [ "$CHECK_DATA" -eq "1" ]; then
 		mount -o remount,rw /data;
 	fi;
-	# if [ "$PRELOAD_CHECK" -eq "1" ]; then
-	# 	mount -o remount,rw /preload;
-	# fi;
 	if [ "$EXTERNAL_SDCARD_CM" -eq "1" ]; then
 		mount -o remount,rw,nosuid,nodev,noexec /storage/sdcard1;
 	elif [ "$EXTERNAL_SDCARD_STOCK" -eq "1" ]; then
 		mount -o remount,rw,nosuid,nodev,noexec /storage/extSdCard;
 	fi;
-
-	# mount -o remount,rw,nosuid,nodev,noexec /storage/emulated/legacy;
 }
 
 # ==============================================================
@@ -1313,7 +1157,6 @@ SLEEP_MODE()
 			WIFI "sleep";
 			BATTERY_TWEAKS;
 			MOBILE_DATA "sleep";
-			IPV6;
 			VFS_CACHE_PRESSURE "sleep";
 
 			log -p i -t $FILE_NAME "*** SLEEP mode ***";
