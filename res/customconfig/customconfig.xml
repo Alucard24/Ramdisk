@@ -215,7 +215,7 @@
 
 		<spinner description="Here you can set the cpu hotplugging system. (Default: ALUCARD HOTPLUG)" name="cpu hotplugging" action="generic_cortex /tmp/cpuhotplugging">
 			<spinnerItem name="MSM MPDECISION" value="1"/> 
-			<spinnerItem name="INTELLIPLUG" value="2"/> 
+			<!--spinnerItem name="INTELLIPLUG" value="2"/--> 
 			<spinnerItem name="ALUCARD HOTPLUG" value="3"/> 
 		</spinner>
 
@@ -223,14 +223,14 @@
 
 	</settingsPane>
 
-	<settingsPane description="Here you can tune Intelliplug" name="Intelliplug Tuning">
+	<!--settingsPane description="Here you can tune Intelliplug" name="Intelliplug Tuning">
 
 		<spinner description="Here you can set eco mode tweaks. (Default: Disabled)" name="eco_mode_active" action="generic /sys/module/intelli_plug/parameters/eco_mode_active">
 			<spinnerItem name="Enabled" value="1"/> 
 			<spinnerItem name="Disabled" value="0"/> 
 		</spinner>
 
-	</settingsPane>
+	</settingsPane-->
 
 	<settingsPane description="Here you can tune alucard hotplug" name="alucard hotplug Tuning">
 
