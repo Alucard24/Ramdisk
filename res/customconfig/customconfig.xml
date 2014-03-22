@@ -284,14 +284,14 @@
 
 <settingsTab name="CPU-HOTPLUGGING (SLEEP)">
 
-	<settingsPane description="Here you can tune Intelliplug" name="Intelliplug Tuning">
+	<!--settingsPane description="Here you can tune Intelliplug" name="Intelliplug Tuning">
 
 		<spinner description="Here you can set eco mode tweaks. (Default: Enabled)" name="eco_mode_active_sleep" action="generic_cortex /tmp/eco_mode_active_sleep">
 			<spinnerItem name="Enabled" value="1"/> 
 			<spinnerItem name="Disabled" value="0"/> 
 		</spinner>
 
-	</settingsPane>
+	</settingsPane-->
 
 	<settingsPane description="Here you can tune alucard hotplug for sleeping" name="alucard hotplug Tuning">
 
