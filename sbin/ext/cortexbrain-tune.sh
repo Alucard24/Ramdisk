@@ -48,8 +48,8 @@ else
 fi;
 
 # set initial vm.dirty vales
-echo "500" > /proc/sys/vm/dirty_writeback_centisecs;
-echo "2000" > /proc/sys/vm/dirty_expire_centisecs;
+echo "600" > /proc/sys/vm/dirty_writeback_centisecs;
+echo "3000" > /proc/sys/vm/dirty_expire_centisecs;
 
 # ==============================================================
 # FILES FOR VARIABLES || we need this for write variables from child-processes to parent
@@ -144,7 +144,10 @@ IO_TWEAKS()
 		return 0;
 	fi;
 }
-IO_TWEAKS;
+apply_cpu="$2";
+if [ "$apply_cpu" != "update" ]; then
+	IO_TWEAKS;
+fi;
 
 # ==============================================================
 # KERNEL-TWEAKS
@@ -168,8 +171,10 @@ KERNEL_TWEAKS()
 		echo "memory_tweaks disabled";
 	fi;
 }
-KERNEL_TWEAKS;
-
+apply_cpu="$2";
+if [ "$apply_cpu" != "update" ]; then
+	KERNEL_TWEAKS;
+fi;
 
 # ==============================================================
 # BATTERY-TWEAKS
@@ -222,7 +227,8 @@ BATTERY_TWEAKS()
 	fi;
 }
 # run this tweak once, if the background-process is disabled
-if [ "$cortexbrain_background_process" -eq "0" ]; then
+apply_cpu="$2";
+if [ "$apply_cpu" != "update" ] || [ "$cortexbrain_background_process" -eq "0" ]; then
 	BATTERY_TWEAKS;
 fi;
 
@@ -232,8 +238,8 @@ fi;
 
 AUTOMOUNT_ROOTFS()
 {
-	sleep 5;
-	/sbin/busybox mount -o remount,rw /;
+	sleep 1;
+	mount -o remount,rw /;
 }
 # this needed for mounting root as rw
 automount_rootfs="$2";
@@ -711,7 +717,10 @@ MEMORY_TWEAKS()
 		return 0;
 	fi;
 }
-MEMORY_TWEAKS;
+apply_cpu="$2";
+if [ "$apply_cpu" != "update" ]; then
+	MEMORY_TWEAKS;
+fi;
 
 # ==============================================================
 # ENTROPY-TWEAKS
@@ -798,7 +807,10 @@ TCP_TWEAKS()
 		log -p i -t $FILE_NAME "*** TCP_RAM_TWEAKS ***: disable";
 	fi;
 }
-TCP_TWEAKS;
+apply_cpu="$2";
+if [ "$apply_cpu" != "update" ]; then
+	TCP_TWEAKS;
+fi;
 
 # ==============================================================
 # FIREWALL-TWEAKS
@@ -818,7 +830,10 @@ FIREWALL_TWEAKS()
 		return 0;
 	fi;
 }
-FIREWALL_TWEAKS;
+apply_cpu="$2";
+if [ "$apply_cpu" != "update" ]; then
+	FIREWALL_TWEAKS;
+fi;
 
 # ==============================================================
 # GLOBAL-FUNCTIONS
@@ -976,6 +991,11 @@ MOUNT_SD_CARD()
 		log -p i -t $FILE_NAME "*** MOUNT_SD_CARD ***";
 	fi;
 }
+# run dual mount on boot
+apply_cpu="$2";
+if [ "$apply_cpu" != "update" ]; then
+	MOUNT_SD_CARD;
+fi;
 
 VFS_CACHE_PRESSURE()
 {
@@ -1283,7 +1303,7 @@ SLEEP_MODE()
 		fi;
 
 		# check if we powered by USB, if not sleep
-		if [ "$CHARGING" -eq "0" ]; then
+		if [ "$CHARGING" -eq "1" ]; then
 			CPU_GOVERNOR "sleep";
 			CENTRAL_CPU_FREQ "sleep_freq";
 			CPU_GOV_TWEAKS "sleep";
