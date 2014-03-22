@@ -187,7 +187,7 @@ chmod 666 /tmp/uci_done;
 	sleep 5;
 
 	# stop uci.sh from running all the PUSH Buttons in stweaks on boot
-	$BB mount -o remount,rw rootfs;
+	ROOT_RW;
 	$BB chmod -R 777 /tmp/;
 	$BB chown -R root:system /res/customconfig/actions/;
 	$BB chmod -R 6755 /res/customconfig/actions/;
