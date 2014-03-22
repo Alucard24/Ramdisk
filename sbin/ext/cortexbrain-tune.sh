@@ -1185,24 +1185,24 @@ VIBRATE_FIX()
 
 MOUNT_FIX()
 {
-	# local CHECK_SYSTEM=`mount | grep /system | grep ro | wc -l`;
-	# local CHECK_DATA=`mount | grep /data | cut -c 26-27 | grep ro | grep -v ec | wc -l`;
+	local CHECK_SYSTEM=`mount | grep /system | grep ro | wc -l`;
+	local CHECK_DATA=`mount | grep /data | cut -c 26-27 | grep ro | grep -v ec | wc -l`;
 	# local PRELOAD_CHECK=`mount | grep /preload | grep ro | wc -l`;
 
-	# if [ "$CHECK_SYSTEM" -eq "1" ]; then
-	# 	mount -o remount,rw /system;
-	# fi;
-	# if [ "$CHECK_DATA" -eq "1" ]; then
-	# 	mount -o remount,rw /data;
-	# fi;
+	if [ "$CHECK_SYSTEM" -eq "1" ]; then
+		mount -o remount,rw /system;
+	fi;
+	if [ "$CHECK_DATA" -eq "1" ]; then
+		mount -o remount,rw /data;
+	fi;
 	# if [ "$PRELOAD_CHECK" -eq "1" ]; then
 	# 	mount -o remount,rw /preload;
 	# fi;
-	 if [ "$EXTERNAL_SDCARD_CM" -eq "1" ]; then
-	 	mount -o remount,rw,nosuid,nodev,noexec /storage/sdcard1;
-	 elif [ "$EXTERNAL_SDCARD_STOCK" -eq "1" ]; then
+	if [ "$EXTERNAL_SDCARD_CM" -eq "1" ]; then
+		mount -o remount,rw,nosuid,nodev,noexec /storage/sdcard1;
+	elif [ "$EXTERNAL_SDCARD_STOCK" -eq "1" ]; then
 		mount -o remount,rw,nosuid,nodev,noexec /storage/extSdCard;
-	 fi;
+	fi;
 
 	# mount -o remount,rw,nosuid,nodev,noexec /storage/emulated/legacy;
 }
@@ -1225,6 +1225,7 @@ AWAKE_MODE()
 		# not on call, check if was powerd by USB on sleep, or didnt sleep at all
 		if [ "$WAS_IN_SLEEP_MODE" -eq "1" ] && [ "$USB_POWER" -eq "0" ]; then
 			CPU_GOVERNOR "awake";
+			CPU_GOV_TWEAKS "awake";
 			LOGGER "awake";
 			NET "awake";
 			MOBILE_DATA "awake";
