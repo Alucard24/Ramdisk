@@ -549,11 +549,6 @@
 			<spinnerItem name="Disabled" value="0"/> 
 		</spinner>
 
-		<spinner description="When it is enabled, phone can get deepsleep during USB, AC, WIRELESS charging!  (Default: Enabled)" name="deepsleep_on_charge" action="generic_cortex /tmp/deepsleep_on_charge">
-			<spinnerItem name="Enabled" value="1"/> 
-			<spinnerItem name="Disabled" value="0"/> 
-		</spinner>
-
 	</settingsPane>
 
 	<settingsPane description="USB and SDCARD settings and options." name="USB - SDCARD">

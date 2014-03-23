@@ -138,7 +138,6 @@ init_d=off
 logger=off
 pwm_value=75
 force_fast_charge=0
-deepsleep_on_charge=1
 usb_mode=default
 auto_mount_sd=on
 Dyn_fsync_active=1

@@ -1094,7 +1094,7 @@ SLEEP_MODE()
 		SWAPPINESS;
 
 		# for devs use, if debug is on, then finish full sleep with usb connected
-		if [ "$android_logger" == "debug" ] || [ "$deepsleep_on_charge" == "1" ]; then
+		if [ "$android_logger" == "debug" ]; then
 			CHARGING=1;
 		else
 			CHARGING=`cat /sys/class/power_supply/battery/batt_charging_source`;
