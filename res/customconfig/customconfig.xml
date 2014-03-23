@@ -13,7 +13,9 @@
 
 		<seekBar description="Maximum CPU speed while GPS Using. (Default: 1890.000 kHz)." name="scaling_max_gps_freq" action="genericfreq /sys/module/ssp_i2c/parameters/scaling_max_gps_freq" unit="kHz" min="810000" reversed="false" step="108000" max="1890000"/>
 
-		<seekBar description="Maximum DEEP SLEEP CPU speed. (Default: 810.000 kHz). Depends on CortexBrain-Background-Process !!!" name="scaling_max_suspend_freq" action="generic_cortex /tmp/scaling_max_suspend_freq" unit="kHz" min="162000" reversed="false" step="108000" max="1890000"/>
+		<seekBar description="Maximum DEEP SLEEP CPU speed. (Default: 1134.000 kHz). Depends on CortexBrain-Background-Process !!!" name="scaling_max_suspend_freq" action="generic_cortex /tmp/scaling_max_suspend_freq" unit="kHz" min="162000" reversed="false" step="108000" max="1890000"/>
+
+		<seekBar description="Maximum ON CALL CPU speed. (Default: 810.000 kHz). Depends on CortexBrain-Background-Process !!!" name="scaling_max_oncall_freq" action="generic_cortex /tmp/scaling_max_oncall_freq" unit="kHz" min="162000" reversed="false" step="108000" max="1890000"/>
 
 		<seekBar description="Minimum DEEP SLEEP CPU speed. (Default: 378.000 kHz). Depends on CortexBrain-Background-Process !!!" name="scaling_min_suspend_freq" action="generic_cortex /tmp/scaling_min_suspend_freq" unit="kHz" min="162000" reversed="false" step="108000" max="1890000"/>
 
@@ -543,6 +545,11 @@
 		<seekBar description="Vibration force level. (Default: 75)" name="Vibration force" action="generic /sys/devices/virtual/timed_output/vibrator/pwm_value" unit="%" min="0" reversed="false" step="5" max="100"/>
 
 		<spinner description="This will force fast charging if it is enabled. If it is enabled, USB MTP will be disabled!  (Default: Disabled)" name="Force Fast Charging" action="generic /sys/kernel/fast_charge/force_fast_charge">
+			<spinnerItem name="Enabled" value="1"/> 
+			<spinnerItem name="Disabled" value="0"/> 
+		</spinner>
+
+		<spinner description="When it is enabled, phone can get deepsleep during USB, AC, WIRELESS charging!  (Default: Enabled)" name="deepsleep_on_charge" action="generic_cortex /tmp/deepsleep_on_charge">
 			<spinnerItem name="Enabled" value="1"/> 
 			<spinnerItem name="Disabled" value="0"/> 
 		</spinner>

@@ -686,30 +686,6 @@ if [ "$apply_cpu" != "update" ]; then
 fi;
 
 # ==============================================================
-# ENTROPY-TWEAKS
-# ==============================================================
-
-ENTROPY()
-{
-	local state="$1";
-
-	if [ "$state" == "awake" ]; then
-		if [ "$PROFILE" != "battery" ] || [ "$PROFILE" != "extreme_battery" ]; then
-			echo "256" > /proc/sys/kernel/random/read_wakeup_threshold;
-			echo "512" > /proc/sys/kernel/random/write_wakeup_threshold;
-		else
-			echo "128" > /proc/sys/kernel/random/read_wakeup_threshold;
-			echo "256" > /proc/sys/kernel/random/write_wakeup_threshold;
-		fi;
-	elif [ "$state" == "sleep" ]; then
-		echo "128" > /proc/sys/kernel/random/read_wakeup_threshold;
-		echo "256" > /proc/sys/kernel/random/write_wakeup_threshold;
-	fi;
-
-	log -p i -t $FILE_NAME "*** ENTROPY ***: $state - $PROFILE";
-}
-
-# ==============================================================
 # GLOBAL-FUNCTIONS
 # ==============================================================
 
@@ -871,26 +847,6 @@ if [ "$apply_cpu" != "update" ]; then
 	MOUNT_SD_CARD;
 fi;
 
-VFS_CACHE_PRESSURE()
-{
-	local state="$1";
-	local sys_vfs_cache="/proc/sys/vm/vfs_cache_pressure";
-
-	if [ -e $sys_vfs_cache ]; then
-		if [ "$state" == "awake" ]; then
-			echo "50" > $sys_vfs_cache;
-		elif [ "$state" == "sleep" ]; then
-			echo "10" > $sys_vfs_cache;
-		fi;
-
-		log -p i -t $FILE_NAME "*** VFS_CACHE_PRESSURE: $state ***";
-
-		return 0;
-	fi;
-
-	return 1;
-}
-
 CENTRAL_CPU_FREQ()
 {
 	local state="$1";
@@ -912,7 +868,7 @@ CENTRAL_CPU_FREQ()
 		elif [ "$state" == "sleep_call" ]; then
 			echo "$standby_freq" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq_all_cpus;
 			# brain cooking prevention during call
-			echo "810000" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq_all_cpus;
+			echo "$scaling_max_oncall_freq" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq_all_cpus;
 		fi;
 
 		log -p i -t $FILE_NAME "*** CENTRAL_CPU_FREQ: $state ***: done";
@@ -1095,8 +1051,6 @@ AWAKE_MODE()
 			MOBILE_DATA "awake";
 			WIFI "awake";
 			IO_SCHEDULER "awake";
-			ENTROPY "awake";
-			VFS_CACHE_PRESSURE "awake";
 			CENTRAL_CPU_FREQ "awake_normal";
 			MOUNT_FIX;
 		else
@@ -1140,8 +1094,8 @@ SLEEP_MODE()
 		SWAPPINESS;
 
 		# for devs use, if debug is on, then finish full sleep with usb connected
-		if [ "$android_logger" == "debug" ]; then
-			CHARGING=0;
+		if [ "$android_logger" == "debug" ] || [ "$deepsleep_on_charge" == "1" ]; then
+			CHARGING=1;
 		else
 			CHARGING=`cat /sys/class/power_supply/battery/batt_charging_source`;
 		fi;
@@ -1152,12 +1106,10 @@ SLEEP_MODE()
 			CENTRAL_CPU_FREQ "sleep_freq";
 			CPU_GOV_TWEAKS "sleep";
 			IO_SCHEDULER "sleep";
-			ENTROPY "sleep";
 			NET "sleep";
 			WIFI "sleep";
 			BATTERY_TWEAKS;
 			MOBILE_DATA "sleep";
-			VFS_CACHE_PRESSURE "sleep";
 
 			log -p i -t $FILE_NAME "*** SLEEP mode ***";
 
