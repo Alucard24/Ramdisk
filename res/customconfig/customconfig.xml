@@ -389,7 +389,6 @@
 			<spinnerItem name="None" value="0"/>
 			<spinnerItem name="Single" value="1"/>
 			<spinnerItem name="Dual" value="2"/>
-			<spinnerItem name="Ninth" value="9"/> 
 		</spinner>
 
 		<seekBar description="Coming soon. From 810.000 kHz to 1.890.000 kHz! (Default: 1.134.000 kHz)" name="dvfs_min_touch_limit" action="genericfreq /sys/kernel/dvfs_touch_if/dvfs_min_touch_limit" unit="kHz" min="810000" reversed="false" step="108000" max="1890000"/>
