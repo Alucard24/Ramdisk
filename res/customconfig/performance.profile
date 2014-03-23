@@ -1,7 +1,8 @@
 scaling_max_freq_all_cpus=1890000
 scaling_min_freq_all_cpus=378000
 scaling_max_gps_freq=1890000
-scaling_max_suspend_freq=810000
+scaling_max_suspend_freq=1134000
+scaling_max_oncall_freq=810000
 scaling_min_suspend_freq=378000
 standby_freq=378000
 cpu_voltage_switch=off
@@ -139,6 +140,7 @@ init_d=off
 logger=off
 pwm_val=75
 force_fast_charge=0
+deepsleep_on_charge=1
 usb_mode=default
 auto_mount_sd=on
 Dyn_fsync_active=1
