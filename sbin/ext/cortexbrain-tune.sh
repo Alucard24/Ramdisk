@@ -222,11 +222,11 @@ CPU_HOTPLUG_TWEAKS()
 	local msm_value_tmp=`pgrep -f "/system/bin/mpdecision" | wc -l`;
 
 	# Intelli plug
-	#local intelli_plug_active_tmp="/sys/module/intelli_plug/parameters/intelli_plug_active";
-	#if [ ! -e $intelli_plug_active_tmp ]; then
-	#	intelli_plug_active_tmp="/dev/null";
-	#fi;
-	#local intelli_value_tmp=`cat /sys/module/intelli_plug/parameters/intelli_plug_active`;
+	local intelli_plug_active_tmp="/sys/module/intelli_plug/parameters/intelli_plug_active";
+	if [ ! -e $intelli_plug_active_tmp ]; then
+		intelli_plug_active_tmp="/dev/null";
+	fi;
+	local intelli_value_tmp=`cat /sys/module/intelli_plug/parameters/intelli_plug_active`;
 
 	# Alucard hotplug
 	local hotplug_enable_tmp="/sys/kernel/alucard_hotplug/hotplug_enable";
@@ -345,17 +345,22 @@ CPU_HOTPLUG_TWEAKS()
 		maxcoreslimit_tmp="/dev/null";
 	fi;
 
-	#local eco_mode_active_tmp="/sys/module/intelli_plug/parameters/eco_mode_active";
-	#if [ ! -e $eco_mode_active_tmp ]; then
-	#	eco_mode_active_tmp="/dev/null";
-	#fi;
+	local eco_mode_active_tmp="/sys/module/intelli_plug/parameters/eco_mode_active";
+	if [ ! -e $eco_mode_active_tmp ]; then
+		eco_mode_active_tmp="/dev/null";
+	fi;
+
+	local strict_mode_active_tmp="/sys/module/intelli_plug/parameters/strict_mode_active";
+	if [ ! -e $strict_mode_active_tmp ]; then
+		strict_mode_active_tmp="/dev/null";
+	fi;
 
 	if [ "$cpuhotplugging" -eq "1" ]; then
 
 		#disable intelli_plug
-		#if [ "$intelli_value_tmp" -eq "1" ]; then
-		#	echo "0" > $intelli_plug_active_tmp;
-		#fi;
+		if [ "$intelli_value_tmp" -eq "1" ]; then
+			echo "0" > $intelli_plug_active_tmp;
+		fi;
 
 		#disable alucard_hotplug
 		if [ "$alucard_value_tmp" -eq "1" ]; then
@@ -368,29 +373,31 @@ CPU_HOTPLUG_TWEAKS()
 		fi;
 
 		log -p i -t $FILE_NAME "*** MSM_MPDECISION ***: enabled";
-	#elif [ "$cpuhotplugging" -eq "2" ]; then
+	elif [ "$cpuhotplugging" -eq "2" ]; then
 		#disable MSM MPDecision
-	#	if [ "$msm_value_tmp" -eq "1" ]; then
-	#		stop $msm_mpdecision_tmp;
-	#	fi;
+		if [ "$msm_value_tmp" -eq "1" ]; then
+			stop $msm_mpdecision_tmp;
+		fi;
 
 		#disable alucard_hotplug
-	#	if [ "$alucard_value_tmp" -eq "1" ]; then
-	#		echo "0" > $hotplug_enable_tmp;
-	#	fi;
+		if [ "$alucard_value_tmp" -eq "1" ]; then
+			echo "0" > $hotplug_enable_tmp;
+		fi;
 
 		#enable intelli_plug
-	#	if [ "$intelli_value_tmp" -eq "0" ]; then
-	#		echo "1" > $intelli_plug_active_tmp;
-	#	fi;
+		if [ "$intelli_value_tmp" -eq "0" ]; then
+			echo "1" > $intelli_plug_active_tmp;
+		fi;
 
 		# sleep-settings
-	#	if [ "$state" == "sleep" ]; then
-	#		echo "$eco_mode_active_sleep" > $eco_mode_active_tmp;
+		if [ "$state" == "sleep" ]; then
+			echo "$eco_mode_active_sleep" > $eco_mode_active_tmp;
+			echo "$strict_mode_active_sleep" > $strict_mode_active_tmp;
 		# awake-settings
-	#	elif [ "$state" == "awake" ]; then
-	#		echo "$eco_mode_active" > $eco_mode_active_tmp;
-	#	fi;
+		elif [ "$state" == "awake" ]; then
+			echo "$eco_mode_active" > $eco_mode_active_tmp;
+			echo "$strict_mode_active" > $strict_mode_active_tmp;
+		fi;
 
 	#	log -p i -t $FILE_NAME "*** INTELLI_PLUG ***: enabled";
 	elif [ "$cpuhotplugging" -eq "3" ]; then
@@ -400,9 +407,9 @@ CPU_HOTPLUG_TWEAKS()
 		fi;
 
 		#disable intelli_plug
-		#if [ "$intelli_value_tmp" -eq "1" ]; then
-		#	echo "0" > $intelli_plug_active_tmp;
-		#fi;
+		if [ "$intelli_value_tmp" -eq "1" ]; then
+			echo "0" > $intelli_plug_active_tmp;
+		fi;
 
 		#enable alucard_hotplug
 		if [ "$alucard_value_tmp" -eq "0" ]; then
