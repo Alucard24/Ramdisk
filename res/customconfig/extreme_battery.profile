@@ -1,5 +1,6 @@
 scaling_max_freq_all_cpus=1890000
 scaling_min_freq_all_cpus=378000
+wakeup_boost=-1
 scaling_max_gps_freq=1890000
 scaling_max_suspend_freq=1134000
 scaling_max_oncall_freq=810000
