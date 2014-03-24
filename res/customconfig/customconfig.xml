@@ -9,6 +9,12 @@
 
 	</settingsPane>
 
+	<settingsPane description="Wake up Booster Control. Here you can set the wakeup boost delay." name="Boost CPU Control">
+
+		<seekBar description="Here you can change Cortex Wakeup Boost. It will give you full CPU power but only for the set time. After that time, all is set back to normal. !!! Depends on CortexBrain-Background-Process !!!. When the value is -1, frequency changing is completely deactivated !." name="Cortex Wakeup Boost" action="generic_cortex /tmp/wakeup_boost" unit="Sec" min="-1" reversed="false" step="1" max="15"/>
+
+	</settingsPane>
+
 	<settingsPane description="Here you can set all the settings for power save!" name="CPU Idle and Power Settings">
 
 		<seekBar description="Maximum CPU speed while GPS Using. (Default: 1890.000 kHz)." name="scaling_max_gps_freq" action="genericfreq /sys/module/ssp_i2c/parameters/scaling_max_gps_freq" unit="kHz" min="810000" reversed="false" step="108000" max="1890000"/>
