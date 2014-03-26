@@ -231,12 +231,12 @@
 
 	<settingsPane description="Here you can tune Intelliplug" name="Intelliplug Tuning">
 
-		<spinner description="Here you can set eco mode tweaks. (Default: Disabled)" name="eco_mode_active" action="generic /sys/module/intelli_plug/parameters/eco_mode_active">
+		<spinner description="Here you can set eco mode tweaks. (Default: Disabled)" name="eco_mode_active" action="generic /sys/kernel/intelli_plug/eco_mode_active">
 			<spinnerItem name="Enabled" value="1"/> 
 			<spinnerItem name="Disabled" value="0"/> 
 		</spinner>
 
-		<spinner description="Here you can set strict mode active. (Default: Disabled)" name="strict_mode_active" action="generic /sys/module/intelli_plug/parameters/strict_mode_active">
+		<spinner description="Here you can set strict mode active. (Default: Disabled)" name="strict_mode_active" action="generic /sys/kernel/intelli_plug/strict_mode_active">
 			<spinnerItem name="Enabled" value="1"/> 
 			<spinnerItem name="Disabled" value="0"/> 
 		</spinner>
@@ -302,7 +302,7 @@
 			<spinnerItem name="Disabled" value="0"/> 
 		</spinner>
 
-		<spinner description="Here you can set strict mode active. (Default: Disabled)" name="strict_mode_active_sleep" action="generic_cortex /sys/module/intelli_plug/parameters/strict_mode_active_sleep">
+		<spinner description="Here you can set strict mode active. (Default: Disabled)" name="strict_mode_active_sleep" action="generic_cortex /tmp/strict_mode_active_sleep">
 			<spinnerItem name="Enabled" value="1"/> 
 			<spinnerItem name="Disabled" value="0"/> 
 		</spinner>
