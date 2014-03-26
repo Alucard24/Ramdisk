@@ -222,11 +222,11 @@ CPU_HOTPLUG_TWEAKS()
 	local msm_value_tmp=`pgrep -f "/system/bin/mpdecision" | wc -l`;
 
 	# Intelli plug
-	local intelli_plug_active_tmp="/sys/module/intelli_plug/parameters/intelli_plug_active";
+	local intelli_plug_active_tmp="/sys/kernel/intelli_plug/intelli_plug_active";
 	if [ ! -e $intelli_plug_active_tmp ]; then
 		intelli_plug_active_tmp="/dev/null";
 	fi;
-	local intelli_value_tmp=`cat /sys/module/intelli_plug/parameters/intelli_plug_active`;
+	local intelli_value_tmp=`cat /sys/kernel/intelli_plug/intelli_plug_active`;
 
 	# Alucard hotplug
 	local hotplug_enable_tmp="/sys/kernel/alucard_hotplug/hotplug_enable";
@@ -345,12 +345,12 @@ CPU_HOTPLUG_TWEAKS()
 		maxcoreslimit_tmp="/dev/null";
 	fi;
 
-	local eco_mode_active_tmp="/sys/module/intelli_plug/parameters/eco_mode_active";
+	local eco_mode_active_tmp="/sys/kernel/intelli_plug/eco_mode_active";
 	if [ ! -e $eco_mode_active_tmp ]; then
 		eco_mode_active_tmp="/dev/null";
 	fi;
 
-	local strict_mode_active_tmp="/sys/module/intelli_plug/parameters/strict_mode_active";
+	local strict_mode_active_tmp="/sys/kernel/intelli_plug/strict_mode_active";
 	if [ ! -e $strict_mode_active_tmp ]; then
 		strict_mode_active_tmp="/dev/null";
 	fi;
