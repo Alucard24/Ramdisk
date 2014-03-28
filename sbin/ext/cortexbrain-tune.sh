@@ -666,27 +666,6 @@ if [ "$apply_cpu" == "update" ] || [ "$cortexbrain_background_process" -eq "0" ]
 fi;
 
 # ==============================================================
-# MEMORY-TWEAKS
-# ==============================================================
-MEMORY_TWEAKS()
-{
-	if [ "$cortexbrain_memory" == "on" ]; then
-		echo "$dirty_background_ratio" > /proc/sys/vm/dirty_background_ratio; # default: 10
-		echo "$dirty_ratio" > /proc/sys/vm/dirty_ratio; # default: 20
-
-		log -p i -t $FILE_NAME "*** MEMORY_TWEAKS ***: enabled";
-
-		return 1;
-	else
-		return 0;
-	fi;
-}
-apply_cpu="$2";
-if [ "$apply_cpu" != "update" ]; then
-	MEMORY_TWEAKS;
-fi;
-
-# ==============================================================
 # GLOBAL-FUNCTIONS
 # ==============================================================
 
