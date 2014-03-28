@@ -153,7 +153,6 @@ cortexbrain_auto_tweak_mobile_sleep_delay=30
 cortexbrain_auto_tweak_wifi=off
 cortexbrain_auto_tweak_wifi_sleep_delay=30
 cortexbrain_cpu=on
-cortexbrain_memory=on
 cortexbrain_battery=on
 cortexbrain_io=on
 cifs_module=off
