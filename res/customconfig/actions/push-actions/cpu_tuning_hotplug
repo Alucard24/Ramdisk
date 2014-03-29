@@ -3,7 +3,7 @@
 (
 	/sbin/ext/cortexbrain-tune.sh apply_hotplug changes > /dev/null;
 
-	INTELLI_VALUE_TMP=`cat /sys/module/intelli_plug/parameters/intelli_plug_active`;
+	INTELLI_VALUE_TMP=`cat /sys/kernel/intelli_plug/intelli_plug_active`;
 	ALUCARD_VALUE_TMP=`cat /sys/kernel/alucard_hotplug/hotplug_enable`;
 
 	if [ "$ALUCARD_VALUE_TMP" -eq "1" ]; then
@@ -12,7 +12,7 @@
 		grep "." * >> /data/.alucard/cpu_hotplug;
 		cd /;
 	elif [ "$INTELLI_VALUE_TMP" -eq "1" ]; then
-		cd /sys/module/intelli_plug/parameters/;
+		cd /sys/kernel/intelli_plug/;
 		echo "Tuning applied to 'Intelliplug' core!" > /data/.alucard/cpu_hotplug;
 		grep "." * >> /data/.alucard/cpu_hotplug;
 		cd /;
