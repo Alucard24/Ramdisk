@@ -221,7 +221,7 @@
 
 	<settingsPane description="Here you can tune cpu hotplugging" name="Cpu hotplug Tuning">
 
-		<spinner description="Here you can set the cpu hotplugging system. (Default: ALUCARD HOTPLUG)" name="cpu hotplugging" action="generic_cortex /tmp/cpuhotplugging">
+		<spinner description="Here you can set the cpu hotplugging system. (Default: ALUCARD HOTPLUG)" name="cpu hotplugging" action="hotplug">
 			<spinnerItem name="MSM MPDECISION" value="1"/> 
 			<spinnerItem name="INTELLIPLUG" value="2"/> 
 			<spinnerItem name="ALUCARD HOTPLUG" value="3"/> 
