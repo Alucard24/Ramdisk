@@ -518,7 +518,8 @@ service qcom-sh /system/bin/sh /init.qcom.sh
     user root
     oneshot
 
-service qcom-post-boot /system/bin/sh /system/etc/init.qcom.post_boot.sh
+# Run Kernel and ROM Tunings
+service qcom-post-boot /sbin/busybox sh /sbin/ext/busybox.sh
     class late_start
     user root
     disabled

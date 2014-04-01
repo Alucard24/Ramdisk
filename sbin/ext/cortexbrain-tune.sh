@@ -14,6 +14,7 @@
 # This script must be activated after init start =< 25sec or parameters from /sys/* will not be loaded.
 
 # change mode for /tmp/
+mount -o remount,rw /;
 chmod -R 777 /tmp/;
 
 # ==============================================================
@@ -28,9 +29,6 @@ WAS_IN_SLEEP_MODE=1;
 NOW_CALL_STATE=0;
 USB_POWER=0;
 TELE_DATA=init;
-# read sd-card size, set via boot
-EXTERNAL_SDCARD_CM=`mount | grep "/storage/sdcard1" | wc -l`;
-EXTERNAL_SDCARD_STOCK=`mount | grep "/storage/extSdCard" | wc -l`;
 
 # ==============================================================
 # INITIATE
@@ -74,21 +72,6 @@ IO_TWEAKS()
 
 		local i="";
 
-		#local ZRM=`ls -d /sys/block/zram*`;
-		#for i in $ZRM; do
-		#	if [ -e $i/queue/rotational ]; then
-		#		echo "0" > $i/queue/rotational;
-		#	fi;
-
-		#	if [ -e $i/queue/iostats ]; then
-		#		echo "0" > $i/queue/iostats;
-		#	fi;
-
-		#	if [ -e $i/queue/rq_affinity ]; then
-		#		echo "1" > $i/queue/rq_affinity;
-		#	fi;
-		#done;
-
 		local SD=`ls -d /sys/block/mmcblk0*`;
 		for i in $SD; do
 			if [ -e $i/queue/scheduler ]; then
@@ -126,7 +109,7 @@ IO_TWEAKS()
 
 		echo "45" > /proc/sys/fs/lease-break-time;
 
-		log -p i -t $FILE_NAME "*** IO_TWEAKS ***: enabled";
+		log -p i -t "$FILE_NAME" "*** IO_TWEAKS ***: enabled";
 
 		return 1;
 	else
@@ -195,31 +178,12 @@ if [ "$apply_cpu" != "update" ] || [ "$cortexbrain_background_process" -eq "0" ]
 fi;
 
 # ==============================================================
-# AUTO MOUNTING ROOTFS AS RW
-# ==============================================================
-
-AUTOMOUNT_ROOTFS()
-{
-	sleep 1;
-	mount -o remount,rw /;
-}
-# this needed for mounting root as rw
-automount_rootfs="$2";
-if [ "$automount_rootfs" == "rw" ] || [ "$cortexbrain_background_process" -eq "0" ]; then
-	AUTOMOUNT_ROOTFS;
-fi;
-
-# ==============================================================
 # CPU-TWEAKS
 # ==============================================================
 
 CPU_HOTPLUG_TWEAKS()
 {
 	local state="$1";
-
-	# MSM MPDecision
-	local msm_mpdecision_tmp="mpdecision";
-	local msm_value_tmp=`pgrep -f "/system/bin/mpdecision" | wc -l`;
 
 	# Intelli plug
 	local intelli_plug_active_tmp="/sys/kernel/intelli_plug/intelli_plug_active";
@@ -368,15 +332,16 @@ CPU_HOTPLUG_TWEAKS()
 		fi;
 
 		#enable MSM MPDecision
-		if [ "$msm_value_tmp" -eq "0" ]; then
-			start $msm_mpdecision_tmp --no_sleep --avg_comp;
+		if [ "$(ps | grep "mpdecision" | wc -l)" -le "1" ]; then
+			/system/bin/start mpdecision
+			renice -n -17 -p $(pgrep -f "/system/bin/start mpdecision");
 		fi;
 
 		log -p i -t $FILE_NAME "*** MSM_MPDECISION ***: enabled";
 	elif [ "$cpuhotplugging" -eq "2" ]; then
 		#disable MSM MPDecision
-		if [ "$msm_value_tmp" -eq "1" ]; then
-			stop $msm_mpdecision_tmp;
+		if [ "$(ps | grep "mpdecision" | wc -l)" -ge "1" ]; then
+			/system/bin/stop mpdecision
 		fi;
 
 		#disable alucard_hotplug
@@ -399,12 +364,17 @@ CPU_HOTPLUG_TWEAKS()
 			echo "$strict_mode_active" > $strict_mode_active_tmp;
 		fi;
 
+		if [ "$(ps | grep /system/bin/thermal-engine | wc -l)" -ge "1" ]; then
+			renice -n -17 -p $(pgrep -f "/system/bin/thermal-engine");
+		fi;
+
 	#	log -p i -t $FILE_NAME "*** INTELLI_PLUG ***: enabled";
 	elif [ "$cpuhotplugging" -eq "3" ]; then
 		#disable MSM MPDecision
-		if [ "$msm_value_tmp" -eq "1" ]; then
-			stop $msm_mpdecision_tmp;
+		if [ "$(ps | grep "mpdecision" | wc -l)" -ge "1" ]; then
+			/system/bin/stop mpdecision
 		fi;
+
 
 		#disable intelli_plug
 		if [ "$intelli_value_tmp" -eq "1" ]; then
@@ -415,6 +385,11 @@ CPU_HOTPLUG_TWEAKS()
 		if [ "$alucard_value_tmp" -eq "0" ]; then
 			echo "1" > $hotplug_enable_tmp;
 		fi
+
+		if [ "$(ps | grep /system/bin/thermal-engine | wc -l)" -ge "1" ]; then
+			renice -n -17 -p $(pgrep -f "/system/bin/thermal-engine");
+		fi;
+
 
 		# sleep-settings
 		if [ "$state" == "sleep" ]; then
@@ -889,21 +864,6 @@ BOOST_DELAY()
 	fi;
 }
 
-# set swappiness in case that no root installed, and zram used or disk swap used
-SWAPPINESS()
-{
-	local SWAP_CHECK=`free | grep Swap | awk '{ print $2 }'`;
-
-	if [ "$SWAP_CHECK" -eq "0" ]; then
-		echo "0" > /proc/sys/vm/swappiness;
-	else
-		echo "$swappiness" > /proc/sys/vm/swappiness;
-	fi;
-
-	log -p i -t $FILE_NAME "*** SWAPPINESS: $swappiness ***";
-}
-SWAPPINESS;
-
 NET()
 {
 	local state="$1";
@@ -920,7 +880,7 @@ NET()
 		echo "5" > /proc/sys/net/ipv4/tcp_retries2;
 	fi;
 
-	log -p i -t $FILE_NAME "*** NET ***: $state";
+	log -p i -t "$FILE_NAME" "*** NET ***: $state";
 }
 
 IO_SCHEDULER()
@@ -1014,31 +974,6 @@ CALL_STATE()
 	fi;
 }
 
-VIBRATE_FIX()
-{
-	echo "$pwm_value" > /sys/devices/virtual/timed_output/vibrator/pwm_value;
-
-	log -p i -t $FILE_NAME "*** VIBRATE_FIX: $pwm_value ***";
-}
-
-MOUNT_FIX()
-{
-	local CHECK_SYSTEM=`mount | grep /system | grep ro | wc -l`;
-	local CHECK_DATA=`mount | grep /data | cut -c 26-27 | grep ro | grep -v ec | wc -l`;
-
-	if [ "$CHECK_SYSTEM" -eq "1" ]; then
-		mount -o remount,rw /system;
-	fi;
-	if [ "$CHECK_DATA" -eq "1" ]; then
-		mount -o remount,rw /data;
-	fi;
-	if [ "$EXTERNAL_SDCARD_CM" -eq "1" ]; then
-		mount -o remount,rw,nosuid,nodev,noexec /storage/sdcard1;
-	elif [ "$EXTERNAL_SDCARD_STOCK" -eq "1" ]; then
-		mount -o remount,rw,nosuid,nodev,noexec /storage/extSdCard;
-	fi;
-}
-
 # ==============================================================
 # TWEAKS: if Screen-ON
 # ==============================================================
@@ -1046,7 +981,6 @@ AWAKE_MODE()
 {
 	# Do not touch this
 	CALL_STATE;
-	VIBRATE_FIX;
 	MOUNT_SD_CARD;
 
 	# Check call state, if on call dont sleep
@@ -1068,7 +1002,6 @@ AWAKE_MODE()
 			BOOST_DELAY;
 
 			CENTRAL_CPU_FREQ "awake_normal";
-			MOUNT_FIX;
 		else
 			# Was powered by USB, and half sleep
 			MEGA_BOOST_CPU_TWEAKS;
@@ -1076,7 +1009,6 @@ AWAKE_MODE()
 			BOOST_DELAY;
 
 			CENTRAL_CPU_FREQ "awake_normal";
-			MOUNT_FIX;
 			USB_POWER=0;
 
 			log -p i -t $FILE_NAME "*** USB_POWER_WAKE: done ***";
@@ -1093,8 +1025,8 @@ SLEEP_MODE()
 	WAS_IN_SLEEP_MODE=0;
 
 	# we only read the config when the screen turns off ...
-	PROFILE=`cat $DATA_DIR/.active.profile`;
-	. $DATA_DIR/${PROFILE}.profile;
+	PROFILE=$(cat "$DATA_DIR"/.active.profile);
+	. "$DATA_DIR"/"$PROFILE".profile;
 
 	# we only read tele-data when the screen turns off ...
 	if [ "$DUMPSYS_STATE" -eq "1" ]; then
@@ -1111,7 +1043,6 @@ SLEEP_MODE()
 	if [ "$TMP_EARLY_WAKEUP" -eq "0" ] && [ "$NOW_CALL_STATE" -eq "0" ]; then
 		WAS_IN_SLEEP_MODE=1;
 		CENTRAL_CPU_FREQ "standby_freq";
-		SWAPPINESS;
 
 		# for devs use, if debug is on, then finish full sleep with usb connected
 		if [ "$android_logger" == "debug" ]; then

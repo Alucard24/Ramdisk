@@ -1,6 +1,17 @@
 <settingsRoot>
 <settingsTab name="CPU">
 
+	<settingsPane description="Here you can swith Stweaks settings to be applyed on BOOT or not." name="Global BOOT Settings">
+
+		<spinner description="Master Switch, Load All settings from all TABS on boot or not! default is LOAD." name="Enable On Boot" action="generic_cortex /tmp/stweaks_boot_control">
+			<spinnerItem name="Load all Settings on boot" value="yes"/> 
+			<spinnerItem name="Dont load all Settings on boot" value="no"/> 
+		</spinner>
+
+		<button description="Push to load all tuned settings IF master swith is OFF or was OFF, if was ON when phone booted then no need to push!! wait till you see that settings are loaded" name="LOAD ALL" action="push-actions/reload_settings" label="LOAD ALL"/>
+
+	</settingsPane>
+
 	<settingsPane description="The following settings are for all global CPU configuration, use it only if you know what you are doing." name="CPU Global Settings">
 
 		<seekBar description="Maximum CPU-Speed for all cpus. CPU Frequency steps by 108.000 kHz, from 162.000 kHz to 1.890.000 kHz! (Default: 1.890.000 kHz)" name="Max Normal Frequency" action="genericfreq /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq_all_cpus" unit="kHz" min="162000" reversed="false" step="108000" max="1890000"/>
@@ -221,7 +232,7 @@
 
 	<settingsPane description="Here you can tune cpu hotplugging" name="Cpu hotplug Tuning">
 
-		<spinner description="Here you can set the cpu hotplugging system. (Default: ALUCARD HOTPLUG)" name="cpu hotplugging" action="hotplug">
+		<spinner description="Here you can set the cpu hotplugging system. (Default: ALUCARD HOTPLUG)" name="cpu hotplugging" action="cpuhotplugging">
 			<spinnerItem name="MSM MPDECISION" value="1"/> 
 			<spinnerItem name="INTELLIPLUG" value="2"/> 
 			<spinnerItem name="ALUCARD HOTPLUG" value="3"/> 
@@ -518,9 +529,9 @@
 			<spinnerItem name="exterminate" value="exterminate"/> 
 		</spinner>
 
-		<seekBar description="Dirty background memory buffer, more you set, more memory will be used for write buffer for background operations. Buffer is released on need to free RAM (Default: 15%)" name="Dirty Background ratio" action="generic /proc/sys/vm/dirty_background_ratio" unit="%" min="5" reversed="false" step="5" max="80"/>
+		<seekBar description="Dirty background memory buffer, more you set, more memory will be used for write buffer for background operations. Buffer is released on need to free RAM (Default: 20%)" name="Dirty Background ratio" action="generic /proc/sys/vm/dirty_background_ratio" unit="%" min="5" reversed="false" step="5" max="80"/>
 
-		<seekBar description="Dirty real time memory buffer, more you set, more memory will be used for write buffer for real time operations. Buffer is released on need to free RAM (Default: 20%)" name="Dirty ratio" action="generic /proc/sys/vm/dirty_ratio" unit="%" min="5" reversed="false" step="5" max="90"/>
+		<seekBar description="Dirty real time memory buffer, more you set, more memory will be used for write buffer for real time operations. Buffer is released on need to free RAM (Default: 40%)" name="Dirty ratio" action="generic /proc/sys/vm/dirty_ratio" unit="%" min="5" reversed="false" step="5" max="90"/>
 
 		<button description="Clean RAM Cache. This will release all cached and buffered RAM, please WAIT 3sec to get cleanup report" name="CLEAN RAM CACHE" action="push-actions/clean_ram_cache" label="CLEAN RAM CACHE NOW"/>
 
@@ -586,6 +597,22 @@
 			<spinnerItem name="Enabled" value="1"/> 
 			<spinnerItem name="Disabled" value="0"/> 
 		</spinner>
+
+	</settingsPane>
+
+</settingsTab>
+
+<settingsTab name="ROOT">
+
+	<settingsPane description="Remove OR Reinstall ROOT! You can have a ROOTED or not ROOTED phone." name="Root">
+
+		<button description="Root Install. Click to install ROOT (SuperUser) + ROM Busybox if existed. In case you have used the remove button, to Reinstall ROOT first REMOVE it! !!! Depends on CortexBrain-Background-Process !!!" name="ROOT INSTALL" action="push-actions/root_install" label="INSTALL ROOT"/>
+
+		<button description="Root Uninstall. Click to remove Any ROOT installed + Busybox (kernel Busybox remains, but is hidden from system) To install ROOT check the Auto-Install Root and REBOOT." name="ROOT REMOVE" action="push-actions/root_remove" label="REMOVE ROOT"/>
+
+		<button description="Root check. Click to see if you have ROOT or not" name="ROOT Check" action="push-actions/root_check" label="ROOT CHECK"/>
+
+		<checkbox description="If box is checked, root will be installed on the next restart." name="Auto-Install Root" action="generic_cortex /tmp/install_root" label="Auto-Install Root"/>
 
 	</settingsPane>
 

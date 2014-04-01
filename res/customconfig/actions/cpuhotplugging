@@ -1,46 +1,37 @@
 #!/system/xbin/bash
 
-# $1 - "hotplug"
+# $1 - "cpuhotplugging"
 # $2 - value=
 # Created By Dorimanx
 
 if [ "a$2" != "a" ]; then
-	hotplug=$2;
+	cpuhotplugging=$2;
 
-	case "${hotplug}" in
-		2)
+	case "${cpuhotplugging}" in
+		1)
 			/system/bin/stop mpdecision
 			echo "0" > /sys/kernel/alucard_hotplug/hotplug_enable;
 			echo "1" > /sys/kernel/intelli_plug/intelli_plug_active;
-			if [ "$(ps | grep "/system/bin/thermal-engine" | wc -l)" -le "1" ]; then
-				/system/bin/start thermal-engine;
-			fi;
-			renice -n -17 -p $(pgrep -f "/system/bin/thermal-engine");
 		;;
-		1)
+		2)
 			echo "0" > /sys/kernel/intelli_plug/intelli_plug_active;
 			echo "0" > /sys/kernel/alucard_hotplug/hotplug_enable;
 			if [ "$(ps | grep "mpdecision" | wc -l)" -le "1" ]; then
 				/system/bin/start mpdecision
 			fi;
-			if [ "$(ps | grep "/system/bin/thermal-engine" | wc -l)" -le "1" ]; then
-				/system/bin/start thermal-engine;
-			fi;
-			renice -n -17 -p $(pgrep -f "/system/bin/thermal-engine");
 		;;
 		3)
 			/system/bin/stop mpdecision
 			echo "0" > /sys/kernel/intelli_plug/intelli_plug_active;
 			echo "1" > /sys/kernel/alucard_hotplug/hotplug_enable;
-			if [ "$(ps | grep "/system/bin/thermal-engine" | wc -l)" -le "1" ]; then
-				/system/bin/start thermal-engine;
+			if [ "$(ps | grep /system/bin/thermal-engine | wc -l)" -ge "1" ]; then
+				renice -n -17 -p $(pgrep -f "/system/bin/thermal-engine");
 			fi;
-			renice -n -17 -p $(pgrep -f "/system/bin/thermal-engine");
 		;;
 		*)
-			hotplug=3;
+			cpuhotplugging=3;
 		;;
 	esac;
 fi;
 
-echo ${hotplug};
+echo ${cpuhotplugging};

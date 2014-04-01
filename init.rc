@@ -12,7 +12,7 @@ import /init.carrier.rc
 
 on early-init
     # Set init and its forked children's oom_adj.
-    write /proc/1/oom_adj -16
+    write /proc/1/oom_score_adj -1000
 
     # Set the security context for the init process.
     # This should occur before anything else (e.g. ueventd) is started.
@@ -584,10 +584,4 @@ service mdnsd /system/bin/mdnsd
     group inet net_raw
     socket mdnsd stream 0660 mdnsr inet
     disabled
-    oneshot
-
-# init Alucard Kernel
-service postinit /sbin/ext/post-init.sh
-    class core
-    user root
     oneshot
