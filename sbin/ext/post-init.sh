@@ -308,6 +308,8 @@ mount -t tmpfs -o mode=0777,gid=1000 tmpfs /mnt/ntfs
 		if [ -e /cpugov/ondemand ]; then
 			ONDEMAND_TUNING;
 		fi;
+
+		$BB sh /sbin/ext/cortexbrain-tune.sh apply_cpu update > /dev/null;
 	fi;
 
 	# Start any init.d scripts that may be present in the rom or added by the user
