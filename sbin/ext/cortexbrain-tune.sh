@@ -122,62 +122,6 @@ if [ "$apply_cpu" != "update" ]; then
 fi;
 
 # ==============================================================
-# BATTERY-TWEAKS
-# ==============================================================
-BATTERY_TWEAKS()
-{
-	if [ "$cortexbrain_battery" == "on" ]; then
-		# battery-calibration if battery is full
-		local LEVEL=`cat /sys/class/power_supply/battery/capacity`;
-		local CURR_ADC=`cat /sys/class/power_supply/battery/chg_current_adc`;
-		local BATTFULL=`cat /sys/class/power_supply/battery/status`;
-		local i="";
-		local bus="";
-
-		log -p i -t $FILE_NAME "*** BATTERY - LEVEL: $LEVEL - CUR: $CURR_ADC ***";
-
-		# if [ "$LEVEL" -eq "100" ] && [ "$BATTFULL" -eq "Full" ]; then
-		#	rm -f /data/system/batterystats.bin;
-		#	log -p i -t $FILE_NAME "battery-calibration done ...";
-		# fi;
-
-		# USB: power support
-		local POWER_LEVEL=`ls /sys/bus/usb/devices/*/power/control`;
-		for i in $POWER_LEVEL; do
-			chmod 777 $i;
-			echo "auto" > $i;
-		done;
-
-		local POWER_AUTOSUSPEND=`ls /sys/bus/usb/devices/*/power/autosuspend`;
-		for i in $POWER_AUTOSUSPEND; do
-			chmod 777 $i;
-			echo "1" > $i;
-		done;
-
-		# BUS: power support
-		local buslist="spi i2c sdio";
-		for bus in $buslist; do
-			local POWER_CONTROL=`ls /sys/bus/$bus/devices/*/power/control`;
-			for i in $POWER_CONTROL; do
-				chmod 777 $i;
-				echo "auto" > $i;
-			done;
-		done;
-
-		log -p i -t $FILE_NAME "*** BATTERY_TWEAKS ***: enabled";
-
-		return 1;
-	else
-		return 0;
-	fi;
-}
-# run this tweak once, if the background-process is disabled
-apply_cpu="$2";
-if [ "$apply_cpu" != "update" ] || [ "$cortexbrain_background_process" -eq "0" ]; then
-	BATTERY_TWEAKS;
-fi;
-
-# ==============================================================
 # CPU-TWEAKS
 # ==============================================================
 
@@ -337,7 +281,7 @@ CPU_HOTPLUG_TWEAKS()
 			renice -n -17 -p $(pgrep -f "/system/bin/start mpdecision");
 		fi;
 
-		log -p i -t $FILE_NAME "*** MSM_MPDECISION ***: enabled";
+		log -p i -t "$FILE_NAME" "*** MSM_MPDECISION ***: enabled";
 	elif [ "$cpuhotplugging" -eq "2" ]; then
 		#disable MSM MPDecision
 		if [ "$(ps | grep "mpdecision" | wc -l)" -ge "1" ]; then
@@ -368,7 +312,7 @@ CPU_HOTPLUG_TWEAKS()
 			renice -n -17 -p $(pgrep -f "/system/bin/thermal-engine");
 		fi;
 
-	#	log -p i -t $FILE_NAME "*** INTELLI_PLUG ***: enabled";
+	#	log -p i -t "$FILE_NAME" "*** INTELLI_PLUG ***: enabled";
 	elif [ "$cpuhotplugging" -eq "3" ]; then
 		#disable MSM MPDecision
 		if [ "$(ps | grep "mpdecision" | wc -l)" -ge "1" ]; then
@@ -393,30 +337,12 @@ CPU_HOTPLUG_TWEAKS()
 
 		# sleep-settings
 		if [ "$state" == "sleep" ]; then
-			echo "$hotplug_sampling_rate_sleep" > $hotplug_sampling_rate_tmp;
-			echo "$cpu_up_rate_sleep" > $cpu_up_rate_tmp;
-			echo "$cpu_down_rate_sleep" > $cpu_down_rate_tmp;
-			echo "$hotplug_freq_1_1_sleep" > $hotplug_freq_1_1_tmp;
-			echo "$hotplug_freq_2_0_sleep" > $hotplug_freq_2_0_tmp;
-			echo "$hotplug_freq_2_1_sleep" > $hotplug_freq_2_1_tmp;
-			echo "$hotplug_freq_3_0_sleep" > $hotplug_freq_3_0_tmp;
-			echo "$hotplug_freq_3_1_sleep" > $hotplug_freq_3_1_tmp;
-			echo "$hotplug_freq_4_0_sleep" > $hotplug_freq_4_0_tmp;
-			echo "$hotplug_load_1_1_sleep" > $hotplug_load_1_1_tmp;
-			echo "$hotplug_load_2_0_sleep" > $hotplug_load_2_0_tmp;
-			echo "$hotplug_load_2_1_sleep" > $hotplug_load_2_1_tmp;
-			echo "$hotplug_load_3_0_sleep" > $hotplug_load_3_0_tmp;
-			echo "$hotplug_load_3_1_sleep" > $hotplug_load_3_1_tmp;
-			echo "$hotplug_load_4_0_sleep" > $hotplug_load_4_0_tmp;
-			echo "$hotplug_rq_1_1_sleep" > $hotplug_rq_1_1_tmp;
-			echo "$hotplug_rq_2_0_sleep" > $hotplug_rq_2_0_tmp;
-			echo "$hotplug_rq_2_1_sleep" > $hotplug_rq_2_1_tmp;
-			echo "$hotplug_rq_3_0_sleep" > $hotplug_rq_3_0_tmp;
-			echo "$hotplug_rq_3_1_sleep" > $hotplug_rq_3_1_tmp;
-			echo "$hotplug_rq_4_0_sleep" > $hotplug_rq_4_0_tmp;
 			echo "$maxcoreslimit_sleep" > $maxcoreslimit_tmp;
 		# awake-settings
 		elif [ "$state" == "awake" ]; then
+			echo "$maxcoreslimit" > $maxcoreslimit_tmp;
+		# tune-settings
+		elif [ "$state" == "tune" ]; then
 			echo "$hotplug_sampling_rate" > $hotplug_sampling_rate_tmp;
 			echo "$cpu_up_rate" > $cpu_up_rate_tmp;
 			echo "$cpu_down_rate" > $cpu_down_rate_tmp;
@@ -438,16 +364,15 @@ CPU_HOTPLUG_TWEAKS()
 			echo "$hotplug_rq_3_0" > $hotplug_rq_3_0_tmp;
 			echo "$hotplug_rq_3_1" > $hotplug_rq_3_1_tmp;
 			echo "$hotplug_rq_4_0" > $hotplug_rq_4_0_tmp;
-			echo "$maxcoreslimit" > $maxcoreslimit_tmp;
 		fi;
 
-		log -p i -t $FILE_NAME "*** ALUCARD_HOTPLUG ***: enabled";
+		log -p i -t "$FILE_NAME" "*** ALUCARD_HOTPLUG ***: enabled";
 	fi;
 }
 # this needed for cpu hotplug tweaks apply from STweaks in real time
 apply_hotplug="$2";
 if [ "$apply_hotplug" == "changes" ] || [ "$cortexbrain_background_process" -eq "0" ]; then
-	CPU_HOTPLUG_TWEAKS "awake";
+	CPU_HOTPLUG_TWEAKS "tune";
 fi;
 
 CPU_GOV_TWEAKS()
@@ -580,29 +505,11 @@ CPU_GOV_TWEAKS()
 		# sleep-settings
 		if [ "$state" == "sleep" ]; then
 			echo "$sampling_rate_sleep" > $sampling_rate_tmp;
-			echo "$up_threshold_sleep" > $up_threshold_tmp;
-			echo "$up_threshold_at_min_freq_sleep" > $up_threshold_at_min_freq_tmp;
-			echo "$inc_cpu_load_at_min_freq_sleep" > $inc_cpu_load_at_min_freq_tmp;
-			echo "$dec_cpu_load_at_min_freq_sleep" > $dec_cpu_load_at_min_freq_tmp;
-			echo "$down_threshold_sleep" > $down_threshold_tmp;
-			echo "$sampling_down_factor_sleep" > $sampling_down_factor_tmp;
-			echo "$down_differential_sleep" > $down_differential_tmp;
-			echo "$freq_step_at_min_freq_sleep" > $freq_step_at_min_freq_tmp;
-			echo "$freq_step_sleep" > $freq_step_tmp;
-			echo "$freq_step_dec_sleep" > $freq_step_dec_tmp;
-			echo "$freq_step_dec_at_max_freq_sleep" > $freq_step_dec_at_max_freq_tmp;
-			echo "$freq_for_responsiveness_sleep" > $freq_for_responsiveness_tmp;
-			echo "$freq_responsiveness_sleep" > $freq_responsiveness_tmp;
-			echo "$freq_for_responsiveness_max_sleep" > $freq_for_responsiveness_max_tmp;
-			echo "$inc_cpu_load_sleep" > $inc_cpu_load_tmp;
-			echo "$dec_cpu_load_sleep" > $dec_cpu_load_tmp;
-			echo "$freq_up_brake_at_min_freq_sleep" > $freq_up_brake_at_min_freq_tmp;
-			echo "$freq_up_brake_sleep" > $freq_up_brake_tmp;
-			echo "$pump_inc_step_sleep" > $pump_inc_step_tmp;
-			echo "$pump_dec_step_sleep" > $pump_dec_step_tmp;
-			CPU_HOTPLUG_TWEAKS "sleep";
 		# awake-settings
 		elif [ "$state" == "awake" ]; then
+			echo "$sampling_rate" > $sampling_rate_tmp;
+		# tune-settings
+		elif [ "$state" == "tune" ]; then
 			echo "$sampling_rate" > $sampling_rate_tmp;
 			echo "$up_threshold" > $up_threshold_tmp;
 			echo "$up_threshold_at_min_freq" > $up_threshold_at_min_freq_tmp;
@@ -624,10 +531,9 @@ CPU_GOV_TWEAKS()
 			echo "$freq_up_brake" > $freq_up_brake_tmp;
 			echo "$pump_inc_step" > $pump_inc_step_tmp;
 			echo "$pump_dec_step" > $pump_dec_step_tmp;
-			CPU_HOTPLUG_TWEAKS "awake";
 		fi;
 
-		log -p i -t $FILE_NAME "*** CPU_GOV_TWEAKS: $state ***: enabled";
+		log -p i -t "$FILE_NAME" "*** CPU_GOV_TWEAKS: $state ***: enabled";
 
 		return 1;
 	else
@@ -637,7 +543,7 @@ CPU_GOV_TWEAKS()
 # this needed for cpu tweaks apply from STweaks in real time
 apply_cpu="$2";
 if [ "$apply_cpu" == "update" ] || [ "$cortexbrain_background_process" -eq "0" ]; then
-	CPU_GOV_TWEAKS "awake";
+	CPU_GOV_TWEAKS "tune";
 fi;
 
 # ==============================================================
@@ -657,7 +563,7 @@ WIFI_SET()
 		svc wifi enable;
 	fi;
 
-	log -p i -t $FILE_NAME "*** WIFI ***: $state";
+	log -p i -t "$FILE_NAME" "*** WIFI ***: $state";
 }
 
 WIFI()
@@ -677,7 +583,7 @@ WIFI()
 						if [ `cat $WIFI_HELPER_TMP` -eq "0" ]; then
 							# user did not turned screen on, so keep waiting
 							local SLEEP_TIME_WIFI=$(( $cortexbrain_auto_tweak_wifi_sleep_delay - 10 ));
-							log -p i -t $FILE_NAME "*** DISABLE_WIFI $cortexbrain_auto_tweak_wifi_sleep_delay Sec Delay Mode ***";
+							log -p i -t "$FILE_NAME" "*** DISABLE_WIFI $cortexbrain_auto_tweak_wifi_sleep_delay Sec Delay Mode ***";
 							sleep $SLEEP_TIME_WIFI;
 							if [ `cat $WIFI_HELPER_TMP` -eq "0" ]; then
 								# user left the screen off, then disable wifi
@@ -711,7 +617,7 @@ MOBILE_DATA_SET()
 		svc data enable;
 	fi;
 
-	log -p i -t $FILE_NAME "*** MOBILE DATA ***: $state";
+	log -p i -t "$FILE_NAME" "*** MOBILE DATA ***: $state";
 }
 
 MOBILE_DATA_STATE()
@@ -745,7 +651,7 @@ MOBILE_DATA()
 						if [ `cat $MOBILE_HELPER_TMP` -eq "0" ]; then
 							# user did not turned screen on, so keep waiting
 							local SLEEP_TIME_DATA=$(( $cortexbrain_auto_tweak_mobile_sleep_delay - 10 ));
-							log -p i -t $FILE_NAME "*** DISABLE_MOBILE $cortexbrain_auto_tweak_mobile_sleep_delay Sec Delay Mode ***";
+							log -p i -t "$FILE_NAME" "*** DISABLE_MOBILE $cortexbrain_auto_tweak_mobile_sleep_delay Sec Delay Mode ***";
 							sleep $SLEEP_TIME_DATA;
 							if [ `cat $MOBILE_HELPER_TMP` -eq "0" ]; then
 								# user left the screen off, then disable mobile data
@@ -782,7 +688,7 @@ LOGGER()
 		fi;
 	fi;
 
-	log -p i -t $FILE_NAME "*** LOGGER ***: $state";
+	log -p i -t "$FILE_NAME" "*** LOGGER ***: $state";
 }
 
 # mount sdcard and emmc, if usb mass storage is used
@@ -793,7 +699,7 @@ MOUNT_SD_CARD()
 			echo "/dev/block/vold/179:32" > /sys/devices/virtual/android_usb/android0/f_mass_storage/lun0/file;
 		fi;
 
-		log -p i -t $FILE_NAME "*** MOUNT_SD_CARD ***";
+		log -p i -t "$FILE_NAME" "*** MOUNT_SD_CARD ***";
 	fi;
 }
 # run dual mount on boot
@@ -837,9 +743,9 @@ CENTRAL_CPU_FREQ()
 			echo "$scaling_max_oncall_freq" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq_all_cpus;
 		fi;
 
-		log -p i -t $FILE_NAME "*** CENTRAL_CPU_FREQ: $state ***: done";
+		log -p i -t "$FILE_NAME" "*** CENTRAL_CPU_FREQ: $state ***: done";
 	else
-		log -p i -t $FILE_NAME "*** CENTRAL_CPU_FREQ: NOT CHANGED ***: done";
+		log -p i -t "$FILE_NAME" "*** CENTRAL_CPU_FREQ: NOT CHANGED ***: done";
 	fi;
 }
 
@@ -890,12 +796,12 @@ IO_SCHEDULER()
 		local state="$1";
 		local sys_mmc0_scheduler_tmp="/sys/block/mmcblk0/queue/scheduler";
 		local sys_mmc1_scheduler_tmp="/sys/block/mmcblk1/queue/scheduler";
-		local tmp_scheduler="";
-		local tmp_scheduler_sd="";
+		local tmp_scheduler=$(cat "$sys_mmc0_scheduler_tmp" | sed -n 's/^.*\[\([a-z|A-Z]*\)\].*/\1/p');
+		local tmp_scheduler_sd=$(cat "$sys_mmc1_scheduler_tmp" | sed -n 's/^.*\[\([a-z|A-Z]*\)\].*/\1/p');
 		local new_scheduler="";
 		local new_scheduler_sd="";
 
-		if [ -e $sys_mmc1_scheduler_tmp ]; then
+		if [ ! -e "$sys_mmc1_scheduler_tmp" ]; then
 			sys_mmc1_scheduler_tmp="/dev/null";
 		fi;
 
@@ -907,26 +813,22 @@ IO_SCHEDULER()
 			new_scheduler_sd=$sd_iosched_sleep;
 		fi;
 
-		tmp_scheduler=`cat $sys_mmc0_scheduler_tmp`;
-
 		if [ "$tmp_scheduler" != "$new_scheduler" ]; then
 			echo "$new_scheduler" > $sys_mmc0_scheduler_tmp;
 		fi;
 
-		log -p i -t $FILE_NAME "*** INTERNAL IO_SCHEDULER: $state - $new_scheduler ***: done";
-
-		tmp_scheduler_sd=`cat $sys_mmc1_scheduler_tmp`;
+		log -p i -t "$FILE_NAME" "*** INTERNAL IO_SCHEDULER: $state - $new_scheduler ***: done";
 
 		if [ "$tmp_scheduler_sd" != "$new_scheduler_sd" ]; then
 			echo "$new_scheduler_sd" > $sys_mmc1_scheduler_tmp;
 		fi;
 
-		log -p i -t $FILE_NAME "*** EXTERNAL IO_SCHEDULER: $state - $new_scheduler_sd ***: done";
+		log -p i -t "$FILE_NAME" "*** EXTERNAL IO_SCHEDULER: $state - $new_scheduler_sd ***: done";
 
 		# set I/O Tweaks again ...
 		IO_TWEAKS;
 	else
-		log -p i -t $FILE_NAME "*** Cortex IO_SCHEDULER: Disabled ***";
+		log -p i -t "$FILE_NAME" "*** Cortex IO_SCHEDULER: Disabled ***";
 	fi;
 }
 
@@ -949,9 +851,9 @@ CPU_GOVERNOR()
 
 		local USED_GOV_NOW=`cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor_all_cpus`;
 
-		log -p i -t $FILE_NAME "*** CPU_GOVERNOR: set $state GOV $USED_GOV_NOW ***: done";
+		log -p i -t "$FILE_NAME" "*** CPU_GOVERNOR: set $state GOV $USED_GOV_NOW ***: done";
 	else
-		log -p i -t $FILE_NAME "*** CPU_GOVERNOR: NO CHANGED ***: done";
+		log -p i -t "$FILE_NAME" "*** CPU_GOVERNOR: NO CHANGED ***: done";
 	fi;
 }
 
@@ -968,7 +870,7 @@ CALL_STATE()
 			NOW_CALL_STATE=0;
 		fi;
 
-		log -p i -t $FILE_NAME "*** CALL_STATE: $NOW_CALL_STATE ***";
+		log -p i -t "$FILE_NAME" "*** CALL_STATE: $NOW_CALL_STATE ***";
 	else
 		NOW_CALL_STATE=0;
 	fi;
@@ -992,6 +894,7 @@ AWAKE_MODE()
 		if [ "$WAS_IN_SLEEP_MODE" -eq "1" ] && [ "$USB_POWER" -eq "0" ]; then
 			CPU_GOVERNOR "awake";
 			CPU_GOV_TWEAKS "awake";
+			CPU_HOTPLUG_TWEAKS "awake";
 			MEGA_BOOST_CPU_TWEAKS;
 			LOGGER "awake";
 			# NET "awake";
@@ -1011,7 +914,7 @@ AWAKE_MODE()
 			CENTRAL_CPU_FREQ "awake_normal";
 			USB_POWER=0;
 
-			log -p i -t $FILE_NAME "*** USB_POWER_WAKE: done ***";
+			log -p i -t "$FILE_NAME" "*** USB_POWER_WAKE: done ***";
 		fi;
 		# Didn't sleep, and was not powered by USB
 	fi;
@@ -1056,19 +959,19 @@ SLEEP_MODE()
 			CPU_GOVERNOR "sleep";
 			CENTRAL_CPU_FREQ "sleep_freq";
 			CPU_GOV_TWEAKS "sleep";
+			CPU_HOTPLUG_TWEAKS "sleep";
 			IO_SCHEDULER "sleep";
 			# NET "sleep";
 			WIFI "sleep";
-			BATTERY_TWEAKS;
 			MOBILE_DATA "sleep";
 
-			log -p i -t $FILE_NAME "*** SLEEP mode ***";
+			log -p i -t "$FILE_NAME" "*** SLEEP mode ***";
 
 			LOGGER "sleep";
 		else
 			# Powered by USB
 			USB_POWER=1;
-			log -p i -t $FILE_NAME "*** SLEEP mode: USB CABLE CONNECTED! No real sleep mode! ***";
+			log -p i -t "$FILE_NAME" "*** SLEEP mode: USB CABLE CONNECTED! No real sleep mode! ***";
 		fi;
 	else
 		# Check if on call
@@ -1076,10 +979,10 @@ SLEEP_MODE()
 			CENTRAL_CPU_FREQ "sleep_call";
 			NOW_CALL_STATE=1;
 
-			log -p i -t $FILE_NAME "*** on call: SLEEP aborted! ***";
+			log -p i -t "$FILE_NAME" "*** on call: SLEEP aborted! ***";
 		else
 			# Early Wakeup detected
-			log -p i -t $FILE_NAME "*** early wake up: SLEEP aborted! ***";
+			log -p i -t "$FILE_NAME" "*** early wake up: SLEEP aborted! ***";
 		fi;
 	fi;
 

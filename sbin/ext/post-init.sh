@@ -107,7 +107,7 @@ $BB chmod 666 /sys/module/lowmemorykiller/parameters/adj;
 $BB chmod 666 /sys/module/lowmemorykiller/parameters/minfree
 
 # make sure we own the device nodes
-$BB chown system /sys/devices/system/cpu/cpufreq/ondemand/*
+$BB chown system /sys/devices/system/cpu/cpufreq/alucard/*
 $BB chown system /sys/devices/system/cpu/cpu0/cpufreq/*
 $BB chown system /sys/devices/system/cpu/cpu1/online
 $BB chown system /sys/devices/system/cpu/cpu2/online
@@ -143,7 +143,7 @@ echo 1 > /sys/module/pm_8x60/modes/cpu2/power_collapse/suspend_enabled
 echo 1 > /sys/module/pm_8x60/modes/cpu3/power_collapse/suspend_enabled
 echo 1 > /sys/module/pm_8x60/modes/cpu0/power_collapse/idle_enabled
 
-#soc_revision=$(cat /sys/devices/soc0/revision)
+#soc_revision=$(cat /sys/devices/system/soc/soc0/version)
 #if [ "$soc_revision" != "1.0" ]; then
 #        echo 0 > /sys/module/pm_8x60/modes/cpu0/retention/idle_enabled
 #        echo 0 > /sys/module/pm_8x60/modes/cpu1/retention/idle_enabled
@@ -273,9 +273,9 @@ OPEN_RW;
 mount -t tmpfs -o mode=0777,gid=1000 tmpfs /mnt/ntfs
 
 (
-	# set ondemand as default gov
-	echo "ondemand" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor_all_cpus;
-	ONDEMAND_TUNING;
+	# set alucard as default gov
+	echo "alucard" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor_all_cpus;
+	#ONDEMAND_TUNING;
 
 	if [ "$stweaks_boot_control" == "yes" ]; then
 		# stop uci.sh from running all the PUSH Buttons in stweaks on boot
@@ -305,11 +305,12 @@ mount -t tmpfs -o mode=0777,gid=1000 tmpfs /mnt/ntfs
 
 		# Load Custom Modules
 		MODULES_LOAD;
-		if [ -e /cpugov/ondemand ]; then
-			ONDEMAND_TUNING;
-		fi;
+		#if [ -e /cpugov/ondemand ]; then
+		#	ONDEMAND_TUNING;
+		#fi;
 
 		$BB sh /sbin/ext/cortexbrain-tune.sh apply_cpu update > /dev/null;
+		$BB sh /sbin/ext/cortexbrain-tune.sh apply_cpu changes > /dev/null;
 	fi;
 
 	# Start any init.d scripts that may be present in the rom or added by the user

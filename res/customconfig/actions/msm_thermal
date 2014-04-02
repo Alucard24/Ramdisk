@@ -5,8 +5,8 @@
 # Created By Dorimanx
 
 # get values from profile
-PROFILE=$(cat /data/.dori/.active.profile);
-. /data/.dori/"$PROFILE".profile;
+PROFILE=$(cat /data/.alucard/.active.profile);
+. /data/.alucard/"$PROFILE".profile;
 
 if [ "a$2" != "a" ]; then
 	msm_thermal=$2;
