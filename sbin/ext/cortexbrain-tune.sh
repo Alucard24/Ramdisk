@@ -217,13 +217,13 @@ CPU_HOTPLUG_TWEAKS()
 			renice -n -17 -p $(pgrep -f "/system/bin/thermal-engine");
 		fi;
 
-		local hotplug_sampling_rate_tmp="/sys/kernel/alucard_hotplug/hotplug_sampling_rate";
-		if [ ! -e $hotplug_sampling_rate_tmp ]; then
-			hotplug_sampling_rate_tmp="/dev/null";
-		fi;
-
 		# tune-settings
 		if [ "$state" == "tune" ]; then
+			local hotplug_sampling_rate_tmp="/sys/kernel/alucard_hotplug/hotplug_sampling_rate";
+			if [ ! -e $hotplug_sampling_rate_tmp ]; then
+				hotplug_sampling_rate_tmp="/dev/null";
+			fi;
+
 			local cpu_up_rate_tmp="/sys/kernel/alucard_hotplug/cpu_up_rate";
 			if [ ! -e $cpu_up_rate_tmp ]; then
 				cpu_up_rate_tmp="/dev/null";
@@ -329,6 +329,11 @@ CPU_HOTPLUG_TWEAKS()
 				maxcoreslimit_tmp="/dev/null";
 			fi;
 
+			local maxcoreslimit_sleep_tmp="/sys/kernel/alucard_hotplug/maxcoreslimit_sleep";
+			if [ ! -e $maxcoreslimit_sleep_tmp ]; then
+				maxcoreslimit_sleep_tmp="/dev/null";
+			fi;
+
 			echo "$hotplug_sampling_rate" > $hotplug_sampling_rate_tmp;
 			echo "$cpu_up_rate" > $cpu_up_rate_tmp;
 			echo "$cpu_down_rate" > $cpu_down_rate_tmp;
@@ -350,12 +355,8 @@ CPU_HOTPLUG_TWEAKS()
 			echo "$hotplug_rq_3_0" > $hotplug_rq_3_0_tmp;
 			echo "$hotplug_rq_3_1" > $hotplug_rq_3_1_tmp;
 			echo "$hotplug_rq_4_0" > $hotplug_rq_4_0_tmp;
-		# sleep-settings
-		elif [ "$state" == "sleep" ]; then
-			echo "$maxcoreslimit_sleep" > $maxcoreslimit_tmp;
-		# awake-settings
-		elif [ "$state" == "awake" ]; then
 			echo "$maxcoreslimit" > $maxcoreslimit_tmp;
+			echo "$maxcoreslimit_sleep" > $maxcoreslimit_sleep_tmp;
 		fi;
 
 		log -p i -t "$FILE_NAME" "*** ALUCARD_HOTPLUG ***: enabled";
@@ -705,21 +706,12 @@ CENTRAL_CPU_FREQ()
 
 	local tmp_max_freq=`cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq_all_cpus`;
 	local tmp_min_freq=`cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq_all_cpus`;
-	# Alucard hotplug
-	local alucard_value_tmp=`cat /sys/kernel/alucard_hotplug/hotplug_enable`;
-	local maxcoreslimit_tmp="/sys/kernel/alucard_hotplug/maxcoreslimit";
 
 	if [ "$cortexbrain_cpu" == "on" ]; then
 		MAX_FREQ=`echo $scaling_max_freq_all_cpus`;
 		if [ "$state" == "wake_boost" ] && [ "$wakeup_boost" -ge "0" ]; then
 			echo "$MAX_FREQ" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq_all_cpus;
 			echo "$MAX_FREQ" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq_all_cpus;
-			if [ "$alucard_value_tmp" -eq "1" ]; then
-				if [ ! -e $maxcoreslimit_tmp ]; then
-					maxcoreslimit_tmp="/dev/null";
-				fi;
-				echo "$maxcoreslimit" > $maxcoreslimit_tmp;
-			fi;
 		elif [ "$state" == "awake_normal" ]; then
 			echo "$MAX_FREQ" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq_all_cpus;
 			echo "$scaling_min_freq_all_cpus" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq_all_cpus;
