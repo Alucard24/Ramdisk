@@ -88,19 +88,6 @@ CRITICAL_PERM_FIX()
 }
 CRITICAL_PERM_FIX;
 
-ONDEMAND_TUNING()
-{
-	echo "20" > /cpugov/ondemand/down_differential;
-	echo "3" > /cpugov/ondemand/down_differential_multi_core;
-	echo "1" > /cpugov/ondemand/enable_turbo_mode;
-	echo "90" > /cpugov/ondemand/micro_freq_up_threshold;
-	echo "1" > /cpugov/ondemand/sampling_down_factor;
-	echo "60000" > /cpugov/ondemand/sampling_rate;
-	echo "80" > /cpugov/ondemand/up_threshold;
-	echo "80" > /cpugov/ondemand/up_threshold_any_cpu_load;
-	echo "90" > /cpugov/ondemand/up_threshold_multi_core;
-}
-
 # oom and mem perm fix
 $BB chmod 666 /sys/module/lowmemorykiller/parameters/cost;
 $BB chmod 666 /sys/module/lowmemorykiller/parameters/adj;
@@ -275,7 +262,6 @@ mount -t tmpfs -o mode=0777,gid=1000 tmpfs /mnt/ntfs
 (
 	# set alucard as default gov
 	echo "alucard" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor_all_cpus;
-	#ONDEMAND_TUNING;
 
 	if [ "$stweaks_boot_control" == "yes" ]; then
 		# stop uci.sh from running all the PUSH Buttons in stweaks on boot
@@ -305,9 +291,6 @@ mount -t tmpfs -o mode=0777,gid=1000 tmpfs /mnt/ntfs
 
 		# Load Custom Modules
 		MODULES_LOAD;
-		#if [ -e /cpugov/ondemand ]; then
-		#	ONDEMAND_TUNING;
-		#fi;
 
 		$BB sh /sbin/ext/cortexbrain-tune.sh apply_cpu update > /dev/null;
 		$BB sh /sbin/ext/cortexbrain-tune.sh apply_cpu changes > /dev/null;

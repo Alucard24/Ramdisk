@@ -704,16 +704,9 @@ CENTRAL_CPU_FREQ()
 {
 	local state="$1";
 
-	local tmp_max_freq=`cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq_all_cpus`;
-	local tmp_min_freq=`cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq_all_cpus`;
-
 	if [ "$cortexbrain_cpu" == "on" ]; then
-		MAX_FREQ=`echo $scaling_max_freq_all_cpus`;
-		if [ "$state" == "wake_boost" ] && [ "$wakeup_boost" -ge "0" ]; then
-			echo "$MAX_FREQ" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq_all_cpus;
-			echo "$MAX_FREQ" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq_all_cpus;
-		elif [ "$state" == "awake_normal" ]; then
-			echo "$MAX_FREQ" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq_all_cpus;
+		if [ "$state" == "awake_normal" ]; then
+			echo "$scaling_max_freq_all_cpus" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq_all_cpus;
 			echo "$scaling_min_freq_all_cpus" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq_all_cpus;
 		elif [ "$state" == "standby_freq" ]; then
 			echo "$standby_freq" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq_all_cpus;
@@ -732,25 +725,182 @@ CENTRAL_CPU_FREQ()
 	fi;
 }
 
-# boost CPU power for fast and no lag wakeup
-MEGA_BOOST_CPU_TWEAKS()
+# ==============================================================
+# KERNEL-TWEAKS
+# ==============================================================
+KERNEL_TWEAKS()
 {
-	if [ "$cortexbrain_cpu" == "on" ]; then
-		CENTRAL_CPU_FREQ "wake_boost";
+	if [ "$cortexbrain_kernel_tweaks" == "on" ]; then
+		echo "0" > /proc/sys/vm/oom_kill_allocating_task;
+		echo "0" > /proc/sys/vm/panic_on_oom;
+		echo "30" > /proc/sys/kernel/panic;
 
-		log -p i -t "$FILE_NAME" "*** MEGA_BOOST_CPU_TWEAKS ***";
+		log -p i -t "$FILE_NAME" "*** KERNEL_TWEAKS ***: enabled";
 	else
-		echo "$scaling_max_freq" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq_all_cpus;
+		echo "kernel_tweaks disabled";
+	fi;
+	if [ "$cortexbrain_memory" == "on" ]; then
+		echo "32 32" > /proc/sys/vm/lowmem_reserve_ratio;
+
+		log -p i -t "$FILE_NAME" "*** MEMORY_TWEAKS ***: enabled";
+	else
+		echo "memory_tweaks disabled";
 	fi;
 }
+apply_cpu="$2";
+if [ "$apply_cpu" != "update" ]; then
+	KERNEL_TWEAKS;
+fi;
 
-BOOST_DELAY()
+# ==============================================================
+# SYSTEM-TWEAKS
+# ==============================================================
+SYSTEM_TWEAKS()
 {
-	# check if ROM booting now, then don't wait - creation and deletion of $DATA_DIR/booting @> /sbin/ext/post-init.sh
-	if [ "$wakeup_boost" -gt "0" ] && [ ! -e "$DATA_DIR"/booting ]; then
-		log -p i -t "$FILE_NAME" "*** BOOST_DELAY: ${wakeup_boost}sec ***";
-		sleep "$wakeup_boost";
+	if [ "$cortexbrain_system" == "on" ]; then
+		setprop windowsmgr.max_events_per_sec 240;
+
+		log -p i -t "$FILE_NAME" "*** SYSTEM_TWEAKS ***: enabled";
+	else
+		echo "system_tweaks disabled";
 	fi;
+}
+apply_cpu="$2";
+if [ "$apply_cpu" != "update" ]; then
+	SYSTEM_TWEAKS;
+fi;
+
+# ==============================================================
+# MEMORY-TWEAKS
+# ==============================================================
+MEMORY_TWEAKS()
+{
+	if [ "$cortexbrain_memory" == "on" ]; then
+		echo "$dirty_background_ratio" > /proc/sys/vm/dirty_background_ratio; # default: 10
+		echo "$dirty_ratio" > /proc/sys/vm/dirty_ratio; # default: 20
+		echo "4" > /proc/sys/vm/min_free_order_shift; # default: 4
+		echo "1" > /proc/sys/vm/overcommit_memory; # default: 1
+		echo "50" > /proc/sys/vm/overcommit_ratio; # default: 50
+		echo "3" > /proc/sys/vm/page-cluster; # default: 3
+		echo "4096" > /proc/sys/vm/min_free_kbytes;
+
+		log -p i -t "$FILE_NAME" "*** MEMORY_TWEAKS ***: enabled";
+
+		return 1;
+	else
+		return 0;
+	fi;
+}
+apply_cpu="$2";
+if [ "$apply_cpu" != "update" ]; then
+	MEMORY_TWEAKS;
+fi;
+
+# ==============================================================
+# TCP-TWEAKS
+# ==============================================================
+TCP_TWEAKS()
+{
+	if [ "$cortexbrain_tcp" == "on" ]; then
+		echo "0" > /proc/sys/net/ipv4/tcp_timestamps;
+		echo "1" > /proc/sys/net/ipv4/tcp_rfc1337;
+		echo "1" > /proc/sys/net/ipv4/tcp_workaround_signed_windows;
+		echo "1" > /proc/sys/net/ipv4/tcp_low_latency;
+		echo "1" > /proc/sys/net/ipv4/tcp_mtu_probing;
+		echo "2" > /proc/sys/net/ipv4/tcp_frto_response;
+		echo "1" > /proc/sys/net/ipv4/tcp_no_metrics_save;
+		echo "1" > /proc/sys/net/ipv4/tcp_tw_reuse;
+		echo "1" > /proc/sys/net/ipv4/tcp_tw_recycle;
+		echo "30" > /proc/sys/net/ipv4/tcp_fin_timeout;
+		echo "0" > /proc/sys/net/ipv4/tcp_ecn;
+		echo "5" > /proc/sys/net/ipv4/tcp_keepalive_probes;
+		echo "40" > /proc/sys/net/ipv4/tcp_keepalive_intvl;
+		echo "2500" > /proc/sys/net/core/netdev_max_backlog;
+		echo "1" > /proc/sys/net/ipv4/route/flush;
+
+		log -p i -t "$FILE_NAME" "*** TCP_TWEAKS ***: enabled";
+	else
+		echo "1" > /proc/sys/net/ipv4/tcp_timestamps;
+		echo "0" > /proc/sys/net/ipv4/tcp_rfc1337;
+		echo "0" > /proc/sys/net/ipv4/tcp_workaround_signed_windows;
+		echo "0" > /proc/sys/net/ipv4/tcp_low_latency;
+		echo "0" > /proc/sys/net/ipv4/tcp_mtu_probing;
+		echo "0" > /proc/sys/net/ipv4/tcp_frto_response;
+		echo "0" > /proc/sys/net/ipv4/tcp_no_metrics_save;
+		echo "0" > /proc/sys/net/ipv4/tcp_tw_reuse;
+		echo "0" > /proc/sys/net/ipv4/tcp_tw_recycle;
+		echo "60" > /proc/sys/net/ipv4/tcp_fin_timeout;
+		echo "2" > /proc/sys/net/ipv4/tcp_ecn;
+		echo "9" > /proc/sys/net/ipv4/tcp_keepalive_probes;
+		echo "75" > /proc/sys/net/ipv4/tcp_keepalive_intvl;
+		echo "1000" > /proc/sys/net/core/netdev_max_backlog;
+		echo "0" > /proc/sys/net/ipv4/route/flush;
+
+		log -p i -t "$FILE_NAME" "*** TCP_TWEAKS ***: disabled";
+	fi;
+
+	if [ "$cortexbrain_tcp_ram" == "on" ]; then
+		echo "4194304" > /proc/sys/net/core/wmem_max;
+		echo "4194304" > /proc/sys/net/core/rmem_max;
+		echo "20480" > /proc/sys/net/core/optmem_max;
+		echo "4096 87380 4194304" > /proc/sys/net/ipv4/tcp_wmem;
+		echo "4096 87380 4194304" > /proc/sys/net/ipv4/tcp_rmem;
+
+		log -p i -t "$FILE_NAME" "*** TCP_RAM_TWEAKS ***: enabled";
+	else
+		log -p i -t "$FILE_NAME" "*** TCP_RAM_TWEAKS ***: disable";
+	fi;
+}
+apply_cpu="$2";
+if [ "$apply_cpu" != "update" ]; then
+	TCP_TWEAKS;
+fi;
+
+# ==============================================================
+# FIREWALL-TWEAKS
+# ==============================================================
+FIREWALL_TWEAKS()
+{
+	if [ "$cortexbrain_firewall" == "on" ]; then
+		# ping/icmp protection
+		echo "1" > /proc/sys/net/ipv4/icmp_echo_ignore_broadcasts;
+		echo "1" > /proc/sys/net/ipv4/icmp_echo_ignore_all;
+		echo "1" > /proc/sys/net/ipv4/icmp_ignore_bogus_error_responses;
+
+		log -p i -t "$FILE_NAME" "*** FIREWALL_TWEAKS ***: enabled";
+
+		return 1;
+	else
+		return 0;
+	fi;
+}
+apply_cpu="$2";
+if [ "$apply_cpu" != "update" ]; then
+	FIREWALL_TWEAKS;
+fi;
+
+# disable/enable ipv6
+IPV6()
+{
+	local state='';
+
+	if [ -e /data/data/com.cisco.anyconnec* ]; then
+		local CISCO_VPN=1;
+	else
+		local CISCO_VPN=0;
+	fi;
+
+	if [ "$cortexbrain_ipv6" == "on" ] || [ "$CISCO_VPN" -eq "1" ]; then
+		echo "0" > /proc/sys/net/ipv6/conf/wlan0/disable_ipv6;
+		sysctl -w net.ipv6.conf.all.disable_ipv6=0 > /dev/null;
+		local state="enabled";
+	else
+		echo "1" > /proc/sys/net/ipv6/conf/wlan0/disable_ipv6;
+		sysctl -w net.ipv6.conf.all.disable_ipv6=1 > /dev/null;
+		local state="disabled";
+	fi;
+
+	log -p i -t "$FILE_NAME" "*** IPV6 ***: $state";
 }
 
 NET()
@@ -872,25 +1022,22 @@ AWAKE_MODE()
 	else
 		# not on call, check if was powerd by USB on sleep, or didnt sleep at all
 		if [ "$WAS_IN_SLEEP_MODE" -eq "1" ] && [ "$USB_POWER" -eq "0" ]; then
+			NET "awake";
 			CPU_GOVERNOR "awake";
 			CPU_GOV_TWEAKS "awake";
 			CPU_HOTPLUG_TWEAKS "awake";
-			MEGA_BOOST_CPU_TWEAKS;
 			LOGGER "awake";
-			# NET "awake";
 			MOBILE_DATA "awake";
 			WIFI "awake";
 			IO_SCHEDULER "awake";
 
-			BOOST_DELAY;
-
 			CENTRAL_CPU_FREQ "awake_normal";
+			(
+				sleep 2;
+				IPV6;
+			)&
 		else
 			# Was powered by USB, and half sleep
-			MEGA_BOOST_CPU_TWEAKS;
-
-			BOOST_DELAY;
-
 			CENTRAL_CPU_FREQ "awake_normal";
 			USB_POWER=0;
 
@@ -919,11 +1066,8 @@ SLEEP_MODE()
 	# Check call state
 	CALL_STATE;
 
-	# Check Early Wakeup
-	local TMP_EARLY_WAKEUP=`cat /tmp/early_wakeup`;
-
-	# check if early_wakeup, or we on call
-	if [ "$TMP_EARLY_WAKEUP" -eq "0" ] && [ "$NOW_CALL_STATE" -eq "0" ]; then
+	# check we are on call
+	if [ "$NOW_CALL_STATE" -eq "0" ]; then
 		WAS_IN_SLEEP_MODE=1;
 		CENTRAL_CPU_FREQ "standby_freq";
 
@@ -941,7 +1085,8 @@ SLEEP_MODE()
 			CPU_GOV_TWEAKS "sleep";
 			CPU_HOTPLUG_TWEAKS "sleep";
 			IO_SCHEDULER "sleep";
-			# NET "sleep";
+			NET "sleep";
+			IPV6;
 			WIFI "sleep";
 			MOBILE_DATA "sleep";
 
@@ -953,21 +1098,13 @@ SLEEP_MODE()
 			USB_POWER=1;
 			log -p i -t "$FILE_NAME" "*** SLEEP mode: USB CABLE CONNECTED! No real sleep mode! ***";
 		fi;
-	else
-		# Check if on call
-		if [ "$NOW_CALL_STATE" -eq "1" ]; then
+	elif [ "$NOW_CALL_STATE" -eq "1" ]; then
+			# we are on call
 			CENTRAL_CPU_FREQ "sleep_call";
 			NOW_CALL_STATE=1;
 
 			log -p i -t "$FILE_NAME" "*** on call: SLEEP aborted! ***";
-		else
-			# Early Wakeup detected
-			log -p i -t "$FILE_NAME" "*** early wake up: SLEEP aborted! ***";
-		fi;
 	fi;
-
-	# kill wait_for_fb_wake generated by /sbin/ext/wakecheck.sh
-	pkill -f "cat /sys/power/wait_for_fb_wake"
 }
 
 # ==============================================================
@@ -987,7 +1124,6 @@ if [ "$cortexbrain_background_process" -eq "1" ] && [ `pgrep -f "cat /sys/power/
 		# SLEEP state. All system to power save
 		cat /sys/power/wait_for_fb_sleep > /dev/null 2>&1;
 		sleep 2;
-		/sbin/ext/wakecheck.sh;
 		SLEEP_MODE;
 	done &);
 else
