@@ -208,7 +208,7 @@
 
 	<settingsPane description="Here you can tune alucard hotplug" name="alucard hotplug Tuning">
 
-		<seekBar description="Measured in mS and actual meaning being Sampling Interval, this factor determines how often the governor should poll for CPU usage in terms of frequency and load percentage to make hotplugging decisions. (Default: 40 mS)" name="hotplug_sampling_rate" action="generic_cortex /tmp/hotplug_sampling_rate" unit="mS" min="10" reversed="false" step="5" max="100"/>
+		<seekBar description="Measured in mS and actual meaning being Sampling Interval, this factor determines how often the governor should poll for CPU usage in terms of frequency and load percentage to make hotplugging decisions. (Default: 100 mS)" name="hotplug_sampling_rate" action="generic_cortex /tmp/hotplug_sampling_rate" unit="mS" min="10" reversed="false" step="5" max="100"/>
 
 		<seekBar description="No of samples to evaluate load to scale CPU Up. After cpu_up_rate samples are finished for a frequency, CPU scale-Up logic is executed. In other words - before scaling Up, cpu_up_rate X up_sample_time micro seconds are spend at a frequency. (Default: 2)" name="cpu_up_rate" action="generic_cortex /tmp/cpu_up_rate" unit="int" min="1" reversed="false" step="1" max="40"/>
 
