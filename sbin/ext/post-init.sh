@@ -13,7 +13,7 @@ $BB renice -n -17 -p $(pgrep -f "/system/bin/thermal-engine");
 OPEN_RW()
 {
         $BB mount -o remount,rw /;
-        $BB mount -o remount,rw /system;
+		$BB mount -o remount,rw /system;
 }
 OPEN_RW;
 
@@ -24,6 +24,7 @@ $BB echo "cfq" > /sys/block/mmcblk0/queue/scheduler;
 if [ ! -d /system/lib/modules ]; then
         $BB mkdir /system/lib/modules;
 fi;
+
 cd /lib/modules/;
 for i in *.ko; do
         $BB rm -f /system/lib/modules/"$i";
