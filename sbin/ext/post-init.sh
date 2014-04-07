@@ -249,7 +249,7 @@ if [ "$logger" == "off" ]; then
 	echo "0" > /sys/module/xt_qtaguid/parameters/debug_mask;
 	#echo "0" > /sys/kernel/debug/clk/debug_suspend;
 	#echo "0" > /sys/kernel/debug/msm_vidc/debug_level;
-	#echo "0" > /sys/module/ipc_router/parameters/debug_mask;
+	echo "0" > /sys/module/ipc_router/parameters/debug_mask;
 	echo "0" > /sys/module/msm_serial_hs/parameters/debug_mask;
 	echo "0" > /sys/module/msm_show_resume_irq/parameters/debug_mask;
 	echo "0" > /sys/module/pm_8x60/parameters/debug_mask;
