@@ -110,7 +110,6 @@ force_fast_charge=0
 usb_mode=default
 auto_mount_sd=on
 Dyn_fsync_active=1
-install_root=off
 cortexbrain_background_process=1
 android_logger=auto
 cortexbrain_auto_tweak_mobile=off
