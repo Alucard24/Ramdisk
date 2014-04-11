@@ -373,7 +373,7 @@ CPU_GOV_TWEAKS()
 	local state="$1";
 
 	if [ "$cortexbrain_cpu" == "on" ]; then
-		local SYSTEM_GOVERNOR=`cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor_all_cpus`;
+		local SYSTEM_GOVERNOR=`cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor`;
 
 		local sampling_rate_tmp="/sys/devices/system/cpu/cpufreq/$SYSTEM_GOVERNOR/sampling_rate";
 		if [ ! -e $sampling_rate_tmp ]; then
@@ -706,17 +706,17 @@ CENTRAL_CPU_FREQ()
 
 	if [ "$cortexbrain_cpu" == "on" ]; then
 		if [ "$state" == "awake_normal" ]; then
-			echo "$scaling_max_freq_all_cpus" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq_all_cpus;
-			echo "$scaling_min_freq_all_cpus" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq_all_cpus;
+			echo "$scaling_max_freq" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq;
+			echo "$scaling_min_freq" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq;
 		elif [ "$state" == "standby_freq" ]; then
-			echo "$standby_freq" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq_all_cpus;
+			echo "$standby_freq" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq;
 		elif [ "$state" == "sleep_freq" ]; then
-			echo "$scaling_min_suspend_freq" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq_all_cpus;
-			echo "$scaling_max_suspend_freq" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq_all_cpus;
+			echo "$scaling_min_suspend_freq" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq;
+			echo "$scaling_max_suspend_freq" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq;
 		elif [ "$state" == "sleep_call" ]; then
-			echo "$standby_freq" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq_all_cpus;
+			echo "$standby_freq" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq;
 			# brain cooking prevention during call
-			echo "$scaling_max_oncall_freq" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq_all_cpus;
+			echo "$scaling_max_oncall_freq" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq;
 		fi;
 
 		log -p i -t "$FILE_NAME" "*** CENTRAL_CPU_FREQ: $state ***: done";
@@ -966,21 +966,21 @@ IO_SCHEDULER()
 CPU_GOVERNOR()
 {
 	local state="$1";
-	local scaling_governor_all_cpus_tmp="/sys/devices/system/cpu/cpu0/cpufreq/scaling_governor_all_cpus";
-	local tmp_governor=`cat $scaling_governor_all_cpus_tmp`;
+	local scaling_governor_tmp="/sys/devices/system/cpu/cpu0/cpufreq/scaling_governor";
+	local tmp_governor=`cat $scaling_governor_tmp`;
 
 	if [ "$cortexbrain_cpu" == "on" ]; then
 		if [ "$state" == "awake" ]; then
-			if [ "$tmp_governor" != $scaling_governor_all_cpus ]; then
-				echo "$scaling_governor_all_cpus" > $scaling_governor_tmp;
+			if [ "$tmp_governor" != $scaling_governor ]; then
+				echo "$scaling_governor" > $scaling_governor_tmp;
 			fi;
 		elif [ "$state" == "sleep" ]; then
-			if [ "$tmp_governor" != $scaling_governor_all_cpus_sleep ]; then
-				echo "$scaling_governor_all_cpus_sleep" > $scaling_governor_tmp;
+			if [ "$tmp_governor" != $scaling_governor_sleep ]; then
+				echo "$scaling_governor_sleep" > $scaling_governor_tmp;
 			fi;
 		fi;
 
-		local USED_GOV_NOW=`cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor_all_cpus`;
+		local USED_GOV_NOW=`cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor`;
 
 		log -p i -t "$FILE_NAME" "*** CPU_GOVERNOR: set $state GOV $USED_GOV_NOW ***: done";
 	else

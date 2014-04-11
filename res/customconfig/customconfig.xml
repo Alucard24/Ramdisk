@@ -14,9 +14,9 @@
 
 	<settingsPane description="The following settings are for all global CPU configuration, use it only if you know what you are doing." name="CPU Global Settings">
 
-		<seekBar description="Maximum CPU-Speed for all cpus. CPU Frequency steps by 108.000 kHz, from 162.000 kHz to 1.890.000 kHz! (Default: 1.890.000 kHz)" name="Max Normal Frequency" action="genericfreq /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq_all_cpus" unit="kHz" min="162000" reversed="false" step="108000" max="1890000"/>
+		<seekBar description="Maximum CPU-Speed for all cpus. CPU Frequency steps by 108.000 kHz, from 162.000 kHz to 1.890.000 kHz! (Default: 1.890.000 kHz)" name="Max Normal Frequency" action="genericfreq /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq" unit="kHz" min="162000" reversed="false" step="108000" max="1890000"/>
 
-		<seekBar description="Minimum CPU-Speed for all cpus. CPU Frequency step by 108.000 kHz are valid from 162.000 kHz to 1.890.000 kHz! (Default: 378.000 kHz)" name="Min Frequency" action="genericfreq /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq_all_cpus" unit="kHz" min="162000" reversed="false" step="108000" max="1890000"/>
+		<seekBar description="Minimum CPU-Speed for all cpus. CPU Frequency step by 108.000 kHz are valid from 162.000 kHz to 1.890.000 kHz! (Default: 378.000 kHz)" name="Min Frequency" action="genericfreq /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq" unit="kHz" min="162000" reversed="false" step="108000" max="1890000"/>
 
 	</settingsPane>
 
@@ -86,7 +86,7 @@
 
 	<settingsPane description="Here you can manage advanced governor settings. These settings are active only if the screen is on. !!! Depends on CortexBrain-Background-Process and CortexBrain-CPU-Tweaks!!!" name="Governor Parameters tuning">
 
-		<spinner description="This will set the AWAKE (screen ON) CPU governor. Default CPU governor will only be set during early stages of booting (before init.d execution), and can be overridden by any other scripts or applications. (Default: Darkness)" name="Default CPU Governor" action="generic /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor_all_cpus">
+		<spinner description="This will set the AWAKE (screen ON) CPU governor. Default CPU governor will only be set during early stages of booting (before init.d execution), and can be overridden by any other scripts or applications. (Default: Darkness)" name="Default CPU Governor" action="generic /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor">
 			<spinnerItem name="alucard" value="alucard"/>
 			<spinnerItem name="conservative" value="conservative"/> 
 			<spinnerItem name="darkness" value="darkness"/>
@@ -157,7 +157,7 @@
 
 	<settingsPane description="Here you can manage advanced governor settings. These settings are only active when the screen is off. !!! Depends on CortexBrain-Background-Process and CortexBrain-CPU-Tweaks!!! (Default: Darkness)" name="Governor Parameters tuning">
 
-		<spinner description="This will set the DEEP SLEEP (screen off) CPU governor." name="Deep-Sleep! CPU Governor" action="generic_cortex /tmp/scaling_governor_all_cpus_sleep">
+		<spinner description="This will set the DEEP SLEEP (screen off) CPU governor." name="Deep-Sleep! CPU Governor" action="generic_cortex /tmp/scaling_governor_sleep">
 			<spinnerItem name="alucard" value="alucard"/>
 			<spinnerItem name="conservative" value="conservative"/> 
 			<spinnerItem name="darkness" value="darkness"/>
