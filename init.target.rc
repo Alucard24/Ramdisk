@@ -115,6 +115,9 @@ on boot
    write /sys/devices/i2c-3/3-005b/update_fw 1
    start qcamerasvr
 
+    # enable pulsing led on boot
+    write /sys/class/sec/led/led_pattern 6
+
 on post-fs-data
    mkdir /data/tombstones 0771 system system
    mkdir /tombstones/modem 0771 system system
@@ -246,6 +249,11 @@ service imsqmidaemon /system/bin/imsqmidaemon
     user system
     group radio net_raw log qcom_diag
     disabled
+
+# boot completed
+on property:dev.bootcomplete=1
+    # disable pulsing led on boot complete
+    write /sys/class/sec/led/led_pattern 0
 
 on boot
     start imsqmidaemon
