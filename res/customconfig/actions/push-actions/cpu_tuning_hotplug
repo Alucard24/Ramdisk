@@ -1,7 +1,7 @@
 #!/sbin/busybox sh
 
 (
-	/sbin/ext/cortexbrain-tune.sh apply_hotplug changes > /dev/null;
+	/sbin/ext/cortexbrain-tune.sh apply_cpu update > /dev/null;
 
 	INTELLI_VALUE_TMP=`cat /sys/kernel/intelli_plug/intelli_plug_active`;
 	ALUCARD_VALUE_TMP=`cat /sys/kernel/alucard_hotplug/hotplug_enable`;

@@ -46,11 +46,11 @@ fi;
 	fi;
 	$BB mv /system/etc/init.d/* /data/init.d_bkp/;
         # run ROM scripts
-        if [ -e /system/etc/init.qcom.post_boot.sh ]; then
-                $BB sh /system/etc/init.qcom.post_boot.sh
-        else
-                $BB echo "No ROM Boot script detected"
-        fi;
+        #if [ -e /system/etc/init.qcom.post_boot.sh ]; then
+        #        $BB sh /system/etc/init.qcom.post_boot.sh
+        #else
+        #        $BB echo "No ROM Boot script detected"
+        #fi;
 	$BB mv /data/init.d_bkp/* /system/etc/init.d/
 )&
 
@@ -95,7 +95,7 @@ $BB chmod 666 /sys/module/lowmemorykiller/parameters/adj;
 $BB chmod 666 /sys/module/lowmemorykiller/parameters/minfree
 
 # make sure we own the device nodes
-$BB chown system /sys/devices/system/cpu/cpufreq/alucard/*
+# $BB chown system /sys/devices/system/cpu/cpufreq/alucard/*
 $BB chown system /sys/devices/system/cpu/cpu0/cpufreq/*
 $BB chown system /sys/devices/system/cpu/cpu1/online
 $BB chown system /sys/devices/system/cpu/cpu2/online
@@ -259,7 +259,7 @@ mount -t tmpfs -o mode=0777,gid=1000 tmpfs /mnt/ntfs
 
 (
 	# set alucard as default gov
-	echo "alucard" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor;
+	# echo "alucard" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor;
 
 	if [ "$stweaks_boot_control" == "yes" ]; then
 		# stop uci.sh from running all the PUSH Buttons in stweaks on boot
@@ -291,7 +291,6 @@ mount -t tmpfs -o mode=0777,gid=1000 tmpfs /mnt/ntfs
 		MODULES_LOAD;
 
 		$BB sh /sbin/ext/cortexbrain-tune.sh apply_cpu update > /dev/null;
-		$BB sh /sbin/ext/cortexbrain-tune.sh apply_cpu changes > /dev/null;
 	fi;
 
 	# Start any init.d scripts that may be present in the rom or added by the user
