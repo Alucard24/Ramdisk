@@ -775,11 +775,6 @@ service bugreport /system/bin/dumpstate -d -p -B \
     oneshot
     keycodes 114 115 116
 
-service post-init /sbin/ext/busybox.sh
-    class core
-    user root
-    oneshot
-    
 # SISO-ANDR-PERF :: START Changing scheduler to cfq after boot complete
 on property:sys.boot_completed=1
 	write /sys/block/mmcblk0/queue/scheduler cfq

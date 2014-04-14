@@ -45,12 +45,14 @@ fi;
 		$BB mkdir /data/init.d_bkp;
 	fi;
 	$BB mv /system/etc/init.d/* /data/init.d_bkp/;
+
         # run ROM scripts
-        #if [ -e /system/etc/init.qcom.post_boot.sh ]; then
-        #        $BB sh /system/etc/init.qcom.post_boot.sh
-        #else
-        #        $BB echo "No ROM Boot script detected"
-        #fi;
+	if [ -e /system/etc/init.qcom.post_boot.sh ]; then
+		 /system/bin/sh /system/etc/init.qcom.post_boot.sh
+	else
+		$BB echo "No ROM Boot script detected"
+	fi;
+
 	$BB mv /data/init.d_bkp/* /system/etc/init.d/
 )&
 
