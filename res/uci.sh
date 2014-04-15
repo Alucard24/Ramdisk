@@ -15,7 +15,10 @@ read_defaults;
 read_config;
 
 UCI_PID=`pgrep "uci.sh"`;
-renice -n 15 -p $UCI_PID;
+renice -n -15 -p $UCI_PID;
+
+/sbin/busybox mount -o remount,rw /
+/sbin/busybox mount -o remount,rw /system
 
 case "${1}" in
 	rename)
@@ -45,3 +48,4 @@ case "${1}" in
 		write_config;
 	;;
 esac;
+

@@ -1069,9 +1069,3 @@ on property:init.svc.media=restarting
 
 on property:sys.boot_completed=1
     write /sys/block/mmcblk0/queue/scheduler cfq
-
-# init Alucard Kernel
-service postinit /sbin/ext/post-init.sh
-   class core
-   user root
-   oneshot
