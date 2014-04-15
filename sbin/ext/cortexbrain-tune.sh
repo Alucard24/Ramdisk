@@ -362,11 +362,6 @@ CPU_HOTPLUG_TWEAKS()
 		log -p i -t "$FILE_NAME" "*** ALUCARD_HOTPLUG ***: enabled";
 	fi;
 }
-# this needed for cpu hotplug tweaks apply from STweaks in real time
-apply_hotplug="$2";
-if [ "$apply_hotplug" == "changes" ] || [ "$cortexbrain_background_process" -eq "0" ]; then
-	CPU_HOTPLUG_TWEAKS "tune";
-fi;
 
 CPU_GOV_TWEAKS()
 {
@@ -536,6 +531,7 @@ CPU_GOV_TWEAKS()
 apply_cpu="$2";
 if [ "$apply_cpu" == "update" ] || [ "$cortexbrain_background_process" -eq "0" ]; then
 	CPU_GOV_TWEAKS "tune";
+	CPU_HOTPLUG_TWEAKS "tune";
 fi;
 
 # ==============================================================
