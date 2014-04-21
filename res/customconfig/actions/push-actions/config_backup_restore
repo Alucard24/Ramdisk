@@ -90,7 +90,6 @@ case "${config_backup_restore}" in
 	;;
 	2)
 		file1="/data/.alucard/${PROFILE}.profile";
-		file3="/data/.alucard/tempfile";
 
 		if [ ! -f $file1 ] || [ ! -f $file2 ]; then
 			echo "File not found!";
@@ -123,7 +122,7 @@ case "${config_backup_restore}" in
 						# if backup-file has different values, then restore it
 						if [ "a${line1_2}" != "a${line2_2}" ]; then
 							if [ "${line2_2}" != "" ]; then
-								/sbin/busybox sed -i "s/${line1_1}=${line1_2}/${line2_1}=${line2_2}/" "$file3" && mv "$file3" "$file1";
+								/sbin/busybox sed -i "s/${line1_1}=${line1_2}/${line2_1}=${line2_2}/" $file1;
 								echo "edit: ${line1_1}=${line1_2} -> ${line2_1}=${line2_2}";
 							fi;
 						else
@@ -132,7 +131,7 @@ case "${config_backup_restore}" in
 							continue;
 						fi;
 					fi;
-				done<"$file3" && mv "$file3" "$file1"
+				done<$file1
 
 				# hiding all push action scripts from uci.sh
 				$BB mount -o remount,rw /;
