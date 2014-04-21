@@ -311,6 +311,7 @@ mount -t tmpfs -o mode=0777,gid=1000 tmpfs /mnt/ntfs
 	# disabling knox security at boot
 	pm disable com.sec.knox.seandroid;
 	setenforce 0;
+	setprop ro.securestorage.support false;
 
 	# Fix critical perms again after init.d mess
 	CRITICAL_PERM_FIX;
