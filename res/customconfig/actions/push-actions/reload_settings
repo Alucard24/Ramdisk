@@ -12,11 +12,11 @@ $BB mount -o remount,rw /;
 		read_config;
 
 		$BB chown -R root:system /res/customconfig/actions/;
-		$BB chmod -R 6755 /res/customconfig/actions/;
+		$BB chmod -R 06755 /res/customconfig/actions/;
 
 		# stop uci.sh from running all the PUSH Buttons in stweaks on boot
 		$BB mv /res/customconfig/actions/push-actions/* /res/no-push-on-boot/;
-		$BB chmod 6755 /res/no-push-on-boot/*;
+		$BB chmod 06755 /res/no-push-on-boot/*;
 
 		# apply STweaks settings
 		echo "booting" > /data/.alucard/booting;

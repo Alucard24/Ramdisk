@@ -7,13 +7,18 @@ BB=/sbin/busybox
 # protect init from oom
 echo "-1000" > /proc/1/oom_score_adj;
 
+PIDOFINIT=$(pgrep -f "/sbin/ext/post-init.sh");
+for i in $PIDOFINIT; do
+	echo "-600" > /proc/"$i"/oom_score_adj;
+done;
+
 # set high priority to temp controller
-$BB renice -n -17 -p $(pgrep -f "/system/bin/thermal-engine");
+$BB renice -n -20 -p $(pgrep -f "/system/bin/thermal-engine");
 
 OPEN_RW()
 {
         $BB mount -o remount,rw /;
-	$BB mount -o remount,rw /system;
+        $BB mount -o remount,rw /system;
 }
 OPEN_RW;
 
@@ -46,7 +51,7 @@ fi;
 	fi;
 	$BB mv /system/etc/init.d/* /data/init.d_bkp/;
 
-        # run ROM scripts
+	# run ROM scripts
 	if [ -e /system/etc/init.qcom.post_boot.sh ]; then
 		 /system/bin/sh /system/etc/init.qcom.post_boot.sh
 	else
@@ -72,7 +77,6 @@ fi;
 $BB rm -rf /cache/lost+found/* 2> /dev/null;
 $BB rm -rf /data/lost+found/* 2> /dev/null;
 $BB rm -rf /data/tombstones/* 2> /dev/null;
-$BB rm -rf /data/anr/* 2> /dev/null;
 
 CRITICAL_PERM_FIX()
 {
@@ -84,10 +88,10 @@ CRITICAL_PERM_FIX()
 	$BB chown -R root:root /lib;
 	$BB chmod -R 777 /tmp/;
 	$BB chmod -R 775 /res/;
-	$BB chmod -R 6755 /sbin/ext/;
+	$BB chmod -R 06755 /sbin/ext/;
 	$BB chmod -R 0777 /data/anr/;
 	$BB chmod -R 0400 /data/tombstones;
-	$BB chmod 6755 /sbin/busybox
+	$BB chmod 06755 /sbin/busybox
 }
 CRITICAL_PERM_FIX;
 
@@ -119,28 +123,6 @@ $BB chmod 666 /sys/devices/platform/kgsl-3d0/kgsl/kgsl-3d0/pwrscale/trustzone/go
 $BB chown -R root:root /data/property;
 $BB chmod -R 0700 /data/property
 
-#for no_debug in $(find /sys/ -name *debug*); do
-#       echo "0" > "$no_debug";
-#done;
-
-# CPU tuning
-echo 1 > /sys/module/pm_8x60/modes/cpu0/power_collapse/suspend_enabled
-echo 1 > /sys/module/pm_8x60/modes/cpu1/power_collapse/suspend_enabled
-echo 1 > /sys/module/pm_8x60/modes/cpu2/power_collapse/suspend_enabled
-echo 1 > /sys/module/pm_8x60/modes/cpu3/power_collapse/suspend_enabled
-echo 1 > /sys/module/pm_8x60/modes/cpu0/power_collapse/idle_enabled
-
-#soc_revision=$(cat /sys/devices/system/soc/soc0/version)
-#if [ "$soc_revision" != "1.0" ]; then
-#        echo 0 > /sys/module/pm_8x60/modes/cpu0/retention/idle_enabled
-#        echo 0 > /sys/module/pm_8x60/modes/cpu1/retention/idle_enabled
-#        echo 0 > /sys/module/pm_8x60/modes/cpu2/retention/idle_enabled
-#        echo 0 > /sys/module/pm_8x60/modes/cpu3/retention/idle_enabled
-#fi
-
-# enable cpu notify on migrate
-echo 1 > /dev/cpuctl/apps/cpu.notify_on_migrate
-
 # Tweak some VM settings for system smoothness
 echo 20 > /proc/sys/vm/dirty_background_ratio
 echo 40 > /proc/sys/vm/dirty_ratio
@@ -165,11 +147,6 @@ setprop persist.service.adb.enable 1
 setprop dalvik.vm.execution-mode int:jit
 setprop pm.sleep_mode 1
 
-PIDOFINIT=$(pgrep -f "/sbin/ext/post-init.sh");
-for i in $PIDOFINIT; do
-	echo "-600" > /proc/"$i"/oom_score_adj;
-done;
-
 if [ ! -d /data/.alucard ]; then
 	$BB mkdir -p /data/.alucard;
 fi;
@@ -181,7 +158,7 @@ fi;
 
 # reset profiles auto trigger to be used by kernel ADMIN, in case of need, if new value added in default profiles
 # just set numer $RESET_MAGIC + 1 and profiles will be reset one time on next boot with new kernel.
-RESET_MAGIC=12;
+RESET_MAGIC=1;
 if [ ! -e /data/.alucard/reset_profiles ]; then
 	echo "0" > /data/.alucard/reset_profiles;
 fi;
@@ -205,7 +182,7 @@ read_defaults;
 read_config;
 
 #(
-#	# Apps and ROOT Install
+#	# Apps Install
 #	$BB sh /sbin/ext/install.sh;
 #)&
 
@@ -240,7 +217,7 @@ echo "0" > /proc/sys/kernel/kptr_restrict;
 
 # disable debugging on some modules
 if [ "$logger" == "off" ]; then
-	echo "0" > /sys/module/kernel/parameters/initcall_debug;
+	echo "N" > /sys/module/kernel/parameters/initcall_debug;
 	echo "0" > /sys/module/earlysuspend/parameters/debug_mask;
 	echo "0" > /sys/module/alarm/parameters/debug_mask;
 	echo "0" > /sys/module/alarm_dev/parameters/debug_mask;
@@ -257,7 +234,8 @@ fi;
 OPEN_RW;
 
 # for ntfs automounting
-mount -t tmpfs -o mode=0777,gid=1000 tmpfs /mnt/ntfs
+$BB mkdir /mnt/ntfs
+$BB mount -t tmpfs -o mode=0777,gid=1000 tmpfs /mnt/ntfs
 
 (
 	# set alucard as default gov
@@ -267,9 +245,9 @@ mount -t tmpfs -o mode=0777,gid=1000 tmpfs /mnt/ntfs
 		# stop uci.sh from running all the PUSH Buttons in stweaks on boot
 		OPEN_RW;
 		$BB chown -R root:system /res/customconfig/actions/;
-		$BB chmod -R 6755 /res/customconfig/actions/;
+		$BB chmod -R 06755 /res/customconfig/actions/;
 		$BB mv /res/customconfig/actions/push-actions/* /res/no-push-on-boot/;
-		$BB chmod 6755 /res/no-push-on-boot/*;
+		$BB chmod 06755 /res/no-push-on-boot/*;
 
 		# apply STweaks settings
 		echo "booting" > /data/.alucard/booting;
