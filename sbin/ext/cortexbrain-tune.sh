@@ -13,6 +13,8 @@
 #
 # This script must be activated after init start =< 25sec or parameters from /sys/* will not be loaded.
 
+BB=/sbin/busybox
+
 # change mode for /tmp/
 mount -o remount,rw /;
 chmod -R 777 /tmp/;
@@ -151,7 +153,7 @@ CPU_HOTPLUG_TWEAKS()
 		#enable MSM MPDecision
 		if [ "$(ps | grep "mpdecision" | wc -l)" -le "1" ]; then
 			/system/bin/start mpdecision
-			renice -n -17 -p $(pgrep -f "/system/bin/start mpdecision");
+			$BB renice -n -20 -p $(pgrep -f "/system/bin/start mpdecision");
 		fi;
 
 		log -p i -t "$FILE_NAME" "*** MSM_MPDECISION ***: enabled";
@@ -172,7 +174,7 @@ CPU_HOTPLUG_TWEAKS()
 		fi;
 
 		if [ "$(ps | grep /system/bin/thermal-engine | wc -l)" -ge "1" ]; then
-			renice -n -17 -p $(pgrep -f "/system/bin/thermal-engine");
+			$BB renice -n -20 -p $(pgrep -f "/system/bin/thermal-engine");
 		fi;
 
 		local eco_mode_active_tmp="/sys/kernel/intelli_plug/eco_mode_active";
@@ -214,7 +216,7 @@ CPU_HOTPLUG_TWEAKS()
 		fi
 
 		if [ "$(ps | grep /system/bin/thermal-engine | wc -l)" -ge "1" ]; then
-			renice -n -17 -p $(pgrep -f "/system/bin/thermal-engine");
+			$BB renice -n -20 -p $(pgrep -f "/system/bin/thermal-engine");
 		fi;
 
 		# tune-settings
