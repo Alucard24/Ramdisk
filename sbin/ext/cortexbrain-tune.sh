@@ -28,7 +28,6 @@ PIDOFCORTEX=$$;
 # (since we don't have the recovery source code I can't change the ".alucard" dir, so just leave it there for history)
 DATA_DIR=/data/.alucard;
 WAS_IN_SLEEP_MODE=1;
-NOW_CALL_STATE=0;
 USB_POWER=0;
 TELE_DATA=init;
 
@@ -698,31 +697,6 @@ if [ "$apply_cpu" != "update" ]; then
 	MOUNT_SD_CARD;
 fi;
 
-CENTRAL_CPU_FREQ()
-{
-	local state="$1";
-
-	if [ "$cortexbrain_cpu" == "on" ]; then
-		if [ "$state" == "awake_normal" ]; then
-			echo "$scaling_max_freq" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq;
-			echo "$scaling_min_freq" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq;
-		elif [ "$state" == "standby_freq" ]; then
-			echo "$standby_freq" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq;
-		elif [ "$state" == "sleep_freq" ]; then
-			echo "$scaling_min_suspend_freq" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq;
-			echo "$scaling_max_suspend_freq" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq;
-		elif [ "$state" == "sleep_call" ]; then
-			echo "$standby_freq" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq;
-			# brain cooking prevention during call
-			echo "$scaling_max_oncall_freq" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq;
-		fi;
-
-		log -p i -t "$FILE_NAME" "*** CENTRAL_CPU_FREQ: $state ***: done";
-	else
-		log -p i -t "$FILE_NAME" "*** CENTRAL_CPU_FREQ: NOT CHANGED ***: done";
-	fi;
-}
-
 # ==============================================================
 # KERNEL-TWEAKS
 # ==============================================================
@@ -986,63 +960,33 @@ CPU_GOVERNOR()
 	fi;
 }
 
-CALL_STATE()
-{
-	if [ "$DUMPSYS_STATE" -eq "1" ]; then
-
-		# check the call state, not on call = 0, on call = 2
-		local state_tmp=`echo "$TELE_DATA" | awk '/mCallState/ {print $1}'`;
-
-		if [ "$state_tmp" != "mCallState=0" ]; then
-			NOW_CALL_STATE=1;
-		else
-			NOW_CALL_STATE=0;
-		fi;
-
-		log -p i -t "$FILE_NAME" "*** CALL_STATE: $NOW_CALL_STATE ***";
-	else
-		NOW_CALL_STATE=0;
-	fi;
-}
-
 # ==============================================================
 # TWEAKS: if Screen-ON
 # ==============================================================
 AWAKE_MODE()
 {
-	# Do not touch this
-	CALL_STATE;
+	# not on call, check if was powerd by USB on sleep, or didnt sleep at all
+	if [ "$WAS_IN_SLEEP_MODE" -eq "1" ] && [ "$USB_POWER" -eq "0" ]; then
+		NET "awake";
+		CPU_GOVERNOR "awake";
+		CPU_GOV_TWEAKS "awake";
+		CPU_HOTPLUG_TWEAKS "awake";
+		LOGGER "awake";
+		MOBILE_DATA "awake";
+		WIFI "awake";
+		IO_SCHEDULER "awake";
 
-	# Check call state, if on call dont sleep
-	if [ "$NOW_CALL_STATE" -eq "1" ]; then
-		CENTRAL_CPU_FREQ "awake_normal";
-		NOW_CALL_STATE=0;
+		(
+			sleep 2;
+			IPV6;
+		)&
 	else
-		# not on call, check if was powerd by USB on sleep, or didnt sleep at all
-		if [ "$WAS_IN_SLEEP_MODE" -eq "1" ] && [ "$USB_POWER" -eq "0" ]; then
-			NET "awake";
-			CPU_GOVERNOR "awake";
-			CPU_GOV_TWEAKS "awake";
-			CPU_HOTPLUG_TWEAKS "awake";
-			LOGGER "awake";
-			MOBILE_DATA "awake";
-			WIFI "awake";
-			IO_SCHEDULER "awake";
+		# Was powered by USB, and half sleep
+		USB_POWER=0;
 
-			CENTRAL_CPU_FREQ "awake_normal";
-			(
-				sleep 2;
-				IPV6;
-			)&
-		else
-			# Was powered by USB, and half sleep
-			CENTRAL_CPU_FREQ "awake_normal";
-			USB_POWER=0;
-
-			log -p i -t "$FILE_NAME" "*** USB_POWER_WAKE: done ***";
-		fi;
-		# Didn't sleep, and was not powered by USB
+		log -p i -t "$FILE_NAME" "*** USB_POWER_WAKE: done ***";
 	fi;
+	# Didn't sleep, and was not powered by USB
 }
 
 # ==============================================================
@@ -1056,52 +1000,31 @@ SLEEP_MODE()
 	PROFILE=$(cat "$DATA_DIR"/.active.profile);
 	. "$DATA_DIR"/"$PROFILE".profile;
 
-	# we only read tele-data when the screen turns off ...
-	if [ "$DUMPSYS_STATE" -eq "1" ]; then
-		TELE_DATA=`dumpsys telephony.registry`;
+	# for devs use, if debug is on, then finish full sleep with usb connected
+	if [ "$android_logger" == "debug" ]; then
+		CHARGING=1;
+	else
+		CHARGING=`cat /sys/class/power_supply/battery/batt_charging_source`;
 	fi;
 
-	# Check call state
-	CALL_STATE;
+	# check if we powered by USB, if not sleep
+	if [ "$CHARGING" -eq "1" ]; then
+		CPU_GOVERNOR "sleep";
+		CPU_GOV_TWEAKS "sleep";
+		CPU_HOTPLUG_TWEAKS "sleep";
+		IO_SCHEDULER "sleep";
+		NET "sleep";
+		IPV6;
+		WIFI "sleep";
+		MOBILE_DATA "sleep";
 
-	# check we are on call
-	if [ "$NOW_CALL_STATE" -eq "0" ]; then
-		WAS_IN_SLEEP_MODE=1;
-		CENTRAL_CPU_FREQ "standby_freq";
+		log -p i -t "$FILE_NAME" "*** SLEEP mode ***";
 
-		# for devs use, if debug is on, then finish full sleep with usb connected
-		if [ "$android_logger" == "debug" ]; then
-			CHARGING=1;
-		else
-			CHARGING=`cat /sys/class/power_supply/battery/batt_charging_source`;
-		fi;
-
-		# check if we powered by USB, if not sleep
-		if [ "$CHARGING" -eq "1" ]; then
-			CPU_GOVERNOR "sleep";
-			CENTRAL_CPU_FREQ "sleep_freq";
-			CPU_GOV_TWEAKS "sleep";
-			CPU_HOTPLUG_TWEAKS "sleep";
-			IO_SCHEDULER "sleep";
-			NET "sleep";
-			IPV6;
-			WIFI "sleep";
-			MOBILE_DATA "sleep";
-
-			log -p i -t "$FILE_NAME" "*** SLEEP mode ***";
-
-			LOGGER "sleep";
-		else
-			# Powered by USB
-			USB_POWER=1;
-			log -p i -t "$FILE_NAME" "*** SLEEP mode: USB CABLE CONNECTED! No real sleep mode! ***";
-		fi;
-	elif [ "$NOW_CALL_STATE" -eq "1" ]; then
-			# we are on call
-			CENTRAL_CPU_FREQ "sleep_call";
-			NOW_CALL_STATE=1;
-
-			log -p i -t "$FILE_NAME" "*** on call: SLEEP aborted! ***";
+		LOGGER "sleep";
+	else
+		# Powered by USB
+		USB_POWER=1;
+		log -p i -t "$FILE_NAME" "*** SLEEP mode: USB CABLE CONNECTED! No real sleep mode! ***";
 	fi;
 }
 
