@@ -36,7 +36,7 @@ $BB mount -o remount,rw /;
 $BB mkdir /tmp/fscache;
 $BB mount -t f2fs /dev/block/platform/msm_sdcc.1/by-name/cache /tmp/fscache;
 
-if [ `$BB mount | grep "/fscache" | wc -l` -eq "1" ]; then
+if [ "$($BB mount | grep /fscache | wc -l)" -eq "1" ]; then
 	$BB umount /tmp/fscache;
 	$BB mv /fstab.qcom /fstab.old;
 	$BB mv /fstab.f2fs /fstab.qcom;
