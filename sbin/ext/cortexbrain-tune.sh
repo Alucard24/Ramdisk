@@ -369,7 +369,7 @@ CPU_GOV_TWEAKS()
 	local state="$1";
 
 	if [ "$cortexbrain_cpu" == "on" ]; then
-		local SYSTEM_GOVERNOR=`cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor`;
+		local SYSTEM_GOVERNOR=`cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor_all_cpus`;
 
 		local sampling_rate_tmp="/sys/devices/system/cpu/cpufreq/$SYSTEM_GOVERNOR/sampling_rate";
 		if [ ! -e $sampling_rate_tmp ]; then
@@ -938,7 +938,7 @@ IO_SCHEDULER()
 CPU_GOVERNOR()
 {
 	local state="$1";
-	local scaling_governor_tmp="/sys/devices/system/cpu/cpu0/cpufreq/scaling_governor";
+	local scaling_governor_tmp="/sys/devices/system/cpu/cpu0/cpufreq/scaling_governor_all_cpus";
 	local tmp_governor=`cat $scaling_governor_tmp`;
 
 	if [ "$cortexbrain_cpu" == "on" ]; then
@@ -952,7 +952,7 @@ CPU_GOVERNOR()
 			fi;
 		fi;
 
-		local USED_GOV_NOW=`cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor`;
+		local USED_GOV_NOW=`cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor_all_cpus`;
 
 		log -p i -t "$FILE_NAME" "*** CPU_GOVERNOR: set $state GOV $USED_GOV_NOW ***: done";
 	else
