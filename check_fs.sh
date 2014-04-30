@@ -29,20 +29,30 @@
 
 BB=/sbin/busybox
 
-$BB mount -o remount,rw /system;
 $BB mount -o remount,rw /;
 
-# mount existing cache partition on /tmp/fscache
-$BB mkdir /tmp/fscache;
-$BB mount -t f2fs /dev/block/platform/msm_sdcc.1/by-name/cache /tmp/fscache;
+$BB mv /fstab.qcom /fstab.org;
 
-if [ "$($BB mount | grep /fscache | wc -l)" -eq "1" ]; then
-	$BB umount /tmp/fscache;
-	$BB mv /fstab.qcom /fstab.old;
-	$BB mv /fstab.f2fs /fstab.qcom;
-else
-	$BB mv /fstab.qcom /fstab.old;
-	$BB mv /fstab.ext4 /fstab.qcom;
+FS_CACHE0=$(eval $(/sbin/blkid /dev/block/mmcblk0p18 | /sbin/busybox cut -c 24-); /sbin/busybox echo $TYPE);
+FS_DATA0=$(eval $(/sbin/blkid /dev/block/mmcblk0p29 | /sbin/busybox cut -c 24-); /sbin/busybox echo $TYPE);
+FS_SYSTEM0=$(eval $(/sbin/blkid /dev/block/mmcblk0p16 | /sbin/busybox cut -c 24-); /sbin/busybox echo $TYPE);
+
+if [ "$FS_SYSTEM0" == "ext4" ]; then
+	$BB sed -i "s/# EXT4SYS//g" /fstab.tmp;
+elif [ "$FS_SYSTEM0" == "f2fs" ]; then
+	$BB sed -i "s/# F2FSSYS//g" /fstab.tmp;
 fi;
 
-$BB rm -r /tmp/fscache;
+if [ "$FS_CACHE0" == "ext4" ]; then
+	$BB sed -i "s/# EXT4CAC//g" /fstab.tmp;
+elif [ "$FS_CACHE0" == "f2fs" ]; then
+	$BB sed -i "s/# F2FSCAC//g" /fstab.tmp;
+fi;
+
+if [ "$FS_DATA0" == "ext4" ]; then
+	$BB sed -i "s/# EXT4DAT//g" /fstab.tmp;
+elif [ "$FS_DATA0" == "f2fs" ]; then
+	$BB sed -i "s/# F2FSDAT//g" /fstab.tmp;
+fi;
+
+$BB mv /fstab.tmp /fstab.qcom;

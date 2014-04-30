@@ -5,7 +5,6 @@
 #<src>                                             <mnt_point>      <type>  <mnt_flags and options>                                                   <fs_mgr_flags>
 /dev/block/platform/msm_sdcc.1/by-name/boot        /boot            emmc    defaults                                                                  defaults
 /dev/block/platform/msm_sdcc.1/by-name/recovery    /recovery        emmc    defaults                                                                  defaults
-/dev/block/platform/msm_sdcc.1/by-name/system      /system          ext4    ro,barrier=1,errors=panic                                                 wait
 
 /devices/platform/msm_sdcc.2/mmc_host/mmc2         auto             auto    defaults                                                                  voldmanaged=sdcard1:auto
 /devices/platform/msm_hsusb_host/usb               auto             auto    defaults                                                                  voldmanaged=usbdisk:auto
