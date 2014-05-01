@@ -47,6 +47,8 @@ if [ "$FS_CACHE0" == "ext4" ]; then
 	$BB sed -i "s/# EXT4CAC//g" /fstab.tmp;
 elif [ "$FS_CACHE0" == "f2fs" ]; then
 	$BB sed -i "s/# F2FSCAC//g" /fstab.tmp;
+else
+	$BB sed -i "s/# F2FSCAC//g" /fstab.tmp;
 fi;
 
 if [ "$FS_DATA0" == "ext4" ]; then
