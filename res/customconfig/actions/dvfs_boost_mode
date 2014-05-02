@@ -1,0 +1,19 @@
+#!/sbin/busybox sh
+
+# $1 - "dvfs_boost_mode"
+# $2 - value=
+# Created By Alucard
+
+BB=/sbin/busybox
+
+if [ "a$2" != "a" ]; then
+	dvfs_boost_mode=$2;
+
+	echo "$dvfs_boost_mode" > /sys/module/synaptics_i2c_rmi/parameters/dvfs_boost_mode;
+	echo "$dvfs_boost_mode" > /sys/module/gpio_keys/parameters/dvfs_boost_mode;
+	echo "$dvfs_boost_mode" > /sys/module/cypress_touchkey_236/parameters/dvfs_boost_mode;
+	echo "$dvfs_boost_mode" > /sys/module/mxts/parameters/dvfs_boost_mode;
+	echo "$dvfs_boost_mode" > /sys/module/rmi_fw_update/parameters/dvfs_boost_mode;
+fi;
+
+echo ${dvfs_boost_mode};
