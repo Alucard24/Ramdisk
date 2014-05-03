@@ -105,13 +105,13 @@
 
 		<seekBar description="This threshold is used as up threshold while sampling at frequencies less than freq_for_responsiveness. Above that, normal up_threshold is used. This gives us an option to make scaling aggressive or relaxed until a frequency and normal for higher frequencies. Again, during calculation of optimal frequency which should not trigger up policy, down threshold to consider is difference between up_threshold_at_min_freq and down_differential. (Only for HYPER, Ondemand and PegasusQ) (Default: 60%)" name="up_threshold_at_min_freq" action="generic_cortex /tmp/up_threshold_at_min_freq" unit="%" min="1" reversed="false" step="1" max="100"/>
 
-		<seekBar description="Measured in uS and actual meaning being Sampling Interval, this factor determines how often the governor should poll for CPU usage in terms of frequency and load percentage to make scaling decisions - either scale CPU Up or scale it Down. (Only for HYPER, OnDemand, PegasusQ, Conservative, Nightmare, Darkness, Alucard) (Default: 60.000 uS)" name="sampling_rate" action="generic_cortex /tmp/sampling_rate" unit="uS" min="10000" reversed="false" step="10000" max="200000"/>
+		<seekBar description="Measured in uS and actual meaning being Sampling Interval, this factor determines how often the governor should poll for CPU usage in terms of frequency and load percentage to make scaling decisions - either scale CPU Up or scale it Down. (Only for HYPER, OnDemand, PegasusQ, Conservative, Nightmare, Darkness, Alucard) (Default: 60.000 uS)" name="sampling_rate" action="generic_cortex /tmp/sampling_rate" unit="uS" min="10000" reversed="false" step="5000" max="200000"/>
 
 		<seekBar description="Acts as a multiplier for sampling interval for re-evaluating the load when CPU is truly busy and is on highest clock frequency (policy max). Setting to 1 makes no difference and causes CPU to immediately scale down from highest frequency. Sampling down factor is NOT valid for lower frequencies and low load conditions. Note that CPU is scaled up to max frequency when max_load_freq is greater than up_threshold X current frequency. (or to cur_freq + (freq_step X policy.max_freq) whichever is smaller) Max_load_freq is an arbitrary frequency calculated as the maximum of load_frequencies. (Only for HYPER, Ondemand, PegasusQ, Conservartive) (Default: 1)" name="sampling_down_factor" action="generic_cortex /tmp/sampling_down_factor" unit="int" min="1" reversed="false" step="1" max="10"/>
 
 		<seekBar description="Defines how much as a percentage of maximum frequency, governor should increase CPU frequency each time CPU load reaches up_threshold or inc_cpu_load. (Only for HYPER, Ondemand, PegasusQ, Nightmare, Conservative) (Default: 20%)" name="freq_step" action="generic_cortex /tmp/freq_step" unit="%" min="5" reversed="false" step="1" max="100"/>
 
-		<seekBar description="After spending sampling_down_factor X sampling_rate micro seconds at maximum frequency on high load, governor samples the load again to calculate an approx target frequency to scale-down-to which should not trigger up_threshold in the next sample. (Triggering up threshold may cause jumping to max frequency again). Max_load_freq is checked against (up_threshold - down_differential) X current frequency. If found to be smaller, CPU is scaled down to a target frequency as described above. Down_differential also act as the factor to prevent aggressive scale down. (Only for HYPER, Ondemand, PegasusQ, Sleepy) (default: 5)" name="down_differential" action="generic_cortex /tmp/down_differential" unit="int" min="1" reversed="false" step="1" max="80"/>
+		<seekBar description="After spending sampling_down_factor X sampling_rate micro seconds at maximum frequency on high load, governor samples the load again to calculate an approx target frequency to scale-down-to which should not trigger up_threshold in the next sample. (Triggering up threshold may cause jumping to max frequency again). Max_load_freq is checked against (up_threshold - down_differential) X current frequency. If found to be smaller, CPU is scaled down to a target frequency as described above. Down_differential also act as the factor to prevent aggressive scale down. (Only for HYPER, Ondemand, PegasusQ) (default: 5)" name="down_differential" action="generic_cortex /tmp/down_differential" unit="int" min="1" reversed="false" step="1" max="80"/>
 
 		<seekBar description="Until freq_for_responsiveness, Up Threshold considered for sampling load is up_threshold_at_min_freq. Also during the part where CPU is at maximum load frequency, governor need to find the optimal frequency as the next frequency - which should not trigger up_threshold in the next sampling. When such a frequency_next is found to be a) less than freq_for_responsiveness b) will not trigger down_threshold in the next sample, then the optimal frequency is set to freq_for_responsiveness. (Only for HYPER, PegasusQ, Nightmare) (Default: 486.000 kHz)" name="freq_for_responsiveness" action="generic_cortex /tmp/freq_for_responsiveness" unit="kHz" min="162000" reversed="false" step="108000" max="1890000"/>
 
@@ -170,7 +170,7 @@
 
 	<settingsPane description="Global Govs Configuration, see descriptions" name="GLOBAL GOV CONFIGURATON">
 
-		<seekBar description="Measured in uS and actual meaning being Sampling Interval, this factor determines how often the governor should poll for CPU usage in terms of frequency and load percentage to make scaling decisions - either scale CPU Up or scale it Down. (Only for HYPER, OnDemand, PegasusQ, Conservative, Nightmare, Darkness, Alucard) (Default: 60.000 uS)" name="sampling_rate_sleep" action="generic_cortex /tmp/sampling_rate_sleep" unit="uS" min="10000" reversed="false" step="10000" max="200000"/>
+		<seekBar description="Measured in uS and actual meaning being Sampling Interval, this factor determines how often the governor should poll for CPU usage in terms of frequency and load percentage to make scaling decisions - either scale CPU Up or scale it Down. (Only for HYPER, OnDemand, PegasusQ, Conservative, Nightmare, Darkness, Alucard) (Default: 60.000 uS)" name="sampling_rate_sleep" action="generic_cortex /tmp/sampling_rate_sleep" unit="uS" min="10000" reversed="false" step="5000" max="200000"/>
 
 	</settingsPane>
 
@@ -333,32 +333,23 @@
 
 	<settingsPane description="Here you can tune DVFS Touch frequency" name="Touch Frequency">
 
-		<spinner description="Here you can enable or disable dvfs touch frequency. (Default: Dual)" name="dvfs_boost_mode" action="generic /sys/kernel/dvfs_touch_if/dvfs_boost_mode">
+		<spinner description="Here you can enable or disable dvfs touch frequency. (Default: Dual)" name="dvfs_boost_mode" action="dvfs_boost_mode">
 			<spinnerItem name="None" value="0"/>
 			<spinnerItem name="Single" value="1"/>
 			<spinnerItem name="Dual" value="2"/>
-			<spinnerItem name="Ninth" value="9"/> 
 		</spinner>
 
-		<seekBar description="Coming soon. From 810.000 kHz to 1.890.000 kHz! (Default: 1.134.000 kHz)" name="dvfs_min_limit" action="genericfreq /sys/kernel/dvfs_touch_if/dvfs_min_limit" unit="kHz" min="810000" reversed="false" step="108000" max="1890000"/>
+		<seekBar description="When screen is touched the CPU min is set to this value for the duration in (booster_chg_time). From 810.000 kHz to 1.890.000 kHz (Default: 1.134.000 kHz)" name="min_touch_limit" action="min_touch_limit" unit="kHz" min="810000" reversed="false" step="108000" max="1890000"/>
 
-		<seekBar description="Coming soon. From 810.000 kHz to 1.890.000 kHz! Only when dvfs boost mode is equal to Ninth. (Default: 1.890.000 kHz)" name="dvfs_min_high_limit" action="genericfreq /sys/kernel/dvfs_touch_if/dvfs_min_high_limit" unit="kHz" min="810000" reversed="false" step="108000" max="1890000"/>
-
-		<seekBar description="Coming soon. From 486.000 kHz to 1.566.000 kHz! (Default: 810.000 kHz)" name="dvfs_min_limit_second" action="genericfreq /sys/kernel/dvfs_touch_if/dvfs_min_limit_second" unit="kHz" min="486000" reversed="false" step="108000" max="1566000"/>
-
-		<seekBar description="Coming soon. From 486.000 kHz to 1.566.000 kHz! Only when dvfs boost mode is equal to Ninth. (Default: 1566.000 kHz)" name="dvfs_min_high_limit_second" action="genericfreq /sys/kernel/dvfs_touch_if/dvfs_min_high_limit_second" unit="kHz" min="486000" reversed="false" step="108000" max="1566000"/>
+		<seekBar description="When screen is touched the CPU min is set to this value after (booster_chg_time) for the duration in (booster_off_time). From 486.000 kHz to 1.458.000 kHz (Default: 810.000 kHz)" name="min_touch_limit_second" action="min_touch_limit_second" unit="kHz" min="486000" reversed="false" step="108000" max="1458000"/>
 
 	</settingsPane>
 
 	<settingsPane description="Here you can tune DVFS Touch time" name="Touch Time">
 
-		<seekBar description="Coming soon. From 200 msecs to 5000 msecs! (Default: 300 msec)" name="syn_off_time" action="generic /sys/kernel/dvfs_touch_if/syn_off_time" unit="msecs" min="200" reversed="false" step="100" max="5000"/>
+		<seekBar description="Duration CPU min (min_touch_limit_second) is active. From 200 ms to 5000 ms (Default: 300 ms)" name="booster_off_time" action="booster_off_time" unit="msecs" min="200" reversed="false" step="100" max="5000"/>
 
-		<seekBar description="Coming soon. From 100 msecs to 1000 msecs! (Default: 200 msec)" name="syn_chg_time" action="generic /sys/kernel/dvfs_touch_if/syn_chg_time" unit="msecs" min="100" reversed="false" step="100" max="1000"/>
-
-		<seekBar description="Coming soon. From 200 msecs to 5000 msecs! Only when dvfs boost mode is equal to Ninth. (Default: 1000 msec)" name="syn_high_off_time" action="generic /sys/kernel/dvfs_touch_if/syn_high_off_time" unit="msecs" min="200" reversed="false" step="100" max="5000"/>
-
-		<seekBar description="Coming soon. From 100 msecs to 1000 msecs! Only when dvfs boost mode is equal to Ninth. (Default: 500 msec)" name="syn_high_chg_time" action="generic /sys/kernel/dvfs_touch_if/syn_high_chg_time" unit="msecs" min="100" reversed="false" step="100" max="1000"/>
+		<seekBar description="Duration CPU min (min_touch_limit) is active. From 100 ms to 1000 ms (Default: 200 ms)" name="booster_chg_time" action="booster_chg_time" unit="msecs" min="100" reversed="false" step="100" max="1000"/>
 
 	</settingsPane>
 
@@ -535,7 +526,7 @@
 
 	<settingsPane description="General tweaks" name="General tweaks">
 
-		<seekBar description="Vibration force level. (Default: 75)" name="Vibration force" action="generic /sys/vibrator/pwm_val" unit="%" min="0" reversed="false" step="5" max="100"/>
+		<seekBar description="Vibration force level. (Default: 75)" name="Vibration force" action="generic /sys/devices/virtual/timed_output/vibrator/pwm_value" unit="%" min="0" reversed="false" step="5" max="100"/>
 
 		<spinner description="This will force fast charging if it is enabled. If it is enabled, USB MTP will be disabled!  (Default: Disabled)" name="Force Fast Charging" action="generic /sys/kernel/fast_charge/force_fast_charge">
 			<spinnerItem name="Enabled" value="1"/> 
