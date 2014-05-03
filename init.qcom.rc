@@ -38,13 +38,13 @@ on init
     mkdir /mnt/media_rw/UsbDriveD 0700 media_rw media_rw
     mkdir /mnt/media_rw/UsbDriveE 0700 media_rw media_rw
     mkdir /mnt/media_rw/UsbDriveF 0700 media_rw media_rw
-    
+
     # Set permissions for persist partition
     mkdir /persist 0771 system system
     # See storage config details at http://source.android.com/tech/storage/
     mkdir /mnt/shell/emulated 0700 shell shell
     mkdir /storage 0550 system sdcard_r
-    mkdir /storage/emulated 0555 root root    
+    mkdir /storage/emulated 0555 root root
 
     export EXTERNAL_STORAGE /storage/emulated/legacy
     export EMULATED_STORAGE_SOURCE /mnt/shell/emulated
@@ -72,7 +72,7 @@ on init
     symlink /storage/UsbDriveF /mnt/UsbDriveF
 
     export SECONDARY_STORAGE /storage/extSdCard:/storage/UsbDriveA:/storage/UsbDriveB:/storage/UsbDriveC:/storage/UsbDriveD:/storage/UsbDriveE:/storage/UsbDriveF
-    
+
     mkdir /storage/extSdCard 0700 root root
     mkdir /storage/UsbDriveA 0700 root root
     mkdir /storage/UsbDriveB 0700 root root
@@ -711,7 +711,7 @@ service profiler_daemon /system/bin/profiler_daemon
 service sdcard /system/bin/sdcard /data/media /mnt/shell/emulated 1023 1023
     class late_start
     disabled
-    
+
 on property:ro.fuse_sdcard=true
     start sdcard
 
