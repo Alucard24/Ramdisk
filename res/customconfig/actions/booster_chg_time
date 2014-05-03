@@ -1,0 +1,15 @@
+#!/sbin/busybox sh
+
+# $1 - "booster_chg_time"
+# $2 - value=
+# Created By Alucard
+
+if [ "a$2" != "a" ]; then
+	booster_chg_time=$2;
+
+	echo "$booster_chg_time" > /sys/module/synaptics_i2c_rmi/parameters/booster_chg_time;
+	echo "$booster_chg_time" > /sys/module/gpio_keys/parameters/booster_chg_time;
+	echo "$booster_chg_time" > /sys/module/cypress_touchkey_236/parameters/booster_chg_time;
+fi;
+
+echo ${booster_chg_time};
