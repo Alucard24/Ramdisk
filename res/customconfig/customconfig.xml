@@ -339,7 +339,7 @@
 			<spinnerItem name="Dual" value="2"/>
 		</spinner>
 
-		<seekBar description="When screen is touched the CPU min is set to this value for the duration in (booster_chg_time). From 810.000 kHz to 1.890.000 kHz (Default: 1.134.000 kHz)" name="min_touch_limit" action="min_touch_limit" unit="kHz" min="810000" reversed="false" step="108000" max="1890000"/>
+		<seekBar description="When screen is touched the CPU min is set to this value for the duration in (booster_chg_time). From 810.000 kHz to 1.890.000 kHz (Default: 1.242.000 kHz)" name="min_touch_limit" action="min_touch_limit" unit="kHz" min="810000" reversed="false" step="108000" max="1890000"/>
 
 		<seekBar description="When screen is touched the CPU min is set to this value after (booster_chg_time) for the duration in (booster_off_time). From 486.000 kHz to 1.458.000 kHz (Default: 810.000 kHz)" name="min_touch_limit_second" action="min_touch_limit_second" unit="kHz" min="486000" reversed="false" step="108000" max="1458000"/>
 
