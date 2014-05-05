@@ -943,12 +943,12 @@ CPU_GOVERNOR()
 
 	if [ "$cortexbrain_cpu" == "on" ]; then
 		if [ "$state" == "awake" ]; then
-			if [ "$tmp_governor" != $scaling_governor ]; then
-				echo "$scaling_governor" > $scaling_governor_tmp;
+			if [ "$tmp_governor" != $scaling_governor_all_cpus ]; then
+				echo "$scaling_governor_all_cpus" > $scaling_governor_tmp;
 			fi;
 		elif [ "$state" == "sleep" ]; then
-			if [ "$tmp_governor" != $scaling_governor_sleep ]; then
-				echo "$scaling_governor_sleep" > $scaling_governor_tmp;
+			if [ "$tmp_governor" != $scaling_governor_all_cpus_sleep ]; then
+				echo "$scaling_governor_all_cpus_sleep" > $scaling_governor_tmp;
 			fi;
 		fi;
 
