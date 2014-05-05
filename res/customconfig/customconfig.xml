@@ -1,14 +1,14 @@
 <settingsRoot>
 <settingsTab name="CPU">
 
-	<settingsPane description="Here you can set Stweaks settings to be applyed on BOOT." name="Global BOOT Settings">
+	<settingsPane description="Set Stweaks settings to be applyed on BOOT." name="Global BOOT Settings">
 
 		<spinner description="Master Switch, Load all settings from all TABS on boot, default is LOAD." name="Enable On Boot" action="generic_cortex /tmp/stweaks_boot_control">
 			<spinnerItem name="Load all Settings on boot" value="yes"/> 
 			<spinnerItem name="Don't load all Settings on boot" value="no"/> 
 		</spinner>
 
-		<button description="Push to load all tuned settings if master swith is OFF or was OFF, if it was ON when phone booted then no need to push!! wait till you see that settings are loaded" name="LOAD ALL" action="push-actions/reload_settings" label="LOAD ALL"/>
+		<button description="Push to load all tuned settings if master switch is OFF or was OFF, if it was ON when phone booted then no need to push!! wait till you see that settings are loaded" name="LOAD ALL" action="push-actions/reload_settings" label="LOAD ALL"/>
 
 	</settingsPane>
 
@@ -20,7 +20,7 @@
 
 	</settingsPane>
 
-	<settingsPane description="Here you can set CPU settings to save power." name="CPU Idle and Power Settings">
+	<settingsPane description="Set CPU settings to save power." name="CPU Idle and Power Settings">
 
 		<seekBar description="Maximum CPU speed while using GPS. (Default: 1890.000 kHz)." name="scaling_max_gps_freq" action="genericfreq /sys/kernel/cpufreq_limit_manager/scaling_max_gps_freq" unit="kHz" min="810000" reversed="false" step="108000" max="1890000"/>
 
@@ -82,7 +82,7 @@
 
 <settingsTab name="CPU-TUNING (AWAKE)">
 
-	<settingsPane description="Here you can manage advanced governor settings. These settings are active only if the screen is on. !!! Depends on CortexBrain-Background-Process and CortexBrain-CPU-Tweaks!!!" name="Governor Parameters tuning">
+	<settingsPane description="Set advanced governor settings. These settings are active only if the screen is on. !!! Depends on CortexBrain-Background-Process and CortexBrain-CPU-Tweaks!!!" name="Governor Parameters tuning">
 
 		<spinner description="This will set the AWAKE (screen ON) CPU governor. Default CPU governor will only be set during early stages of booting (before init.d execution), and can be overridden by any other scripts or applications. (Default: Alucard)" name="Default CPU Governor" action="generic /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor_all_cpus">
 			<spinnerItem name="alucard" value="alucard"/>
@@ -143,7 +143,7 @@
 
 		<seekBar description="Brake scale up frequency when load big or equal inc_cpu_load. (Only for Nightmare). (Default: 30)" name="freq_up_brake" action="generic_cortex /tmp/freq_up_brake" unit="step" min="0" reversed="false" step="1" max="100"/>
 
-		<seekBar description="Defines how much as a percentage of maximum frequency, governor should decrease CPU frequency each time CPU load reaches dec_cpu_load.  (Only for Nightmare). (Default: 10%)" name="freq_step_dec" action="generic_cortex /tmp/freq_step_dec" unit="%" min="0" reversed="false" step="1" max="100"/>
+		<seekBar description="Defines how much as a percentage of maximum frequency, governor should decrease CPU frequency each time CPU load reaches dec_cpu_load. Only for Nightmare). Default: 10%)" name="freq_step_dec" action="generic_cortex /tmp/freq_step_dec" unit="%" min="0" reversed="false" step="1" max="100"/>
 
 		<seekBar description="Defines how much as a percentage of maximum frequency, governor should decrease CPU frequency each time CPU load reaches dec_cpu_load and current freq is greater than freq_for_responsiviness_max. (Only for Nightmare). (Default: 10%)" name="freq_step_dec_at_max_freq" action="generic_cortex /tmp/freq_step_dec_at_max_freq" unit="%" min="0" reversed="false" step="1" max="100"/>
 
@@ -153,7 +153,7 @@
 
 <settingsTab name="CPU-TUNING (SLEEP)">
 
-	<settingsPane description="Here you can set advanced governor settings. These settings are only active when the screen is off. !!! Depends on CortexBrain-Background-Process and CortexBrain-CPU-Tweaks!!! (Default: Alucard)" name="Governor Parameters tuning">
+	<settingsPane description="Set advanced governor settings. These settings are only active when the screen is off. !!! Depends on CortexBrain-Background-Process and CortexBrain-CPU-Tweaks!!! (Default: Alucard)" name="Governor Parameters tuning">
 
 		<spinner description="This will set the DEEP SLEEP (screen off) CPU governor." name="Deep-Sleep! CPU Governor" action="generic_cortex /tmp/scaling_governor_all_cpus_sleep">
 			<spinnerItem name="alucard" value="alucard"/>
@@ -178,9 +178,9 @@
 
 <settingsTab name="CPU-HOTPLUGGING (AWAKE)">
 
-	<settingsPane description="Here you can tune CPU hotplugging" name="Cpu hotplug Tuning">
+	<settingsPane description="Tune CPU hotplugging" name="Cpu hotplug Tuning">
 
-		<spinner description="Here you can set the CPU hotplugging system. (Default: ALUCARD HOTPLUG)" name="cpu hotplugging" action="cpuhotplugging">
+		<spinner description="Set the CPU hotplugging system. (Default: ALUCARD HOTPLUG)" name="cpu hotplugging" action="cpuhotplugging">
 			<spinnerItem name="MSM MPDECISION" value="1"/> 
 			<spinnerItem name="INTELLIPLUG" value="2"/> 
 			<spinnerItem name="ALUCARD HOTPLUG" value="3"/> 
@@ -190,27 +190,27 @@
 
 	</settingsPane>
 
-	<settingsPane description="Here you can tune Intelliplug" name="Intelliplug Tuning">
+	<settingsPane description="Tune Intelliplug" name="Intelliplug Tuning">
 
-		<spinner description="Here you can set eco mode tweaks. (Default: Disabled)" name="eco_mode_active" action="generic /sys/kernel/intelli_plug/eco_mode_active">
+		<spinner description="Set eco mode tweaks. (Default: Disabled)" name="eco_mode_active" action="generic /sys/kernel/intelli_plug/eco_mode_active">
 			<spinnerItem name="Enabled" value="1"/> 
 			<spinnerItem name="Disabled" value="0"/> 
 		</spinner>
 
-		<spinner description="Here you can set strict mode active. (Default: Disabled)" name="strict_mode_active" action="generic /sys/kernel/intelli_plug/strict_mode_active">
+		<spinner description="Set strict mode active. (Default: Disabled)" name="strict_mode_active" action="generic /sys/kernel/intelli_plug/strict_mode_active">
 			<spinnerItem name="Enabled" value="1"/> 
 			<spinnerItem name="Disabled" value="0"/> 
 		</spinner>
 
 	</settingsPane>
 
-	<settingsPane description="Here you can tune alucard hotplug" name="alucard hotplug Tuning">
+	<settingsPane description="Tune alucard hotplug" name="alucard hotplug Tuning">
 
 		<seekBar description="Sampling Interval, measured in ms. This factor determines how often the governor should poll for CPU usage in terms of frequency and load percentage to make hotplugging decisions. (Default: 60 ms)" name="hotplug_sampling_rate" action="generic_cortex /tmp/hotplug_sampling_rate" unit="ms" min="10" reversed="false" step="5" max="100"/>
 
-		<seekBar description="No of samples to evaluate load to scale CPU Up. After cpu_up_rate samples are finished for a frequency, CPU scale-Up logic is executed. In other words - before scaling Up, cpu_up_rate X up_sample_time micro seconds are spend at a frequency. (Default: 2)" name="cpu_up_rate" action="generic_cortex /tmp/cpu_up_rate" unit="int" min="1" reversed="false" step="1" max="40"/>
+		<seekBar description="Number of samples to evaluate load to scale CPU Up. After cpu_up_rate samples are finished for a frequency, CPU scale-Up logic is executed. In other words - before scaling Up, cpu_up_rate X up_sample_time micro seconds are spend at a frequency. (Default: 2)" name="cpu_up_rate" action="generic_cortex /tmp/cpu_up_rate" unit="int" min="1" reversed="false" step="1" max="40"/>
 
-		<seekBar description="No of samples to evaluate load to scale CPU Down. After CPU_down_rate samples are finished for a frequency, CPU scale-Down logic is executed. In other words - before scaling Down, cpu_down_rate X down_sample_time micro seconds are spend at a frequency. (Default: 5)" name="cpu_down_rate" action="generic_cortex /tmp/cpu_down_rate" unit="int" min="1" reversed="false" step="1" max="40"/>
+		<seekBar description="Number of samples to evaluate load to scale CPU Down. After CPU_down_rate samples are finished for a frequency, CPU scale-Down logic is executed. In other words - before scaling Down, cpu_down_rate X down_sample_time micro seconds are spend at a frequency. (Default: 5)" name="cpu_down_rate" action="generic_cortex /tmp/cpu_down_rate" unit="int" min="1" reversed="false" step="1" max="40"/>
 
 		<seekBar description="Up threshold frequency to turn second core On, when some other conditions is also met. ie If (minimum frequency greater than or equal to hotplug_freq 1 1) Hotplug IN Second Core. Higher value corresponds to delay in turning on second core. (Default: 1242.000 kHz)" name="hotplug_freq_1_1" action="generic_cortex /tmp/hotplug_freq_1_1" unit="kHz" min="162000" reversed="false" step="108000" max="1890000"/>
 
@@ -224,17 +224,17 @@
 
 		<seekBar description="Down threshold frequency to turn fourth core Off, when some other conditions is also met. ie If (maximum frequency less than hotplug_freq 4 0) Hotplug OUT Fourth Core. Lower value corresponds to delay in turning off fourth core. (Default: 1026.000 kHz)" name="hotplug_freq_4_0" action="generic_cortex /tmp/hotplug_freq_4_0" unit="kHz" min="162000" reversed="false" step="108000" max="1890000"/>
 
-		<seekBar description="The CPU load at which governor scales CPU up. Cur Load equal or greater than up_load: CPU Hotplug IN. Value corresponding to 101 causes not HOTPLUG IN. (Default: 65%)" name="hotplug_load_1_1" action="generic_cortex /tmp/hotplug_load_1_1" unit="%" min="10" reversed="false" step="1" max="101"/>
+		<seekBar description="The CPU load at which governor scales CPU up. Current Load equal or greater than up_load: CPU Hotplug IN. Value corresponding to 101 causes not HOTPLUG IN. (Default: 65%)" name="hotplug_load_1_1" action="generic_cortex /tmp/hotplug_load_1_1" unit="%" min="10" reversed="false" step="1" max="101"/>
 
-		<seekBar description="The CPU load at which governor scales CPU down. Cur Load less than down_load and CPU online greater than 1: CPU Hotplug OUT. Value corresponding to 101 causes immediately HOTPLUG OUT. (Default: 30%)" name="hotplug_load_2_0" action="generic_cortex /tmp/hotplug_load_2_0" unit="%" min="0" reversed="false" step="1" max="101"/>
+		<seekBar description="The CPU load at which governor scales CPU down. Current Load less than down_load and CPU online greater than 1: CPU Hotplug OUT. Value corresponding to 101 causes immediately HOTPLUG OUT. (Default: 30%)" name="hotplug_load_2_0" action="generic_cortex /tmp/hotplug_load_2_0" unit="%" min="0" reversed="false" step="1" max="101"/>
 
-		<seekBar description="The CPU load at which governor scales CPU up. Cur Load equal or greater than up_load: CPU Hotplug IN. Value corresponding to 101 causes not HOTPLUG IN. (Default: 65%)" name="hotplug_load_2_1" action="generic_cortex /tmp/hotplug_load_2_1" unit="%" min="10" reversed="false" step="1" max="101"/>
+		<seekBar description="The CPU load at which governor scales CPU up. Current Load equal or greater than up_load: CPU Hotplug IN. Value corresponding to 101 causes not HOTPLUG IN. (Default: 65%)" name="hotplug_load_2_1" action="generic_cortex /tmp/hotplug_load_2_1" unit="%" min="10" reversed="false" step="1" max="101"/>
 
-		<seekBar description="The CPU load at which governor scales CPU down. Cur Load less than down_load and CPU online greater than 1: CPU Hotplug OUT. Value corresponding to 101 causes immediately HOTPLUG OUT. (Default: 30%)" name="hotplug_load_3_0" action="generic_cortex /tmp/hotplug_load_3_0" unit="%" min="0" reversed="false" step="1" max="101"/>
+		<seekBar description="The CPU load at which governor scales CPU down. Current Load less than down_load and CPU online greater than 1: CPU Hotplug OUT. Value corresponding to 101 causes immediately HOTPLUG OUT. (Default: 30%)" name="hotplug_load_3_0" action="generic_cortex /tmp/hotplug_load_3_0" unit="%" min="0" reversed="false" step="1" max="101"/>
 
-		<seekBar description="The CPU load at which governor scales CPU up. Cur Load equal or greater than up_load: CPU Hotplug IN. Value corresponding to 101 causes not HOTPLUG IN. (Default: 65%)" name="hotplug_load_3_1" action="generic_cortex /tmp/hotplug_load_3_1" unit="%" min="10" reversed="false" step="1" max="101"/>
+		<seekBar description="The CPU load at which governor scales CPU up. Current Load equal or greater than up_load: CPU Hotplug IN. Value corresponding to 101 causes not HOTPLUG IN. (Default: 65%)" name="hotplug_load_3_1" action="generic_cortex /tmp/hotplug_load_3_1" unit="%" min="10" reversed="false" step="1" max="101"/>
 
-		<seekBar description="The CPU load at which governor scales CPU down. Cur Load less than down_load and CPU online greater than 1: CPU Hotplug OUT. Value corresponding to 101 causes immediately HOTPLUG OUT. (Default: 30%)" name="hotplug_load_4_0" action="generic_cortex /tmp/hotplug_load_4_0" unit="%" min="0" reversed="false" step="1" max="101"/>
+		<seekBar description="The CPU load at which governor scales CPU down. Current Load less than down_load and CPU online greater than 1: CPU Hotplug OUT. Value corresponding to 101 causes immediately HOTPLUG OUT. (Default: 30%)" name="hotplug_load_4_0" action="generic_cortex /tmp/hotplug_load_4_0" unit="%" min="0" reversed="false" step="1" max="101"/>
 
 		<seekBar description="Threshold run queue length for second core to turn on. (Default: 100)" name="hotplug_rq_1_1" action="generic_cortex /tmp/hotplug_rq_1_1" unit="uint" min="0" reversed="false" step="100" max="1200"/>
 
@@ -258,14 +258,14 @@
 
 <settingsTab name="CPU-HOTPLUGGING (SLEEP)">
 
-	<settingsPane description="Here you can tune Intelliplug" name="Intelliplug Tuning">
+	<settingsPane description="Tune Intelliplug" name="Intelliplug Tuning">
 
-		<spinner description="Here you can set eco mode. (Default: Enabled)" name="eco_mode_active_sleep" action="generic_cortex /tmp/eco_mode_active_sleep">
+		<spinner description="Set eco mode. (Default: Enabled)" name="eco_mode_active_sleep" action="generic_cortex /tmp/eco_mode_active_sleep">
 			<spinnerItem name="Enabled" value="1"/> 
 			<spinnerItem name="Disabled" value="0"/> 
 		</spinner>
 
-		<spinner description="Here you can set strict mode. (Default: Disabled)" name="strict_mode_active_sleep" action="generic_cortex /tmp/strict_mode_active_sleep">
+		<spinner description="Set strict mode. (Default: Disabled)" name="strict_mode_active_sleep" action="generic_cortex /tmp/strict_mode_active_sleep">
 			<spinnerItem name="Enabled" value="1"/> 
 			<spinnerItem name="Disabled" value="0"/> 
 		</spinner>
@@ -276,7 +276,7 @@
 
 <settingsTab name="MSM-THERMAL">
 
-	<settingsPane description="Here you can tune the msm thermal module" name="MSM Thermal Tuning">
+	<settingsPane description="Tune the msm thermal module" name="MSM Thermal Tuning">
 
 		<spinner description="CPU Thermal control, Can be Default driver without controls, or Intelli thermal driver with controls below, its will limit CPU frequency when CPU reach the max limit heat, till cooled and restore full power, this can help with too hot phone playing games! intelli driver is more aggressive and drop freq to 1.4 then to 1.2 then to 1.1ghz that will reduce performance in all bench apps! defaut will lock on 1.9Ghz most of the time, and burn the fingers but give you more SCORE to show off." name="CPU Temp Control" action="msm_thermal">
 			<spinnerItem name="Default Temp Control" value="msm_temp"/> 
@@ -285,9 +285,9 @@
 
 		<checkbox description="Enable or Disable CPU Cores ON and OFF based on Cores HEAT set below, if OFF! then all cores work but get low freq on high temp! if ON! then cores turned off to help with CPU cooling, but loose performance! very bad for bench show off apps! but good for heat stability" name="CPU Core Controls" action="generic01 /sys/module/msm_thermal/core_control/enabled" label="CPU Cores Control"/>
 
-		<seekBar description="Here you can change CORES max HEAT before turning OFF cores from 3 to 1 and keep normal phone heat, if you tune above CPU max TEMP below, then all cores will stay ON when over heatted! This will work only with Intelli Temp Control ON!!!" name="CORE Max Heat" action="generic /sys/module/msm_thermal/parameters/core_limit_temp_degC" unit="C" min="50" reversed="false" step="1" max="85"/>
+		<seekBar description="Set CORES max HEAT before turning OFF cores from 3 to 1 and keep normal phone heat, if you tune above CPU max TEMP below, then all cores will stay ON when over heatted! This will work only with Intelli Temp Control ON!!!" name="CORE Max Heat" action="generic /sys/module/msm_thermal/parameters/core_limit_temp_degC" unit="C" min="50" reversed="false" step="1" max="85"/>
 
-		<seekBar description="Here you can change CPU max HEAT before throttled down to cool and keep normal phone heat, depend on CPU Thermal control ON!" name="CPU Max Heat" action="generic /sys/module/msm_thermal/parameters/limit_temp_degC" unit="C" min="50" reversed="false" step="1" max="80"/>
+		<seekBar description="Set CPU max HEAT before throttled down to cool and keep normal phone heat, depend on CPU Thermal control ON!" name="CPU Max Heat" action="generic /sys/module/msm_thermal/parameters/limit_temp_degC" unit="C" min="50" reversed="false" step="1" max="80"/>
 
 	</settingsPane>
 
@@ -295,7 +295,7 @@
 
 <settingsTab name="GPU">
 
-	<settingsPane description="Here you can tune GPU" name="Gpu Tuning">
+	<settingsPane description="Tune GPU" name="Gpu Tuning">
 
 		<spinner description="This will set GPU governor. (Default: ondemand)" name="GPU Governor" action="generic /sys/devices/platform/kgsl-3d0.0/kgsl/kgsl-3d0/pwrscale/trustzone/governor">
 			<spinnerItem name="conservative" value="conservative"/>
@@ -331,9 +331,9 @@
 
 <settingsTab name="DVFS TOUCH INTERFACE">
 
-	<settingsPane description="Here you can tune DVFS Touch frequency" name="Touch Frequency">
+	<settingsPane description="Tune DVFS Touch frequency" name="Touch Frequency">
 
-		<spinner description="Here you can enable or disable DVFS touch frequency. (Default: Dual)" name="dvfs_boost_mode" action="dvfs_boost_mode">
+		<spinner description="Enable or disable DVFS touch frequency. (Default: Dual)" name="dvfs_boost_mode" action="dvfs_boost_mode">
 			<spinnerItem name="None" value="0"/>
 			<spinnerItem name="Single" value="1"/>
 			<spinnerItem name="Dual" value="2"/>
@@ -345,7 +345,7 @@
 
 	</settingsPane>
 
-	<settingsPane description="Here you can tune DVFS Touch time" name="Touch Time">
+	<settingsPane description="Tune DVFS Touch time" name="Touch Time">
 
 		<seekBar description="Duration CPU min (min_touch_limit_second) is active. From 200 ms to 5000 ms (Default: 300 ms)" name="booster_off_time" action="booster_off_time" unit="ms" min="200" reversed="false" step="100" max="5000"/>
 
@@ -357,7 +357,7 @@
 
 <settingsTab name="IO">
 
-	<settingsPane description="Here you can tune IO settings managed by Kernel" name="IO Tuning">
+	<settingsPane description="Tune IO settings managed by Kernel" name="IO Tuning">
 
 		<spinner description="Maximum number of kilobytes to read-ahead for EXTERNAL SDCARD! file systems on this device. Works only if IO-Tweaks tweak is enabled! (Default: 128 kB) !!! Depends on CortexBrain-Background-Process !!!" name="kilobytes to read-ahead" action="generic_cortex /tmp/cortexbrain_read_ahead_kb">
 			<spinnerItem name="128 kB" value="128"/> 
@@ -426,11 +426,11 @@
 
 <settingsTab name="Memory">
 
-	<settingsPane description="Here you can tune memory and OOM (low mem management) settings managed by Kernel." name="Memory Tuning">
+	<settingsPane description="Tune memory and OOM (low mem management) settings managed by Kernel." name="Memory Tuning">
 
 		<checkbox description="Enable AUTO OOM control using below profiles, disable if you want to set your own OOM tuning via APP or Script." name="Auto OOM" action="generic01 /sys/module/lowmemorykiller/parameters/auto_oom" label="AUTO OOM CONTROL"/>
 
-		<spinner description="Here you can set the level of low mem management by kernel lowmemkiller function. More aggressive, equals more free RAM but more killed apps." name="OOM Level Screen ON" action="oom_config_screen_on">
+		<spinner description="Set the level of low mem management by kernel lowmemkiller function. More aggressive, equals more free RAM but more killed apps." name="OOM Level Screen ON" action="oom_config_screen_on">
 			<spinnerItem name="low" value="low"/> 
 			<spinnerItem name="medium" value="medium"/> 
 			<spinnerItem name="default" value="default"/> 
@@ -438,7 +438,7 @@
 			<spinnerItem name="exterminate" value="exterminate"/> 
 		</spinner>
 
-		<spinner description="Here you can set the level of low mem management by kernel lowmemkiller function. More aggressive equals more free RAM but more killed apps." name="OOM Level Screen OFF" action="oom_config_screen_off">
+		<spinner description="Set the level of low mem management by kernel lowmemkiller function. More aggressive equals more free RAM but more killed apps." name="OOM Level Screen OFF" action="oom_config_screen_off">
 			<spinnerItem name="low" value="low"/> 
 			<spinnerItem name="medium" value="medium"/> 
 			<spinnerItem name="default" value="default"/> 
@@ -471,7 +471,7 @@
 
 <settingsTab name="Other">
 
-	<settingsPane description="Here you can find some settings and options for your apps." name="Apps">
+	<settingsPane description="Set some settings and options for your apps." name="Apps">
 
 		<button description="Click here to start Zipaligning ONLY user apps. System may be unresponsive, it is OK, do not use phone for 2 minutes. WARNING! Backup all user applications before use! This process will remove applications that are BROKEN and not compressed or compiled correctly, so you may find some apps missing. USE it AT YOUR OWN RISK, and update the broken applications!." name="ZIPALIGN" action="push-actions/zipalign" label="ZIPALIGN ALL APPS"/>
 
@@ -485,7 +485,7 @@
 
 	</settingsPane>
 
-	<settingsPane description="Here you can find GPS and NTP settings and options." name="GPS - NTP">
+	<settingsPane description="Set GPS and NTP settings and options." name="GPS - NTP">
 
 		<spinner description="GPS-Time-Zone for faster GPS lock! Use your region!" name="GPS Region" action="gpsregion">
 			<spinnerItem name="No GPS Zone changes (default)" value="No_GPS_Zone_changes"/> 
@@ -504,7 +504,7 @@
 
 	</settingsPane>
 
-	<settingsPane description="Here you can Add, Update or Remove AD Blocker! You need ROOT to do the tweak! If you want to update the blocker, you can push the UPDATE AD NOW button, to get the new one installed! If you install a new ROM, and you want to use AD BLOCKER, then push UPDATE AD NOW and REBOOT. If you need to REMOVE AD-BLOCKER use the REMOVE button and REBOOT" name="AD Blocker">
+	<settingsPane description="Add, Update or Remove AD Blocker! You need ROOT to do the tweak! If you want to update the blocker, you can push the UPDATE AD NOW button, to get the new one installed! If you install a new ROM, and you want to use AD BLOCKER, then push UPDATE AD NOW and REBOOT. If you need to REMOVE AD-BLOCKER use the REMOVE button and REBOOT" name="AD Blocker">
 
 		<button description="ADD or UPDATE AD BLOCKER" name="AD-B UPDATE or ADD" action="push-actions/ad_update" label="UPDATE AD-B NOW"/>
 
@@ -528,7 +528,7 @@
 
 		<seekBar description="Vibration force level. (Default: 75)" name="Vibration force" action="generic /sys/devices/virtual/timed_output/vibrator/pwm_value" unit="%" min="0" reversed="false" step="5" max="100"/>
 
-		<spinner description="This will force fast charging if it is enabled. If it is enabled, USB MTP will be disabled!  (Default: Disabled)" name="Force Fast Charging" action="generic /sys/kernel/fast_charge/force_fast_charge">
+		<spinner description="This will force fast charging if it is enabled. If it is enabled, USB MTP will be disabled! (Default: Disabled)" name="Force Fast Charging" action="generic /sys/kernel/fast_charge/force_fast_charge">
 			<spinnerItem name="Enabled" value="1"/> 
 			<spinnerItem name="Disabled" value="0"/> 
 		</spinner>
@@ -537,7 +537,7 @@
 
 	<settingsPane description="USB and SDCARD settings and options." name="USB - SDCARD">
 
-		<spinner description="Change USB connection mode. Either leave it as default or force it to mass storage mode (you will see your ext sdcard as disk) or MTP." name="USB mass storage mode" action="usb-mode">
+		<spinner description="Set USB connection mode. Either leave it as default or force it to mass storage mode (you will see your ext sdcard as disk) or MTP." name="USB mass storage mode" action="usb-mode">
 			<spinnerItem name="Default" value="default"/> 
 			<spinnerItem name="Force Mass Storage Mode" value="mass_storage-adb"/> 
 			<spinnerItem name="Force MTP Mode" value="mtp-adb"/> 
@@ -551,7 +551,7 @@
 
 	<settingsPane description="FS tweaks" name="FS tweaks">
 
-		<spinner description="Here, It is possible to enable or disable DYNAMIC FSYNC!  (Default: Enabled)" name="Dyn_fsync_active" action="generic /sys/kernel/dyn_fsync/Dyn_fsync_active">
+		<spinner description="Here, It is possible to enable or disable DYNAMIC FSYNC! (Default: Enabled)" name="Dyn_fsync_active" action="generic /sys/kernel/dyn_fsync/Dyn_fsync_active">
 			<spinnerItem name="Enabled" value="1"/> 
 			<spinnerItem name="Disabled" value="0"/> 
 		</spinner>
@@ -571,7 +571,7 @@
 
 		<button description="Click to see if the CortexBrain-Background-Process is running or not." name="Check Background-Process" action="push-actions/cortexbrain_background_process_check" label="CHECK SERVICE"/>
 
-		<spinner description="Here you can control android logger logcat. If you set it to AUTO, then you will have logs only on screen is on. When screen will be off, logger will be disabled to save battery. If you set DEBUG, it will be working no matter what! If set to DISABLED, logging will be off, no matter what. If USB or Charger is connected and logger is set to AUTO, logging will not be disabled so we can debug. !!! Depends on CortexBrain-Background-Process !!!" name="Android Logger control" action="android_logger">
+		<spinner description="Control android logger logcat. If you set it to AUTO, then you will have logs only on screen is on. When screen will be off, logger will be disabled to save battery. If you set DEBUG, it will be working no matter what! If set to DISABLED, logging will be off, no matter what. If USB or Charger is connected and logger is set to AUTO, logging will not be disabled so we can debug. !!! Depends on CortexBrain-Background-Process !!!" name="Android Logger control" action="android_logger">
 			<spinnerItem name="AUTO" value="auto"/> 
 			<spinnerItem name="DEBUG" value="debug"/> 
 			<spinnerItem name="DISABLED" value="disabled"/> 
@@ -579,11 +579,11 @@
 
 		<checkbox description="Enable or Disable the DATA turns off while screen is off function. !!! Depends on CortexBrain-Background-Process !!!" name="Auto-DATA" action="generic_cortex /tmp/cortexbrain_auto_tweak_mobile" label="Force Auto-Data"/>
 
-		<seekBar description="Here you can set a delay before DATA is forced to OFF when screen is turned off. !!! Depends on CortexBrain-Auto-DATA!!!" name="DATA Turn Off Delay (in sec)" action="generic_cortex /tmp/cortexbrain_auto_tweak_mobile_sleep_delay" unit="sec" min="0" reversed="false" step="30" max="300"/>
+		<seekBar description="Set a delay before DATA is forced to OFF when screen is turned off. !!! Depends on CortexBrain-Auto-DATA!!!" name="DATA Turn Off Delay (in sec)" action="generic_cortex /tmp/cortexbrain_auto_tweak_mobile_sleep_delay" unit="sec" min="0" reversed="false" step="30" max="300"/>
 
 		<checkbox description="Enable or Disable the Wifi turns off while screen is off function. !!! Depends on CortexBrain-Background-Process !!!" name="Auto-Wifi" action="generic_cortex /tmp/cortexbrain_auto_tweak_wifi" label="Force Auto-Wifi"/>
 
-		<seekBar description="Here you can set a delay before WIFI is forced to OFF when screen is turned off. !!! Depends on CortexBrain-Auto-Wifi !!!" name="WIFI Turn Off Delay (in sec)" action="generic_cortex /tmp/cortexbrain_auto_tweak_wifi_sleep_delay" unit="sec" min="0" reversed="false" step="30" max="300"/>
+		<seekBar description="Set a delay before WIFI is forced to OFF when screen is turned off. !!! Depends on CortexBrain-Auto-Wifi !!!" name="WIFI Turn Off Delay (in sec)" action="generic_cortex /tmp/cortexbrain_auto_tweak_wifi_sleep_delay" unit="sec" min="0" reversed="false" step="30" max="300"/>
 
 		<checkbox description="Enable or Disable ICMP only Firewall-Tweaks (reboot needed)." name="Firewall-Tweaks" action="generic_cortex /tmp/cortexbrain_firewall" label="Firewall-Tweaks"/>
 
@@ -609,7 +609,7 @@
 
 <settingsTab name="MODULES">
 
-	<settingsPane description="Here you can load on boot kernel modules that will allow some extra functions." name="Kernel Modules">
+	<settingsPane description="Load all kernel modules on boot, this will allow some extra functions." name="Kernel Modules">
 
 		<checkbox description="Enable or Disable CIFS Module. This will allow to use apps that can mount internal storage and publish over network. User can access data and system over network. No support, effect only after reboot!" name="CIFS Module" action="generic_cortex /tmp/cifs_module" label="CIFS Module"/>
 
@@ -619,13 +619,13 @@
 
 <settingsTab name="PROFILES">
 
-	<settingsPane description="You can check what profile is used right now." name="Online Profile">
+	<settingsPane description="You can check which profile is used." name="Online Profile">
 
 		<button description="This displays your currently used profile." name="Profile Check" action="push-actions/profile" label="Profile Check"/>
 
 	</settingsPane>
 
-	<settingsPane description="Here you can choose some profiles. You can also switch the default profiles (battery, default, performance) via Kernel-Recovery." name="STweaks Profiles">
+	<settingsPane description="Select profile. You can also switch the default profiles (battery, default, performance) via Kernel-Recovery." name="STweaks Profiles">
 
 		<button description="extreme_battery.profile" name="extreme_battery.profile" action="push-actions/config_backup_restore 6" label="EXTREME BATTERY"/>
 
@@ -643,7 +643,7 @@
 
 <settingsTab name="BACKUP or RESTORE">
 
-	<settingsPane description="Here you can backup or restore your profile after installing new kernel. When you restore your configuration, please wait till this app restarts with the new settings. Some settings will work only after reboot! Restore will take up to 30 sec, just wait here!" name="STweaks Settings Backup or Restore">
+	<settingsPane description="Backup or restore your profile after installing new kernel. When you restore your configuration, please wait till this app restarts with the new settings. Some settings will work only after reboot! Restore will take up to 30 sec, just wait here!" name="STweaks Settings Backup or Restore">
 
 		<button description="Backup STweaks User Settings!" name="Settings Backup" action="push-actions/config_backup_restore 1" label="BACKUP NOW"/>
 
