@@ -25,7 +25,7 @@ loglevel 3
 
 on boot
     # change cpufreq governor
-    # exec /system/bin/sh /init.qcom.lpm_boot.sh
+    exec /system/bin/sh /init.qcom.lpm_boot.sh
 
 	class_start core
 
