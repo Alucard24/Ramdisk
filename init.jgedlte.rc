@@ -27,7 +27,7 @@
 
 import init.qcom.usb.rc
 import init.ril.rc
-# import init.target.rc
+import init.target.rc
 
 on init
     # See storage config details at http://source.android.com/tech/storage/
