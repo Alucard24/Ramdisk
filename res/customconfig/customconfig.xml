@@ -331,25 +331,25 @@
 
 <settingsTab name="DVFS TOUCH INTERFACE">
 
-	<settingsPane description="Tune DVFS Touch frequency" name="Touch Frequency">
+	<settingsPane description="Set DVFS (Dynamic Voltage and Frequency Scaling) touch options" name="Touch Frequency">
 
-		<spinner description="Enable or disable DVFS touch frequency. (Default: Dual)" name="dvfs_boost_mode" action="dvfs_boost_mode">
+		<spinner description="Set DVFS touch mode. (Default: Dual)" name="dvfs_boost_mode" action="dvfs_boost_mode">
 			<spinnerItem name="None" value="0"/>
 			<spinnerItem name="Single" value="1"/>
 			<spinnerItem name="Dual" value="2"/>
 		</spinner>
 
-		<seekBar description="When screen is touched the CPU min is set to this value for the duration in (booster_chg_time). From 810.000 kHz to 1.890.000 kHz (Default: 1.134.000 kHz)" name="min_touch_limit" action="min_touch_limit" unit="kHz" min="810000" reversed="false" step="108000" max="1890000"/>
+		<seekBar description="When the screen is touched the initial DVFS boost (minimum CPU frequency) is set to this value for the duration set in (booster_chg_time). From 810.000 kHz to 1.890.000 kHz (Default: 1.134.000 kHz). From 810.000 kHz to 1.890.000 kHz (Default: 1.134.000 kHz)" name="min_touch_limit" action="min_touch_limit" unit="kHz" min="810000" reversed="false" step="108000" max="1890000"/>
 
-		<seekBar description="When screen is touched the CPU min is set to this value after (booster_chg_time) for the duration in (booster_off_time). From 486.000 kHz to 1.458.000 kHz (Default: 810.000 kHz)" name="min_touch_limit_second" action="min_touch_limit_second" unit="kHz" min="486000" reversed="false" step="108000" max="1458000"/>
+		<seekBar description="After the initial DVFS boost period ends the second boost period starts (minimum CPU frequency) and is set to this value. When the screen touch ends the second boost will stop after the period set in (booster_off_time). From 486.000 kHz to 1.458.000 kHz (Default: 810.000 kHz)" name="min_touch_limit_second" action="min_touch_limit_second" unit="kHz" min="486000" reversed="false" step="108000" max="1458000"/>
 
 	</settingsPane>
 
-	<settingsPane description="Tune DVFS Touch time" name="Touch Time">
+	<settingsPane description="Set DVFS Touch time" name="Touch Time">
 
-		<seekBar description="Duration CPU min (min_touch_limit_second) is active. From 200 ms to 5000 ms (Default: 300 ms)" name="booster_off_time" action="booster_off_time" unit="ms" min="200" reversed="false" step="100" max="5000"/>
+		<seekBar description="Duration of the initial DVFS boost period (min_touch_limit_second). From 200 ms to 5000 ms (Default: 300 ms)" name="booster_off_time" action="booster_off_time" unit="ms" min="200" reversed="false" step="100" max="5000"/>
 
-		<seekBar description="Duration CPU min (min_touch_limit) is active. From 100 ms to 1000 ms (Default: 200 ms)" name="booster_chg_time" action="booster_chg_time" unit="ms" min="100" reversed="false" step="100" max="1000"/>
+		<seekBar description="Period after which the second DVFS boost ends after the screen is released (min_touch_limit). From 100 ms to 1000 ms (Default: 200 ms)" name="booster_chg_time" action="booster_chg_time" unit="ms" min="100" reversed="false" step="100" max="1000"/>
 
 	</settingsPane>
 
