@@ -225,14 +225,34 @@ CPU_HOTPLUG_TWEAKS()
 				hotplug_sampling_rate_tmp="/dev/null";
 			fi;
 
-			local cpu_up_rate_tmp="/sys/kernel/alucard_hotplug/cpu_up_rate";
-			if [ ! -e $cpu_up_rate_tmp ]; then
-				cpu_up_rate_tmp="/dev/null";
+			local hotplug_rate_1_1_tmp="/sys/kernel/alucard_hotplug/hotplug_rate_1_1";
+			if [ ! -e $hotplug_rate_1_1_tmp ]; then
+				hotplug_rate_1_1_tmp="/dev/null";
 			fi;
 
-			local cpu_down_rate_tmp="/sys/kernel/alucard_hotplug/cpu_down_rate";
-			if [ ! -e $cpu_down_rate_tmp ]; then
-				cpu_down_rate_tmp="/dev/null";
+			local hotplug_rate_2_0_tmp="/sys/kernel/alucard_hotplug/hotplug_rate_2_0";
+			if [ ! -e $hotplug_rate_2_0_tmp ]; then
+				hotplug_rate_2_0_tmp="/dev/null";
+			fi;
+
+			local hotplug_rate_2_1_tmp="/sys/kernel/alucard_hotplug/hotplug_rate_2_1";
+			if [ ! -e $hotplug_rate_2_1_tmp ]; then
+				hotplug_rate_2_1_tmp="/dev/null";
+			fi;
+
+			local hotplug_rate_3_0_tmp="/sys/kernel/alucard_hotplug/hotplug_rate_3_0";
+			if [ ! -e $hotplug_rate_3_0_tmp ]; then
+				hotplug_rate_3_0_tmp="/dev/null";
+			fi;
+
+			local hotplug_rate_3_1_tmp="/sys/kernel/alucard_hotplug/hotplug_rate_3_1";
+			if [ ! -e $hotplug_rate_3_1_tmp ]; then
+				hotplug_rate_3_1_tmp="/dev/null";
+			fi;
+
+			local hotplug_rate_4_0_tmp="/sys/kernel/alucard_hotplug/hotplug_rate_4_0";
+			if [ ! -e $hotplug_rate_4_0_tmp ]; then
+				hotplug_rate_4_0_tmp="/dev/null";
 			fi;
 
 			local hotplug_freq_1_1_tmp="/sys/kernel/alucard_hotplug/hotplug_freq_1_1";
@@ -336,8 +356,12 @@ CPU_HOTPLUG_TWEAKS()
 			fi;
 
 			echo "$hotplug_sampling_rate" > $hotplug_sampling_rate_tmp;
-			echo "$cpu_up_rate" > $cpu_up_rate_tmp;
-			echo "$cpu_down_rate" > $cpu_down_rate_tmp;
+			echo "$hotplug_rate_1_1" > $hotplug_rate_1_1_tmp;
+			echo "$hotplug_rate_2_0" > $hotplug_rate_2_0_tmp;
+			echo "$hotplug_rate_2_1" > $hotplug_rate_2_1_tmp;
+			echo "$hotplug_rate_3_0" > $hotplug_rate_3_0_tmp;
+			echo "$hotplug_rate_3_1" > $hotplug_rate_3_1_tmp;
+			echo "$hotplug_rate_4_0" > $hotplug_rate_4_0_tmp;
 			echo "$hotplug_freq_1_1" > $hotplug_freq_1_1_tmp;
 			echo "$hotplug_freq_2_0" > $hotplug_freq_2_0_tmp;
 			echo "$hotplug_freq_2_1" > $hotplug_freq_2_1_tmp;

@@ -208,9 +208,17 @@
 
 		<seekBar description="Sampling Interval, measured in ms. This factor determines how often the governor should poll for CPU usage in terms of frequency and load percentage to make hotplugging decisions. (Default: 60 ms)" name="hotplug_sampling_rate" action="generic_cortex /tmp/hotplug_sampling_rate" unit="ms" min="10" reversed="false" step="5" max="100"/>
 
-		<seekBar description="Number of samples to evaluate load to scale CPU Up. After cpu_up_rate samples are finished for a frequency, CPU scale-Up logic is executed. In other words - before scaling Up, cpu_up_rate X up_sample_time micro seconds are spend at a frequency. (Default: 2)" name="cpu_up_rate" action="generic_cortex /tmp/cpu_up_rate" unit="int" min="1" reversed="false" step="1" max="40"/>
+		<seekBar description="Number of samples to evaluate cpu1 hotplug in. (Default: 1)" name="hotplug_rate_1_1" action="generic_cortex /tmp/hotplug_rate_1_1" unit="int" min="1" reversed="false" step="1" max="10"/>
 
-		<seekBar description="Number of samples to evaluate load to scale CPU Down. After CPU_down_rate samples are finished for a frequency, CPU scale-Down logic is executed. In other words - before scaling Down, cpu_down_rate X down_sample_time micro seconds are spend at a frequency. (Default: 5)" name="cpu_down_rate" action="generic_cortex /tmp/cpu_down_rate" unit="int" min="1" reversed="false" step="1" max="40"/>
+		<seekBar description="Number of samples to evaluate cpu1 hotplug out. (Default: 3)" name="hotplug_rate_2_0" action="generic_cortex /tmp/hotplug_rate_2_0" unit="int" min="1" reversed="false" step="1" max="10"/>
+
+		<seekBar description="Number of samples to evaluate cpu2 hotplug in. (Default: 2)" name="hotplug_rate_2_1" action="generic_cortex /tmp/hotplug_rate_2_1" unit="int" min="1" reversed="false" step="1" max="10"/>
+
+		<seekBar description="Number of samples to evaluate cpu2 hotplug out. (Default: 3)" name="hotplug_rate_3_0" action="generic_cortex /tmp/hotplug_rate_3_0" unit="int" min="1" reversed="false" step="1" max="10"/>
+
+		<seekBar description="Number of samples to evaluate cpu3 hotplug in. (Default: 2)" name="hotplug_rate_3_1" action="generic_cortex /tmp/hotplug_rate_3_1" unit="int" min="1" reversed="false" step="1" max="10"/>
+
+		<seekBar description="Number of samples to evaluate cpu3 hotplug out. (Default: 4)" name="hotplug_rate_4_0" action="generic_cortex /tmp/hotplug_rate_4_0" unit="int" min="1" reversed="false" step="1" max="10"/>
 
 		<seekBar description="Up threshold frequency to turn second core On, when some other conditions is also met. ie If (minimum frequency greater than or equal to hotplug_freq 1 1) Hotplug IN Second Core. Higher value corresponds to delay in turning on second core. (Default: 1242.000 kHz)" name="hotplug_freq_1_1" action="generic_cortex /tmp/hotplug_freq_1_1" unit="kHz" min="162000" reversed="false" step="108000" max="1890000"/>
 
