@@ -992,7 +992,7 @@ AWAKE_MODE()
 	# not on call, check if was powerd by USB on sleep, or didnt sleep at all
 	if [ "$WAS_IN_SLEEP_MODE" -eq "1" ] && [ "$USB_POWER" -eq "0" ]; then
 		NET "awake";
-		CPU_GOVERNOR "awake";
+		# CPU_GOVERNOR "awake";
 		CPU_GOV_TWEAKS "awake";
 		CPU_HOTPLUG_TWEAKS "awake";
 		LOGGER "awake";
@@ -1033,7 +1033,7 @@ SLEEP_MODE()
 
 	# check if we powered by USB, if not sleep
 	if [ "$CHARGING" -eq "1" ]; then
-		CPU_GOVERNOR "sleep";
+		# CPU_GOVERNOR "sleep";
 		CPU_GOV_TWEAKS "sleep";
 		CPU_HOTPLUG_TWEAKS "sleep";
 		IO_SCHEDULER "sleep";
