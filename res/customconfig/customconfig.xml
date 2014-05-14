@@ -153,7 +153,7 @@
 
 <settingsTab name="CPU-TUNING (SLEEP)">
 
-	<settingsPane description="Set advanced governor settings. These settings are only active when the screen is off. !!! Depends on CortexBrain-Background-Process and CortexBrain-CPU-Tweaks!!! (Default: Alucard)" name="Governor Parameters tuning">
+	<!--settingsPane description="Set advanced governor settings. These settings are only active when the screen is off. !!! Depends on CortexBrain-Background-Process and CortexBrain-CPU-Tweaks!!! (Default: Alucard)" name="Governor Parameters tuning">
 
 		<spinner description="This will set the DEEP SLEEP (screen off) CPU governor." name="Deep-Sleep! CPU Governor" action="generic_cortex /tmp/scaling_governor_all_cpus_sleep">
 			<spinnerItem name="alucard" value="alucard"/>
@@ -166,7 +166,7 @@
 			<spinnerItem name="pegasusq" value="pegasusq"/> 
 		</spinner>
 
-	</settingsPane>
+	</settingsPane-->
 
 	<settingsPane description="Global Govs Configuration, see descriptions" name="GLOBAL GOV CONFIGURATON">
 
@@ -460,7 +460,7 @@
 
 		<button description="Clean RAM Cache. This will release all cached and buffered RAM, please WAIT 3sec to get cleanup report" name="CLEAN RAM CACHE" action="push-actions/clean_ram_cache" label="CLEAN RAM CACHE NOW"/>
 
-		<spinner description="If you have enabled swap, then the higher a number set here, the more the system will swap. (Default: 0)" name="swappiness" action="generic /proc/sys/vm/swappiness">
+		<spinner description="If you have enabled swap, then the higher a number set here, the more the system will swap. (Default: 60)" name="swappiness" action="generic /proc/sys/vm/swappiness">
 			<spinnerItem name="0" value="0"/> 
 			<spinnerItem name="10" value="10"/> 
 			<spinnerItem name="20" value="20"/> 
