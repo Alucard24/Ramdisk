@@ -153,21 +153,6 @@
 
 <settingsTab name="CPU-TUNING (SLEEP)">
 
-	<!--settingsPane description="Set advanced governor settings. These settings are only active when the screen is off. !!! Depends on CortexBrain-Background-Process and CortexBrain-CPU-Tweaks!!! (Default: Alucard)" name="Governor Parameters tuning">
-
-		<spinner description="This will set the DEEP SLEEP (screen off) CPU governor." name="Deep-Sleep! CPU Governor" action="generic_cortex /tmp/scaling_governor_all_cpus_sleep">
-			<spinnerItem name="alucard" value="alucard"/>
-			<spinnerItem name="conservative" value="conservative"/> 
-			<spinnerItem name="darkness" value="darkness"/>
-			<spinnerItem name="HYPER" value="HYPER"/>
-			<spinnerItem name="interactive" value="interactive"/> 
-			<spinnerItem name="nightmare" value="nightmare"/> 
-			<spinnerItem name="ondemand" value="ondemand"/> 
-			<spinnerItem name="pegasusq" value="pegasusq"/> 
-		</spinner>
-
-	</settingsPane-->
-
 	<settingsPane description="Global Govs Configuration, see descriptions" name="GLOBAL GOV CONFIGURATON">
 
 		<seekBar description="Sampling Interval, measured in µs. This factor determines how often the governor should poll for CPU usage in terms of frequency and load percentage to make scaling decisions - either scale CPU Up or scale it Down. (Only for HYPER, OnDemand, PegasusQ, Conservative, Nightmare, Darkness, Alucard) (Default: 60.000 µs)" name="sampling_rate_sleep" action="generic_cortex /tmp/sampling_rate_sleep" unit="µs" min="10000" reversed="false" step="5000" max="200000"/>
