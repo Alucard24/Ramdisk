@@ -195,7 +195,7 @@
 
 		<seekBar description="Number of samples to evaluate cpu1 hotplug in. (Default: 1)" name="hotplug_rate_1_1" action="generic_cortex /tmp/hotplug_rate_1_1" unit="int" min="1" reversed="false" step="1" max="10"/>
 
-		<seekBar description="Number of samples to evaluate cpu1 hotplug out. (Default: 3)" name="hotplug_rate_2_0" action="generic_cortex /tmp/hotplug_rate_2_0" unit="int" min="1" reversed="false" step="1" max="10"/>
+		<seekBar description="Number of samples to evaluate cpu1 hotplug out. (Default: 4)" name="hotplug_rate_2_0" action="generic_cortex /tmp/hotplug_rate_2_0" unit="int" min="1" reversed="false" step="1" max="10"/>
 
 		<seekBar description="Number of samples to evaluate cpu2 hotplug in. (Default: 2)" name="hotplug_rate_2_1" action="generic_cortex /tmp/hotplug_rate_2_1" unit="int" min="1" reversed="false" step="1" max="10"/>
 
