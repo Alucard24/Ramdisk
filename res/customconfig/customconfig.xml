@@ -337,27 +337,34 @@
 
 </settingsTab>
 
-<settingsTab name="DVFS TOUCH INTERFACE">
+<settingsTab name="TOUCH INTERFACE">
 
-	<settingsPane description="Set DVFS (Dynamic Voltage and Frequency Scaling) touch options" name="Touch Frequency">
+	<settingsPane description="Set CPU BOOST touch options" name="Touch Boost">
 
-		<spinner description="Set DVFS touch mode. (Default: Dual)" name="dvfs_boost_mode" action="dvfs_boost_mode">
-			<spinnerItem name="None" value="0"/>
-			<spinnerItem name="Single" value="1"/>
-			<spinnerItem name="Dual" value="2"/>
+		<seekBar description="When the screen is touched the initial boost (minimum CPU frequency) is set to this value for the duration set in (input_boost_ms). From 810.000 kHz to 1.890.000 kHz (Default: 1.242.000 kHz)" name="input_boost_freq" action="genericfreq /sys/module/cpu_boost/parameters/input_boost_freq" unit="kHz" min="810000" reversed="false" step="108000" max="1890000"/>
+
+		<spinner description="After the initial boost period ends the second boost period starts (minimum CPU frequency) and is set to this value. When the screen touch ends the second boost will stop after the period set in (boost_ms) if it is greater than 0. From 0 to 1.458.000 kHz (Default: 0)" name="sync_threshold" action="genericfreq /sys/module/cpu_boost/parameters/sync_threshold">
+			<spinnerItem name="Disabled" value="0"/> 
+			<spinnerItem name="378.000 kHz" value="378000"/> 
+			<spinnerItem name="486.000 kHz" value="486000"/> 
+			<spinnerItem name="594.000 kHz" value="594000"/>
+			<spinnerItem name="702.000 kHz" value="702000"/>
+			<spinnerItem name="810.000 kHz" value="810000"/>
+			<spinnerItem name="918.000 kHz" value="918000"/>
+			<spinnerItem name="1026.000 kHz" value="1026000"/>
+			<spinnerItem name="1134.000 kHz" value="1134000"/>
+			<spinnerItem name="1242.000 kHz" value="1242000"/>
+			<spinnerItem name="1350.000 kHz" value="1350000"/>
+			<spinnerItem name="1458.000 kHz" value="1458000"/>
 		</spinner>
-
-		<seekBar description="When the screen is touched the initial DVFS boost (minimum CPU frequency) is set to this value for the duration set in (booster_chg_time). From 810.000 kHz to 1.890.000 kHz (Default: 1.134.000 kHz). From 810.000 kHz to 1.890.000 kHz (Default: 1.134.000 kHz)" name="min_touch_limit" action="min_touch_limit" unit="kHz" min="810000" reversed="false" step="108000" max="1890000"/>
-
-		<seekBar description="After the initial DVFS boost period ends the second boost period starts (minimum CPU frequency) and is set to this value. When the screen touch ends the second boost will stop after the period set in (booster_off_time). From 486.000 kHz to 1.458.000 kHz (Default: 810.000 kHz)" name="min_touch_limit_second" action="min_touch_limit_second" unit="kHz" min="486000" reversed="false" step="108000" max="1458000"/>
 
 	</settingsPane>
 
-	<settingsPane description="Set DVFS Touch time" name="Touch Time">
+	<settingsPane description="Set Boost Touch time" name="Touch Time">
 
-		<seekBar description="Duration of the initial DVFS boost period (min_touch_limit_second). From 200 ms to 5000 ms (Default: 300 ms)" name="booster_off_time" action="booster_off_time" unit="ms" min="200" reversed="false" step="100" max="5000"/>
+		<seekBar description="Duration of the initial boost period (input_boost_freq). From 20 ms to 500 ms (Default: 40 ms)" name="input_boost_ms" action="generic /sys/module/cpu_boost/parameters/input_boost_ms" unit="ms" min="20" reversed="false" step="10" max="500"/>
 
-		<seekBar description="Period after which the second DVFS boost ends after the screen is released (min_touch_limit). From 100 ms to 1000 ms (Default: 200 ms)" name="booster_chg_time" action="booster_chg_time" unit="ms" min="100" reversed="false" step="100" max="1000"/>
+		<seekBar description="Period after which the second boost ends after the screen is released (sync_threshold greater than 0). From 20 ms to 500 ms (Default: 40 ms)" name="boost_ms" action="generic /sys/module/cpu_boost/parameters/boost_ms" unit="ms" min="20" reversed="false" step="10" max="500"/>
 
 	</settingsPane>
 
