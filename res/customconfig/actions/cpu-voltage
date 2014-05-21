@@ -13,8 +13,6 @@ else
 	eval $evalcmd;
 
 	if [ "$CPU_VOLT_SWITCH" -eq "1" ]; then
-		echo "162000 $CPUVOLT17" > /sys/devices/system/cpu/cpufreq/vdd_table/vdd_levels;
-		echo "270000 $CPUVOLT16" > /sys/devices/system/cpu/cpufreq/vdd_table/vdd_levels;
 		echo "378000 $CPUVOLT15" > /sys/devices/system/cpu/cpufreq/vdd_table/vdd_levels;
 		echo "486000 $CPUVOLT14" > /sys/devices/system/cpu/cpufreq/vdd_table/vdd_levels;
 		echo "594000 $CPUVOLT13" > /sys/devices/system/cpu/cpufreq/vdd_table/vdd_levels;

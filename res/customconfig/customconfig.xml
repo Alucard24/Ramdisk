@@ -14,9 +14,9 @@
 
 	<settingsPane description="The following settings are for all global CPU configuration, use it only if you know what you are doing." name="CPU Global Settings">
 
-		<seekBar description="Maximum CPU-Speed for all CPU's. CPU Frequency steps by 108.000 kHz, from 162.000 kHz to 1.890.000 kHz! (Default: 1.890.000 kHz)" name="Max Normal Frequency" action="genericfreq /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq_all_cpus" unit="kHz" min="162000" reversed="false" step="108000" max="1890000"/>
+		<seekBar description="Maximum CPU-Speed for all CPU's. CPU Frequency steps by 108.000 kHz, from 378.000 kHz to 1.890.000 kHz! (Default: 1.890.000 kHz)" name="Max Normal Frequency" action="genericfreq /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq_all_cpus" unit="kHz" min="378000" reversed="false" step="108000" max="1890000"/>
 
-		<seekBar description="Minimum CPU-Speed for all CPU's. CPU Frequency step by 108.000 kHz are valid from 162.000 kHz to 1.890.000 kHz! (Default: 378.000 kHz)" name="Min Frequency" action="genericfreq /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq_all_cpus" unit="kHz" min="162000" reversed="false" step="108000" max="1890000"/>
+		<seekBar description="Minimum CPU-Speed for all CPU's. CPU Frequency step by 108.000 kHz are valid from 378.000 kHz to 1.890.000 kHz! (Default: 378.000 kHz)" name="Min Frequency" action="genericfreq /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq_all_cpus" unit="kHz" min="378000" reversed="false" step="108000" max="1890000"/>
 
 	</settingsPane>
 
@@ -24,11 +24,11 @@
 
 		<seekBar description="Maximum CPU speed while using GPS. (Default: 1890.000 kHz)." name="scaling_max_gps_freq" action="genericfreq /sys/kernel/cpufreq_limit_manager/scaling_max_gps_freq" unit="kHz" min="810000" reversed="false" step="108000" max="1890000"/>
 
-		<seekBar description="Maximum DEEP SLEEP CPU speed. (Default: 1134.000 kHz)." name="scaling_max_suspend_freq" action="genericfreq /sys/kernel/cpufreq_limit_manager/scaling_max_suspend_freq" unit="kHz" min="162000" reversed="false" step="108000" max="1890000"/>
+		<seekBar description="Maximum DEEP SLEEP CPU speed. (Default: 1134.000 kHz)." name="scaling_max_suspend_freq" action="genericfreq /sys/kernel/cpufreq_limit_manager/scaling_max_suspend_freq" unit="kHz" min="378000" reversed="false" step="108000" max="1890000"/>
 
-		<seekBar description="Maximum ON CALL CPU speed. (Default: 810.000 kHz). When phone is on call and suspended." name="scaling_max_oncall_freq" action="genericfreq /sys/kernel/cpufreq_limit_manager/scaling_max_oncall_freq" unit="kHz" min="162000" reversed="false" step="108000" max="1890000"/>
+		<seekBar description="Maximum ON CALL CPU speed. (Default: 810.000 kHz). When phone is on call and suspended." name="scaling_max_oncall_freq" action="genericfreq /sys/kernel/cpufreq_limit_manager/scaling_max_oncall_freq" unit="kHz" min="378000" reversed="false" step="108000" max="1890000"/>
 
-		<seekBar description="Minimum DEEP SLEEP CPU speed. (Default: 378.000 kHz)." name="scaling_min_suspend_freq" action="genericfreq /sys/kernel/cpufreq_limit_manager/scaling_min_suspend_freq" unit="kHz" min="162000" reversed="false" step="108000" max="1890000"/>
+		<seekBar description="Minimum DEEP SLEEP CPU speed. (Default: 378.000 kHz)." name="scaling_min_suspend_freq" action="genericfreq /sys/kernel/cpufreq_limit_manager/scaling_min_suspend_freq" unit="kHz" min="378000" reversed="false" step="108000" max="1890000"/>
 
 	</settingsPane>
 
@@ -72,10 +72,6 @@
 
 		<seekBar description="CPU Voltage for 378 MHz." name="CPU Voltage 378 MHz" action="cpu-voltage 15" unit="µV" min="825000" reversed="false" step="12500" max="925000"/>
 
-		<seekBar description="CPU Voltage for 270 MHz." name="CPU Voltage 270 MHz" action="cpu-voltage 16" unit="µV" min="800000" reversed="false" step="12500" max="900000"/>
-
-		<seekBar description="CPU Voltage for 162 MHz." name="CPU Voltage 162 MHz" action="cpu-voltage 17" unit="µV" min="800000" reversed="false" step="12500" max="900000"/>
-
 	</settingsPane>
 
 </settingsTab>
@@ -113,7 +109,7 @@
 
 		<seekBar description="After spending sampling_down_factor X sampling_rate micro seconds at maximum frequency on high load, governor samples the load again to calculate an approx target frequency to scale-down-to which should not trigger up_threshold in the next sample. (Triggering up threshold may cause jumping to max frequency again). Max_load_freq is checked against (up_threshold - down_differential) X current frequency. If found to be smaller, CPU is scaled down to a target frequency as described above. Down_differential also act as the factor to prevent aggressive scale down. (Only for HYPER, Ondemand, PegasusQ) (default: 5)" name="down_differential" action="generic_cortex /tmp/down_differential" unit="int" min="1" reversed="false" step="1" max="80"/>
 
-		<seekBar description="Until freq_for_responsiveness, Up Threshold considered for sampling load is up_threshold_at_min_freq. Also during the part where CPU is at maximum load frequency, governor need to find the optimal frequency as the next frequency - which should not trigger up_threshold in the next sampling. When such a frequency_next is found to be a) less than freq_for_responsiveness b) will not trigger down_threshold in the next sample, then the optimal frequency is set to freq_for_responsiveness. (Only for HYPER, PegasusQ, Nightmare) (Default: 486.000 kHz)" name="freq_for_responsiveness" action="generic_cortex /tmp/freq_for_responsiveness" unit="kHz" min="162000" reversed="false" step="108000" max="1890000"/>
+		<seekBar description="Until freq_for_responsiveness, Up Threshold considered for sampling load is up_threshold_at_min_freq. Also during the part where CPU is at maximum load frequency, governor need to find the optimal frequency as the next frequency - which should not trigger up_threshold in the next sampling. When such a frequency_next is found to be a) less than freq_for_responsiveness b) will not trigger down_threshold in the next sample, then the optimal frequency is set to freq_for_responsiveness. (Only for HYPER, PegasusQ, Nightmare) (Default: 486.000 kHz)" name="freq_for_responsiveness" action="generic_cortex /tmp/freq_for_responsiveness" unit="kHz" min="378000" reversed="false" step="108000" max="1890000"/>
 
 		<seekBar description="This is same as the up_threshold found for the Ondemand governor but for the opposite direction. For example when set to its default value of 30 it means that if the CPU usage needs to be below 30% between samples to have the frequency decreased. (Only for Conservative) (Default: 30%)" name="down_threshold" action="generic_cortex /tmp/down_threshold" unit="%" min="1" reversed="false" step="1" max="100"/>
 
@@ -129,9 +125,9 @@
 
 		<seekBar description="The frequency at which governor scales CPU down. Load less than dec_cpu_load: cpu scaled down. (Only for Nightmare, Alucard). (Default: 60%)" name="dec_cpu_load" action="generic_cortex /tmp/dec_cpu_load" unit="%" min="10" reversed="false" step="1" max="100"/>
 
-		<seekBar description="When current freq is greater than freq_for_responsiviness_max, freq_step_dec will be equal to freq_step_dec_at_max_freq. (Only for Nightmare). (Default: 1890.000 kHz)" name="freq_for_responsiveness_max" action="generic_cortex /tmp/freq_for_responsiveness_max" unit="kHz" min="162000" reversed="false" step="108000" max="1890000"/>
+		<seekBar description="When current freq is greater than freq_for_responsiviness_max, freq_step_dec will be equal to freq_step_dec_at_max_freq. (Only for Nightmare). (Default: 1890.000 kHz)" name="freq_for_responsiveness_max" action="generic_cortex /tmp/freq_for_responsiveness_max" unit="kHz" min="378000" reversed="false" step="108000" max="1890000"/>
 
-		<seekBar description="Until freq_responsiveness, Up Threshold considered for sampling load is inc_cpu_load_at_min_freq. Also during the part where CPU is at maximum load frequency, governor need to find the optimal frequency as the next frequency - which should not trigger up_threshold in the next sampling. When such a frequency_next is found to be a) less than freq_responsiveness b) will not trigger down_threshold in the next sample, then the optimal frequency is set to freq_responsiveness. (Only for Alucard) (Default: 918.000 kHz)" name="freq_responsiveness" action="generic_cortex /tmp/freq_responsiveness" unit="kHz" min="162000" reversed="false" step="108000" max="1890000"/>
+		<seekBar description="Until freq_responsiveness, Up Threshold considered for sampling load is inc_cpu_load_at_min_freq. Also during the part where CPU is at maximum load frequency, governor need to find the optimal frequency as the next frequency - which should not trigger up_threshold in the next sampling. When such a frequency_next is found to be a) less than freq_responsiveness b) will not trigger down_threshold in the next sample, then the optimal frequency is set to freq_responsiveness. (Only for Alucard) (Default: 918.000 kHz)" name="freq_responsiveness" action="generic_cortex /tmp/freq_responsiveness" unit="kHz" min="378000" reversed="false" step="108000" max="1890000"/>
 
 		<seekBar description="Governor should increase CPU frequency by n step each time CPU load reaches inc_cpu_load. (Only for Alucard) (Default: 2)" name="pump_inc_step" action="generic_cortex /tmp/pump_inc_step" unit="step" min="1" reversed="false" step="1" max="3"/>
 
@@ -205,17 +201,17 @@
 
 		<seekBar description="Number of samples to evaluate cpu3 hotplug out. (Default: 4)" name="hotplug_rate_4_0" action="generic_cortex /tmp/hotplug_rate_4_0" unit="int" min="1" reversed="false" step="1" max="10"/>
 
-		<seekBar description="Up threshold frequency to turn second core On, when some other conditions is also met. ie If (minimum frequency greater than or equal to hotplug_freq 1 1) Hotplug IN Second Core. Higher value corresponds to delay in turning on second core. (Default: 1242.000 kHz)" name="hotplug_freq_1_1" action="generic_cortex /tmp/hotplug_freq_1_1" unit="kHz" min="162000" reversed="false" step="108000" max="1890000"/>
+		<seekBar description="Up threshold frequency to turn second core On, when some other conditions is also met. ie If (minimum frequency greater than or equal to hotplug_freq 1 1) Hotplug IN Second Core. Higher value corresponds to delay in turning on second core. (Default: 1242.000 kHz)" name="hotplug_freq_1_1" action="generic_cortex /tmp/hotplug_freq_1_1" unit="kHz" min="378000" reversed="false" step="108000" max="1890000"/>
 
-		<seekBar description="Down threshold frequency to turn second core Off, when some other conditions is also met. ie If (maximum frequency less than hotplug_freq 2 0) Hotplug OUT Second Core. Lower value corresponds to delay in turning off second core. (Default: 810.000 kHz)" name="hotplug_freq_2_0" action="generic_cortex /tmp/hotplug_freq_2_0" unit="kHz" min="162000" reversed="false" step="108000" max="1890000"/>
+		<seekBar description="Down threshold frequency to turn second core Off, when some other conditions is also met. ie If (maximum frequency less than hotplug_freq 2 0) Hotplug OUT Second Core. Lower value corresponds to delay in turning off second core. (Default: 810.000 kHz)" name="hotplug_freq_2_0" action="generic_cortex /tmp/hotplug_freq_2_0" unit="kHz" min="378000" reversed="false" step="108000" max="1890000"/>
 
-		<seekBar description="Up threshold frequency to turn third core On, when some other conditions is also met. ie If (minimum frequency greater than or equal to hotplug_freq 2 1) Hotplug IN Third Core. Higher value corresponds to delay in turning on Third core. (Default: 1566.000 kHz)" name="hotplug_freq_2_1" action="generic_cortex /tmp/hotplug_freq_2_1" unit="kHz" min="162000" reversed="false" step="108000" max="1890000"/>
+		<seekBar description="Up threshold frequency to turn third core On, when some other conditions is also met. ie If (minimum frequency greater than or equal to hotplug_freq 2 1) Hotplug IN Third Core. Higher value corresponds to delay in turning on Third core. (Default: 1566.000 kHz)" name="hotplug_freq_2_1" action="generic_cortex /tmp/hotplug_freq_2_1" unit="kHz" min="378000" reversed="false" step="108000" max="1890000"/>
 
-		<seekBar description="Down threshold frequency to turn third core Off, when some other conditions is also met. ie If (maximum frequency less than hotplug_freq 3 0) Hotplug OUT Third Core. Lower value corresponds to delay in turning off third core. (Default: 918.000 kHz)" name="hotplug_freq_3_0" action="generic_cortex /tmp/hotplug_freq_3_0" unit="kHz" min="162000" reversed="false" step="108000" max="1890000"/>
+		<seekBar description="Down threshold frequency to turn third core Off, when some other conditions is also met. ie If (maximum frequency less than hotplug_freq 3 0) Hotplug OUT Third Core. Lower value corresponds to delay in turning off third core. (Default: 918.000 kHz)" name="hotplug_freq_3_0" action="generic_cortex /tmp/hotplug_freq_3_0" unit="kHz" min="378000" reversed="false" step="108000" max="1890000"/>
 
-		<seekBar description="Up threshold frequency to turn fourth core On, when some other conditions is also met. ie If (minimum frequency greater than or equal to hotplug_freq 3 1) Hotplug IN Fourth Core. Higher value corresponds to delay in turning on Fourth core. (Default: 1674.000 kHz)" name="hotplug_freq_3_1" action="generic_cortex /tmp/hotplug_freq_3_1" unit="kHz" min="162000" reversed="false" step="108000" max="1890000"/>
+		<seekBar description="Up threshold frequency to turn fourth core On, when some other conditions is also met. ie If (minimum frequency greater than or equal to hotplug_freq 3 1) Hotplug IN Fourth Core. Higher value corresponds to delay in turning on Fourth core. (Default: 1674.000 kHz)" name="hotplug_freq_3_1" action="generic_cortex /tmp/hotplug_freq_3_1" unit="kHz" min="378000" reversed="false" step="108000" max="1890000"/>
 
-		<seekBar description="Down threshold frequency to turn fourth core Off, when some other conditions is also met. ie If (maximum frequency less than hotplug_freq 4 0) Hotplug OUT Fourth Core. Lower value corresponds to delay in turning off fourth core. (Default: 1026.000 kHz)" name="hotplug_freq_4_0" action="generic_cortex /tmp/hotplug_freq_4_0" unit="kHz" min="162000" reversed="false" step="108000" max="1890000"/>
+		<seekBar description="Down threshold frequency to turn fourth core Off, when some other conditions is also met. ie If (maximum frequency less than hotplug_freq 4 0) Hotplug OUT Fourth Core. Lower value corresponds to delay in turning off fourth core. (Default: 1026.000 kHz)" name="hotplug_freq_4_0" action="generic_cortex /tmp/hotplug_freq_4_0" unit="kHz" min="378000" reversed="false" step="108000" max="1890000"/>
 
 		<seekBar description="The CPU load at which governor scales CPU up. Current Load equal or greater than up_load: CPU Hotplug IN. Value corresponding to 101 causes not HOTPLUG IN. (Default: 65%)" name="hotplug_load_1_1" action="generic_cortex /tmp/hotplug_load_1_1" unit="%" min="10" reversed="false" step="1" max="101"/>
 
