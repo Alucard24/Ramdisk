@@ -106,6 +106,7 @@ pwm_val=75
 force_fast_charge=0
 usb_mode=default
 auto_mount_sd=on
+usb_keyboard=disable
 Dyn_fsync_active=1
 cortexbrain_background_process=1
 android_logger=auto
