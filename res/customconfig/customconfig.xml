@@ -565,6 +565,22 @@
 
 </settingsTab>
 
+<settingsTab name="TCP Congestion Control">
+
+	<settingsPane description="Transmission Control Protocol (TCP) uses a network congestion-avoidance algorithm that includes various aspects of an additive increase|multiplicative decrease (AIMD) scheme, with other schemes such as slow-start to achieve congestion avoidance. The TCP congestion-avoidance algorithm is the primary basis for congestion control in the Internet." name="TCP Congestion control tweaks">
+
+		<spinner description="Set TCP algorithm. (Default: Cubic)" name="tcp_congestion_control" action="generic /proc/sys/net/ipv4/tcp_congestion_control">
+			<spinnerItem name="BIC" value="bic"/> 
+			<spinnerItem name="CUBIC" value="cubic"/>
+			<spinnerItem name="HTCP" value="htcp"/>
+			<spinnerItem name="RENO" value="reno"/>
+			<spinnerItem name="WESTWOOD" value="westwood"/>
+		</spinner>
+
+	</settingsPane>
+
+</settingsTab>
+
 <settingsTab name="Tweaks">
 
 	<settingsPane description="This script will manipulate many kernel settings, based on chosen STweaks profile + settings and on screen state (ON or OFF) and we call it CortexBrain. To reset the kernel-settings, after you disable a tweak, you must reboot!" name="CortexBrain Tweaks">

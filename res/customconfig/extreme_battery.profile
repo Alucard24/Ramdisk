@@ -108,6 +108,7 @@ usb_mode=default
 auto_mount_sd=on
 usb_keyboard=disable
 Dyn_fsync_active=1
+tcp_congestion_control=cubic
 cortexbrain_background_process=1
 android_logger=auto
 cortexbrain_auto_tweak_mobile=off
