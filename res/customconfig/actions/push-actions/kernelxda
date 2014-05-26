@@ -1,0 +1,3 @@
+#!/sbin/busybox sh
+
+am start -a android.intent.action.VIEW -d http://forum.xda-developers.com/showthread.php?t=2590246
