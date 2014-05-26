@@ -76,6 +76,7 @@ hotplug_rq_3_1=300
 hotplug_rq_4_0=300
 maxcoreslimit=4
 maxcoreslimit_sleep=1
+cpus_boosted=1
 eco_mode_active_sleep=1
 strict_mode_active_sleep=0
 msm_thermal=intelli_temp

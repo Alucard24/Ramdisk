@@ -168,7 +168,8 @@
 		<spinner description="Set the CPU hotplugging system. (Default: ALUCARD HOTPLUG)" name="cpu hotplugging" action="cpuhotplugging">
 			<spinnerItem name="MSM MPDECISION" value="1"/> 
 			<spinnerItem name="INTELLIPLUG" value="2"/> 
-			<spinnerItem name="ALUCARD HOTPLUG" value="3"/> 
+			<spinnerItem name="ALUCARD HOTPLUG" value="3"/>
+			<spinnerItem name="MSM HOTPLUG" value="4"/>
 		</spinner>
 
 		<button description="Use this button to push all new changes to CPU hotplugging system in real time! The sleep tuning will be auto added on screen off." name="Cpu Hotplug Policy Install" action="push-actions/cpu_tuning_hotplug" label="Push Tuning to cpu hotplugging core"/>
@@ -244,6 +245,15 @@
 		<seekBar description="Max CPU's hotplugging limit. (Default: 4)" name="maxcoreslimit" action="generic_cortex /tmp/maxcoreslimit" unit="int" min="1" reversed="false" step="1" max="4"/>
 
 		<seekBar description="Max CPU's hotplugging limit. (Default: 1)" name="maxcoreslimit_sleep" action="generic_cortex /tmp/maxcoreslimit_sleep" unit="int" min="1" reversed="false" step="1" max="4"/>
+
+	</settingsPane>
+
+	<settingsPane description="Tune MSM Hotplug" name="MSM Hotplug Tuning">
+
+		<spinner description="MSM HotPlug additional CPU control, here you can tune how much cores will be active on high short load, default is 2 cores for 4sec, if you wish to save more power when using MSM HotPlug then best to use 1 core. or if performance is what you prefer then use 2 cores boost. Depend on MSM HotPlug selected!" name="MSM HotPlug Booster" action="generic /sys/module/msm_hotplug/cpus_boosted">
+			<spinnerItem name="One Core Boosted" value="1"/> 
+			<spinnerItem name="Two Cores Boosted" value="2"/> 
+		</spinner>
 
 	</settingsPane>
 
