@@ -149,6 +149,12 @@ CPU_HOTPLUG_TWEAKS()
 			echo "0" > $hotplug_enable_tmp;
 		fi;
 
+		#disable msm_hotplug
+		if [ "$(cat /sys/module/msm_hotplug/msm_enabled)" -eq "1" ]; then
+			echo "0" > /sys/module/msm_hotplug/msm_enabled;
+		fi;
+
+		#enable msm_rq_stats
 		if [ "$(cat /sys/devices/system/cpu/cpu0/rq-stats/hotplug_disable)" -eq "1" ]; then
 			echo "0" > /sys/devices/system/cpu/cpu0/rq-stats/hotplug_disable;
 		fi;
@@ -166,6 +172,7 @@ CPU_HOTPLUG_TWEAKS()
 			/system/bin/stop mpdecision
 		fi;
 
+		#disable msm_rq_stats
 		if [ "$(cat /sys/devices/system/cpu/cpu0/rq-stats/hotplug_disable)" -eq "0" ]; then
 			echo "1" > /sys/devices/system/cpu/cpu0/rq-stats/hotplug_disable;
 		fi;
@@ -173,6 +180,11 @@ CPU_HOTPLUG_TWEAKS()
 		#disable alucard_hotplug
 		if [ "$alucard_value_tmp" -eq "1" ]; then
 			echo "0" > $hotplug_enable_tmp;
+		fi;
+
+		#disable msm_hotplug
+		if [ "$(cat /sys/module/msm_hotplug/msm_enabled)" -eq "1" ]; then
+			echo "0" > /sys/module/msm_hotplug/msm_enabled;
 		fi;
 
 		#enable intelli_plug
@@ -204,13 +216,14 @@ CPU_HOTPLUG_TWEAKS()
 			echo "$strict_mode_active" > $strict_mode_active_tmp;
 		fi;
 
-	#	log -p i -t "$FILE_NAME" "*** INTELLI_PLUG ***: enabled";
+		log -p i -t "$FILE_NAME" "*** INTELLI_PLUG ***: enabled";
 	elif [ "$cpuhotplugging" -eq "3" ]; then
 		#disable MSM MPDecision
 		if [ "$(ps | grep "mpdecision" | wc -l)" -ge "1" ]; then
 			/system/bin/stop mpdecision
 		fi;
 
+		#disable msm_rq_stats
 		if [ "$(cat /sys/devices/system/cpu/cpu0/rq-stats/hotplug_disable)" -eq "0" ]; then
 			echo "1" > /sys/devices/system/cpu/cpu0/rq-stats/hotplug_disable;
 		fi;
@@ -220,10 +233,15 @@ CPU_HOTPLUG_TWEAKS()
 			echo "0" > $intelli_plug_active_tmp;
 		fi;
 
+		#disable msm_hotplug
+		if [ "$(cat /sys/module/msm_hotplug/msm_enabled)" -eq "1" ]; then
+			echo "0" > /sys/module/msm_hotplug/msm_enabled;
+		fi;
+
 		#enable alucard_hotplug
 		if [ "$alucard_value_tmp" -eq "0" ]; then
 			echo "1" > $hotplug_enable_tmp;
-		fi
+		fi;
 
 		if [ "$(ps | grep /system/bin/thermal-engine | wc -l)" -ge "1" ]; then
 			$BB renice -n -20 -p $(pgrep -f "/system/bin/thermal-engine");
@@ -396,6 +414,38 @@ CPU_HOTPLUG_TWEAKS()
 		fi;
 
 		log -p i -t "$FILE_NAME" "*** ALUCARD_HOTPLUG ***: enabled";
+	elif [ "$cpuhotplugging" -eq "4" ]; then
+
+		#disable MSM MPDecision
+		if [ "$(ps | grep "mpdecision" | wc -l)" -ge "1" ]; then
+			/system/bin/stop mpdecision
+		fi;
+
+		#disable msm_rq_stats
+		if [ "$(cat /sys/devices/system/cpu/cpu0/rq-stats/hotplug_disable)" -eq "0" ]; then
+			echo "1" > /sys/devices/system/cpu/cpu0/rq-stats/hotplug_disable;
+		fi;
+
+		#disable intelli_plug
+		if [ "$intelli_value_tmp" -eq "1" ]; then
+			echo "0" > $intelli_plug_active_tmp;
+		fi;
+
+		#disable alucard_hotplug
+		if [ "$alucard_value_tmp" -eq "1" ]; then
+			echo "0" > $hotplug_enable_tmp;
+		fi;
+
+		#enable msm_hotplug
+		if [ "$(cat /sys/module/msm_hotplug/msm_enabled)" -eq "0" ]; then
+			echo "1" > /sys/module/msm_hotplug/msm_enabled;
+		fi;
+
+		if [ "$(ps | grep /system/bin/thermal-engine | wc -l)" -ge "1" ]; then
+			$BB renice -n -20 -p $(pgrep -f "/system/bin/thermal-engine");
+		fi;
+
+		log -p i -t "$FILE_NAME" "*** MSM_HOTPLUG ***: enabled";
 	fi;
 }
 
