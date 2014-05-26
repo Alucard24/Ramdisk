@@ -23,7 +23,7 @@ OPEN_RW()
 OPEN_RW;
 
 # Boot with CFQ I/O Gov
-$BB echo "cfq" > /sys/block/mmcblk0/queue/scheduler;
+$BB echo "row" > /sys/block/mmcblk0/queue/scheduler;
 
 # clean old modules from /system and add new from ramdisk
 #if [ ! -d /system/lib/modules ]; then
