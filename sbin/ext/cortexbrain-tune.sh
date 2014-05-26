@@ -149,6 +149,10 @@ CPU_HOTPLUG_TWEAKS()
 			echo "0" > $hotplug_enable_tmp;
 		fi;
 
+		if [ "$(cat /sys/devices/system/cpu/cpu0/rq-stats/hotplug_disable)" -eq "1" ]; then
+			echo "0" > /sys/devices/system/cpu/cpu0/rq-stats/hotplug_disable;
+		fi;
+
 		#enable MSM MPDecision
 		if [ "$(ps | grep "mpdecision" | wc -l)" -le "1" ]; then
 			/system/bin/start mpdecision
@@ -160,6 +164,10 @@ CPU_HOTPLUG_TWEAKS()
 		#disable MSM MPDecision
 		if [ "$(ps | grep "mpdecision" | wc -l)" -ge "1" ]; then
 			/system/bin/stop mpdecision
+		fi;
+
+		if [ "$(cat /sys/devices/system/cpu/cpu0/rq-stats/hotplug_disable)" -eq "0" ]; then
+			echo "1" > /sys/devices/system/cpu/cpu0/rq-stats/hotplug_disable;
 		fi;
 
 		#disable alucard_hotplug
@@ -203,6 +211,9 @@ CPU_HOTPLUG_TWEAKS()
 			/system/bin/stop mpdecision
 		fi;
 
+		if [ "$(cat /sys/devices/system/cpu/cpu0/rq-stats/hotplug_disable)" -eq "0" ]; then
+			echo "1" > /sys/devices/system/cpu/cpu0/rq-stats/hotplug_disable;
+		fi;
 
 		#disable intelli_plug
 		if [ "$intelli_value_tmp" -eq "1" ]; then
