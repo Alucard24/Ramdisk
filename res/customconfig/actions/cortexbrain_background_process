@@ -16,8 +16,6 @@ case "${cortexbrain_background_process}" in
 		pkill -f "cat /sys/power/wait_for_fb_sleep";
 		pkill -f "cat /sys/power/wait_for_fb_wake";
 		sed -i "s/cortexbrain_background_process=[0-1]*/cortexbrain_background_process=0/g" /sbin/ext/cortexbrain-tune.sh;
-		MAX_FREQ=`cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq`;
-		echo "$MAX_FREQ" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_suspend_freq;
 	;;
 	1)
 		sed -i "s/cortexbrain_background_process=[0-1]*/cortexbrain_background_process=1/g" /sbin/ext/cortexbrain-tune.sh;
