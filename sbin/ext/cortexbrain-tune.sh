@@ -853,124 +853,6 @@ if [ "$apply_cpu" != "update" ]; then
 	MEMORY_TWEAKS;
 fi;
 
-# ==============================================================
-# TCP-TWEAKS
-# ==============================================================
-TCP_TWEAKS()
-{
-	if [ "$cortexbrain_tcp" == "on" ]; then
-		echo "0" > /proc/sys/net/ipv4/tcp_timestamps;
-		echo "1" > /proc/sys/net/ipv4/tcp_rfc1337;
-		echo "1" > /proc/sys/net/ipv4/tcp_workaround_signed_windows;
-		echo "1" > /proc/sys/net/ipv4/tcp_low_latency;
-		echo "1" > /proc/sys/net/ipv4/tcp_mtu_probing;
-		echo "2" > /proc/sys/net/ipv4/tcp_frto_response;
-		echo "1" > /proc/sys/net/ipv4/tcp_no_metrics_save;
-		echo "1" > /proc/sys/net/ipv4/tcp_tw_reuse;
-		echo "1" > /proc/sys/net/ipv4/tcp_tw_recycle;
-		echo "30" > /proc/sys/net/ipv4/tcp_fin_timeout;
-		echo "0" > /proc/sys/net/ipv4/tcp_ecn;
-		echo "5" > /proc/sys/net/ipv4/tcp_keepalive_probes;
-		echo "40" > /proc/sys/net/ipv4/tcp_keepalive_intvl;
-		echo "2500" > /proc/sys/net/core/netdev_max_backlog;
-		echo "1" > /proc/sys/net/ipv4/route/flush;
-
-		log -p i -t "$FILE_NAME" "*** TCP_TWEAKS ***: enabled";
-	else
-		echo "1" > /proc/sys/net/ipv4/tcp_timestamps;
-		echo "0" > /proc/sys/net/ipv4/tcp_rfc1337;
-		echo "0" > /proc/sys/net/ipv4/tcp_workaround_signed_windows;
-		echo "0" > /proc/sys/net/ipv4/tcp_low_latency;
-		echo "0" > /proc/sys/net/ipv4/tcp_mtu_probing;
-		echo "0" > /proc/sys/net/ipv4/tcp_frto_response;
-		echo "0" > /proc/sys/net/ipv4/tcp_no_metrics_save;
-		echo "0" > /proc/sys/net/ipv4/tcp_tw_reuse;
-		echo "0" > /proc/sys/net/ipv4/tcp_tw_recycle;
-		echo "60" > /proc/sys/net/ipv4/tcp_fin_timeout;
-		echo "2" > /proc/sys/net/ipv4/tcp_ecn;
-		echo "9" > /proc/sys/net/ipv4/tcp_keepalive_probes;
-		echo "75" > /proc/sys/net/ipv4/tcp_keepalive_intvl;
-		echo "1000" > /proc/sys/net/core/netdev_max_backlog;
-		echo "0" > /proc/sys/net/ipv4/route/flush;
-
-		log -p i -t "$FILE_NAME" "*** TCP_TWEAKS ***: disabled";
-	fi;
-
-	if [ "$cortexbrain_tcp_ram" == "on" ]; then
-		echo "4194304" > /proc/sys/net/core/wmem_max;
-		echo "4194304" > /proc/sys/net/core/rmem_max;
-		echo "20480" > /proc/sys/net/core/optmem_max;
-		echo "4096 87380 4194304" > /proc/sys/net/ipv4/tcp_wmem;
-		echo "4096 87380 4194304" > /proc/sys/net/ipv4/tcp_rmem;
-
-		log -p i -t "$FILE_NAME" "*** TCP_RAM_TWEAKS ***: enabled";
-	else
-		log -p i -t "$FILE_NAME" "*** TCP_RAM_TWEAKS ***: disable";
-	fi;
-}
-
-# ==============================================================
-# FIREWALL-TWEAKS
-# ==============================================================
-FIREWALL_TWEAKS()
-{
-	if [ "$cortexbrain_firewall" == "on" ]; then
-		# ping/icmp protection
-		echo "1" > /proc/sys/net/ipv4/icmp_echo_ignore_broadcasts;
-		echo "1" > /proc/sys/net/ipv4/icmp_echo_ignore_all;
-		echo "1" > /proc/sys/net/ipv4/icmp_ignore_bogus_error_responses;
-
-		log -p i -t "$FILE_NAME" "*** FIREWALL_TWEAKS ***: enabled";
-
-		return 1;
-	else
-		return 0;
-	fi;
-}
-
-# disable/enable ipv6
-IPV6()
-{
-	local state='';
-
-	if [ -e /data/data/com.cisco.anyconnec* ]; then
-		local CISCO_VPN=1;
-	else
-		local CISCO_VPN=0;
-	fi;
-
-	if [ "$cortexbrain_ipv6" == "on" ] || [ "$CISCO_VPN" -eq "1" ]; then
-		echo "0" > /proc/sys/net/ipv6/conf/wlan0/disable_ipv6;
-		sysctl -w net.ipv6.conf.all.disable_ipv6=0 > /dev/null;
-		local state="enabled";
-	else
-		echo "1" > /proc/sys/net/ipv6/conf/wlan0/disable_ipv6;
-		sysctl -w net.ipv6.conf.all.disable_ipv6=1 > /dev/null;
-		local state="disabled";
-	fi;
-
-	log -p i -t "$FILE_NAME" "*** IPV6 ***: $state";
-}
-
-NET()
-{
-	local state="$1";
-
-	if [ "$state" == "awake" ]; then
-		echo "3" > /proc/sys/net/ipv4/tcp_keepalive_probes; # default: 3
-		echo "1200" > /proc/sys/net/ipv4/tcp_keepalive_time; # default: 7200s
-		echo "10" > /proc/sys/net/ipv4/tcp_keepalive_intvl; # default: 75s
-		echo "10" > /proc/sys/net/ipv4/tcp_retries2; # default: 15
-	elif [ "$state" == "sleep" ]; then
-		echo "2" > /proc/sys/net/ipv4/tcp_keepalive_probes;
-		echo "300" > /proc/sys/net/ipv4/tcp_keepalive_time;
-		echo "5" > /proc/sys/net/ipv4/tcp_keepalive_intvl;
-		echo "5" > /proc/sys/net/ipv4/tcp_retries2;
-	fi;
-
-	log -p i -t "$FILE_NAME" "*** NET ***: $state";
-}
-
 IO_SCHEDULER()
 {
 	if [ "$cortexbrain_io" == "on" ]; then
@@ -1012,31 +894,6 @@ IO_SCHEDULER()
 	fi;
 }
 
-CPU_GOVERNOR()
-{
-	local state="$1";
-	local scaling_governor_tmp="/sys/devices/system/cpu/cpu0/cpufreq/scaling_governor_all_cpus";
-	local tmp_governor=`cat $scaling_governor_tmp`;
-
-	if [ "$cortexbrain_cpu" == "on" ]; then
-		if [ "$state" == "awake" ]; then
-			if [ "$tmp_governor" != $scaling_governor_all_cpus ]; then
-				echo "$scaling_governor_all_cpus" > $scaling_governor_tmp;
-			fi;
-		elif [ "$state" == "sleep" ]; then
-			if [ "$tmp_governor" != $scaling_governor_all_cpus_sleep ]; then
-				echo "$scaling_governor_all_cpus_sleep" > $scaling_governor_tmp;
-			fi;
-		fi;
-
-		local USED_GOV_NOW=`cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor_all_cpus`;
-
-		log -p i -t "$FILE_NAME" "*** CPU_GOVERNOR: set $state GOV $USED_GOV_NOW ***: done";
-	else
-		log -p i -t "$FILE_NAME" "*** CPU_GOVERNOR: NO CHANGED ***: done";
-	fi;
-}
-
 # ==============================================================
 # TWEAKS: if Screen-ON
 # ==============================================================
@@ -1044,19 +901,12 @@ AWAKE_MODE()
 {
 	# not on call, check if was powerd by USB on sleep, or didnt sleep at all
 	if [ "$WAS_IN_SLEEP_MODE" -eq "1" ] && [ "$USB_POWER" -eq "0" ]; then
-		# NET "awake";
-		# CPU_GOVERNOR "awake";
 		CPU_GOV_TWEAKS "awake";
 		CPU_HOTPLUG_TWEAKS "awake";
 		LOGGER "awake";
 		MOBILE_DATA "awake";
 		WIFI "awake";
 		IO_SCHEDULER "awake";
-
-		#(
-		#	sleep 2;
-		#	IPV6;
-		#)&
 	else
 		# Was powered by USB, and half sleep
 		USB_POWER=0;
@@ -1086,12 +936,9 @@ SLEEP_MODE()
 
 	# check if we powered by USB, if not sleep
 	if [ "$CHARGING" -eq "1" ]; then
-		# CPU_GOVERNOR "sleep";
 		CPU_GOV_TWEAKS "sleep";
 		CPU_HOTPLUG_TWEAKS "sleep";
 		IO_SCHEDULER "sleep";
-		# NET "sleep";
-		# IPV6;
 		WIFI "sleep";
 		MOBILE_DATA "sleep";
 		LOGGER "sleep";
