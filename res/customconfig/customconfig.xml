@@ -46,35 +46,35 @@
 
 		<button description="Use this button to see what CPU Voltage is used right now!" name="Check Active CPU Voltage" action="push-actions/check_cpu_voltage" label="Check CPU Voltage"/>
 
-		<seekBar description="CPU Voltage for 1890 MHz." name="CPU Voltage 1890 MHz" action="cpu-voltage 1" unit="µV" min="1050000" reversed="false" step="12500" max="1300000"/>
+		<seekBar description="CPU Voltage for 1890.000 KHz." name="CPU Voltage 189.000 KHz" action="cpu-voltage 1" unit="µV" min="1050000" reversed="false" step="12500" max="1300000"/>
 
-		<seekBar description="CPU Voltage for 1782 MHz." name="CPU Voltage 1782 MHz" action="cpu-voltage 2" unit="µV" min="1025000" reversed="false" step="12500" max="1225000"/>
+		<seekBar description="CPU Voltage for 1782.000 KHz." name="CPU Voltage 1782.000 KHz" action="cpu-voltage 2" unit="µV" min="1025000" reversed="false" step="12500" max="1225000"/>
 
-		<seekBar description="CPU Voltage for 1674 MHz." name="CPU Voltage 1674 MHz" action="cpu-voltage 3" unit="µV" min="1000000" reversed="false" step="12500" max="1175000"/>
+		<seekBar description="CPU Voltage for 1674.000 KHz." name="CPU Voltage 1674.000 KHz" action="cpu-voltage 3" unit="µV" min="1000000" reversed="false" step="12500" max="1175000"/>
 
-		<seekBar description="CPU Voltage for 1566 MHz." name="CPU Voltage 1566 MHz" action="cpu-voltage 4" unit="µV" min="975000" reversed="false" step="12500" max="1125000"/>
+		<seekBar description="CPU Voltage for 1566.000 KHz." name="CPU Voltage 1566.000 KHz" action="cpu-voltage 4" unit="µV" min="975000" reversed="false" step="12500" max="1125000"/>
 
-		<seekBar description="CPU Voltage for 1458 MHz." name="CPU Voltage 1458 MHz" action="cpu-voltage 5" unit="µV" min="962500" reversed="false" step="12500" max="1100000"/>
+		<seekBar description="CPU Voltage for 1458.000 KHz." name="CPU Voltage 1458.000 KHz" action="cpu-voltage 5" unit="µV" min="962500" reversed="false" step="12500" max="1100000"/>
 
-		<seekBar description="CPU Voltage for 1350 MHz." name="CPU Voltage 1350 MHz" action="cpu-voltage 6" unit="µV" min="950000" reversed="false" step="12500" max="1062500"/>
+		<seekBar description="CPU Voltage for 1350.000 KHz." name="CPU Voltage 1350.000 KHz" action="cpu-voltage 6" unit="µV" min="950000" reversed="false" step="12500" max="1062500"/>
 
-		<seekBar description="CPU Voltage for 1242 MHz." name="CPU Voltage 1242 MHz" action="cpu-voltage 7" unit="µV" min="937500" reversed="false" step="12500" max="1037500"/>
+		<seekBar description="CPU Voltage for 1242.000 KHz." name="CPU Voltage 1242.000 KHz" action="cpu-voltage 7" unit="µV" min="937500" reversed="false" step="12500" max="1037500"/>
 
-		<seekBar description="CPU Voltage for 1134 MHz." name="CPU Voltage 1134 MHz" action="cpu-voltage 8" unit="µV" min="925000" reversed="false" step="12500" max="1025000"/>
+		<seekBar description="CPU Voltage for 1134.000 KHz." name="CPU Voltage 1134.000 KHz" action="cpu-voltage 8" unit="µV" min="925000" reversed="false" step="12500" max="1025000"/>
 
-		<seekBar description="CPU Voltage for 1026 MHz." name="CPU Voltage 1026 MHz" action="cpu-voltage 9" unit="µV" min="900000" reversed="false" step="12500" max="1000000"/>
+		<seekBar description="CPU Voltage for 1026.000 KHz." name="CPU Voltage 1026.000 KHz" action="cpu-voltage 9" unit="µV" min="900000" reversed="false" step="12500" max="1000000"/>
 
-		<seekBar description="CPU Voltage for 918 MHz." name="CPU Voltage 918 MHz" action="cpu-voltage 10" unit="µV" min="887500" reversed="false" step="12500" max="975000"/>
+		<seekBar description="CPU Voltage for 918.000 KHz." name="CPU Voltage 918.000 KHz" action="cpu-voltage 10" unit="µV" min="887500" reversed="false" step="12500" max="975000"/>
 
-		<seekBar description="CPU Voltage for 810 MHz." name="CPU Voltage 810 MHz" action="cpu-voltage 11" unit="µV" min="875000" reversed="false" step="12500" max="962500"/>
+		<seekBar description="CPU Voltage for 810.000 KHz." name="CPU Voltage 810.000 KHz" action="cpu-voltage 11" unit="µV" min="875000" reversed="false" step="12500" max="962500"/>
 
-		<seekBar description="CPU Voltage for 702 MHz." name="CPU Voltage 702 MHz" action="cpu-voltage 12" unit="µV" min="850000" reversed="false" step="12500" max="950000"/>
+		<seekBar description="CPU Voltage for 702.000 KHz." name="CPU Voltage 702.000 KHz" action="cpu-voltage 12" unit="µV" min="850000" reversed="false" step="12500" max="950000"/>
 
-		<seekBar description="CPU Voltage for 594 MHz." name="CPU Voltage 594 MHz" action="cpu-voltage 13" unit="µV" min="850000" reversed="false" step="12500" max="950000"/>
+		<seekBar description="CPU Voltage for 594.000 KHz." name="CPU Voltage 594.000 KHz" action="cpu-voltage 13" unit="µV" min="850000" reversed="false" step="12500" max="950000"/>
 
-		<seekBar description="CPU Voltage for 486 MHz." name="CPU Voltage 486 MHz" action="cpu-voltage 14" unit="µV" min="850000" reversed="false" step="12500" max="950000"/>
+		<seekBar description="CPU Voltage for 486.000 KHz." name="CPU Voltage 486.000 KHz" action="cpu-voltage 14" unit="µV" min="850000" reversed="false" step="12500" max="950000"/>
 
-		<seekBar description="CPU Voltage for 378 MHz." name="CPU Voltage 378 MHz" action="cpu-voltage 15" unit="µV" min="825000" reversed="false" step="12500" max="925000"/>
+		<seekBar description="CPU Voltage for 378.000 KHz." name="CPU Voltage 378.000 KHz" action="cpu-voltage 15" unit="µV" min="825000" reversed="false" step="12500" max="925000"/>
 
 	</settingsPane>
 
@@ -307,25 +307,25 @@
 			<spinnerItem name="simple" value="simple"/> 
 		</spinner>
 
-		<spinner description="This it is the max value of GPU frequency. (Default: 450.000.000 Hz)" name="GPU Max Frequency" action="generic /sys/devices/platform/kgsl-3d0.0/kgsl/kgsl-3d0/max_pwrlevel">
-			<spinnerItem name="450.000.000" value="0"/>
-			<spinnerItem name="320.000.000" value="1"/>
-			<spinnerItem name="200.000.000" value="2"/>
-			<spinnerItem name="128.000.000" value="3"/>
+		<spinner description="This it is the max value of GPU frequency. (Default: 450.000 KHz)" name="GPU Max Frequency" action="generic /sys/devices/platform/kgsl-3d0.0/kgsl/kgsl-3d0/max_pwrlevel">
+			<spinnerItem name="450.000 KHz" value="0"/>
+			<spinnerItem name="320.000 KHz" value="1"/>
+			<spinnerItem name="200.000 KHz" value="2"/>
+			<spinnerItem name="128.000 KHz" value="3"/>
 		</spinner>
 
-		<spinner description="This it is the min value of GPU frequency. (Default: 128.000.000 Hz)" name="GPU Min Frequency" action="generic /sys/devices/platform/kgsl-3d0.0/kgsl/kgsl-3d0/min_pwrlevel">
-			<spinnerItem name="450.000.000" value="0"/>
-			<spinnerItem name="320.000.000" value="1"/>
-			<spinnerItem name="200.000.000" value="2"/>
-			<spinnerItem name="128.000.000" value="3"/>
+		<spinner description="This it is the min value of GPU frequency. (Default: 128.000 KHz)" name="GPU Min Frequency" action="generic /sys/devices/platform/kgsl-3d0.0/kgsl/kgsl-3d0/min_pwrlevel">
+			<spinnerItem name="450.000 KHz" value="0"/>
+			<spinnerItem name="320.000 KHz" value="1"/>
+			<spinnerItem name="200.000 KHz" value="2"/>
+			<spinnerItem name="128.000 KHz" value="3"/>
 		</spinner>
 
-		<spinner description="This it is the thermal value of GPU frequency. (Default: 450.000.000 Hz)" name="GPU thermal Frequency" action="generic /sys/devices/platform/kgsl-3d0.0/kgsl/kgsl-3d0/thermal_pwrlevel">
-			<spinnerItem name="450.000.000" value="0"/>
-			<spinnerItem name="320.000.000" value="1"/>
-			<spinnerItem name="200.000.000" value="2"/>
-			<spinnerItem name="128.000.000" value="3"/>
+		<spinner description="This it is the thermal value of GPU frequency. (Default: 450.000 KHz)" name="GPU thermal Frequency" action="generic /sys/devices/platform/kgsl-3d0.0/kgsl/kgsl-3d0/thermal_pwrlevel">
+			<spinnerItem name="450.000 KHz" value="0"/>
+			<spinnerItem name="320.000 KHz" value="1"/>
+			<spinnerItem name="200.000 KHz" value="2"/>
+			<spinnerItem name="128.000 KHz" value="3"/>
 		</spinner>
 
 	</settingsPane>
@@ -712,6 +712,5 @@
 
 </settingsTab>
 
-<!--force profiles reset- version 1.2-->
-
 </settingsRoot>
+

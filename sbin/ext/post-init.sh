@@ -22,7 +22,10 @@ OPEN_RW()
 }
 OPEN_RW;
 
-# Boot with CFQ I/O Gov
+# fix storage folder owner
+$BB chown system.sdcard_rw /storage;
+
+# Boot with ROW I/O Gov
 $BB echo "row" > /sys/block/mmcblk0/queue/scheduler;
 
 # clean old modules from /system and add new from ramdisk
@@ -192,11 +195,6 @@ read_config;
 # enable force fast charge on USB to charge faster
 echo "$force_fast_charge" > /sys/kernel/fast_charge/force_fast_charge;
 
-# busybox addons
-if [ -e /system/xbin/busybox ] && [ ! -e /sbin/ifconfig ]; then
-	$BB ln -s /system/xbin/busybox /sbin/ifconfig;
-fi;
-
 ######################################
 # Loading Modules
 ######################################
@@ -222,16 +220,16 @@ echo "0" > /proc/sys/kernel/kptr_restrict;
 if [ "$logger" == "off" ]; then
 	echo "N" > /sys/module/kernel/parameters/initcall_debug;
 	echo "0" > /sys/module/earlysuspend/parameters/debug_mask;
-	echo "0" > /sys/module/alarm/parameters/debug_mask;
-	echo "0" > /sys/module/alarm_dev/parameters/debug_mask;
-	echo "0" > /sys/module/binder/parameters/debug_mask;
+#	echo "0" > /sys/module/alarm/parameters/debug_mask;
+#	echo "0" > /sys/module/alarm_dev/parameters/debug_mask;
+#	echo "0" > /sys/module/binder/parameters/debug_mask;
 	echo "0" > /sys/module/xt_qtaguid/parameters/debug_mask;
-	#echo "0" > /sys/kernel/debug/clk/debug_suspend;
-	#echo "0" > /sys/kernel/debug/msm_vidc/debug_level;
-	#echo "0" > /sys/module/ipc_router/parameters/debug_mask;
-	echo "0" > /sys/module/msm_serial_hs/parameters/debug_mask;
-	echo "0" > /sys/module/msm_show_resume_irq/parameters/debug_mask;
-	echo "0" > /sys/module/pm_8x60/parameters/debug_mask;
+#	echo "0" > /sys/kernel/debug/clk/debug_suspend;
+#	echo "0" > /sys/kernel/debug/msm_vidc/debug_level;
+#	echo "0" > /sys/module/ipc_router/parameters/debug_mask;
+#	echo "0" > /sys/module/msm_serial_hs/parameters/debug_mask;
+#	echo "0" > /sys/module/msm_show_resume_irq/parameters/debug_mask;
+#	echo "0" > /sys/module/pm_8x60/parameters/debug_mask;
 fi;
 
 OPEN_RW;
@@ -242,7 +240,7 @@ $BB mount -t tmpfs -o mode=0777,gid=1000 tmpfs /mnt/ntfs
 
 (
 	# set alucard as default gov
-	# echo "alucard" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor_all_cpus;
+	echo "alucard" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor_all_cpus;
 
 	if [ "$stweaks_boot_control" == "yes" ]; then
 		# stop uci.sh from running all the PUSH Buttons in stweaks on boot
@@ -253,8 +251,6 @@ $BB mount -t tmpfs -o mode=0777,gid=1000 tmpfs /mnt/ntfs
 		$BB chmod 06755 /res/no-push-on-boot/*;
 
 		# apply STweaks settings
-		echo "booting" > /data/.alucard/booting;
-		$BB chmod 777 /data/.alucard/booting;
 		$BB pkill -f "com.gokhanmoral.stweaks.app";
 		$BB nohup $BB sh /res/uci.sh restore;
 
@@ -262,9 +258,6 @@ $BB mount -t tmpfs -o mode=0777,gid=1000 tmpfs /mnt/ntfs
 		# restore all the PUSH Button Actions back to there location
 		$BB mv /res/no-push-on-boot/* /res/customconfig/actions/push-actions/;
 		$BB pkill -f "com.gokhanmoral.stweaks.app";
-
-		# update cpu tunig after profiles load
-		$BB rm -f /data/.alucard/booting;
 
 		# correct oom tuning, if changed by apps/rom
 		$BB sh /res/uci.sh oom_config_screen_on "$oom_config_screen_on";
@@ -283,11 +276,11 @@ $BB mount -t tmpfs -o mode=0777,gid=1000 tmpfs /mnt/ntfs
 	fi;
 
 	# ROOT activation if supersu used
-	if [ -e /system/app/SuperSU.apk ] && [ -e /system/xbin/daemonsu ]; then
-		if [ "$(pgrep -f "/system/xbin/daemonsu" | wc -l)" -eq "0" ]; then
-			/system/xbin/daemonsu --auto-daemon &
-		fi;
-	fi;
+	# if [ -e /system/app/SuperSU.apk ] && [ -e /system/xbin/daemonsu ]; then
+	#	if [ "$(pgrep -f "/system/xbin/daemonsu" | wc -l)" -eq "0" ]; then
+	#		/system/xbin/daemonsu --auto-daemon &
+	#	fi;
+	# fi;
 
 	# Fix critical perms again after init.d mess
 	CRITICAL_PERM_FIX;

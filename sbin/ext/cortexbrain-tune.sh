@@ -908,10 +908,6 @@ TCP_TWEAKS()
 		log -p i -t "$FILE_NAME" "*** TCP_RAM_TWEAKS ***: disable";
 	fi;
 }
-apply_cpu="$2";
-if [ "$apply_cpu" != "update" ]; then
-	TCP_TWEAKS;
-fi;
 
 # ==============================================================
 # FIREWALL-TWEAKS
@@ -931,10 +927,6 @@ FIREWALL_TWEAKS()
 		return 0;
 	fi;
 }
-apply_cpu="$2";
-if [ "$apply_cpu" != "update" ]; then
-	FIREWALL_TWEAKS;
-fi;
 
 # disable/enable ipv6
 IPV6()
@@ -1052,7 +1044,7 @@ AWAKE_MODE()
 {
 	# not on call, check if was powerd by USB on sleep, or didnt sleep at all
 	if [ "$WAS_IN_SLEEP_MODE" -eq "1" ] && [ "$USB_POWER" -eq "0" ]; then
-		NET "awake";
+		# NET "awake";
 		# CPU_GOVERNOR "awake";
 		CPU_GOV_TWEAKS "awake";
 		CPU_HOTPLUG_TWEAKS "awake";
@@ -1061,10 +1053,10 @@ AWAKE_MODE()
 		WIFI "awake";
 		IO_SCHEDULER "awake";
 
-		(
-			sleep 2;
-			IPV6;
-		)&
+		#(
+		#	sleep 2;
+		#	IPV6;
+		#)&
 	else
 		# Was powered by USB, and half sleep
 		USB_POWER=0;
@@ -1098,14 +1090,13 @@ SLEEP_MODE()
 		CPU_GOV_TWEAKS "sleep";
 		CPU_HOTPLUG_TWEAKS "sleep";
 		IO_SCHEDULER "sleep";
-		NET "sleep";
-		IPV6;
+		# NET "sleep";
+		# IPV6;
 		WIFI "sleep";
 		MOBILE_DATA "sleep";
+		LOGGER "sleep";
 
 		log -p i -t "$FILE_NAME" "*** SLEEP mode ***";
-
-		LOGGER "sleep";
 	else
 		# Powered by USB
 		USB_POWER=1;
