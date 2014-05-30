@@ -27,7 +27,6 @@ FILE_NAME=$0;
 PIDOFCORTEX=$$;
 # (since we don't have the recovery source code I can't change the ".alucard" dir, so just leave it there for history)
 DATA_DIR=/data/.alucard;
-WAS_IN_SLEEP_MODE=1;
 USB_POWER=0;
 TELE_DATA=init;
 
@@ -900,7 +899,7 @@ IO_SCHEDULER()
 AWAKE_MODE()
 {
 	# not on call, check if was powerd by USB on sleep, or didnt sleep at all
-	if [ "$WAS_IN_SLEEP_MODE" -eq "1" ] && [ "$USB_POWER" -eq "0" ]; then
+	if [ "$USB_POWER" -eq "0" ]; then
 		CPU_GOV_TWEAKS "awake";
 		CPU_HOTPLUG_TWEAKS "awake";
 		LOGGER "awake";
@@ -921,8 +920,6 @@ AWAKE_MODE()
 # ==============================================================
 SLEEP_MODE()
 {
-	WAS_IN_SLEEP_MODE=0;
-
 	# we only read the config when the screen turns off ...
 	PROFILE=$(cat "$DATA_DIR"/.active.profile);
 	. "$DATA_DIR"/"$PROFILE".profile;
