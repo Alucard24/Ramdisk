@@ -79,6 +79,10 @@ loglevel 3
     mkdir /mnt/media_rw 0700 media_rw media_rw
     mkdir /storage 0751 root sdcard_r
 
+	# Allow CIFS mounting and other app databases.
+	mkdir /mnt/shell/emulated 0700 shell shell
+	mount tmpfs tmpfs /mnt/shell mode=0700,uid=0,gid=0
+
     # Directory for putting things only root should see.
     mkdir /mnt/secure 0700 root root
 
