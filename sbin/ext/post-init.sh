@@ -23,7 +23,7 @@ OPEN_RW()
 OPEN_RW;
 
 # fix storage folder owner
-$BB chown system.sdcard_rw /storage;
+# $BB chown system.sdcard_rw /storage;
 
 # Boot with ROW I/O Gov
 $BB echo "row" > /sys/block/mmcblk0/queue/scheduler;
