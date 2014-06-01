@@ -538,11 +538,6 @@
 
 		<seekBar description="Vibration force level. (Default: 75)" name="Vibration force" action="generic /sys/devices/virtual/timed_output/vibrator/pwm_value" unit="%" min="0" reversed="false" step="5" max="100"/>
 
-		<spinner description="This will force fast charging if it is enabled. If it is enabled, USB MTP will be disabled! (Default: Disabled)" name="Force Fast Charging" action="generic /sys/kernel/fast_charge/force_fast_charge">
-			<spinnerItem name="Enabled" value="1"/> 
-			<spinnerItem name="Disabled" value="0"/> 
-		</spinner>
-
 	</settingsPane>
 
 	<settingsPane description="USB and SDCARD settings and options." name="USB - SDCARD">
@@ -573,6 +568,49 @@
 		<spinner description="Here, It is possible to enable or disable DYNAMIC FSYNC! (Default: Enabled)" name="Dyn_fsync_active" action="generic /sys/kernel/dyn_fsync/Dyn_fsync_active">
 			<spinnerItem name="Enabled" value="1"/> 
 			<spinnerItem name="Disabled" value="0"/> 
+		</spinner>
+
+	</settingsPane>
+
+</settingsTab>
+
+<settingsTab name="AC|USB Charging Control">
+
+	<settingsPane description="AC and USB charging control" name="AC and USB charging control">
+
+		<spinner description="This will force fast charging! (Disabled: Disabled | Enabled: Substitute AC to USB | Custom: Use custom mA configured) (Default: Disabled)" name="Force Fast Charging" action="generic /sys/kernel/fast_charge/force_fast_charge">
+			<spinnerItem name="Disabled" value="0"/>
+			<spinnerItem name="Enabled" value="1"/>
+			<spinnerItem name="Custom" value="2"/>
+		</spinner>
+
+		<spinner description="When enabled, mtp can be used during fast_charge. (Default: Enabled)" name="Use MTP during Fast Charging" action="generic /sys/kernel/fast_charge/use_mtp_during_fast_charge">
+			<spinnerItem name="Disabled" value="0"/>
+			<spinnerItem name="Enabled" value="1"/>
+		</spinner>
+
+		<spinner description="Screen on current limit. (Default: Enabled)" name="Screen on current limit" action="generic /sys/kernel/fast_charge/screen_on_current_limit">
+			<spinnerItem name="Disabled" value="0"/>
+			<spinnerItem name="Enabled" value="1"/>
+		</spinner>
+
+		<spinner description="Rate at which to charge when on AC (500 mA each hour to 2100 mA each hour). (Default: 1900 mA)" name="AC Charge Level" action="generic /sys/kernel/fast_charge/ac_charge_level">
+			<spinnerItem name="500 mA" value="500"/>
+			<spinnerItem name="1000 mA" value="1000"/>
+			<spinnerItem name="1450 mA" value="1450"/>
+			<spinnerItem name="1900 mA" value="1900"/>
+			<spinnerItem name="2100 mA" value="2100"/>
+		</spinner>
+
+		<spinner description="Rate at which to charge when on USB (460 mA each hour to 1000 mA each hour). (Default: 460 mA)" name="USB Charge Level" action="generic /sys/kernel/fast_charge/usb_charge_level">
+			<spinnerItem name="460 mA" value="460"/>
+			<spinnerItem name="700 mA" value="700"/>
+			<spinnerItem name="1000 mA" value="1000"/>
+		</spinner>
+
+		<spinner description="When disabled allow anything up to 2100 mA each hour to be used as AC and USB custom current. It is recommended to keep it ENABLED!!!!!. (Default: Enabled)" name="Fail safe" action="generic /sys/kernel/fast_charge/failsafe">
+			<spinnerItem name="Disabled" value="0"/>
+			<spinnerItem name="Enabled" value="1"/>
 		</spinner>
 
 	</settingsPane>
