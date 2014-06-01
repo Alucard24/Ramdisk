@@ -448,6 +448,11 @@ CPU_HOTPLUG_TWEAKS()
 	fi;
 }
 
+apply_cpu="$2";
+if [ "$apply_cpu" == "update" ]; then
+	CPU_HOTPLUG_TWEAKS "tune";
+fi;
+
 CPU_GOV_TWEAKS()
 {
 	local state="$1";
@@ -562,11 +567,6 @@ CPU_GOV_TWEAKS()
 				up_threshold_at_min_freq_tmp=$up_threshold_min_freq_tmp;
 			fi;
 
-			# merge freq_for_responsiveness_tmp & freq_responsiveness_tmp => freq_for_responsiveness_tmp
-			# if [ $freq_for_responsiveness_tmp == "/dev/null" ] && [ $freq_responsiveness_tmp != "/dev/null" ]; then
-			# 	freq_for_responsiveness_tmp=$freq_responsiveness_tmp;
-			# fi;
-
 			local pump_inc_step_tmp="/sys/devices/system/cpu/cpufreq/$SYSTEM_GOVERNOR/pump_inc_step";
 			if [ ! -e $pump_inc_step_tmp ]; then
 				pump_inc_step_tmp="/dev/null";
@@ -614,9 +614,8 @@ CPU_GOV_TWEAKS()
 }
 # this needed for cpu tweaks apply from STweaks in real time
 apply_cpu="$2";
-if [ "$apply_cpu" == "update" ] || [ "$cortexbrain_background_process" -eq "0" ]; then
+if [ "$apply_cpu" == "update" ]; then
 	CPU_GOV_TWEAKS "tune";
-	CPU_HOTPLUG_TWEAKS "tune";
 fi;
 
 # ==============================================================
