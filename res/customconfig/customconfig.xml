@@ -479,101 +479,6 @@
 
 </settingsTab>
 
-<settingsTab name="Other">
-
-	<settingsPane description="Set some settings and options for your apps." name="Apps">
-
-		<button description="Click here to start Zipaligning ONLY user apps. System may be unresponsive, it is OK, do not use phone for 2 minutes. WARNING! Backup all user applications before use! This process will remove applications that are BROKEN and not compressed or compiled correctly, so you may find some apps missing. USE it AT YOUR OWN RISK, and update the broken applications!." name="ZIPALIGN" action="push-actions/zipalign" label="ZIPALIGN ALL APPS"/>
-
-		<button description="Click here to start applications Database Optimization. Compacting, cleaning and indexing will take max 2min." name="DB OPTIMIZATION" action="push-actions/database_optimizing" label="DATABASE OPTIMIZATON"/>
-
-	</settingsPane>
-
-	<settingsPane description="WIFI Settings" name="WIFI">
-
-		<button description="Clean WIFI DHCP IP Lease. Push the button to activate!" name="Clean WIFI Lease" action="push-actions/fix_wifi" label="Clean WIFI Lease"/>
-
-	</settingsPane>
-
-	<settingsPane description="Set GPS and NTP settings and options." name="GPS - NTP">
-
-		<spinner description="GPS-Time-Zone for faster GPS lock! Use your region!" name="GPS Region" action="gpsregion">
-			<spinnerItem name="No GPS Zone changes (default)" value="No_GPS_Zone_changes"/> 
-			<spinnerItem name="Set Asia" value="Asia"/> 
-			<spinnerItem name="Set Europe" value="Europe"/> 
-			<spinnerItem name="Set Oceania" value="Oceania"/> 
-			<spinnerItem name="Set North America" value="North-America"/> 
-			<spinnerItem name="Set South America" value="South-America"/> 
-			<spinnerItem name="Set Africa" value="Africa"/> 
-			<spinnerItem name="Restore original ROM gps.conf" value="Original_ROM_GPS_Restored"/> 
-		</spinner>
-
-		<button description="Click to see your current GPS ZONE" name="GPS ZONE" action="push-actions/gpszonecheck" label="GPS ZONE CHECK"/>
-
-		<button description="Update time via NTP server" name="UPDATE TIME" action="push-actions/time_update" label="UPDATE TIME"/>
-
-	</settingsPane>
-
-	<settingsPane description="Add, Update or Remove AD Blocker! You need ROOT to do the tweak! If you want to update the blocker, you can push the UPDATE AD NOW button, to get the new one installed! If you install a new ROM, and you want to use AD BLOCKER, then push UPDATE AD NOW and REBOOT. If you need to REMOVE AD-BLOCKER use the REMOVE button and REBOOT" name="AD Blocker">
-
-		<button description="ADD or UPDATE AD BLOCKER" name="AD-B UPDATE or ADD" action="push-actions/ad_update" label="UPDATE AD-B NOW"/>
-
-		<button description="REMOVE AD Blocker" name="AD-B REMOVE" action="push-actions/ad_restore" label="REMOVE AD-B NOW"/>
-
-	</settingsPane>
-
-	<settingsPane description="INIT.D" name="INIT.D">
-
-		<checkbox description="Enable or Disable INIT.D scripts RUN on boot. Many new ROMS are running the init.d scripts automatically. You can also force running the scripts, but if you run them and ROM runs them too, we have a problem: all scripts are running X2 times! To avoid conflicts, Stweaks RUN-control is disabled by default. If you know that your ROM is NOT supporting init.d script running, then turn it ON here and reboot." name="INIT.D Scripts RUN control" action="generic_cortex /tmp/init_d" label="Enable INIT.D scripts RUN-control"/>
-
-	</settingsPane>
-
-	<settingsPane description="Android Additional Logs" name="Logger">
-
-		<checkbox description="Enable or Disable Android Additional Logs (needs reboot)" name="Android Logger" action="generic_cortex /tmp/logger" label="Android Logger"/>
-
-	</settingsPane>
-
-	<settingsPane description="General tweaks" name="General tweaks">
-
-		<seekBar description="Vibration force level. (Default: 75)" name="Vibration force" action="generic /sys/devices/virtual/timed_output/vibrator/pwm_value" unit="%" min="0" reversed="false" step="5" max="100"/>
-
-	</settingsPane>
-
-	<settingsPane description="USB and SDCARD settings and options." name="USB - SDCARD">
-
-		<spinner description="Set USB connection mode. Either leave it as default or force it to mass storage mode (you will see your ext sdcard as disk) or MTP." name="USB mass storage mode" action="usb-mode">
-			<spinnerItem name="Default" value="default"/> 
-			<spinnerItem name="Force Mass Storage Mode" value="mass_storage-adb"/> 
-			<spinnerItem name="Force MTP Mode" value="mtp-adb"/> 
-		</spinner>
-
-		<checkbox description="If checked, Mass-Storage-ext-SDCARD will be auto-mounted when USB connected. then you can transfer files on high speed from PC to device. (Default: On) !!! Depends on CortexBrain-Background-Process !!!" name="Auto Mount USB Drives" action="generic_cortex /tmp/auto_mount_sd" label="Auto Mount USB Drives"/>
-
-		<button description="Dual Mount-SDCARD and MMC via USB. After USB is disconnected, Dual Mount is disabled! This tweak is working automatically. Plug USB, turn off the screen and then turn ON, and you get working mounts. To scan your new MEDIA files, use some app to force Media Scan." name="DUAL MOUNT" action="push-actions/dualmount" label="Dual Mount"/>
-
-	</settingsPane>
-
-	<settingsPane description="Enable using Android phone as USB and Keyboard for your PC!, lets say you dont have keyboard and you really need one! connect your phone via usb get app named USB KEYBOARD, enable the tweak here, and have fun!" name="Android USB HID Device">
-
-		<spinner description="Enable or Disable USB HID Device driver to control PC keyboard and mouse from phone!" name="USB HID Device" action="usb_keyboard">
-			<spinnerItem name="Enable USB HID" value="enable"/> 
-			<spinnerItem name="Disable USB HID" value="disable"/> 
-		</spinner>
-
-	</settingsPane>
-
-	<settingsPane description="FS tweaks" name="FS tweaks">
-
-		<spinner description="Here, It is possible to enable or disable DYNAMIC FSYNC! (Default: Enabled)" name="Dyn_fsync_active" action="generic /sys/kernel/dyn_fsync/Dyn_fsync_active">
-			<spinnerItem name="Enabled" value="1"/> 
-			<spinnerItem name="Disabled" value="0"/> 
-		</spinner>
-
-	</settingsPane>
-
-</settingsTab>
-
 <settingsTab name="Sound">
 
 	<settingsPane name="Sound Control" description="Sound Control">		  
@@ -676,7 +581,102 @@
 
 </settingsTab>
 
-<settingsTab name="Tweaks">
+<settingsTab name="Other">
+
+	<settingsPane description="Set some settings and options for your apps." name="Apps">
+
+		<button description="Click here to start Zipaligning ONLY user apps. System may be unresponsive, it is OK, do not use phone for 2 minutes. WARNING! Backup all user applications before use! This process will remove applications that are BROKEN and not compressed or compiled correctly, so you may find some apps missing. USE it AT YOUR OWN RISK, and update the broken applications!." name="ZIPALIGN" action="push-actions/zipalign" label="ZIPALIGN ALL APPS"/>
+
+		<button description="Click here to start applications Database Optimization. Compacting, cleaning and indexing will take max 2min." name="DB OPTIMIZATION" action="push-actions/database_optimizing" label="DATABASE OPTIMIZATON"/>
+
+	</settingsPane>
+
+	<settingsPane description="WIFI Settings" name="WIFI">
+
+		<button description="Clean WIFI DHCP IP Lease. Push the button to activate!" name="Clean WIFI Lease" action="push-actions/fix_wifi" label="Clean WIFI Lease"/>
+
+	</settingsPane>
+
+	<settingsPane description="Set GPS and NTP settings and options." name="GPS - NTP">
+
+		<spinner description="GPS-Time-Zone for faster GPS lock! Use your region!" name="GPS Region" action="gpsregion">
+			<spinnerItem name="No GPS Zone changes (default)" value="No_GPS_Zone_changes"/> 
+			<spinnerItem name="Set Asia" value="Asia"/> 
+			<spinnerItem name="Set Europe" value="Europe"/> 
+			<spinnerItem name="Set Oceania" value="Oceania"/> 
+			<spinnerItem name="Set North America" value="North-America"/> 
+			<spinnerItem name="Set South America" value="South-America"/> 
+			<spinnerItem name="Set Africa" value="Africa"/> 
+			<spinnerItem name="Restore original ROM gps.conf" value="Original_ROM_GPS_Restored"/> 
+		</spinner>
+
+		<button description="Click to see your current GPS ZONE" name="GPS ZONE" action="push-actions/gpszonecheck" label="GPS ZONE CHECK"/>
+
+		<button description="Update time via NTP server" name="UPDATE TIME" action="push-actions/time_update" label="UPDATE TIME"/>
+
+	</settingsPane>
+
+	<settingsPane description="Add, Update or Remove AD Blocker! You need ROOT to do the tweak! If you want to update the blocker, you can push the UPDATE AD NOW button, to get the new one installed! If you install a new ROM, and you want to use AD BLOCKER, then push UPDATE AD NOW and REBOOT. If you need to REMOVE AD-BLOCKER use the REMOVE button and REBOOT" name="AD Blocker">
+
+		<button description="ADD or UPDATE AD BLOCKER" name="AD-B UPDATE or ADD" action="push-actions/ad_update" label="UPDATE AD-B NOW"/>
+
+		<button description="REMOVE AD Blocker" name="AD-B REMOVE" action="push-actions/ad_restore" label="REMOVE AD-B NOW"/>
+
+	</settingsPane>
+
+	<settingsPane description="INIT.D" name="INIT.D">
+
+		<checkbox description="Enable or Disable INIT.D scripts RUN on boot. Many new ROMS are running the init.d scripts automatically. You can also force running the scripts, but if you run them and ROM runs them too, we have a problem: all scripts are running X2 times! To avoid conflicts, Stweaks RUN-control is disabled by default. If you know that your ROM is NOT supporting init.d script running, then turn it ON here and reboot." name="INIT.D Scripts RUN control" action="generic_cortex /tmp/init_d" label="Enable INIT.D scripts RUN-control"/>
+
+	</settingsPane>
+
+	<settingsPane description="Android Additional Logs" name="Logger">
+
+		<checkbox description="Enable or Disable Android Additional Logs (needs reboot)" name="Android Logger" action="generic_cortex /tmp/logger" label="Android Logger"/>
+
+	</settingsPane>
+
+	<settingsPane description="General tweaks" name="General tweaks">
+
+		<seekBar description="Vibration force level. (Default: 75)" name="Vibration force" action="generic /sys/devices/virtual/timed_output/vibrator/pwm_value" unit="%" min="0" reversed="false" step="5" max="100"/>
+
+	</settingsPane>
+
+	<settingsPane description="USB and SDCARD settings and options." name="USB - SDCARD">
+
+		<spinner description="Set USB connection mode. Either leave it as default or force it to mass storage mode (you will see your ext sdcard as disk) or MTP." name="USB mass storage mode" action="usb-mode">
+			<spinnerItem name="Default" value="default"/> 
+			<spinnerItem name="Force Mass Storage Mode" value="mass_storage-adb"/> 
+			<spinnerItem name="Force MTP Mode" value="mtp-adb"/> 
+		</spinner>
+
+		<checkbox description="If checked, Mass-Storage-ext-SDCARD will be auto-mounted when USB connected. then you can transfer files on high speed from PC to device. (Default: On) !!! Depends on CortexBrain-Background-Process !!!" name="Auto Mount USB Drives" action="generic_cortex /tmp/auto_mount_sd" label="Auto Mount USB Drives"/>
+
+		<button description="Dual Mount-SDCARD and MMC via USB. After USB is disconnected, Dual Mount is disabled! This tweak is working automatically. Plug USB, turn off the screen and then turn ON, and you get working mounts. To scan your new MEDIA files, use some app to force Media Scan." name="DUAL MOUNT" action="push-actions/dualmount" label="Dual Mount"/>
+
+	</settingsPane>
+
+	<settingsPane description="Enable using Android phone as USB and Keyboard for your PC!, lets say you dont have keyboard and you really need one! connect your phone via usb get app named USB KEYBOARD, enable the tweak here, and have fun!" name="Android USB HID Device">
+
+		<spinner description="Enable or Disable USB HID Device driver to control PC keyboard and mouse from phone!" name="USB HID Device" action="usb_keyboard">
+			<spinnerItem name="Enable USB HID" value="enable"/> 
+			<spinnerItem name="Disable USB HID" value="disable"/> 
+		</spinner>
+
+	</settingsPane>
+
+	<settingsPane description="FS tweaks" name="FS tweaks">
+
+		<spinner description="Here, It is possible to enable or disable DYNAMIC FSYNC! (Default: Enabled)" name="Dyn_fsync_active" action="generic /sys/kernel/dyn_fsync/Dyn_fsync_active">
+			<spinnerItem name="Enabled" value="1"/> 
+			<spinnerItem name="Disabled" value="0"/> 
+		</spinner>
+
+	</settingsPane>
+
+</settingsTab>
+
+<settingsTab name="Cortex Tweaks">
 
 	<settingsPane description="This script will manipulate many kernel settings, based on chosen STweaks profile + settings and on screen state (ON or OFF) and we call it CortexBrain. To reset the kernel-settings, after you disable a tweak, you must reboot!" name="CortexBrain Tweaks">
 
