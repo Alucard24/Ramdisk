@@ -485,12 +485,12 @@
       
 		<seekBar description="Headphone gain. Default: 40" 
 				name="Headphone gain" 
-				action="generic /sys/kernel/sound_control/gpl_headphone_gain"
+				action="generic_double /sys/kernel/sound_control/gpl_headphone_gain"
 				unit="" min="20" reversed="false" step="1" max="60"/>
 
-		<seekBar description="Headphone PowerAmp gain. Default: 20" 
+		<seekBar description="Headphone PowerAmp gain. Default: 12" 
 				name="Headphone PA gain" 
-				action="generic /sys/kernel/sound_control/gpl_headphone_pa_gain"
+				action="generic_double /sys/kernel/sound_control/gpl_headphone_pa_gain"
 				unit="" min="10" reversed="false" step="1" max="30"/>
 
 		<seekBar description="Speaker gain. Default: 40" 
