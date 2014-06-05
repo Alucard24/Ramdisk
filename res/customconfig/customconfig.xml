@@ -573,6 +573,7 @@
 			<spinnerItem name="BIC" value="bic"/> 
 			<spinnerItem name="CUBIC" value="cubic"/>
 			<spinnerItem name="HTCP" value="htcp"/>
+			<spinnerItem name="HYBLA" value="hybla"/>
 			<spinnerItem name="RENO" value="reno"/>
 			<spinnerItem name="WESTWOOD" value="westwood"/>
 		</spinner>
