@@ -795,7 +795,7 @@ KERNEL_TWEAKS()
 		echo "kernel_tweaks disabled";
 	fi;
 	if [ "$cortexbrain_memory" == "on" ]; then
-		echo "32 32" > /proc/sys/vm/lowmem_reserve_ratio;
+		echo "64 32" > /proc/sys/vm/lowmem_reserve_ratio;
 
 		log -p i -t "$FILE_NAME" "*** MEMORY_TWEAKS ***: enabled";
 	else
