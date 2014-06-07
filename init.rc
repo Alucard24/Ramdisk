@@ -711,11 +711,11 @@ service installd /system/bin/installd
     class main
     socket installd stream 600 system system
 
-service sysinit /system/bin/logwrapper /system/xbin/busybox run-parts /system/etc/init.d
-     class late_start
-     user root
-     group shell
-     oneshot
+# service sysinit /system/bin/logwrapper /system/xbin/busybox run-parts /system/etc/init.d
+#     class late_start
+#     user root
+#     group shell
+#     oneshot
 
 service flash_recovery /system/etc/install-recovery.sh
     class main
