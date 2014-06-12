@@ -109,7 +109,7 @@
 
 		<seekBar description="Acts as a multiplier for sampling interval for re-evaluating the load when CPU is truly busy and is on highest clock frequency (policy max). Setting to 1 makes no difference and causes CPU to immediately scale down from highest frequency. Sampling down factor is NOT valid for lower frequencies and low load conditions. Note that CPU is scaled up to max frequency when max_load_freq is greater than up_threshold X current frequency. (or to cur_freq + (freq_step X policy.max_freq) whichever is smaller) Max_load_freq is an arbitrary frequency calculated as the maximum of load_frequencies. (Only for HYPER, Ondemand, PegasusQ, Conservartive) (Default: 1)" name="sampling_down_factor" action="generic_cortex /tmp/sampling_down_factor" unit="int" min="1" reversed="false" step="1" max="10"/>
 
-		<seekBar description="Defines how much as a percentage of maximum frequency, governor should increase CPU frequency each time CPU load reaches up_threshold or inc_cpu_load. (Only for HYPER, Ondemand, PegasusQ, Nightmare, Conservative) (Default: 20%)" name="freq_step" action="generic_cortex /tmp/freq_step" unit="%" min="5" reversed="false" step="1" max="100"/>
+		<seekBar description="Defines how much as a percentage of maximum frequency, governor should increase CPU frequency each time CPU load reaches up_threshold or inc_cpu_load. (Only for HYPER, Ondemand, PegasusQ, Nightmare, Conservative) (Default: 30%)" name="freq_step" action="generic_cortex /tmp/freq_step" unit="%" min="5" reversed="false" step="1" max="100"/>
 
 		<seekBar description="After spending sampling_down_factor X sampling_rate micro seconds at maximum frequency on high load, governor samples the load again to calculate an approx target frequency to scale-down-to which should not trigger up_threshold in the next sample. (Triggering up threshold may cause jumping to max frequency again). Max_load_freq is checked against (up_threshold - down_differential) X current frequency. If found to be smaller, CPU is scaled down to a target frequency as described above. Down_differential also act as the factor to prevent aggressive scale down. (Only for HYPER, Ondemand, PegasusQ) (default: 5)" name="down_differential" action="generic_cortex /tmp/down_differential" unit="int" min="1" reversed="false" step="1" max="80"/>
 
@@ -137,11 +137,11 @@
 
 		<seekBar description="Governor should decrease CPU frequency by n step each time CPU load reaches dec_cpu_load. (Only for Alucard) (Default: 1)" name="pump_dec_step" action="generic_cortex /tmp/pump_dec_step" unit="step" min="1" reversed="false" step="1" max="3"/>
 
-		<seekBar description="Defines how much as a percentage of maximum frequency, governor should increase CPU frequency each time CPU load reaches inc_cpu_load_at_min_freq. (Only for nightmare). (Default: 20%)" name="freq_step_at_min_freq" action="generic_cortex /tmp/freq_step_at_min_freq" unit="%" min="5" reversed="false" step="1" max="100"/>
+		<seekBar description="Defines how much as a percentage of maximum frequency, governor should increase CPU frequency each time CPU load reaches inc_cpu_load_at_min_freq. (Only for nightmare). (Default: 30%)" name="freq_step_at_min_freq" action="generic_cortex /tmp/freq_step_at_min_freq" unit="%" min="5" reversed="false" step="1" max="100"/>
 
-		<seekBar description="Brake scale up frequency when load big or equal inc_cpu_load_at_min_freq. (Only for Nightmare). (Default: 30)" name="freq_up_brake_at_min_freq" action="generic_cortex /tmp/freq_up_brake_at_min_freq" unit="step" min="0" reversed="false" step="1" max="100"/>
+		<seekBar description="Brake scale up frequency when load big or equal inc_cpu_load_at_min_freq. (Only for Nightmare). (Default: 20)" name="freq_up_brake_at_min_freq" action="generic_cortex /tmp/freq_up_brake_at_min_freq" unit="step" min="0" reversed="false" step="1" max="100"/>
 
-		<seekBar description="Brake scale up frequency when load big or equal inc_cpu_load. (Only for Nightmare). (Default: 30)" name="freq_up_brake" action="generic_cortex /tmp/freq_up_brake" unit="step" min="0" reversed="false" step="1" max="100"/>
+		<seekBar description="Brake scale up frequency when load big or equal inc_cpu_load. (Only for Nightmare). (Default: 20)" name="freq_up_brake" action="generic_cortex /tmp/freq_up_brake" unit="step" min="0" reversed="false" step="1" max="100"/>
 
 		<seekBar description="Defines how much as a percentage of maximum frequency, governor should decrease CPU frequency each time CPU load reaches dec_cpu_load. Only for Nightmare). Default: 10%)" name="freq_step_dec" action="generic_cortex /tmp/freq_step_dec" unit="%" min="0" reversed="false" step="1" max="100"/>
 
