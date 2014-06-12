@@ -181,14 +181,10 @@ CPU_HOTPLUG_TWEAKS()
 			$BB renice -n -20 -p $(pgrep -f "/system/bin/thermal-engine");
 		fi;
 
-		# sleep-settings
-		if [ "$state" == "sleep" ]; then
-			echo "$eco_mode_active_sleep" > /sys/kernel/intelli_plug/eco_mode_active;
-			echo "$strict_mode_active_sleep" > /sys/kernel/intelli_plug/strict_mode_active;
-		# awake-settings
-		elif [ "$state" == "awake" ]; then
-			echo "$eco_mode_active" > /sys/kernel/intelli_plug/eco_mode_active;
-			echo "$strict_mode_active" > /sys/kernel/intelli_plug/strict_mode_active;
+		# tune-settings
+		if [ "$state" == "tune" ]; then
+			echo "$min_cpus_online" > /sys/kernel/intelli_plug/min_cpus_online;
+			echo "$max_cpus_online" > /sys/kernel/intelli_plug/max_cpus_online;
 		fi;
 
 		log -p i -t "$FILE_NAME" "*** INTELLI_PLUG ***: enabled";
@@ -251,6 +247,7 @@ CPU_HOTPLUG_TWEAKS()
 			echo "$hotplug_rq_4_0" > /sys/kernel/alucard_hotplug/hotplug_rq_4_0;
 			echo "$maxcoreslimit" > /sys/kernel/alucard_hotplug/maxcoreslimit;
 			echo "$maxcoreslimit_sleep" > /sys/kernel/alucard_hotplug/maxcoreslimit_sleep;
+			echo "$min_cpus_online" > /sys/kernel/alucard_hotplug/min_cpus_online;
 		fi;
 
 		log -p i -t "$FILE_NAME" "*** ALUCARD_HOTPLUG ***: enabled";
@@ -283,6 +280,12 @@ CPU_HOTPLUG_TWEAKS()
 
 		if [ "$(ps | grep /system/bin/thermal-engine | wc -l)" -ge "1" ]; then
 			$BB renice -n -20 -p $(pgrep -f "/system/bin/thermal-engine");
+		fi;
+
+		# tune-settings
+		if [ "$state" == "tune" ]; then
+			echo "$min_cpus_online" > /sys/module/msm_hotplug/min_cpus_online;
+			echo "$max_cpus_online" > /sys/module/msm_hotplug/max_cpus_online;
 		fi;
 
 		log -p i -t "$FILE_NAME" "*** MSM_HOTPLUG ***: enabled";
@@ -741,7 +744,6 @@ AWAKE_MODE()
 	# not on call, check if was powerd by USB on sleep, or didnt sleep at all
 	if [ "$USB_POWER" -eq "0" ]; then
 		CPU_GOV_TWEAKS "awake";
-		CPU_HOTPLUG_TWEAKS "awake";
 		LOGGER "awake";
 		MOBILE_DATA "awake";
 		WIFI "awake";
@@ -774,7 +776,6 @@ SLEEP_MODE()
 	# check if we powered by USB, if not sleep
 	if [ "$CHARGING" -eq "1" ]; then
 		CPU_GOV_TWEAKS "sleep";
-		CPU_HOTPLUG_TWEAKS "sleep";
 		IO_SCHEDULER "sleep";
 		WIFI "sleep";
 		MOBILE_DATA "sleep";
