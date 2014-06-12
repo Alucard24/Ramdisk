@@ -45,7 +45,6 @@ freq_up_brake_at_min_freq=5
 freq_up_brake=5
 freq_step_dec=10
 freq_step_dec_at_max_freq=10
-sampling_rate_sleep=60000
 cpuhotplugging=3
 hotplug_sampling_rate=60
 hotplug_rate_1_1=1
