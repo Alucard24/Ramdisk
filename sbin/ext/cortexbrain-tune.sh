@@ -303,14 +303,14 @@ CPU_GOV_TWEAKS()
 
 	if [ "$cortexbrain_cpu" == "on" ]; then
 		local SYSTEM_GOVERNOR=$(cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor);
-
-		local sampling_rate_tmp="/sys/devices/system/cpu/cpufreq/$SYSTEM_GOVERNOR/sampling_rate";
-		if [ ! -e $sampling_rate_tmp ]; then
-			sampling_rate_tmp="/dev/null";
-		fi;
 		
 		# tune-settings
 		if [ "$state" == "tune" ]; then
+			local sampling_rate_tmp="/sys/devices/system/cpu/cpufreq/$SYSTEM_GOVERNOR/sampling_rate";
+			if [ ! -e $sampling_rate_tmp ]; then
+				sampling_rate_tmp="/dev/null";
+			fi;
+
 			local up_threshold_tmp="/sys/devices/system/cpu/cpufreq/$SYSTEM_GOVERNOR/up_threshold";
 			if [ ! -e $up_threshold_tmp ]; then
 				up_threshold_tmp="/dev/null";
@@ -441,12 +441,6 @@ CPU_GOV_TWEAKS()
 			echo "$freq_up_brake" > $freq_up_brake_tmp;
 			echo "$pump_inc_step" > $pump_inc_step_tmp;
 			echo "$pump_dec_step" > $pump_dec_step_tmp;
-		# sleep-settings
-		elif [ "$state" == "sleep" ]; then
-			echo "$sampling_rate_sleep" > $sampling_rate_tmp;
-		# awake-settings
-		elif [ "$state" == "awake" ]; then
-			echo "$sampling_rate" > $sampling_rate_tmp;
 		fi;
 
 		log -p i -t "$FILE_NAME" "*** CPU_GOV_TWEAKS: $state ***: enabled";
@@ -743,7 +737,6 @@ AWAKE_MODE()
 {
 	# not on call, check if was powerd by USB on sleep, or didnt sleep at all
 	if [ "$USB_POWER" -eq "0" ]; then
-		CPU_GOV_TWEAKS "awake";
 		LOGGER "awake";
 		MOBILE_DATA "awake";
 		WIFI "awake";
@@ -775,7 +768,6 @@ SLEEP_MODE()
 
 	# check if we powered by USB, if not sleep
 	if [ "$CHARGING" -eq "1" ]; then
-		CPU_GOV_TWEAKS "sleep";
 		IO_SCHEDULER "sleep";
 		WIFI "sleep";
 		MOBILE_DATA "sleep";

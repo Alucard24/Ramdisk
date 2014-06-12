@@ -80,9 +80,9 @@
 
 </settingsTab>
 
-<settingsTab name="CPU-TUNING (AWAKE)">
+<settingsTab name="CPU-TUNING">
 
-	<settingsPane description="Set advanced governor settings. These settings are active only if the screen is on. !!! Depends on CortexBrain-Background-Process and CortexBrain-CPU-Tweaks!!!" name="Governor Parameters tuning">
+	<settingsPane description="Set advanced governor settings. These settings are active only if the screen is on." name="Governor Parameters tuning">
 
 		<spinner description="This will set the AWAKE (screen ON) CPU governor. Default CPU governor will only be set during early stages of booting (before init.d execution), and can be overridden by any other scripts or applications. (Default: Alucard)" name="Default CPU Governor" action="generic /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor_all_cpus">
 			<spinnerItem name="alucard" value="alucard"/>
@@ -95,7 +95,7 @@
 			<spinnerItem name="pegasusq" value="pegasusq"/> 
 		</spinner>
 
-		<button description="Use this button to push all new changes to the governor in real time! The sleep tuning will be auto added on screen off, to screen off governor." name="GOV Policy Install" action="push-actions/cpu_tuning_update" label="Apply settings to GOV core"/>
+		<button description="Use this button to push all new changes to the governor in real time!" name="GOV Policy Install" action="push-actions/cpu_tuning_update" label="Apply settings to GOV core"/>
 
 	</settingsPane>
 
@@ -151,17 +151,7 @@
 
 </settingsTab>
 
-<settingsTab name="CPU-TUNING (SLEEP)">
-
-	<settingsPane description="Global Govs Configuration, see descriptions" name="GLOBAL GOV CONFIGURATON">
-
-		<seekBar description="Sampling Interval, measured in µs. This factor determines how often the governor should poll for CPU usage in terms of frequency and load percentage to make scaling decisions - either scale CPU Up or scale it Down. (Only for HYPER, OnDemand, PegasusQ, Conservative, Nightmare, Darkness, Alucard) (Default: 60.000 µs)" name="sampling_rate_sleep" action="generic_cortex /tmp/sampling_rate_sleep" unit="µs" min="10000" reversed="false" step="5000" max="200000"/>
-
-	</settingsPane>
-
-</settingsTab>
-
-<settingsTab name="CPU-HOTPLUGGING (AWAKE)">
+<settingsTab name="CPU-HOTPLUGGING">
 
 	<settingsPane description="Tune CPU hotplugging" name="Cpu hotplug Tuning">
 
