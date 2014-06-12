@@ -176,20 +176,6 @@
 
 	</settingsPane>
 
-	<settingsPane description="Tune Intelliplug" name="Intelliplug Tuning">
-
-		<spinner description="Set eco mode tweaks. (Default: Disabled)" name="eco_mode_active" action="generic /sys/kernel/intelli_plug/eco_mode_active">
-			<spinnerItem name="Enabled" value="1"/> 
-			<spinnerItem name="Disabled" value="0"/> 
-		</spinner>
-
-		<spinner description="Set strict mode active. (Default: Disabled)" name="strict_mode_active" action="generic /sys/kernel/intelli_plug/strict_mode_active">
-			<spinnerItem name="Enabled" value="1"/> 
-			<spinnerItem name="Disabled" value="0"/> 
-		</spinner>
-
-	</settingsPane>
-
 	<settingsPane description="Tune alucard hotplug" name="alucard hotplug Tuning">
 
 		<seekBar description="Sampling Interval, measured in ms. This factor determines how often the governor should poll for CPU usage in terms of frequency and load percentage to make hotplugging decisions. (Default: 60 ms)" name="hotplug_sampling_rate" action="generic /sys/kernel/alucard_hotplug/hotplug_sampling_rate" unit="ms" min="10" reversed="false" step="5" max="100"/>
@@ -257,21 +243,11 @@
 
 	</settingsPane>
 
-</settingsTab>
+	<settingsPane description="Tune in Common" name="Common">
 
-<settingsTab name="CPU-HOTPLUGGING (SLEEP)">
+		<seekBar description="Set minimum number of cpus online. (Alucard Hotplug, IntelliPlug, MSM Hotplug) (Default: 1)" name="min_cpus_online" action="generic_cortex /tmp/min_cpus_online" unit="int" min="1" reversed="false" step="1" max="4"/>
 
-	<settingsPane description="Tune Intelliplug" name="Intelliplug Tuning">
-
-		<spinner description="Set eco mode. (Default: Enabled)" name="eco_mode_active_sleep" action="generic_cortex /tmp/eco_mode_active_sleep">
-			<spinnerItem name="Enabled" value="1"/> 
-			<spinnerItem name="Disabled" value="0"/> 
-		</spinner>
-
-		<spinner description="Set strict mode. (Default: Disabled)" name="strict_mode_active_sleep" action="generic_cortex /tmp/strict_mode_active_sleep">
-			<spinnerItem name="Enabled" value="1"/> 
-			<spinnerItem name="Disabled" value="0"/> 
-		</spinner>
+		<seekBar description="Set maximum number of cpus online. (IntelliPlug, MSM Hotplug) (Default: 4)" name="max_cpus_online" action="generic_cortex /tmp/max_cpus_online" unit="int" min="1" reversed="false" step="1" max="4"/>
 
 	</settingsPane>
 
