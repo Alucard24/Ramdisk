@@ -35,8 +35,8 @@ TELE_DATA=init;
 # ==============================================================
 
 # get values from profile
-PROFILE=`cat $DATA_DIR/.active.profile`;
-. $DATA_DIR/${PROFILE}.profile;
+PROFILE=$(cat "$DATA_DIR"/.active.profile);
+. "$DATA_DIR"/"$PROFILE".profile;
 
 # check if dumpsys exist in ROM
 if [ -e /system/bin/dumpsys ]; then
@@ -122,30 +122,16 @@ CPU_HOTPLUG_TWEAKS()
 {
 	local state="$1";
 
-	# Intelli plug
-	local intelli_plug_active_tmp="/sys/kernel/intelli_plug/intelli_plug_active";
-	if [ ! -e $intelli_plug_active_tmp ]; then
-		intelli_plug_active_tmp="/dev/null";
-	fi;
-	local intelli_value_tmp=`cat /sys/kernel/intelli_plug/intelli_plug_active`;
-
-	# Alucard hotplug
-	local hotplug_enable_tmp="/sys/kernel/alucard_hotplug/hotplug_enable";
-	if [ ! -e $hotplug_enable_tmp ]; then
-			hotplug_enable_tmp="/dev/null";
-	fi;
-	local alucard_value_tmp=`cat /sys/kernel/alucard_hotplug/hotplug_enable`;
-
 	if [ "$cpuhotplugging" -eq "1" ]; then
 
 		#disable intelli_plug
-		if [ "$intelli_value_tmp" -eq "1" ]; then
-			echo "0" > $intelli_plug_active_tmp;
+		if [ "$(cat /sys/kernel/intelli_plug/intelli_plug_active)" -eq "1" ]; then
+			echo "0" > /sys/kernel/intelli_plug/intelli_plug_active;
 		fi;
 
 		#disable alucard_hotplug
-		if [ "$alucard_value_tmp" -eq "1" ]; then
-			echo "0" > $hotplug_enable_tmp;
+		if [ "$(cat /sys/kernel/alucard_hotplug/hotplug_enable)" -eq "1" ]; then
+			echo "0" > /sys/kernel/alucard_hotplug/hotplug_enable;
 		fi;
 
 		#disable msm_hotplug
@@ -177,8 +163,8 @@ CPU_HOTPLUG_TWEAKS()
 		fi;
 
 		#disable alucard_hotplug
-		if [ "$alucard_value_tmp" -eq "1" ]; then
-			echo "0" > $hotplug_enable_tmp;
+		if [ "$(cat /sys/kernel/alucard_hotplug/hotplug_enable)" -eq "1" ]; then
+			echo "0" > /sys/kernel/alucard_hotplug/hotplug_enable;
 		fi;
 
 		#disable msm_hotplug
@@ -187,32 +173,18 @@ CPU_HOTPLUG_TWEAKS()
 		fi;
 
 		#enable intelli_plug
-		if [ "$intelli_value_tmp" -eq "0" ]; then
-			echo "1" > $intelli_plug_active_tmp;
+		if [ "$(cat /sys/kernel/intelli_plug/intelli_plug_active)" -eq "0" ]; then
+			echo "1" > /sys/kernel/intelli_plug/intelli_plug_active;
 		fi;
 
 		if [ "$(ps | grep /system/bin/thermal-engine | wc -l)" -ge "1" ]; then
 			$BB renice -n -20 -p $(pgrep -f "/system/bin/thermal-engine");
 		fi;
 
-		local eco_mode_active_tmp="/sys/kernel/intelli_plug/eco_mode_active";
-		if [ ! -e $eco_mode_active_tmp ]; then
-			eco_mode_active_tmp="/dev/null";
-		fi;
-
-		local strict_mode_active_tmp="/sys/kernel/intelli_plug/strict_mode_active";
-		if [ ! -e $strict_mode_active_tmp ]; then
-			strict_mode_active_tmp="/dev/null";
-		fi;
-
-		# sleep-settings
-		if [ "$state" == "sleep" ]; then
-			echo "$eco_mode_active_sleep" > $eco_mode_active_tmp;
-			echo "$strict_mode_active_sleep" > $strict_mode_active_tmp;
-		# awake-settings
-		elif [ "$state" == "awake" ]; then
-			echo "$eco_mode_active" > $eco_mode_active_tmp;
-			echo "$strict_mode_active" > $strict_mode_active_tmp;
+		# tune-settings
+		if [ "$state" == "tune" ]; then
+			echo "$min_cpus_online" > /sys/kernel/intelli_plug/min_cpus_online;
+			echo "$max_cpus_online" > /sys/kernel/intelli_plug/max_cpus_online;
 		fi;
 
 		log -p i -t "$FILE_NAME" "*** INTELLI_PLUG ***: enabled";
@@ -228,8 +200,8 @@ CPU_HOTPLUG_TWEAKS()
 		fi;
 
 		#disable intelli_plug
-		if [ "$intelli_value_tmp" -eq "1" ]; then
-			echo "0" > $intelli_plug_active_tmp;
+		if [ "$(cat /sys/kernel/intelli_plug/intelli_plug_active)" -eq "1" ]; then
+			echo "0" > /sys/kernel/intelli_plug/intelli_plug_active;
 		fi;
 
 		#disable msm_hotplug
@@ -238,8 +210,8 @@ CPU_HOTPLUG_TWEAKS()
 		fi;
 
 		#enable alucard_hotplug
-		if [ "$alucard_value_tmp" -eq "0" ]; then
-			echo "1" > $hotplug_enable_tmp;
+		if [ "$(cat /sys/kernel/alucard_hotplug/hotplug_enable)" -eq "0" ]; then
+			echo "1" > /sys/kernel/alucard_hotplug/hotplug_enable;
 		fi;
 
 		if [ "$(ps | grep /system/bin/thermal-engine | wc -l)" -ge "1" ]; then
@@ -248,168 +220,34 @@ CPU_HOTPLUG_TWEAKS()
 
 		# tune-settings
 		if [ "$state" == "tune" ]; then
-			local hotplug_sampling_rate_tmp="/sys/kernel/alucard_hotplug/hotplug_sampling_rate";
-			if [ ! -e $hotplug_sampling_rate_tmp ]; then
-				hotplug_sampling_rate_tmp="/dev/null";
-			fi;
-
-			local hotplug_rate_1_1_tmp="/sys/kernel/alucard_hotplug/hotplug_rate_1_1";
-			if [ ! -e $hotplug_rate_1_1_tmp ]; then
-				hotplug_rate_1_1_tmp="/dev/null";
-			fi;
-
-			local hotplug_rate_2_0_tmp="/sys/kernel/alucard_hotplug/hotplug_rate_2_0";
-			if [ ! -e $hotplug_rate_2_0_tmp ]; then
-				hotplug_rate_2_0_tmp="/dev/null";
-			fi;
-
-			local hotplug_rate_2_1_tmp="/sys/kernel/alucard_hotplug/hotplug_rate_2_1";
-			if [ ! -e $hotplug_rate_2_1_tmp ]; then
-				hotplug_rate_2_1_tmp="/dev/null";
-			fi;
-
-			local hotplug_rate_3_0_tmp="/sys/kernel/alucard_hotplug/hotplug_rate_3_0";
-			if [ ! -e $hotplug_rate_3_0_tmp ]; then
-				hotplug_rate_3_0_tmp="/dev/null";
-			fi;
-
-			local hotplug_rate_3_1_tmp="/sys/kernel/alucard_hotplug/hotplug_rate_3_1";
-			if [ ! -e $hotplug_rate_3_1_tmp ]; then
-				hotplug_rate_3_1_tmp="/dev/null";
-			fi;
-
-			local hotplug_rate_4_0_tmp="/sys/kernel/alucard_hotplug/hotplug_rate_4_0";
-			if [ ! -e $hotplug_rate_4_0_tmp ]; then
-				hotplug_rate_4_0_tmp="/dev/null";
-			fi;
-
-			local hotplug_freq_1_1_tmp="/sys/kernel/alucard_hotplug/hotplug_freq_1_1";
-			if [ ! -e $hotplug_freq_1_1_tmp ]; then
-				hotplug_freq_1_1_tmp="/dev/null";
-			fi;
-
-			local hotplug_freq_2_0_tmp="/sys/kernel/alucard_hotplug/hotplug_freq_2_0";
-			if [ ! -e $hotplug_freq_2_0_tmp ]; then
-				hotplug_freq_2_0_tmp="/dev/null";
-			fi;
-
-			local hotplug_freq_2_1_tmp="/sys/kernel/alucard_hotplug/hotplug_freq_2_1";
-			if [ ! -e $hotplug_freq_2_1_tmp ]; then
-				hotplug_freq_2_1_tmp="/dev/null";
-			fi;
-
-			local hotplug_freq_3_0_tmp="/sys/kernel/alucard_hotplug/hotplug_freq_3_0";
-			if [ ! -e $hotplug_freq_3_0_tmp ]; then
-				hotplug_freq_3_0_tmp="/dev/null";
-			fi;
-
-			local hotplug_freq_3_1_tmp="/sys/kernel/alucard_hotplug/hotplug_freq_3_1";
-			if [ ! -e $hotplug_freq_3_1_tmp ]; then
-				hotplug_freq_3_1_tmp="/dev/null";
-			fi;
-
-			local hotplug_freq_4_0_tmp="/sys/kernel/alucard_hotplug/hotplug_freq_4_0";
-			if [ ! -e $hotplug_freq_4_0_tmp ]; then
-				hotplug_freq_4_0_tmp="/dev/null";
-			fi;
-
-			local hotplug_load_1_1_tmp="/sys/kernel/alucard_hotplug/hotplug_load_1_1";
-			if [ ! -e $hotplug_load_1_1_tmp ]; then
-				hotplug_load_1_1_tmp="/dev/null";
-			fi;
-
-			local hotplug_load_2_0_tmp="/sys/kernel/alucard_hotplug/hotplug_load_2_0";
-			if [ ! -e $hotplug_load_2_0_tmp ]; then
-				hotplug_load_2_0_tmp="/dev/null";
-			fi;
-
-			local hotplug_load_2_1_tmp="/sys/kernel/alucard_hotplug/hotplug_load_2_1";
-			if [ ! -e $hotplug_load_2_1_tmp ]; then
-				hotplug_load_2_1_tmp="/dev/null";
-			fi;
-
-			local hotplug_load_3_0_tmp="/sys/kernel/alucard_hotplug/hotplug_load_3_0";
-			if [ ! -e $hotplug_load_3_0_tmp ]; then
-				hotplug_load_3_0_tmp="/dev/null";
-			fi;
-
-			local hotplug_load_3_1_tmp="/sys/kernel/alucard_hotplug/hotplug_load_3_1";
-			if [ ! -e $hotplug_load_3_1_tmp ]; then
-				hotplug_load_3_1_tmp="/dev/null";
-			fi;
-
-			local hotplug_load_4_0_tmp="/sys/kernel/alucard_hotplug/hotplug_load_4_0";
-			if [ ! -e $hotplug_load_4_0_tmp ]; then
-				hotplug_load_4_0_tmp="/dev/null";
-			fi;
-
-			local hotplug_rq_1_1_tmp="/sys/kernel/alucard_hotplug/hotplug_rq_1_1";
-			if [ ! -e $hotplug_rq_1_1_tmp ]; then
-				hotplug_rq_1_1_tmp="/dev/null";
-			fi;
-
-			local hotplug_rq_2_0_tmp="/sys/kernel/alucard_hotplug/hotplug_rq_2_0";
-			if [ ! -e $hotplug_rq_2_0_tmp ]; then
-				hotplug_rq_2_0_tmp="/dev/null";
-			fi;
-
-			local hotplug_rq_2_1_tmp="/sys/kernel/alucard_hotplug/hotplug_rq_2_1";
-			if [ ! -e $hotplug_rq_2_1_tmp ]; then
-				hotplug_rq_2_1_tmp="/dev/null";
-			fi;
-
-			local hotplug_rq_3_0_tmp="/sys/kernel/alucard_hotplug/hotplug_rq_3_0";
-			if [ ! -e $hotplug_rq_3_0_tmp ]; then
-				hotplug_rq_3_0_tmp="/dev/null";
-			fi;
-
-			local hotplug_rq_3_1_tmp="/sys/kernel/alucard_hotplug/hotplug_rq_3_1";
-			if [ ! -e $hotplug_rq_3_1_tmp ]; then
-				hotplug_rq_3_1_tmp="/dev/null";
-			fi;
-
-			local hotplug_rq_4_0_tmp="/sys/kernel/alucard_hotplug/hotplug_rq_4_0";
-			if [ ! -e $hotplug_rq_4_0_tmp ]; then
-				hotplug_rq_4_0_tmp="/dev/null";
-			fi;
-
-			local maxcoreslimit_tmp="/sys/kernel/alucard_hotplug/maxcoreslimit";
-			if [ ! -e $maxcoreslimit_tmp ]; then
-				maxcoreslimit_tmp="/dev/null";
-			fi;
-
-			local maxcoreslimit_sleep_tmp="/sys/kernel/alucard_hotplug/maxcoreslimit_sleep";
-			if [ ! -e $maxcoreslimit_sleep_tmp ]; then
-				maxcoreslimit_sleep_tmp="/dev/null";
-			fi;
-
-			echo "$hotplug_sampling_rate" > $hotplug_sampling_rate_tmp;
-			echo "$hotplug_rate_1_1" > $hotplug_rate_1_1_tmp;
-			echo "$hotplug_rate_2_0" > $hotplug_rate_2_0_tmp;
-			echo "$hotplug_rate_2_1" > $hotplug_rate_2_1_tmp;
-			echo "$hotplug_rate_3_0" > $hotplug_rate_3_0_tmp;
-			echo "$hotplug_rate_3_1" > $hotplug_rate_3_1_tmp;
-			echo "$hotplug_rate_4_0" > $hotplug_rate_4_0_tmp;
-			echo "$hotplug_freq_1_1" > $hotplug_freq_1_1_tmp;
-			echo "$hotplug_freq_2_0" > $hotplug_freq_2_0_tmp;
-			echo "$hotplug_freq_2_1" > $hotplug_freq_2_1_tmp;
-			echo "$hotplug_freq_3_0" > $hotplug_freq_3_0_tmp;
-			echo "$hotplug_freq_3_1" > $hotplug_freq_3_1_tmp;
-			echo "$hotplug_freq_4_0" > $hotplug_freq_4_0_tmp;
-			echo "$hotplug_load_1_1" > $hotplug_load_1_1_tmp;
-			echo "$hotplug_load_2_0" > $hotplug_load_2_0_tmp;
-			echo "$hotplug_load_2_1" > $hotplug_load_2_1_tmp;
-			echo "$hotplug_load_3_0" > $hotplug_load_3_0_tmp;
-			echo "$hotplug_load_3_1" > $hotplug_load_3_1_tmp;
-			echo "$hotplug_load_4_0" > $hotplug_load_4_0_tmp;
-			echo "$hotplug_rq_1_1" > $hotplug_rq_1_1_tmp;
-			echo "$hotplug_rq_2_0" > $hotplug_rq_2_0_tmp;
-			echo "$hotplug_rq_2_1" > $hotplug_rq_2_1_tmp;
-			echo "$hotplug_rq_3_0" > $hotplug_rq_3_0_tmp;
-			echo "$hotplug_rq_3_1" > $hotplug_rq_3_1_tmp;
-			echo "$hotplug_rq_4_0" > $hotplug_rq_4_0_tmp;
-			echo "$maxcoreslimit" > $maxcoreslimit_tmp;
-			echo "$maxcoreslimit_sleep" > $maxcoreslimit_sleep_tmp;
+			echo "$hotplug_sampling_rate" > /sys/kernel/alucard_hotplug/hotplug_sampling_rate;
+			echo "$hotplug_rate_1_1" > /sys/kernel/alucard_hotplug/hotplug_rate_1_1;
+			echo "$hotplug_rate_2_0" > /sys/kernel/alucard_hotplug/hotplug_rate_2_0;
+			echo "$hotplug_rate_2_1" > /sys/kernel/alucard_hotplug/hotplug_rate_2_1;
+			echo "$hotplug_rate_3_0" > /sys/kernel/alucard_hotplug/hotplug_rate_3_0;
+			echo "$hotplug_rate_3_1" > /sys/kernel/alucard_hotplug/hotplug_rate_3_1;
+			echo "$hotplug_rate_4_0" > /sys/kernel/alucard_hotplug/hotplug_rate_4_0;
+			echo "$hotplug_freq_1_1" > /sys/kernel/alucard_hotplug/hotplug_freq_1_1;
+			echo "$hotplug_freq_2_0" > /sys/kernel/alucard_hotplug/hotplug_freq_2_0;
+			echo "$hotplug_freq_2_1" > /sys/kernel/alucard_hotplug/hotplug_freq_2_1;
+			echo "$hotplug_freq_3_0" > /sys/kernel/alucard_hotplug/hotplug_freq_3_0;
+			echo "$hotplug_freq_3_1" > /sys/kernel/alucard_hotplug/hotplug_freq_3_1;
+			echo "$hotplug_freq_4_0" > /sys/kernel/alucard_hotplug/hotplug_freq_4_0;
+			echo "$hotplug_load_1_1" > /sys/kernel/alucard_hotplug/hotplug_load_1_1;
+			echo "$hotplug_load_2_0" > /sys/kernel/alucard_hotplug/hotplug_load_2_0;
+			echo "$hotplug_load_2_1" > /sys/kernel/alucard_hotplug/hotplug_load_2_1;
+			echo "$hotplug_load_3_0" > /sys/kernel/alucard_hotplug/hotplug_load_3_0;
+			echo "$hotplug_load_3_1" > /sys/kernel/alucard_hotplug/hotplug_load_3_1;
+			echo "$hotplug_load_4_0" > /sys/kernel/alucard_hotplug/hotplug_load_4_0;
+			echo "$hotplug_rq_1_1" > /sys/kernel/alucard_hotplug/hotplug_rq_1_1;
+			echo "$hotplug_rq_2_0" > /sys/kernel/alucard_hotplug/hotplug_rq_2_0;
+			echo "$hotplug_rq_2_1" > /sys/kernel/alucard_hotplug/hotplug_rq_2_1;
+			echo "$hotplug_rq_3_0" > /sys/kernel/alucard_hotplug/hotplug_rq_3_0;
+			echo "$hotplug_rq_3_1" > /sys/kernel/alucard_hotplug/hotplug_rq_3_1;
+			echo "$hotplug_rq_4_0" > /sys/kernel/alucard_hotplug/hotplug_rq_4_0;
+			echo "$maxcoreslimit" > /sys/kernel/alucard_hotplug/maxcoreslimit;
+			echo "$maxcoreslimit_sleep" > /sys/kernel/alucard_hotplug/maxcoreslimit_sleep;
+			echo "$min_cpus_online" > /sys/kernel/alucard_hotplug/min_cpus_online;
 		fi;
 
 		log -p i -t "$FILE_NAME" "*** ALUCARD_HOTPLUG ***: enabled";
@@ -426,13 +264,13 @@ CPU_HOTPLUG_TWEAKS()
 		fi;
 
 		#disable intelli_plug
-		if [ "$intelli_value_tmp" -eq "1" ]; then
-			echo "0" > $intelli_plug_active_tmp;
+		if [ "$(cat /sys/kernel/intelli_plug/intelli_plug_active)" -eq "1" ]; then
+			echo "0" > /sys/kernel/intelli_plug/intelli_plug_active;
 		fi;
 
 		#disable alucard_hotplug
-		if [ "$alucard_value_tmp" -eq "1" ]; then
-			echo "0" > $hotplug_enable_tmp;
+		if [ "$(cat /sys/kernel/alucard_hotplug/hotplug_enable)" -eq "1" ]; then
+			echo "0" > /sys/kernel/alucard_hotplug/hotplug_enable;
 		fi;
 
 		#enable msm_hotplug
@@ -442,6 +280,12 @@ CPU_HOTPLUG_TWEAKS()
 
 		if [ "$(ps | grep /system/bin/thermal-engine | wc -l)" -ge "1" ]; then
 			$BB renice -n -20 -p $(pgrep -f "/system/bin/thermal-engine");
+		fi;
+
+		# tune-settings
+		if [ "$state" == "tune" ]; then
+			echo "$min_cpus_online" > /sys/module/msm_hotplug/min_cpus_online;
+			echo "$max_cpus_online" > /sys/module/msm_hotplug/max_cpus_online;
 		fi;
 
 		log -p i -t "$FILE_NAME" "*** MSM_HOTPLUG ***: enabled";
@@ -458,15 +302,15 @@ CPU_GOV_TWEAKS()
 	local state="$1";
 
 	if [ "$cortexbrain_cpu" == "on" ]; then
-		local SYSTEM_GOVERNOR=`cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor_all_cpus`;
-
-		local sampling_rate_tmp="/sys/devices/system/cpu/cpufreq/$SYSTEM_GOVERNOR/sampling_rate";
-		if [ ! -e $sampling_rate_tmp ]; then
-			sampling_rate_tmp="/dev/null";
-		fi;
+		local SYSTEM_GOVERNOR=$(cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor);
 		
 		# tune-settings
 		if [ "$state" == "tune" ]; then
+			local sampling_rate_tmp="/sys/devices/system/cpu/cpufreq/$SYSTEM_GOVERNOR/sampling_rate";
+			if [ ! -e $sampling_rate_tmp ]; then
+				sampling_rate_tmp="/dev/null";
+			fi;
+
 			local up_threshold_tmp="/sys/devices/system/cpu/cpufreq/$SYSTEM_GOVERNOR/up_threshold";
 			if [ ! -e $up_threshold_tmp ]; then
 				up_threshold_tmp="/dev/null";
@@ -597,12 +441,6 @@ CPU_GOV_TWEAKS()
 			echo "$freq_up_brake" > $freq_up_brake_tmp;
 			echo "$pump_inc_step" > $pump_inc_step_tmp;
 			echo "$pump_dec_step" > $pump_dec_step_tmp;
-		# sleep-settings
-		elif [ "$state" == "sleep" ]; then
-			echo "$sampling_rate_sleep" > $sampling_rate_tmp;
-		# awake-settings
-		elif [ "$state" == "awake" ]; then
-			echo "$sampling_rate" > $sampling_rate_tmp;
 		fi;
 
 		log -p i -t "$FILE_NAME" "*** CPU_GOV_TWEAKS: $state ***: enabled";
@@ -899,8 +737,6 @@ AWAKE_MODE()
 {
 	# not on call, check if was powerd by USB on sleep, or didnt sleep at all
 	if [ "$USB_POWER" -eq "0" ]; then
-		CPU_GOV_TWEAKS "awake";
-		CPU_HOTPLUG_TWEAKS "awake";
 		LOGGER "awake";
 		MOBILE_DATA "awake";
 		WIFI "awake";
@@ -932,8 +768,6 @@ SLEEP_MODE()
 
 	# check if we powered by USB, if not sleep
 	if [ "$CHARGING" -eq "1" ]; then
-		CPU_GOV_TWEAKS "sleep";
-		CPU_HOTPLUG_TWEAKS "sleep";
 		IO_SCHEDULER "sleep";
 		WIFI "sleep";
 		MOBILE_DATA "sleep";

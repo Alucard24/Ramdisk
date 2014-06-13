@@ -80,9 +80,9 @@
 
 </settingsTab>
 
-<settingsTab name="CPU-TUNING (AWAKE)">
+<settingsTab name="CPU-TUNING">
 
-	<settingsPane description="Set advanced governor settings. These settings are active only if the screen is on. !!! Depends on CortexBrain-Background-Process and CortexBrain-CPU-Tweaks!!!" name="Governor Parameters tuning">
+	<settingsPane description="Set advanced governor settings. These settings are active only if the screen is on." name="Governor Parameters tuning">
 
 		<spinner description="This will set the AWAKE (screen ON) CPU governor. Default CPU governor will only be set during early stages of booting (before init.d execution), and can be overridden by any other scripts or applications. (Default: Alucard)" name="Default CPU Governor" action="generic /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor_all_cpus">
 			<spinnerItem name="alucard" value="alucard"/>
@@ -95,7 +95,7 @@
 			<spinnerItem name="pegasusq" value="pegasusq"/> 
 		</spinner>
 
-		<button description="Use this button to push all new changes to the governor in real time! The sleep tuning will be auto added on screen off, to screen off governor." name="GOV Policy Install" action="push-actions/cpu_tuning_update" label="Apply settings to GOV core"/>
+		<button description="Use this button to push all new changes to the governor in real time!" name="GOV Policy Install" action="push-actions/cpu_tuning_update" label="Apply settings to GOV core"/>
 
 	</settingsPane>
 
@@ -109,7 +109,7 @@
 
 		<seekBar description="Acts as a multiplier for sampling interval for re-evaluating the load when CPU is truly busy and is on highest clock frequency (policy max). Setting to 1 makes no difference and causes CPU to immediately scale down from highest frequency. Sampling down factor is NOT valid for lower frequencies and low load conditions. Note that CPU is scaled up to max frequency when max_load_freq is greater than up_threshold X current frequency. (or to cur_freq + (freq_step X policy.max_freq) whichever is smaller) Max_load_freq is an arbitrary frequency calculated as the maximum of load_frequencies. (Only for HYPER, Ondemand, PegasusQ, Conservartive) (Default: 1)" name="sampling_down_factor" action="generic_cortex /tmp/sampling_down_factor" unit="int" min="1" reversed="false" step="1" max="10"/>
 
-		<seekBar description="Defines how much as a percentage of maximum frequency, governor should increase CPU frequency each time CPU load reaches up_threshold or inc_cpu_load. (Only for HYPER, Ondemand, PegasusQ, Nightmare, Conservative) (Default: 20%)" name="freq_step" action="generic_cortex /tmp/freq_step" unit="%" min="5" reversed="false" step="1" max="100"/>
+		<seekBar description="Defines how much as a percentage of maximum frequency, governor should increase CPU frequency each time CPU load reaches up_threshold or inc_cpu_load. (Only for HYPER, Ondemand, PegasusQ, Nightmare, Conservative) (Default: 30%)" name="freq_step" action="generic_cortex /tmp/freq_step" unit="%" min="5" reversed="false" step="1" max="100"/>
 
 		<seekBar description="After spending sampling_down_factor X sampling_rate micro seconds at maximum frequency on high load, governor samples the load again to calculate an approx target frequency to scale-down-to which should not trigger up_threshold in the next sample. (Triggering up threshold may cause jumping to max frequency again). Max_load_freq is checked against (up_threshold - down_differential) X current frequency. If found to be smaller, CPU is scaled down to a target frequency as described above. Down_differential also act as the factor to prevent aggressive scale down. (Only for HYPER, Ondemand, PegasusQ) (default: 5)" name="down_differential" action="generic_cortex /tmp/down_differential" unit="int" min="1" reversed="false" step="1" max="80"/>
 
@@ -119,13 +119,13 @@
 
 	</settingsPane>
 
-	<settingsPane description="Nightmare and Darkness governor Configuration, see descriptions" name="NIGHTMARE | DARKNESS | ALUCARD GOV CONFIGURATON">
+	<settingsPane description="Nightmare, Darkness and Alucard governor Configuration, see descriptions" name="NIGHTMARE | DARKNESS | ALUCARD GOV CONFIGURATON">
 
 		<seekBar description="This threshold is used as up threshold while sampling at frequencies less than freq_for_responsiveness. Above that, normal inc_cpu_load is used. This gives us an option to make scaling aggressive/relaxed until a frequency and normal for higher frequencies. (Only for Nightmare, Alucard). (Default: 60%)" name="inc_cpu_load_at_min_freq" action="generic_cortex /tmp/inc_cpu_load_at_min_freq" unit="%" min="1" reversed="false" step="1" max="100"/>
 
 		<seekBar description="The frequency at which governor scales CPU up. Load big or equal inc_cpu_load: cpu scaled up. (Only for Nightmare, Alucard). (Default: 80%)" name="inc_cpu_load" action="generic_cortex /tmp/inc_cpu_load" unit="%" min="10" reversed="false" step="1" max="100"/>
 
-		<seekBar description="This threshold is used as down threshold while sampling at frequencies less than freq_responsiveness. Above that, normal dec_cpu_load is used. This gives us an option to make scaling aggressive/relaxed until a frequency and normal for higher frequencies. (Only for Alucard). (Default: 40%)" name="dec_cpu_load_at_min_freq" action="generic_cortex /tmp/dec_cpu_load_at_min_freq" unit="%" min="1" reversed="false" step="1" max="100"/>
+		<seekBar description="This threshold is used as down threshold while sampling at frequencies less than freq_responsiveness. Above that, normal dec_cpu_load is used. This gives us an option to make scaling aggressive/relaxed until a frequency and normal for higher frequencies. (Only for Alucard). (Default: 60%)" name="dec_cpu_load_at_min_freq" action="generic_cortex /tmp/dec_cpu_load_at_min_freq" unit="%" min="1" reversed="false" step="1" max="100"/>
 
 		<seekBar description="The frequency at which governor scales CPU down. Load less than dec_cpu_load: cpu scaled down. (Only for Nightmare, Alucard). (Default: 60%)" name="dec_cpu_load" action="generic_cortex /tmp/dec_cpu_load" unit="%" min="10" reversed="false" step="1" max="100"/>
 
@@ -137,11 +137,11 @@
 
 		<seekBar description="Governor should decrease CPU frequency by n step each time CPU load reaches dec_cpu_load. (Only for Alucard) (Default: 1)" name="pump_dec_step" action="generic_cortex /tmp/pump_dec_step" unit="step" min="1" reversed="false" step="1" max="3"/>
 
-		<seekBar description="Defines how much as a percentage of maximum frequency, governor should increase CPU frequency each time CPU load reaches inc_cpu_load_at_min_freq. (Only for nightmare). (Default: 20%)" name="freq_step_at_min_freq" action="generic_cortex /tmp/freq_step_at_min_freq" unit="%" min="5" reversed="false" step="1" max="100"/>
+		<seekBar description="Defines how much as a percentage of maximum frequency, governor should increase CPU frequency each time CPU load reaches inc_cpu_load_at_min_freq. (Only for nightmare). (Default: 30%)" name="freq_step_at_min_freq" action="generic_cortex /tmp/freq_step_at_min_freq" unit="%" min="5" reversed="false" step="1" max="100"/>
 
-		<seekBar description="Brake scale up frequency when load big or equal inc_cpu_load_at_min_freq. (Only for Nightmare). (Default: 30)" name="freq_up_brake_at_min_freq" action="generic_cortex /tmp/freq_up_brake_at_min_freq" unit="step" min="0" reversed="false" step="1" max="100"/>
+		<seekBar description="Brake scale up frequency when load big or equal inc_cpu_load_at_min_freq. (Only for Nightmare). (Default: 20)" name="freq_up_brake_at_min_freq" action="generic_cortex /tmp/freq_up_brake_at_min_freq" unit="step" min="0" reversed="false" step="1" max="100"/>
 
-		<seekBar description="Brake scale up frequency when load big or equal inc_cpu_load. (Only for Nightmare). (Default: 30)" name="freq_up_brake" action="generic_cortex /tmp/freq_up_brake" unit="step" min="0" reversed="false" step="1" max="100"/>
+		<seekBar description="Brake scale up frequency when load big or equal inc_cpu_load. (Only for Nightmare). (Default: 20)" name="freq_up_brake" action="generic_cortex /tmp/freq_up_brake" unit="step" min="0" reversed="false" step="1" max="100"/>
 
 		<seekBar description="Defines how much as a percentage of maximum frequency, governor should decrease CPU frequency each time CPU load reaches dec_cpu_load. Only for Nightmare). Default: 10%)" name="freq_step_dec" action="generic_cortex /tmp/freq_step_dec" unit="%" min="0" reversed="false" step="1" max="100"/>
 
@@ -151,17 +151,7 @@
 
 </settingsTab>
 
-<settingsTab name="CPU-TUNING (SLEEP)">
-
-	<settingsPane description="Global Govs Configuration, see descriptions" name="GLOBAL GOV CONFIGURATON">
-
-		<seekBar description="Sampling Interval, measured in µs. This factor determines how often the governor should poll for CPU usage in terms of frequency and load percentage to make scaling decisions - either scale CPU Up or scale it Down. (Only for HYPER, OnDemand, PegasusQ, Conservative, Nightmare, Darkness, Alucard) (Default: 60.000 µs)" name="sampling_rate_sleep" action="generic_cortex /tmp/sampling_rate_sleep" unit="µs" min="10000" reversed="false" step="5000" max="200000"/>
-
-	</settingsPane>
-
-</settingsTab>
-
-<settingsTab name="CPU-HOTPLUGGING (AWAKE)">
+<settingsTab name="CPU-HOTPLUGGING">
 
 	<settingsPane description="Tune CPU hotplugging" name="Cpu hotplug Tuning">
 
@@ -173,20 +163,6 @@
 		</spinner>
 
 		<button description="Use this button to push all new changes to CPU hotplugging system in real time! The sleep tuning will be auto added on screen off." name="Cpu Hotplug Policy Install" action="push-actions/cpu_tuning_hotplug" label="Apply settings to HOTPLUG core"/>
-
-	</settingsPane>
-
-	<settingsPane description="Tune Intelliplug" name="Intelliplug Tuning">
-
-		<spinner description="Set eco mode tweaks. (Default: Disabled)" name="eco_mode_active" action="generic /sys/kernel/intelli_plug/eco_mode_active">
-			<spinnerItem name="Enabled" value="1"/> 
-			<spinnerItem name="Disabled" value="0"/> 
-		</spinner>
-
-		<spinner description="Set strict mode active. (Default: Disabled)" name="strict_mode_active" action="generic /sys/kernel/intelli_plug/strict_mode_active">
-			<spinnerItem name="Enabled" value="1"/> 
-			<spinnerItem name="Disabled" value="0"/> 
-		</spinner>
 
 	</settingsPane>
 
@@ -257,21 +233,11 @@
 
 	</settingsPane>
 
-</settingsTab>
+	<settingsPane description="Tune in Common" name="Common">
 
-<settingsTab name="CPU-HOTPLUGGING (SLEEP)">
+		<seekBar description="Set minimum number of cpus online. (Alucard Hotplug, IntelliPlug, MSM Hotplug) (Default: 1)" name="min_cpus_online" action="generic_cortex /tmp/min_cpus_online" unit="int" min="1" reversed="false" step="1" max="4"/>
 
-	<settingsPane description="Tune Intelliplug" name="Intelliplug Tuning">
-
-		<spinner description="Set eco mode. (Default: Enabled)" name="eco_mode_active_sleep" action="generic_cortex /tmp/eco_mode_active_sleep">
-			<spinnerItem name="Enabled" value="1"/> 
-			<spinnerItem name="Disabled" value="0"/> 
-		</spinner>
-
-		<spinner description="Set strict mode. (Default: Disabled)" name="strict_mode_active_sleep" action="generic_cortex /tmp/strict_mode_active_sleep">
-			<spinnerItem name="Enabled" value="1"/> 
-			<spinnerItem name="Disabled" value="0"/> 
-		</spinner>
+		<seekBar description="Set maximum number of cpus online. (IntelliPlug, MSM Hotplug) (Default: 4)" name="max_cpus_online" action="generic_cortex /tmp/max_cpus_online" unit="int" min="1" reversed="false" step="1" max="4"/>
 
 	</settingsPane>
 
@@ -456,9 +422,9 @@
 			<spinnerItem name="exterminate" value="exterminate"/> 
 		</spinner>
 
-		<seekBar description="Dirty background memory buffer, more you set, more memory will be used for write buffer for background operations. Buffer is released on need to free RAM (Default: 20%)" name="Dirty Background ratio" action="generic /proc/sys/vm/dirty_background_ratio" unit="%" min="5" reversed="false" step="5" max="80"/>
+		<seekBar description="Dirty background memory buffer, more you set, more memory will be used for write buffer for background operations. Buffer is released on need to free RAM" name="Dirty Background ratio" action="generic /proc/sys/vm/dirty_background_ratio" unit="%" min="5" reversed="false" step="5" max="80"/>
 
-		<seekBar description="Dirty real time memory buffer, more you set, more memory will be used for write buffer for real time operations. Buffer is released on need to free RAM (Default: 40%)" name="Dirty ratio" action="generic /proc/sys/vm/dirty_ratio" unit="%" min="5" reversed="false" step="5" max="90"/>
+		<seekBar description="Dirty real time memory buffer, more you set, more memory will be used for write buffer for real time operations. Buffer is released on need to free RAM" name="Dirty ratio" action="generic /proc/sys/vm/dirty_ratio" unit="%" min="5" reversed="false" step="5" max="90"/>
 
 		<button description="Clean RAM Cache. This will release all cached and buffered RAM, please WAIT 3sec to get cleanup report" name="CLEAN RAM CACHE" action="push-actions/clean_ram_cache" label="CLEAN RAM CACHE NOW"/>
 
@@ -474,6 +440,36 @@
 			<spinnerItem name="80" value="80"/> 
 			<spinnerItem name="90" value="90"/> 
 		</spinner>
+
+	</settingsPane>
+
+</settingsTab>
+
+<settingsTab name="LED">
+
+	<settingsPane description="The notification LED has two brightness modes, depending on the external brightness detected by the light sensor." name="Brightness">
+
+		<seekBar description="LED brightness in low brightness environments." name="Low light environment brightness" action="generic /sys/class/sec/led/led_lowpower_current" unit="" min="0" reversed="false" step="1" max="255"/>
+
+		<seekBar description="LED brightness in high brightness environments." name="Bright light environment brightness" action="generic /sys/class/sec/led/led_highpower_current" unit="" min="0" reversed="false" step="1" max="255"/>
+
+	</settingsPane>
+
+	<settingsPane description="Control the way the LED blinks. The LED controller has 4 type of slopes in its waveform, 2 rising slopes, and two falling slopes. The following configurables can control the blinking waveform." name="Blinking effect">
+
+		<seekBar description="Sets the time period of the two rising slopes (1,2), one time-unit is equal to 0.5 seconds." name="Fade-in time period" action="generic /sys/class/sec/led/led_fade_in_time" unit="" min="0" reversed="false" step="1" max="12"/>
+
+		<seekBar description="Sets the time period of the two falling slopes (3,4), one time-unit is equal to 0.5 seconds." name="Fade-out time period" action="generic /sys/class/sec/led/led_fade_out_time" unit="" min="0" reversed="false" step="1" max="12"/>
+
+		<checkbox description="If disabled, ignores the below detention times and the blinking waveform has no slopes, i.e. it is square." name="Enable fading" action="generic01 /sys/class/sec/led/led_fade" label="Enable LED fading"/>
+
+		<seekBar description="The LED is controlled by PWM/pulse wave modulation, the detention time dictates how long the controller spends time on a single step in its slope. One time-unit is equivalent to 4ms." name="Slope 1 detention time" action="generic /sys/class/sec/led/led_fade_dt1" unit="" min="0" reversed="false" step="1" max="4"/>
+
+		<seekBar description="" name="Slope 2 detention time" action="generic /sys/class/sec/led/led_fade_dt2" unit="" min="0" reversed="false" step="1" max="4"/>
+
+		<seekBar description="" name="Slope 3 detention time" action="generic /sys/class/sec/led/led_fade_dt3" unit="" min="0" reversed="false" step="1" max="4"/>
+
+		<seekBar description="" name="Slope 4 detention time" action="generic /sys/class/sec/led/led_fade_dt4" unit="" min="0" reversed="false" step="1" max="4"/>
 
 	</settingsPane>
 
