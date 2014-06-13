@@ -538,12 +538,11 @@
 			<spinnerItem name="Enabled" value="1"/>
 		</spinner>
 
-		<spinner description="Rate at which to charge when on AC (500 mA each hour to 2100 mA each hour). (Default: 1900 mA)" name="AC Charge Level" action="generic /sys/kernel/fast_charge/ac_charge_level">
+		<spinner description="Rate at which to charge when on AC (500 mA each hour to 1900 mA each hour). (Default: 1900 mA)" name="AC Charge Level" action="generic /sys/kernel/fast_charge/ac_charge_level">
 			<spinnerItem name="500 mA" value="500"/>
 			<spinnerItem name="1000 mA" value="1000"/>
 			<spinnerItem name="1450 mA" value="1450"/>
 			<spinnerItem name="1900 mA" value="1900"/>
-			<spinnerItem name="2100 mA" value="2100"/>
 		</spinner>
 
 		<spinner description="Rate at which to charge when on USB (460 mA each hour to 1000 mA each hour). (Default: 460 mA)" name="USB Charge Level" action="generic /sys/kernel/fast_charge/usb_charge_level">
@@ -552,7 +551,7 @@
 			<spinnerItem name="1000 mA" value="1000"/>
 		</spinner>
 
-		<spinner description="When disabled allow anything up to 2100 mA each hour to be used as AC and USB custom current. It is recommended to keep it ENABLED!!!!!. (Default: Enabled)" name="Fail safe" action="generic /sys/kernel/fast_charge/failsafe">
+		<spinner description="When disabled allow anything up to 1900 mA each hour to be used as AC and USB custom current. It is recommended to keep it ENABLED!!!!!. (Default: Enabled)" name="Fail safe" action="generic /sys/kernel/fast_charge/failsafe">
 			<spinnerItem name="Disabled" value="0"/>
 			<spinnerItem name="Enabled" value="1"/>
 		</spinner>
