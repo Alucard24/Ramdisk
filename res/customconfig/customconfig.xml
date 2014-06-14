@@ -127,7 +127,7 @@
 
 		<seekBar description="This threshold is used as down threshold while sampling at frequencies less than freq_responsiveness. Above that, normal dec_cpu_load is used. This gives us an option to make scaling aggressive/relaxed until a frequency and normal for higher frequencies. (Only for Alucard). (Default: 60%)" name="dec_cpu_load_at_min_freq" action="generic_cortex /tmp/dec_cpu_load_at_min_freq" unit="%" min="1" reversed="false" step="1" max="100"/>
 
-		<seekBar description="The frequency at which governor scales CPU down. Load less than dec_cpu_load: cpu scaled down. (Only for Nightmare, Alucard). (Default: 60%)" name="dec_cpu_load" action="generic_cortex /tmp/dec_cpu_load" unit="%" min="10" reversed="false" step="1" max="100"/>
+		<seekBar description="The frequency at which governor scales CPU down. Load less than dec_cpu_load: cpu scaled down. (Only for Nightmare, Alucard). (Default: 80%)" name="dec_cpu_load" action="generic_cortex /tmp/dec_cpu_load" unit="%" min="10" reversed="false" step="1" max="100"/>
 
 		<seekBar description="When current freq is greater than freq_for_responsiviness_max, freq_step_dec will be equal to freq_step_dec_at_max_freq. (Only for Nightmare). (Default: 1890.000 kHz)" name="freq_for_responsiveness_max" action="generic_cortex /tmp/freq_for_responsiveness_max" unit="kHz" min="378000" reversed="false" step="108000" max="1890000"/>
 
@@ -538,12 +538,11 @@
 			<spinnerItem name="Enabled" value="1"/>
 		</spinner>
 
-		<spinner description="Rate at which to charge when on AC (500 mA each hour to 2100 mA each hour). (Default: 1900 mA)" name="AC Charge Level" action="generic /sys/kernel/fast_charge/ac_charge_level">
+		<spinner description="Rate at which to charge when on AC (500 mA each hour to 1900 mA each hour). (Default: 1900 mA)" name="AC Charge Level" action="generic /sys/kernel/fast_charge/ac_charge_level">
 			<spinnerItem name="500 mA" value="500"/>
 			<spinnerItem name="1000 mA" value="1000"/>
 			<spinnerItem name="1450 mA" value="1450"/>
 			<spinnerItem name="1900 mA" value="1900"/>
-			<spinnerItem name="2100 mA" value="2100"/>
 		</spinner>
 
 		<spinner description="Rate at which to charge when on USB (460 mA each hour to 1000 mA each hour). (Default: 460 mA)" name="USB Charge Level" action="generic /sys/kernel/fast_charge/usb_charge_level">
@@ -552,7 +551,7 @@
 			<spinnerItem name="1000 mA" value="1000"/>
 		</spinner>
 
-		<spinner description="When disabled allow anything up to 2100 mA each hour to be used as AC and USB custom current. It is recommended to keep it ENABLED!!!!!. (Default: Enabled)" name="Fail safe" action="generic /sys/kernel/fast_charge/failsafe">
+		<spinner description="When disabled allow anything up to 1900 mA each hour to be used as AC and USB custom current. It is recommended to keep it ENABLED!!!!!. (Default: Enabled)" name="Fail safe" action="generic /sys/kernel/fast_charge/failsafe">
 			<spinnerItem name="Disabled" value="0"/>
 			<spinnerItem name="Enabled" value="1"/>
 		</spinner>
