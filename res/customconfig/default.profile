@@ -38,6 +38,7 @@ dec_cpu_load_at_min_freq=60
 dec_cpu_load=80
 freq_for_responsiveness_max=1890000
 freq_responsiveness=810000
+pump_inc_step_at_min_freq=2
 pump_inc_step=2
 pump_dec_step=1
 freq_step_at_min_freq=30
