@@ -588,25 +588,6 @@ MOBILE_DATA()
 	fi;
 }
 
-LOGGER()
-{
-	local state="$1";
-
-	if [ "$state" == "awake" ]; then
-		if [ "$android_logger" == "auto" ] || [ "$android_logger" == "debug" ]; then
-			echo "1" > /sys/module/logger/parameters/log_enabled;
-		elif [ "$android_logger" == "disabled" ]; then
-			echo "0" > /sys/module/logger/parameters/log_enabled;
-		fi;
-	elif [ "$state" == "sleep" ]; then
-		if [ "$android_logger" == "auto" ] || [ "$android_logger" == "disabled" ]; then
-			echo "0" > /sys/module/logger/parameters/log_enabled;
-		fi;
-	fi;
-
-	log -p i -t "$FILE_NAME" "*** LOGGER ***: $state";
-}
-
 # mount sdcard and emmc, if usb mass storage is used
 MOUNT_SD_CARD()
 {
@@ -743,7 +724,6 @@ AWAKE_MODE()
 {
 	# not on call, check if was powerd by USB on sleep, or didnt sleep at all
 	if [ "$USB_POWER" -eq "0" ]; then
-		LOGGER "awake";
 		MOBILE_DATA "awake";
 		WIFI "awake";
 		IO_SCHEDULER "awake";
@@ -766,7 +746,7 @@ SLEEP_MODE()
 	. "$DATA_DIR"/"$PROFILE".profile;
 
 	# for devs use, if debug is on, then finish full sleep with usb connected
-	if [ "$android_logger" == "debug" ]; then
+	if [ "$android_logger" -eq "3" ]; then
 		CHARGING=1;
 	else
 		CHARGING=`cat /sys/class/power_supply/battery/batt_charging_source`;
@@ -777,7 +757,6 @@ SLEEP_MODE()
 		IO_SCHEDULER "sleep";
 		WIFI "sleep";
 		MOBILE_DATA "sleep";
-		LOGGER "sleep";
 
 		log -p i -t "$FILE_NAME" "*** SLEEP mode ***";
 	else
