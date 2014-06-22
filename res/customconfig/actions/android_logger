@@ -3,24 +3,27 @@
 # $1 - "android_logger"
 # $2 - value=
 
-if [ "a$2" == "a" ]; then
-	echo "$android_logger";
-else
+if [ "a$2" != "a" ]; then
 	android_logger=$2;
-	echo "$android_logger";
+
+	case "${android_logger}" in
+			0)
+				echo "0" > /sys/module/logger/parameters/log_mode;
+			;;
+			1)
+				echo "1" > /sys/module/logger/parameters/log_mode;
+			;;
+			2)
+				echo "2" > /sys/module/logger/parameters/log_mode;
+			;;
+			3)
+				echo "0" > /sys/module/logger/parameters/log_mode;
+			;;
+			*)
+				android_logger=1;
+			;;
+	esac;
+
 fi;
 
-case "${android_logger}" in
-	auto)
-		# tweak is in cortex script, will be shut on screen off and loaded on screen on
-	;;
-	debug)
-		# tweak is in cortex script, will be loaded and not be unloaded anymore
-	;;
-	disabled)
-		# tweak is in cortex script, will be unloaded all the time
-	;;
-	*)
-		android_logger=auto;
-	;;
-esac;
+echo ${android_logger};

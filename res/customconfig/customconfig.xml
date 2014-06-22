@@ -685,10 +685,11 @@
 
 		<button description="Click to see if the CortexBrain-Background-Process is running or not." name="Check Background-Process" action="push-actions/cortexbrain_background_process_check" label="CHECK SERVICE"/>
 
-		<spinner description="Control android logger logcat. If you set it to AUTO, then you will have logs only on screen is on. When screen will be off, logger will be disabled to save battery. If you set DEBUG, it will be working no matter what! If set to DISABLED, logging will be off, no matter what. If USB or Charger is connected and logger is set to AUTO, logging will not be disabled so we can debug. !!! Depends on CortexBrain-Background-Process !!!" name="Android Logger control" action="android_logger">
-			<spinnerItem name="AUTO" value="auto"/> 
-			<spinnerItem name="DEBUG" value="debug"/> 
-			<spinnerItem name="DISABLED" value="disabled"/> 
+		<spinner description="Enable or Disable Android Additional Logs and LOGCAT. you can DISABLE always to save Power! or leave default, ON when screen ON, and OFF when screen OFF" name="Android Logcat Logger" action="android_logger">
+			<spinnerItem name="Always Enabled" value="0"/>
+			<spinnerItem name="OFF when screen is OFF" value="1"/>
+			<spinnerItem name="Always Disabled" value="2"/>
+			<spinnerItem name="Debug" value="3"/>
 		</spinner>
 
 		<checkbox description="Enable or Disable the DATA turns off while screen is off function. !!! Depends on CortexBrain-Background-Process !!!" name="Auto-DATA" action="generic_cortex /tmp/cortexbrain_auto_tweak_mobile" label="Force Auto-Data"/>
