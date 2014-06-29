@@ -411,20 +411,66 @@ CPU_GOV_TWEAKS()
 				up_threshold_at_min_freq_tmp=$up_threshold_min_freq_tmp;
 			fi;
 
-			local pump_inc_step_at_min_freq_tmp="/sys/devices/system/cpu/cpufreq/$SYSTEM_GOVERNOR/pump_inc_step_at_min_freq";
-			if [ ! -e $pump_inc_step_at_min_freq_tmp ]; then
-				pump_inc_step_at_min_freq_tmp="/dev/null";
+			local pump_inc_step_at_min_freq_1_tmp="/sys/devices/system/cpu/cpufreq/$SYSTEM_GOVERNOR/pump_inc_step_at_min_freq_1";
+			if [ ! -e $pump_inc_step_at_min_freq_1_tmp ]; then
+				pump_inc_step_at_min_freq_1_tmp="/dev/null";
 			fi;
 
-			local pump_inc_step_tmp="/sys/devices/system/cpu/cpufreq/$SYSTEM_GOVERNOR/pump_inc_step";
-			if [ ! -e $pump_inc_step_tmp ]; then
-				pump_inc_step_tmp="/dev/null";
+			local pump_inc_step_at_min_freq_2_tmp="/sys/devices/system/cpu/cpufreq/$SYSTEM_GOVERNOR/pump_inc_step_at_min_freq_2";
+			if [ ! -e $pump_inc_step_at_min_freq_2_tmp ]; then
+				pump_inc_step_at_min_freq_2_tmp="/dev/null";
 			fi;
 
-			local pump_dec_step_tmp="/sys/devices/system/cpu/cpufreq/$SYSTEM_GOVERNOR/pump_dec_step";
-			if [ ! -e $pump_dec_step_tmp ]; then
-				pump_dec_step_tmp="/dev/null";
+			local pump_inc_step_at_min_freq_3_tmp="/sys/devices/system/cpu/cpufreq/$SYSTEM_GOVERNOR/pump_inc_step_at_min_freq_3";
+			if [ ! -e $pump_inc_step_at_min_freq_3_tmp ]; then
+				pump_inc_step_at_min_freq_3_tmp="/dev/null";
 			fi;
+
+			local pump_inc_step_at_min_freq_4_tmp="/sys/devices/system/cpu/cpufreq/$SYSTEM_GOVERNOR/pump_inc_step_at_min_freq_4";
+			if [ ! -e $pump_inc_step_at_min_freq_4_tmp ]; then
+				pump_inc_step_at_min_freq_4_tmp="/dev/null";
+			fi;
+
+			local pump_inc_step_1_tmp="/sys/devices/system/cpu/cpufreq/$SYSTEM_GOVERNOR/pump_inc_step_1";
+			if [ ! -e $pump_inc_step_1_tmp ]; then
+				pump_inc_step_1_tmp="/dev/null";
+			fi;
+
+			local pump_inc_step_2_tmp="/sys/devices/system/cpu/cpufreq/$SYSTEM_GOVERNOR/pump_inc_step_2";
+			if [ ! -e $pump_inc_step_2_tmp ]; then
+				pump_inc_step_2_tmp="/dev/null";
+			fi;
+
+			local pump_inc_step_3_tmp="/sys/devices/system/cpu/cpufreq/$SYSTEM_GOVERNOR/pump_inc_step_3";
+			if [ ! -e $pump_inc_step_3_tmp ]; then
+				pump_inc_step_3_tmp="/dev/null";
+			fi;
+
+			local pump_inc_step_4_tmp="/sys/devices/system/cpu/cpufreq/$SYSTEM_GOVERNOR/pump_inc_step_4";
+			if [ ! -e $pump_inc_step_4_tmp ]; then
+				pump_inc_step_4_tmp="/dev/null";
+			fi;
+
+			local pump_dec_step_1_tmp="/sys/devices/system/cpu/cpufreq/$SYSTEM_GOVERNOR/pump_dec_step_1";
+			if [ ! -e $pump_dec_step_1_tmp ]; then
+				pump_dec_step_1_tmp="/dev/null";
+			fi;
+
+			local pump_dec_step_2_tmp="/sys/devices/system/cpu/cpufreq/$SYSTEM_GOVERNOR/pump_dec_step_2";
+			if [ ! -e $pump_dec_step_2_tmp ]; then
+				pump_dec_step_2_tmp="/dev/null";
+			fi;
+
+			local pump_dec_step_3_tmp="/sys/devices/system/cpu/cpufreq/$SYSTEM_GOVERNOR/pump_dec_step_3";
+			if [ ! -e $pump_dec_step_3_tmp ]; then
+				pump_dec_step_3_tmp="/dev/null";
+			fi;
+
+			local pump_dec_step_4_tmp="/sys/devices/system/cpu/cpufreq/$SYSTEM_GOVERNOR/pump_dec_step_4";
+			if [ ! -e $pump_dec_step_4_tmp ]; then
+				pump_dec_step_4_tmp="/dev/null";
+			fi;
+
 			echo "$sampling_rate" > $sampling_rate_tmp;
 			echo "$up_threshold" > $up_threshold_tmp;
 			echo "$up_threshold_at_min_freq" > $up_threshold_at_min_freq_tmp;
@@ -444,9 +490,18 @@ CPU_GOV_TWEAKS()
 			echo "$dec_cpu_load" > $dec_cpu_load_tmp;
 			echo "$freq_up_brake_at_min_freq" > $freq_up_brake_at_min_freq_tmp;
 			echo "$freq_up_brake" > $freq_up_brake_tmp;
-			echo "$pump_inc_step_at_min_freq" > $pump_inc_step_at_min_freq_tmp;
-			echo "$pump_inc_step" > $pump_inc_step_tmp;
-			echo "$pump_dec_step" > $pump_dec_step_tmp;
+			echo "$pump_inc_step_at_min_freq_1" > $pump_inc_step_at_min_freq_1_tmp;
+			echo "$pump_inc_step_at_min_freq_2" > $pump_inc_step_at_min_freq_2_tmp;
+			echo "$pump_inc_step_at_min_freq_3" > $pump_inc_step_at_min_freq_3_tmp;
+			echo "$pump_inc_step_at_min_freq_4" > $pump_inc_step_at_min_freq_4_tmp;
+			echo "$pump_inc_step_1" > $pump_inc_step_1_tmp;
+			echo "$pump_inc_step_2" > $pump_inc_step_2_tmp;
+			echo "$pump_inc_step_3" > $pump_inc_step_3_tmp;
+			echo "$pump_inc_step_4" > $pump_inc_step_4_tmp;
+			echo "$pump_dec_step_1" > $pump_dec_step_1_tmp;
+			echo "$pump_dec_step_2" > $pump_dec_step_2_tmp;
+			echo "$pump_dec_step_3" > $pump_dec_step_3_tmp;
+			echo "$pump_dec_step_4" > $pump_dec_step_4_tmp;
 		fi;
 
 		log -p i -t "$FILE_NAME" "*** CPU_GOV_TWEAKS: $state ***: enabled";
