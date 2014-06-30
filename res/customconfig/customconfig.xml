@@ -24,6 +24,8 @@
 
 		<checkbox description="Disabling GENTLE_FAIR_SLEEPERS may give you better UI responsiveness." name="GENTLE_FAIR_SLEEPERS" action="generic01 /sys/kernel/sched/gentle_fair_sleepers" label="GENTLE_FAIR_SLEEPERS"/>
 
+		<checkbox description="Enable ARCH_POWER." name="ARCH_POWER" action="generic01 /sys/kernel/sched/arch_power" label="ARCH_POWER"/>
+
 		<seekBar description="Sets the sched_mc value which changes the cpu scheduler behaviour for multi-cpu systems. 0 is kernel's default value which turns sched_mc off. Setting it to 1 means that the first core will be tried to be loaded more and setting it to 2 will bias task wake-ups to semi-idle cpu package for power savings. (default: 2)" name="sched_mc" action="generic /sys/devices/system/cpu/sched_mc_power_savings" unit="" min="0" reversed="false" step="1" max="2"/>
 
 		<seekBar description="Maximum CPU speed while using GPS. (Default: 1890.000 kHz)." name="scaling_max_gps_freq" action="genericfreq /sys/kernel/cpufreq_limit_manager/scaling_max_gps_freq" unit="kHz" min="810000" reversed="false" step="108000" max="1890000"/>
@@ -752,9 +754,9 @@
 
 	<settingsPane description="Select profile. You can also switch the default profiles (battery, default, performance) via Kernel-Recovery." name="STweaks Profiles">
 
-		<button description="extreme_battery.profile" name="extreme_battery.profile" action="push-actions/config_backup_restore 6" label="SlimSaberKat undervolted"/>
+		<button description="extreme_battery.profile" name="extreme_battery.profile" action="push-actions/config_backup_restore 6" label="EXTREME BATTERY"/>
 
-		<button description="battery.profile" name="battery.profile" action="push-actions/config_backup_restore 3" label="SlimSaberKat stock voltage"/>
+		<button description="battery.profile" name="battery.profile" action="push-actions/config_backup_restore 3" label="BATTERY"/>
 
 		<button description="default.profile" name="default.profile" action="push-actions/config_backup_restore 4" label="DEFAULT"/>
 
