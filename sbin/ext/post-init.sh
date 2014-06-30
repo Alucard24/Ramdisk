@@ -258,7 +258,8 @@ $BB mount -t tmpfs -o mode=0777,gid=1000 tmpfs /mnt/ntfs
 		# Load Custom Modules
 		MODULES_LOAD;
 
-		$BB sh /sbin/ext/cortexbrain-tune.sh apply_cpu update > /dev/null;
+		# $BB sh /sbin/ext/cortexbrain-tune.sh apply_cpu update > /dev/null;
+		$BB nohup /sbin/ext/cortexbrain-tune.sh apply_cpu update > /dev/null;
 	fi;
 
 	# Start any init.d scripts that may be present in the rom or added by the user
