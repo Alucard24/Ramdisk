@@ -1,38 +1,119 @@
 #!/sbin/busybox sh
 
+##############################################################################
+Get_File(){
+##############################################################################
+  local url_file=$1
+  
+  echo "Downloading Ad Blocker..."
+  ALL_OK=0
+  $W_GET $url_file -O $TMPFILE 2>$ERRFILE
+  if [ -s $TMPFILE ]
+  then
+    echo "Applying Ad Blocker..."
+    unzip -p $TMPFILE HOSTS > $HOSTFILE
+    chmod 644 $HOSTFILE
+    dos2unix -u $HOSTFILE
+	ALL_OK=1
+  fi
+}
 
-WGET_CHECK1=`ls -la /system/xbin/wget | wc -l`;
-WGET_CHECK2=`ls -la /system/bin/wget | wc -l`;
+##############################################################################
+# Main()
+##############################################################################
 
-if [ "$WGET_CHECK1" -eq "1" ] || [ "$WGET_CHECK2" -eq "1" ]; then
+echo "Ad Blocker"
+echo "=========="
+W_GET=""
+for i in /system/xbin /system/bin
+do 
+  if [ -x $i/wget ]
+  then
+    W_GET=$i/wget
+	break
+  fi
+done
+if [ ! "$W_GET" ]
+then
+  echo "Your BusyBox is not supported!"
+  exit 1
+fi
+  
+mount -o remount,rw /
+mount -o remount,rw /system
 
-	mount -o remount,rw /;
-	mount -o remount,rw /system;
+TMPFILE=$(mktemp -t).zip
+ERRFILE=$(mktemp -t)
+HOSTFILE=/system/etc/hosts
+CONF_FILE=/system/etc/resolv.conf
 
-	TMPFILE=$(mktemp -t);
-	HOST_FILE="/system/etc/hosts";
+DNS1=`getprop net.dns1`
+DNS2=`getprop net.rmnet0.dns1`
+DNS3=`getprop net.rmnet0.dns2`
 
-	DNS1=`getprop net.dns1`;
-	DNS2=`getprop net.rmnet0.dns1`;
-	DNS3=`getprop net.rmnet0.dns2`;
+# Set up the dns resolve file
+echo "Configuring DNS resolutions..."
+echo "nameserver 8.8.8.8" > $CONF_FILE
+echo "nameserver 8.8.4.4" >> $CONF_FILE
+for i in $DNS1 $DNS2 $DNS3
+do 
+  if [ "$i" ]
+  then      
+    echo "nameserver $i" >> $CONF_FILE
+  fi
+done
+chmod 644 $CONF_FILE
 
-	echo "nameserver 8.8.8.8" > /system/etc/resolv.conf;
-	echo "nameserver 8.8.4.4" >> /system/etc/resolv.conf;
-	echo "nameserver $DNS1" >> /system/etc/resolv.conf;
-	echo "nameserver $DNS2" >> /system/etc/resolv.conf;
-	echo "nameserver $DNS3" >> /system/etc/resolv.conf;
-
-	TESTCONNECTION=`wget http://www.google.com -O $TMPFILE > /dev/null 2>&1`;
-	if [ $? != 0 ]; then
-		echo "Problem: no internet connection! connect and try again";
-	else
-		wget http://winhelp2002.mvps.org/hosts.zip -O $TMPFILE > /dev/null 2>&1;
-		unzip -p $TMPFILE HOSTS > $HOST_FILE;
-		chmod 644 $HOST_FILE;
-		dos2unix -u /system/etc/hosts;
-		echo "AD Blocker: installed to /system/etc/hosts, reboot to use.";
-	fi;
-		rm -f $TMPFILE;
+rm -f $TMPFILE 2>/dev/null
+domain="www.winhelp2002.mvps.org"	
+zip_url="$domain/hosts.zip"
+Get_File $zip_url
+if [ $ALL_OK -eq 0 ]
+then
+  # Couldn't resolve host by DNS
+  if [ -s $ERRFILE ]
+  then
+	echo "Unable to resolve $domain"
+    # If the domain is not in the host file, then temporarily add it and re-attempt
+	grep -i $domain $HOSTFILE 1>/dev/null 2>/dev/null
+	if [ $? != 0 ]
+	then
+	  # It is not in the host file
+	  # Get this host's ip address
+      ipaddr=`ping -c 1 $domain | sed -n 's@^.*(\([0-9]*\.[0-9]*\.[0-9]*\.[0-9]*\).*$@\1@p' | head -1`
+	  if [ "$ipaddr" ]
+	  then
+	    # Temporarily add this domain's ip address to the hosts file
+	    echo "Temporarily adding $ipaddr $domain to hosts..."
+	    cp $HOSTFILE $HOSTFILE.bak
+	    echo "\n$ipaddr $domain">>$HOSTFILE
+	    sleep 1
+	    Get_File $zip_url
+	    if [ $ALL_OK -eq 0 ]
+	    then
+	      # wget still failed even after adding the domain to the host file
+		  # Put the host file back to its original version
+	      if [ -e $HOSTFILE.bak ]
+	      then
+	        rm -f $HOSTFILE 2>/dev/null
+	        mv $HOSTFILE.bak $HOSTFILE 2>/dev/null
+		    chmod 644 $HOSTFILE
+		  fi
+		fi
+	    rm -f $HOSTFILE.bak 2>/dev/null
+	  else
+	    echo "Unable to obtain IP-Address for $domain!"
+	  fi
+	fi
+  fi
+fi
+if [ $ALL_OK -eq 1 ]
+then
+  echo "AD Blocker: installed to $HOSTFILE"
+  echo "Reboot to apply."
 else
-	echo "Your BusyBox is not supported! Update to latest";
-fi;
+  echo "Ad Blocker: No internet connection!"
+  echo "Please try again!"
+fi
+
+rm -f $TMPFILE 2>/dev/null
