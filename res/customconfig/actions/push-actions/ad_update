@@ -10,7 +10,7 @@ Get_File(){
   $RM -f $WGET_FILE 2>/dev/null
   $RM -f $ERR_FILE 2>/dev/null
   
-  $WGET $url_file -O $WGET_FILE 2>$ERR_FILE
+  $WGET http://$url_file -O $WGET_FILE 2>$ERR_FILE
   if [ -s $WGET_FILE ]
   then
     $ECHO "Applying Ad Blocker..."
