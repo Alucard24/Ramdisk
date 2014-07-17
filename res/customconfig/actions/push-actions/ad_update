@@ -19,7 +19,13 @@ Get_File(){
     $DOS2UNIX -u $HOST_FILE
 	ALL_OK=1
   else
-    $ECHO "Download failed!"
+    $ECHO "Download failed:"
+	if [ -s $ERR_FILE ]
+	then
+	  $CAT $ERR_FILE
+	else
+	  $ECHO "(Unknown error)"
+	fi
   fi
 }
 
@@ -40,7 +46,6 @@ do
     break
   fi
 done
-<<<<<<< HEAD
 if [ ! "$BUSYBOX" ]
 then
   echo "BusyBox not found!"
@@ -48,81 +53,27 @@ then
 fi
 
 # Set all the required the commands with the correct path to busybox
-CHMOD="$BUSYBOX chmod"
-DOS2UNIX="$BUSYBOX dos2unix"
-ECHO="$BUSYBOX echo"
-GREP="$BUSYBOX grep"
-HEAD="$BUSYBOX head"
-MKTEMP="$BUSYBOX mktemp"
-if [ -x /system/bin/ping ]
-then
-  PING="/system/bin/ping"
-else
-  PING="$BUSYBOX ping"
-fi
-SED="$BUSYBOX sed"
-SLEEP="$BUSYBOX sleep"
-UNZIP="$BUSYBOX unzip"
-WGET="$BUSYBOX wget"
-# ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-=======
-
-# Set all the required the commands with the correct path to busybox
-AWK="$BUSYBOX awk"
-BASENAME="$BUSYBOX basename"
 CAT="$BUSYBOX cat"
 CHMOD="$BUSYBOX chmod"
-CP="$BUSYBOX cp"
-CUT="$BUSYBOX cut"
-DATE="$BUSYBOX date"
-DD="$BUSYBOX dd"
-DF="$BUSYBOX df"
-DIRNAME="$BUSYBOX dirname"
 DOS2UNIX="$BUSYBOX dos2unix"
-DU="$BUSYBOX du"
 ECHO="$BUSYBOX echo"
-EXPR="$BUSYBOX expr"
-FIND="$BUSYBOX find"
 GREP="$BUSYBOX grep"
 HEAD="$BUSYBOX head"
-LS="$BUSYBOX ls"
-LN="$BUSYBOX ln"
-MKDIR="$BUSYBOX mkdir"
 MKTEMP="$BUSYBOX mktemp"
-MOUNT="$BUSYBOX mount"
-MV="$BUSYBOX mv"
-PIDOF="$BUSYBOX pidof"
 if [ -x /system/bin/ping ]
 then
-  PING="/system/bin/ping"
+  PING1="/system/bin/ping"
+  PING2="$BUSYBOX ping"
 else
-  PING="$BUSYBOX ping"
+  PING1="$BUSYBOX ping"
+  PING2=""
 fi
-PS="$BUSYBOX ps"
-PWD="$BUSYBOX pwd"
-REV="$BUSYBOX rev"
-RM="$BUSYBOX rm"
 SED="$BUSYBOX sed"
 SLEEP="$BUSYBOX sleep"
-TAIL="$BUSYBOX tail"
-TOUCH="$BUSYBOX touch"
-TR="$BUSYBOX tr"
-UNMOUNT="$BUSYBOX unmount"
 UNZIP="$BUSYBOX unzip"
-WC="$BUSYBOX wc"
 WGET="$BUSYBOX wget"
 # ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-if [ "$BUSYBOX" ]
-then
-  $ECHO "Busybox: $BUSYBOX"
-else
-  echo "Your BusyBox is not supported"
-  exit 1
-fi
-  
->>>>>>> upstream/aosp-4.4
 mount -o remount,rw /
 mount -o remount,rw /system
 
@@ -138,11 +89,7 @@ DNS3=`getprop net.rmnet0.dns2`
 # Set up the dns resolve file
 $ECHO "Configuring DNS resolutions..."
 $ECHO "nameserver 8.8.8.8" > $CONF_FILE
-<<<<<<< HEAD
 $ECHO "nameserver 4.4.8.8" >> $CONF_FILE
-=======
-$ECHO "nameserver 8.8.4.4" >> $CONF_FILE
->>>>>>> upstream/aosp-4.4
 for i in $DNS1 $DNS2 $DNS3
 do 
   if [ "$i" ]
@@ -152,10 +99,6 @@ do
 done
 $CHMOD 644 $CONF_FILE
 
-<<<<<<< HEAD
-=======
-$RM -f $WGET_FILE 2>/dev/null
->>>>>>> upstream/aosp-4.4
 domain="www.winhelp2002.mvps.org"	
 zip_url="$domain/hosts.zip"
 
@@ -176,20 +119,18 @@ if [ $add_domain -eq 1 ]
 then
   # It is not in the host file
   # Get this host's ip address
-  ipaddr=`$PING -c 1 $domain | $SED -n 's@^.*(\([0-9]*\.[0-9]*\.[0-9]*\.[0-9]*\).*$@\1@p' | $HEAD -1`
+  $ECHO "Ping test: $domain"
+  ipaddr=`$PING1 -c 1 $domain | $SED -n 's@^.*(\([0-9]*\.[0-9]*\.[0-9]*\.[0-9]*\).*$@\1@p' | $HEAD -1`
+  if [ ! "$ipaddr" ] && [ "$PING2" ]
+  then
+    $ECHO "Fallback Ping test: $domain"
+    ipaddr=`$PING2 -c 1 $domain | $SED -n 's@^.*(\([0-9]*\.[0-9]*\.[0-9]*\.[0-9]*\).*$@\1@p' | $HEAD -1`
+  fi
   if [ "$ipaddr" ]
   then
 	# Temporarily add this domain's ip address to the hosts file
 	$ECHO "Adding Ad Blocker domain to hosts:"
 	$ECHO "$ipaddr $domain"
-<<<<<<< HEAD
-=======
-	$RM -f $HOST_FILE.bak 2>/dev/null
-	if [ -e $HOST_FILE ]
-	then
-	  $CP $HOST_FILE $HOST_FILE.bak
-	fi
->>>>>>> upstream/aosp-4.4
 	$ECHO >> $HOST_FILE
 	$ECHO "# $domain added by Ad Blocker vvvvv" >> $HOST_FILE
 	$ECHO "$ipaddr $domain">>$HOST_FILE
@@ -202,8 +143,7 @@ then
   $GREP -i $domain $HOST_FILE 1>/dev/null 2>/dev/null
   if [ $? -eq 0 ]
   then
-<<<<<<< HEAD
-    $ECHO "Ad Blocker domain added to hosts"
+    $ECHO "Ad Blocker domain found in hosts"
   else
     $ECHO "Unable to obtain IP-Address for $domain"
 	$ECHO "Attempting with DNS resolution"
@@ -212,40 +152,19 @@ fi
 
 # Attempt to download the hosts.zip file
 Get_File $zip_url
-=======
-    # Its now in the host file
-    # Attempt a wget
-    Get_File $zip_url
-  else
-    $ECHO "Unable to obtain IP-Address for $domain"
-  fi
-else
-  $ECHO "Unable to find $HOST_FILE"
-fi
-$RM -f $HOST_FILE.bak 2>/dev/null
->>>>>>> upstream/aosp-4.4
 
 if [ $ALL_OK -eq 1 ]
 then
   $ECHO "Installed new $HOST_FILE"
   $ECHO "Reboot to apply."
-<<<<<<< HEAD
   exit_val=0
 else
   $ECHO "Unable to download Ad Blocker hosts file"
   $ECHO "Please try again!"
   exit_val=1
-=======
-else
-  $ECHO "No internet connection"
-  $ECHO "Please try again!"
->>>>>>> upstream/aosp-4.4
 fi
 
 $RM -f $WGET_FILE 2>/dev/null
 $RM -f $ERR_FILE 2>/dev/null
-<<<<<<< HEAD
 
 exit $exit_val
-=======
->>>>>>> upstream/aosp-4.4
