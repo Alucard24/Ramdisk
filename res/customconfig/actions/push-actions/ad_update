@@ -10,7 +10,7 @@ Get_File(){
   $RM -f $WGET_FILE 2>/dev/null
   $RM -f $ERR_FILE 2>/dev/null
   
-  $WGET $url_file -O $WGET_FILE 2>$ERR_FILE
+  $WGET http://$url_file -O $WGET_FILE 2>$ERR_FILE
   if [ -s $WGET_FILE ]
   then
     $ECHO "Applying Ad Blocker..."
@@ -20,15 +20,18 @@ Get_File(){
 	ALL_OK=1
   else
     $ECHO "Download failed!"
+	if [ -s $ERR_FILE ]
+	then
+	  $CAT $ERR_FILE
+	else
+	  $ECHO "(Unknown error)"
+	fi
   fi
 }
 
 ##############################################################################
 # Main()
 ##############################################################################
-
-echo "Ad Blocker"
-echo "----------"
 
 BUSYBOX=""
 # Check if $BUSYBOX has been installed
@@ -42,22 +45,26 @@ do
 done
 if [ ! "$BUSYBOX" ]
 then
-  echo "BusyBox not found!"
+  echo "Ad Blocker: BusyBox not found!"
   exit 1
 fi
 
 # Set all the required the commands with the correct path to busybox
+CAT="$BUSYBOX cat"
 CHMOD="$BUSYBOX chmod"
 DOS2UNIX="$BUSYBOX dos2unix"
 ECHO="$BUSYBOX echo"
 GREP="$BUSYBOX grep"
 HEAD="$BUSYBOX head"
 MKTEMP="$BUSYBOX mktemp"
+MOUNT="$BUSYBOX mount"
 if [ -x /system/bin/ping ]
 then
-  PING="/system/bin/ping"
+  PING1="/system/bin/ping"
+  PING2="$BUSYBOX ping"
 else
-  PING="$BUSYBOX ping"
+  PING1="$BUSYBOX ping"
+  PING2=""
 fi
 SED="$BUSYBOX sed"
 SLEEP="$BUSYBOX sleep"
@@ -65,57 +72,46 @@ UNZIP="$BUSYBOX unzip"
 WGET="$BUSYBOX wget"
 # ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-mount -o remount,rw /
-mount -o remount,rw /system
+$ECHO "Ad Blocker"
+$ECHO "----------"
+
+$MOUNT -o remount,rw /
+$MOUNT -o remount,rw /system
 
 WGET_FILE=$($MKTEMP -t).zip
 ERR_FILE=$($MKTEMP -t)
 HOST_FILE=/system/etc/hosts
-CONF_FILE=/system/etc/resolv.conf
-
-DNS1=`getprop net.dns1`
-DNS2=`getprop net.rmnet0.dns1`
-DNS3=`getprop net.rmnet0.dns2`
-
-# Set up the dns resolve file
-$ECHO "Configuring DNS resolutions..."
-$ECHO "nameserver 8.8.8.8" > $CONF_FILE
-$ECHO "nameserver 4.4.8.8" >> $CONF_FILE
-for i in $DNS1 $DNS2 $DNS3
-do 
-  if [ "$i" ]
-  then      
-    $ECHO "nameserver $i" >> $CONF_FILE
-  fi
-done
-$CHMOD 644 $CONF_FILE
 
 domain="www.winhelp2002.mvps.org"	
 zip_url="$domain/hosts.zip"
 
-# See if the domain is in the host file
-# If not then temporarily add it
-add_domain=0
-if [ -e $HOST_FILE ]
+# Get this host's ip address
+$ECHO "Resolving $domain..."
+ipaddr=`$PING1 -c 1 $domain | $SED -n 's@^.*(\([0-9]*\.[0-9]*\.[0-9]*\.[0-9]*\).*$@\1@p' | $HEAD -1`
+if [ ! "$ipaddr" ] && [ "$PING2" ]
 then
-  $GREP -i $domain $HOST_FILE 1>/dev/null 2>/dev/null
-  if [ $? -ne 0 ]
-  then
-    add_domain=1
-  fi
-else
-  add_domain=1
+  $ECHO "Fallback Ping..."
+  ipaddr=`$PING2 -c 1 $domain | $SED -n 's@^.*(\([0-9]*\.[0-9]*\.[0-9]*\.[0-9]*\).*$@\1@p' | $HEAD -1`
 fi
-if [ $add_domain -eq 1 ]
+if [ "$ipaddr" ]
 then
-  # It is not in the host file
-  # Get this host's ip address
-  ipaddr=`$PING -c 1 $domain | $SED -n 's@^.*(\([0-9]*\.[0-9]*\.[0-9]*\.[0-9]*\).*$@\1@p' | $HEAD -1`
-  if [ "$ipaddr" ]
+  $ECHO "IP Address: $ipaddr"
+  # IP Address for Ad Blocker domain found
+  # See if the domain is in the host file
+  # If not then temporarily add it
+  add_domain=1
+  if [ -e $HOST_FILE ]
+  then
+    $GREP -i $domain $HOST_FILE 1>/dev/null 2>/dev/null
+    if [ $? -eq 0 ]
+    then
+      add_domain=0
+    fi
+  fi
+  if [ $add_domain -eq 1 ]
   then
 	# Temporarily add this domain's ip address to the hosts file
-	$ECHO "Adding Ad Blocker domain to hosts:"
-	$ECHO "$ipaddr $domain"
+	# so that the wget command will work properly
 	$ECHO >> $HOST_FILE
 	$ECHO "# $domain added by Ad Blocker vvvvv" >> $HOST_FILE
 	$ECHO "$ipaddr $domain">>$HOST_FILE
@@ -123,16 +119,36 @@ then
 	$SLEEP 1
   fi
 fi
+
+add_nameserver=1
 if [ -e $HOST_FILE ]
 then
   $GREP -i $domain $HOST_FILE 1>/dev/null 2>/dev/null
   if [ $? -eq 0 ]
   then
-    $ECHO "Ad Blocker domain added to hosts"
-  else
-    $ECHO "Unable to obtain IP-Address for $domain"
-	$ECHO "Attempting with DNS resolution"
+    add_nameserver=0
   fi
+fi
+if [ $add_nameserver -eq 1 ]
+then
+  $ECHO "Unknown IP-Address for $domain"
+  $ECHO "Attempting with DNS resolution..."
+  conf_file=/system/etc/resolv.conf
+  dns1=`getprop net.dns1`
+  dns2=`getprop net.rmnet0.dns1`
+  dns3=`getprop net.rmnet0.dns2`
+
+  # Set up the dns resolve file
+  $ECHO "nameserver 8.8.8.8" > $conf_file
+  $ECHO "nameserver 4.4.8.8" >> $conf_file
+  for i in $dns1 $dns2 $dns3
+  do 
+    if [ "$i" ]
+    then      
+      $ECHO "nameserver $i" >> $conf_file
+    fi
+  done
+  $CHMOD 644 $conf_file
 fi
 
 # Attempt to download the hosts.zip file
