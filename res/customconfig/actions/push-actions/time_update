@@ -19,6 +19,7 @@ if [ "$WGET_CHECK1" -eq "1" ] || [ "$WGET_CHECK2" -eq "1" ]; then
 	echo "nameserver $DNS3" >> /system/etc/resolv.conf;
 
 	ntpd -n -q -p `cat /system/etc/gps.conf | grep NTP_SERVER | cut -f 2 -d "="`;
+	echo "time updated";
 	
 	rm -f $TMPFILE;
 else
