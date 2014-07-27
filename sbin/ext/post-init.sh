@@ -110,11 +110,9 @@ $BB chown system /sys/devices/system/cpu/cpu1/online
 $BB chown system /sys/devices/system/cpu/cpu2/online
 $BB chown system /sys/devices/system/cpu/cpu3/online
 $BB chmod 666 /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor
-$BB chmod 666 /sys/devices/system/cpu/cpufreq/all_cpus/scaling_governor_all_cpus
+$BB chmod 666 /sys/devices/system/cpu/cpufreq/all_cpus/*
 $BB chmod 666 /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq
 $BB chmod 666 /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq
-$BB chmod 666 /sys/devices/system/cpu/cpufreq/all_cpus/scaling_max_freq_all_cpus
-$BB chmod 666 /sys/devices/system/cpu/cpufreq/all_cpus/scaling_min_freq_all_cpus
 $BB chmod 444 /sys/devices/system/cpu/cpu0/cpufreq/cpuinfo_cur_freq
 $BB chmod 444 /sys/devices/system/cpu/cpu0/cpufreq/stats/*
 $BB chmod 666 /sys/devices/system/cpu/cpu1/online
