@@ -302,206 +302,215 @@ CPU_GOV_TWEAKS()
 	local state="$1";
 
 	if [ "$cortexbrain_cpu" == "on" ]; then
-		local SYSTEM_GOVERNOR=$(cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor);
+		local SYSTEM_GOVERNOR_PATH=$(find /sys/devices/system/cpu/cpufreq/all_cpus/scaling_governor_cpu*);
+		local i="";
+		local PREV_SYSTEM_GOVERNOR="";
 		
 		# tune-settings
 		if [ "$state" == "tune" ]; then
-			local sampling_rate_tmp="/sys/devices/system/cpu/cpufreq/$SYSTEM_GOVERNOR/sampling_rate";
-			if [ ! -e $sampling_rate_tmp ]; then
-				sampling_rate_tmp="/dev/null";
-			fi;
+			for i in $SYSTEM_GOVERNOR_PATH; do
+				local SYSTEM_GOVERNOR=$(cat "$i");
+				if [ "$(echo "$PREV_SYSTEM_GOVERNOR" | grep "$SYSTEM_GOVERNOR" | wc -l)" -lt "1" ]; then
+					PREV_SYSTEM_GOVERNOR=$(printf "%s $SYSTEM_GOVERNOR" "$PREV_SYSTEM_GOVERNOR");
 
-			local up_threshold_tmp="/sys/devices/system/cpu/cpufreq/$SYSTEM_GOVERNOR/up_threshold";
-			if [ ! -e $up_threshold_tmp ]; then
-				up_threshold_tmp="/dev/null";
-			fi;
+					local sampling_rate_tmp="/sys/devices/system/cpu/cpufreq/$SYSTEM_GOVERNOR/sampling_rate";
+					if [ ! -e $sampling_rate_tmp ]; then
+						sampling_rate_tmp="/dev/null";
+					fi;
 
-			local up_threshold_at_min_freq_tmp="/sys/devices/system/cpu/cpufreq/$SYSTEM_GOVERNOR/up_threshold_at_min_freq";
-			if [ ! -e $up_threshold_at_min_freq_tmp ]; then
-				up_threshold_at_min_freq_tmp="/dev/null";
-			fi;
+					local up_threshold_tmp="/sys/devices/system/cpu/cpufreq/$SYSTEM_GOVERNOR/up_threshold";
+					if [ ! -e $up_threshold_tmp ]; then
+						up_threshold_tmp="/dev/null";
+					fi;
 
-			local up_threshold_min_freq_tmp="/sys/devices/system/cpu/cpufreq/$SYSTEM_GOVERNOR/up_threshold_min_freq";
-			if [ ! -e $up_threshold_min_freq_tmp ]; then
-				up_threshold_min_freq_tmp="/dev/null";
-			fi;
+					local up_threshold_at_min_freq_tmp="/sys/devices/system/cpu/cpufreq/$SYSTEM_GOVERNOR/up_threshold_at_min_freq";
+					if [ ! -e $up_threshold_at_min_freq_tmp ]; then
+						up_threshold_at_min_freq_tmp="/dev/null";
+					fi;
 
-			local inc_cpu_load_at_min_freq_tmp="/sys/devices/system/cpu/cpufreq/$SYSTEM_GOVERNOR/inc_cpu_load_at_min_freq";
-			if [ ! -e $inc_cpu_load_at_min_freq_tmp ]; then
-				inc_cpu_load_at_min_freq_tmp="/dev/null";
-			fi;
+					local up_threshold_min_freq_tmp="/sys/devices/system/cpu/cpufreq/$SYSTEM_GOVERNOR/up_threshold_min_freq";
+					if [ ! -e $up_threshold_min_freq_tmp ]; then
+						up_threshold_min_freq_tmp="/dev/null";
+					fi;
 
-			local dec_cpu_load_at_min_freq_tmp="/sys/devices/system/cpu/cpufreq/$SYSTEM_GOVERNOR/dec_cpu_load_at_min_freq";
-			if [ ! -e $dec_cpu_load_at_min_freq_tmp ]; then
-				dec_cpu_load_at_min_freq_tmp="/dev/null";
-			fi;
+					local inc_cpu_load_at_min_freq_tmp="/sys/devices/system/cpu/cpufreq/$SYSTEM_GOVERNOR/inc_cpu_load_at_min_freq";
+					if [ ! -e $inc_cpu_load_at_min_freq_tmp ]; then
+						inc_cpu_load_at_min_freq_tmp="/dev/null";
+					fi;
 
-			local down_threshold_tmp="/sys/devices/system/cpu/cpufreq/$SYSTEM_GOVERNOR/down_threshold";
-			if [ ! -e $down_threshold_tmp ]; then
-				down_threshold_tmp="/dev/null";
-			fi;
+					local dec_cpu_load_at_min_freq_tmp="/sys/devices/system/cpu/cpufreq/$SYSTEM_GOVERNOR/dec_cpu_load_at_min_freq";
+					if [ ! -e $dec_cpu_load_at_min_freq_tmp ]; then
+						dec_cpu_load_at_min_freq_tmp="/dev/null";
+					fi;
 
-			local sampling_down_factor_tmp="/sys/devices/system/cpu/cpufreq/$SYSTEM_GOVERNOR/sampling_down_factor";
-			if [ ! -e $sampling_down_factor_tmp ]; then
-				sampling_down_factor_tmp="/dev/null";
-			fi;
+					local down_threshold_tmp="/sys/devices/system/cpu/cpufreq/$SYSTEM_GOVERNOR/down_threshold";
+					if [ ! -e $down_threshold_tmp ]; then
+						down_threshold_tmp="/dev/null";
+					fi;
 
-			local down_differential_tmp="/sys/devices/system/cpu/cpufreq/$SYSTEM_GOVERNOR/down_differential";
-			if [ ! -e $down_differential_tmp ]; then
-				down_differential_tmp="/dev/null";
-			fi;
+					local sampling_down_factor_tmp="/sys/devices/system/cpu/cpufreq/$SYSTEM_GOVERNOR/sampling_down_factor";
+					if [ ! -e $sampling_down_factor_tmp ]; then
+						sampling_down_factor_tmp="/dev/null";
+					fi;
 
-			local freq_for_responsiveness_tmp="/sys/devices/system/cpu/cpufreq/$SYSTEM_GOVERNOR/freq_for_responsiveness";
-			if [ ! -e $freq_for_responsiveness_tmp ]; then
-				freq_for_responsiveness_tmp="/dev/null";
-			fi;
+					local down_differential_tmp="/sys/devices/system/cpu/cpufreq/$SYSTEM_GOVERNOR/down_differential";
+					if [ ! -e $down_differential_tmp ]; then
+						down_differential_tmp="/dev/null";
+					fi;
 
-			local freq_responsiveness_tmp="/sys/devices/system/cpu/cpufreq/$SYSTEM_GOVERNOR/freq_responsiveness";
-			if [ ! -e $freq_responsiveness_tmp ]; then
-				freq_responsiveness_tmp="/dev/null";
-			fi;
+					local freq_for_responsiveness_tmp="/sys/devices/system/cpu/cpufreq/$SYSTEM_GOVERNOR/freq_for_responsiveness";
+					if [ ! -e $freq_for_responsiveness_tmp ]; then
+						freq_for_responsiveness_tmp="/dev/null";
+					fi;
 
-			local freq_for_responsiveness_max_tmp="/sys/devices/system/cpu/cpufreq/$SYSTEM_GOVERNOR/freq_for_responsiveness_max";
-			if [ ! -e $freq_for_responsiveness_max_tmp ]; then
-				freq_for_responsiveness_max_tmp="/dev/null";
-			fi;
+					local freq_responsiveness_tmp="/sys/devices/system/cpu/cpufreq/$SYSTEM_GOVERNOR/freq_responsiveness";
+					if [ ! -e $freq_responsiveness_tmp ]; then
+						freq_responsiveness_tmp="/dev/null";
+					fi;
 
-			local freq_step_at_min_freq_tmp="/sys/devices/system/cpu/cpufreq/$SYSTEM_GOVERNOR/freq_step_at_min_freq";
-			if [ ! -e $freq_step_at_min_freq_tmp ]; then
-				freq_step_at_min_freq_tmp="/dev/null";
-			fi;
+					local freq_for_responsiveness_max_tmp="/sys/devices/system/cpu/cpufreq/$SYSTEM_GOVERNOR/freq_for_responsiveness_max";
+					if [ ! -e $freq_for_responsiveness_max_tmp ]; then
+						freq_for_responsiveness_max_tmp="/dev/null";
+					fi;
 
-			local freq_step_tmp="/sys/devices/system/cpu/cpufreq/$SYSTEM_GOVERNOR/freq_step";
-			if [ ! -e $freq_step_tmp ]; then
-				freq_step_tmp="/dev/null";
-			fi;
+					local freq_step_at_min_freq_tmp="/sys/devices/system/cpu/cpufreq/$SYSTEM_GOVERNOR/freq_step_at_min_freq";
+					if [ ! -e $freq_step_at_min_freq_tmp ]; then
+						freq_step_at_min_freq_tmp="/dev/null";
+					fi;
 
-			local freq_step_dec_tmp="/sys/devices/system/cpu/cpufreq/$SYSTEM_GOVERNOR/freq_step_dec";
-			if [ ! -e $freq_step_dec_tmp ]; then
-				freq_step_dec_tmp="/dev/null";
-			fi;
+					local freq_step_tmp="/sys/devices/system/cpu/cpufreq/$SYSTEM_GOVERNOR/freq_step";
+					if [ ! -e $freq_step_tmp ]; then
+						freq_step_tmp="/dev/null";
+					fi;
 
-			local freq_step_dec_at_max_freq_tmp="/sys/devices/system/cpu/cpufreq/$SYSTEM_GOVERNOR/freq_step_dec_at_max_freq";
-			if [ ! -e $freq_step_dec_at_max_freq_tmp ]; then
-				freq_step_dec_at_max_freq_tmp="/dev/null";
-			fi;
+					local freq_step_dec_tmp="/sys/devices/system/cpu/cpufreq/$SYSTEM_GOVERNOR/freq_step_dec";
+					if [ ! -e $freq_step_dec_tmp ]; then
+						freq_step_dec_tmp="/dev/null";
+					fi;
 
-			local inc_cpu_load_tmp="/sys/devices/system/cpu/cpufreq/$SYSTEM_GOVERNOR/inc_cpu_load";
-			if [ ! -e $inc_cpu_load_tmp ]; then
-				inc_cpu_load_tmp="/dev/null";
-			fi;
+					local freq_step_dec_at_max_freq_tmp="/sys/devices/system/cpu/cpufreq/$SYSTEM_GOVERNOR/freq_step_dec_at_max_freq";
+					if [ ! -e $freq_step_dec_at_max_freq_tmp ]; then
+						freq_step_dec_at_max_freq_tmp="/dev/null";
+					fi;
 
-			local dec_cpu_load_tmp="/sys/devices/system/cpu/cpufreq/$SYSTEM_GOVERNOR/dec_cpu_load";
-			if [ ! -e $dec_cpu_load_tmp ]; then
-				dec_cpu_load_tmp="/dev/null";
-			fi;
+					local inc_cpu_load_tmp="/sys/devices/system/cpu/cpufreq/$SYSTEM_GOVERNOR/inc_cpu_load";
+					if [ ! -e $inc_cpu_load_tmp ]; then
+						inc_cpu_load_tmp="/dev/null";
+					fi;
 
-			local freq_up_brake_at_min_freq_tmp="/sys/devices/system/cpu/cpufreq/$SYSTEM_GOVERNOR/freq_up_brake_at_min_freq";
-			if [ ! -e $freq_up_brake_at_min_freq_tmp ]; then
-				freq_up_brake_at_min_freq_tmp="/dev/null";
-			fi;
+					local dec_cpu_load_tmp="/sys/devices/system/cpu/cpufreq/$SYSTEM_GOVERNOR/dec_cpu_load";
+					if [ ! -e $dec_cpu_load_tmp ]; then
+						dec_cpu_load_tmp="/dev/null";
+					fi;
 
-			local freq_up_brake_tmp="/sys/devices/system/cpu/cpufreq/$SYSTEM_GOVERNOR/freq_up_brake";
-			if [ ! -e $freq_up_brake_tmp ]; then
-				freq_up_brake_tmp="/dev/null";
-			fi;
+					local freq_up_brake_at_min_freq_tmp="/sys/devices/system/cpu/cpufreq/$SYSTEM_GOVERNOR/freq_up_brake_at_min_freq";
+					if [ ! -e $freq_up_brake_at_min_freq_tmp ]; then
+						freq_up_brake_at_min_freq_tmp="/dev/null";
+					fi;
 
-			# merge up_threshold_at_min_freq & up_threshold_min_freq => up_threshold_at_min_freq_tmp
-			if [ $up_threshold_at_min_freq_tmp == "/dev/null" ] && [ $up_threshold_min_freq_tmp != "/dev/null" ]; then
-				up_threshold_at_min_freq_tmp=$up_threshold_min_freq_tmp;
-			fi;
+					local freq_up_brake_tmp="/sys/devices/system/cpu/cpufreq/$SYSTEM_GOVERNOR/freq_up_brake";
+					if [ ! -e $freq_up_brake_tmp ]; then
+						freq_up_brake_tmp="/dev/null";
+					fi;
 
-			local pump_inc_step_at_min_freq_1_tmp="/sys/devices/system/cpu/cpufreq/$SYSTEM_GOVERNOR/pump_inc_step_at_min_freq_1";
-			if [ ! -e $pump_inc_step_at_min_freq_1_tmp ]; then
-				pump_inc_step_at_min_freq_1_tmp="/dev/null";
-			fi;
+					# merge up_threshold_at_min_freq & up_threshold_min_freq => up_threshold_at_min_freq_tmp
+					if [ $up_threshold_at_min_freq_tmp == "/dev/null" ] && [ $up_threshold_min_freq_tmp != "/dev/null" ]; then
+						up_threshold_at_min_freq_tmp=$up_threshold_min_freq_tmp;
+					fi;
 
-			local pump_inc_step_at_min_freq_2_tmp="/sys/devices/system/cpu/cpufreq/$SYSTEM_GOVERNOR/pump_inc_step_at_min_freq_2";
-			if [ ! -e $pump_inc_step_at_min_freq_2_tmp ]; then
-				pump_inc_step_at_min_freq_2_tmp="/dev/null";
-			fi;
+					local pump_inc_step_at_min_freq_1_tmp="/sys/devices/system/cpu/cpufreq/$SYSTEM_GOVERNOR/pump_inc_step_at_min_freq_1";
+					if [ ! -e $pump_inc_step_at_min_freq_1_tmp ]; then
+						pump_inc_step_at_min_freq_1_tmp="/dev/null";
+					fi;
 
-			local pump_inc_step_at_min_freq_3_tmp="/sys/devices/system/cpu/cpufreq/$SYSTEM_GOVERNOR/pump_inc_step_at_min_freq_3";
-			if [ ! -e $pump_inc_step_at_min_freq_3_tmp ]; then
-				pump_inc_step_at_min_freq_3_tmp="/dev/null";
-			fi;
+					local pump_inc_step_at_min_freq_2_tmp="/sys/devices/system/cpu/cpufreq/$SYSTEM_GOVERNOR/pump_inc_step_at_min_freq_2";
+					if [ ! -e $pump_inc_step_at_min_freq_2_tmp ]; then
+						pump_inc_step_at_min_freq_2_tmp="/dev/null";
+					fi;
 
-			local pump_inc_step_at_min_freq_4_tmp="/sys/devices/system/cpu/cpufreq/$SYSTEM_GOVERNOR/pump_inc_step_at_min_freq_4";
-			if [ ! -e $pump_inc_step_at_min_freq_4_tmp ]; then
-				pump_inc_step_at_min_freq_4_tmp="/dev/null";
-			fi;
+					local pump_inc_step_at_min_freq_3_tmp="/sys/devices/system/cpu/cpufreq/$SYSTEM_GOVERNOR/pump_inc_step_at_min_freq_3";
+					if [ ! -e $pump_inc_step_at_min_freq_3_tmp ]; then
+						pump_inc_step_at_min_freq_3_tmp="/dev/null";
+					fi;
 
-			local pump_inc_step_1_tmp="/sys/devices/system/cpu/cpufreq/$SYSTEM_GOVERNOR/pump_inc_step_1";
-			if [ ! -e $pump_inc_step_1_tmp ]; then
-				pump_inc_step_1_tmp="/dev/null";
-			fi;
+					local pump_inc_step_at_min_freq_4_tmp="/sys/devices/system/cpu/cpufreq/$SYSTEM_GOVERNOR/pump_inc_step_at_min_freq_4";
+					if [ ! -e $pump_inc_step_at_min_freq_4_tmp ]; then
+						pump_inc_step_at_min_freq_4_tmp="/dev/null";
+					fi;
 
-			local pump_inc_step_2_tmp="/sys/devices/system/cpu/cpufreq/$SYSTEM_GOVERNOR/pump_inc_step_2";
-			if [ ! -e $pump_inc_step_2_tmp ]; then
-				pump_inc_step_2_tmp="/dev/null";
-			fi;
+					local pump_inc_step_1_tmp="/sys/devices/system/cpu/cpufreq/$SYSTEM_GOVERNOR/pump_inc_step_1";
+					if [ ! -e $pump_inc_step_1_tmp ]; then
+						pump_inc_step_1_tmp="/dev/null";
+					fi;
 
-			local pump_inc_step_3_tmp="/sys/devices/system/cpu/cpufreq/$SYSTEM_GOVERNOR/pump_inc_step_3";
-			if [ ! -e $pump_inc_step_3_tmp ]; then
-				pump_inc_step_3_tmp="/dev/null";
-			fi;
+					local pump_inc_step_2_tmp="/sys/devices/system/cpu/cpufreq/$SYSTEM_GOVERNOR/pump_inc_step_2";
+					if [ ! -e $pump_inc_step_2_tmp ]; then
+						pump_inc_step_2_tmp="/dev/null";
+					fi;
 
-			local pump_inc_step_4_tmp="/sys/devices/system/cpu/cpufreq/$SYSTEM_GOVERNOR/pump_inc_step_4";
-			if [ ! -e $pump_inc_step_4_tmp ]; then
-				pump_inc_step_4_tmp="/dev/null";
-			fi;
+					local pump_inc_step_3_tmp="/sys/devices/system/cpu/cpufreq/$SYSTEM_GOVERNOR/pump_inc_step_3";
+					if [ ! -e $pump_inc_step_3_tmp ]; then
+						pump_inc_step_3_tmp="/dev/null";
+					fi;
 
-			local pump_dec_step_1_tmp="/sys/devices/system/cpu/cpufreq/$SYSTEM_GOVERNOR/pump_dec_step_1";
-			if [ ! -e $pump_dec_step_1_tmp ]; then
-				pump_dec_step_1_tmp="/dev/null";
-			fi;
+					local pump_inc_step_4_tmp="/sys/devices/system/cpu/cpufreq/$SYSTEM_GOVERNOR/pump_inc_step_4";
+					if [ ! -e $pump_inc_step_4_tmp ]; then
+						pump_inc_step_4_tmp="/dev/null";
+					fi;
 
-			local pump_dec_step_2_tmp="/sys/devices/system/cpu/cpufreq/$SYSTEM_GOVERNOR/pump_dec_step_2";
-			if [ ! -e $pump_dec_step_2_tmp ]; then
-				pump_dec_step_2_tmp="/dev/null";
-			fi;
+					local pump_dec_step_1_tmp="/sys/devices/system/cpu/cpufreq/$SYSTEM_GOVERNOR/pump_dec_step_1";
+					if [ ! -e $pump_dec_step_1_tmp ]; then
+						pump_dec_step_1_tmp="/dev/null";
+					fi;
 
-			local pump_dec_step_3_tmp="/sys/devices/system/cpu/cpufreq/$SYSTEM_GOVERNOR/pump_dec_step_3";
-			if [ ! -e $pump_dec_step_3_tmp ]; then
-				pump_dec_step_3_tmp="/dev/null";
-			fi;
+					local pump_dec_step_2_tmp="/sys/devices/system/cpu/cpufreq/$SYSTEM_GOVERNOR/pump_dec_step_2";
+					if [ ! -e $pump_dec_step_2_tmp ]; then
+						pump_dec_step_2_tmp="/dev/null";
+					fi;
 
-			local pump_dec_step_4_tmp="/sys/devices/system/cpu/cpufreq/$SYSTEM_GOVERNOR/pump_dec_step_4";
-			if [ ! -e $pump_dec_step_4_tmp ]; then
-				pump_dec_step_4_tmp="/dev/null";
-			fi;
+					local pump_dec_step_3_tmp="/sys/devices/system/cpu/cpufreq/$SYSTEM_GOVERNOR/pump_dec_step_3";
+					if [ ! -e $pump_dec_step_3_tmp ]; then
+						pump_dec_step_3_tmp="/dev/null";
+					fi;
 
-			echo "$sampling_rate" > $sampling_rate_tmp;
-			echo "$up_threshold" > $up_threshold_tmp;
-			echo "$up_threshold_at_min_freq" > $up_threshold_at_min_freq_tmp;
-			echo "$inc_cpu_load_at_min_freq" > $inc_cpu_load_at_min_freq_tmp;
-			echo "$dec_cpu_load_at_min_freq" > $dec_cpu_load_at_min_freq_tmp;
-			echo "$down_threshold" > $down_threshold_tmp;
-			echo "$sampling_down_factor" > $sampling_down_factor_tmp;
-			echo "$down_differential" > $down_differential_tmp;
-			echo "$freq_step_at_min_freq" > $freq_step_at_min_freq_tmp;
-			echo "$freq_step" > $freq_step_tmp;
-			echo "$freq_step_dec" > $freq_step_dec_tmp;
-			echo "$freq_step_dec_at_max_freq" > $freq_step_dec_at_max_freq_tmp;
-			echo "$freq_for_responsiveness" > $freq_for_responsiveness_tmp;
-			echo "$freq_responsiveness" > $freq_responsiveness_tmp;
-			echo "$freq_for_responsiveness_max" > $freq_for_responsiveness_max_tmp;
-			echo "$inc_cpu_load" > $inc_cpu_load_tmp;
-			echo "$dec_cpu_load" > $dec_cpu_load_tmp;
-			echo "$freq_up_brake_at_min_freq" > $freq_up_brake_at_min_freq_tmp;
-			echo "$freq_up_brake" > $freq_up_brake_tmp;
-			echo "$pump_inc_step_at_min_freq_1" > $pump_inc_step_at_min_freq_1_tmp;
-			echo "$pump_inc_step_at_min_freq_2" > $pump_inc_step_at_min_freq_2_tmp;
-			echo "$pump_inc_step_at_min_freq_3" > $pump_inc_step_at_min_freq_3_tmp;
-			echo "$pump_inc_step_at_min_freq_4" > $pump_inc_step_at_min_freq_4_tmp;
-			echo "$pump_inc_step_1" > $pump_inc_step_1_tmp;
-			echo "$pump_inc_step_2" > $pump_inc_step_2_tmp;
-			echo "$pump_inc_step_3" > $pump_inc_step_3_tmp;
-			echo "$pump_inc_step_4" > $pump_inc_step_4_tmp;
-			echo "$pump_dec_step_1" > $pump_dec_step_1_tmp;
-			echo "$pump_dec_step_2" > $pump_dec_step_2_tmp;
-			echo "$pump_dec_step_3" > $pump_dec_step_3_tmp;
-			echo "$pump_dec_step_4" > $pump_dec_step_4_tmp;
+					local pump_dec_step_4_tmp="/sys/devices/system/cpu/cpufreq/$SYSTEM_GOVERNOR/pump_dec_step_4";
+					if [ ! -e $pump_dec_step_4_tmp ]; then
+						pump_dec_step_4_tmp="/dev/null";
+					fi;
+
+					echo "$sampling_rate" > $sampling_rate_tmp;
+					echo "$up_threshold" > $up_threshold_tmp;
+					echo "$up_threshold_at_min_freq" > $up_threshold_at_min_freq_tmp;
+					echo "$inc_cpu_load_at_min_freq" > $inc_cpu_load_at_min_freq_tmp;
+					echo "$dec_cpu_load_at_min_freq" > $dec_cpu_load_at_min_freq_tmp;
+					echo "$down_threshold" > $down_threshold_tmp;
+					echo "$sampling_down_factor" > $sampling_down_factor_tmp;
+					echo "$down_differential" > $down_differential_tmp;
+					echo "$freq_step_at_min_freq" > $freq_step_at_min_freq_tmp;
+					echo "$freq_step" > $freq_step_tmp;
+					echo "$freq_step_dec" > $freq_step_dec_tmp;
+					echo "$freq_step_dec_at_max_freq" > $freq_step_dec_at_max_freq_tmp;
+					echo "$freq_for_responsiveness" > $freq_for_responsiveness_tmp;
+					echo "$freq_responsiveness" > $freq_responsiveness_tmp;
+					echo "$freq_for_responsiveness_max" > $freq_for_responsiveness_max_tmp;
+					echo "$inc_cpu_load" > $inc_cpu_load_tmp;
+					echo "$dec_cpu_load" > $dec_cpu_load_tmp;
+					echo "$freq_up_brake_at_min_freq" > $freq_up_brake_at_min_freq_tmp;
+					echo "$freq_up_brake" > $freq_up_brake_tmp;
+					echo "$pump_inc_step_at_min_freq_1" > $pump_inc_step_at_min_freq_1_tmp;
+					echo "$pump_inc_step_at_min_freq_2" > $pump_inc_step_at_min_freq_2_tmp;
+					echo "$pump_inc_step_at_min_freq_3" > $pump_inc_step_at_min_freq_3_tmp;
+					echo "$pump_inc_step_at_min_freq_4" > $pump_inc_step_at_min_freq_4_tmp;
+					echo "$pump_inc_step_1" > $pump_inc_step_1_tmp;
+					echo "$pump_inc_step_2" > $pump_inc_step_2_tmp;
+					echo "$pump_inc_step_3" > $pump_inc_step_3_tmp;
+					echo "$pump_inc_step_4" > $pump_inc_step_4_tmp;
+					echo "$pump_dec_step_1" > $pump_dec_step_1_tmp;
+					echo "$pump_dec_step_2" > $pump_dec_step_2_tmp;
+					echo "$pump_dec_step_3" > $pump_dec_step_3_tmp;
+					echo "$pump_dec_step_4" > $pump_dec_step_4_tmp;
+				fi;
+			done;
 		fi;
 
 		log -p i -t "$FILE_NAME" "*** CPU_GOV_TWEAKS: $state ***: enabled";

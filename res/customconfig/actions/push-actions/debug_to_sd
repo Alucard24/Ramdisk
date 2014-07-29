@@ -84,14 +84,32 @@ case "${debug_to_sd}" in
 
 			# CPU
 			echo "CPU-Info:" >> $DEBUG_FILE;
-			scaling_governor=$(cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor)
-			echo "CPU-Governor: $scaling_governor" >> $DEBUG_FILE;
+			scaling_governor0=$(cat /sys/devices/system/cpu/cpufreq/all_cpus/scaling_governor_cpu0)
+			echo "CPU0-Governor: $scaling_governor_cpu0" >> $DEBUG_FILE;
+			scaling_governor1=$(cat /sys/devices/system/cpu/cpufreq/all_cpus/scaling_governor_cpu1)
+			echo "CPU1-Governor: $scaling_governor_cpu1" >> $DEBUG_FILE;
+			scaling_governor2=$(cat /sys/devices/system/cpu/cpufreq/all_cpus/scaling_governor_cpu2)
+			echo "CPU2-Governor: $scaling_governor_cpu2" >> $DEBUG_FILE;
+			scaling_governor3=$(cat /sys/devices/system/cpu/cpufreq/all_cpus/scaling_governor_cpu3)
+			echo "CPU3-Governor: $scaling_governor_cpu3" >> $DEBUG_FILE;
 			cpuinfo_cur_freq=$(cat /sys/devices/system/cpu/cpu0/cpufreq/cpuinfo_cur_freq);
 			echo "Cur.-Freq: $cpuinfo_cur_freq" >> $DEBUG_FILE;
-			scaling_max_freq=$(cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq);
-			echo "Max.-Freq: $scaling_max_freq" >> $DEBUG_FILE;
-			scaling_min_freq=$(cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq);
-			echo "Min.-Freq: $scaling_min_freq" >> $DEBUG_FILE;
+			scaling_max_freq0=$(cat /sys/devices/system/cpu/cpufreq/all_cpus/scaling_max_freq_cpu0);
+			echo "Max.-Freq CPU0: $scaling_max_freq0" >> $DEBUG_FILE;
+			scaling_max_freq1=$(cat /sys/devices/system/cpu/cpufreq/all_cpus/scaling_max_freq_cpu1);
+			echo "Max.-Freq CPU1: $scaling_max_freq1" >> $DEBUG_FILE;
+			scaling_max_freq2=$(cat /sys/devices/system/cpu/cpufreq/all_cpus/scaling_max_freq_cpu2);
+			echo "Max.-Freq CPU2: $scaling_max_freq2" >> $DEBUG_FILE;
+			scaling_max_freq3=$(cat /sys/devices/system/cpu/cpufreq/all_cpus/scaling_max_freq_cpu3);
+			echo "Max.-Freq CPU3: $scaling_max_freq3" >> $DEBUG_FILE;
+			scaling_min_freq0=$(cat /sys/devices/system/cpu/cpufreq/all_cpus/scaling_min_freq_cpu0);
+			echo "Min.-Freq CPU0: $scaling_min_freq0" >> $DEBUG_FILE;
+			scaling_min_freq1=$(cat /sys/devices/system/cpu/cpufreq/all_cpus/scaling_min_freq_cpu1);
+			echo "Min.-Freq CPU1: $scaling_min_freq1" >> $DEBUG_FILE;
+			scaling_min_freq2=$(cat /sys/devices/system/cpu/cpufreq/all_cpus/scaling_min_freq_cpu2);
+			echo "Min.-Freq CPU2: $scaling_min_freq2" >> $DEBUG_FILE;
+			scaling_min_freq3=$(cat /sys/devices/system/cpu/cpufreq/all_cpus/scaling_min_freq_cpu3);
+			echo "Min.-Freq CPU3: $scaling_min_freq3" >> $DEBUG_FILE;
 			total_trans=$(cat /sys/devices/system/cpu/cpu0/cpufreq/stats/total_trans);
 			echo "Total freq-switch: $total_trans" >> $DEBUG_FILE;
 			echo "" >> $DEBUG_FILE;
