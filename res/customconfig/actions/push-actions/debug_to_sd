@@ -84,8 +84,14 @@ case "${debug_to_sd}" in
 
 			# CPU
 			echo "CPU-Info:" >> $DEBUG_FILE;
-			scaling_governor=$(cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor)
-			echo "CPU-Governor: $scaling_governor" >> $DEBUG_FILE;
+			scaling_governor0=$(cat /sys/devices/system/cpu/cpufreq/all_cpus/scaling_governor_cpu0)
+			echo "CPU0-Governor: $scaling_governor_cpu0" >> $DEBUG_FILE;
+			scaling_governor1=$(cat /sys/devices/system/cpu/cpufreq/all_cpus/scaling_governor_cpu1)
+			echo "CPU1-Governor: $scaling_governor_cpu1" >> $DEBUG_FILE;
+			scaling_governor2=$(cat /sys/devices/system/cpu/cpufreq/all_cpus/scaling_governor_cpu2)
+			echo "CPU2-Governor: $scaling_governor_cpu2" >> $DEBUG_FILE;
+			scaling_governor3=$(cat /sys/devices/system/cpu/cpufreq/all_cpus/scaling_governor_cpu3)
+			echo "CPU3-Governor: $scaling_governor_cpu3" >> $DEBUG_FILE;
 			cpuinfo_cur_freq=$(cat /sys/devices/system/cpu/cpu0/cpufreq/cpuinfo_cur_freq);
 			echo "Cur.-Freq: $cpuinfo_cur_freq" >> $DEBUG_FILE;
 			scaling_max_freq0=$(cat /sys/devices/system/cpu/cpufreq/all_cpus/scaling_max_freq_cpu0);
