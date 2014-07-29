@@ -1,6 +1,12 @@
 stweaks_boot_control=yes
-scaling_max_freq_all_cpus=1890000
-scaling_min_freq_all_cpus=378000
+scaling_max_freq_cpu0=1890000
+scaling_max_freq_cpu1=1890000
+scaling_max_freq_cpu2=1890000
+scaling_max_freq_cpu3=1890000
+scaling_min_freq_cpu0=378000
+scaling_min_freq_cpu1=378000
+scaling_min_freq_cpu2=378000
+scaling_min_freq_cpu3=378000
 gentle_fair_sleepers=off
 arch_power=off
 sched_mc_power_savings=0
