@@ -103,6 +103,7 @@
 			<spinnerItem name="conservative" value="conservative"/> 
 			<spinnerItem name="darkness" value="darkness"/>
 			<spinnerItem name="HYPER" value="HYPER"/>
+			<spinnerItem name="intelliactive" value="intelliactive"/>
 			<spinnerItem name="interactive" value="interactive"/> 
 			<spinnerItem name="nightmare" value="nightmare"/> 
 			<spinnerItem name="ondemand" value="ondemand"/> 
@@ -114,6 +115,7 @@
 			<spinnerItem name="conservative" value="conservative"/> 
 			<spinnerItem name="darkness" value="darkness"/>
 			<spinnerItem name="HYPER" value="HYPER"/>
+			<spinnerItem name="intelliactive" value="intelliactive"/>
 			<spinnerItem name="interactive" value="interactive"/> 
 			<spinnerItem name="nightmare" value="nightmare"/> 
 			<spinnerItem name="ondemand" value="ondemand"/> 
@@ -125,7 +127,8 @@
 			<spinnerItem name="conservative" value="conservative"/> 
 			<spinnerItem name="darkness" value="darkness"/>
 			<spinnerItem name="HYPER" value="HYPER"/>
-			<spinnerItem name="interactive" value="interactive"/> 
+			<spinnerItem name="intelliactive" value="intelliactive"/>
+			<spinnerItem name="interactive" value="interactive"/>
 			<spinnerItem name="nightmare" value="nightmare"/> 
 			<spinnerItem name="ondemand" value="ondemand"/> 
 			<spinnerItem name="pegasusq" value="pegasusq"/> 
@@ -136,6 +139,7 @@
 			<spinnerItem name="conservative" value="conservative"/> 
 			<spinnerItem name="darkness" value="darkness"/>
 			<spinnerItem name="HYPER" value="HYPER"/>
+			<spinnerItem name="intelliactive" value="intelliactive"/>
 			<spinnerItem name="interactive" value="interactive"/> 
 			<spinnerItem name="nightmare" value="nightmare"/> 
 			<spinnerItem name="ondemand" value="ondemand"/> 
