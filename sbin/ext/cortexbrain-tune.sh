@@ -150,6 +150,11 @@ CPU_HOTPLUG_TWEAKS()
 			$BB renice -n -20 -p $(pgrep -f "/system/bin/start mpdecision");
 		fi;
 
+		# tune-settings
+		if [ "$state" == "tune" ]; then
+			echo "$hp_io_is_busy" > /sys/devices/system/cpu/cpu0/rq-stats/hp_io_is_busy;
+		fi;
+
 		log -p i -t "$FILE_NAME" "*** MSM_MPDECISION ***: enabled";
 	elif [ "$cpuhotplugging" -eq "2" ]; then
 		#disable MSM MPDecision
@@ -248,6 +253,7 @@ CPU_HOTPLUG_TWEAKS()
 			echo "$maxcoreslimit" > /sys/kernel/alucard_hotplug/maxcoreslimit;
 			echo "$maxcoreslimit_sleep" > /sys/kernel/alucard_hotplug/maxcoreslimit_sleep;
 			echo "$min_cpus_online" > /sys/kernel/alucard_hotplug/min_cpus_online;
+			echo "$hp_io_is_busy" > /sys/kernel/alucard_hotplug/hp_io_is_busy;
 		fi;
 
 		log -p i -t "$FILE_NAME" "*** ALUCARD_HOTPLUG ***: enabled";
@@ -284,6 +290,7 @@ CPU_HOTPLUG_TWEAKS()
 
 		# tune-settings
 		if [ "$state" == "tune" ]; then
+			echo "$hp_io_is_busy" > /sys/module/msm_hotplug/hp_io_is_busy;
 			echo "$min_cpus_online" > /sys/module/msm_hotplug/min_cpus_online;
 			echo "$max_cpus_online" > /sys/module/msm_hotplug/max_cpus_online;
 		fi;
