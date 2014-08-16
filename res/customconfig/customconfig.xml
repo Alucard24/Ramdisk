@@ -312,6 +312,8 @@
 
 	<settingsPane description="Tune in Common" name="Common">
 
+		<checkbox description="This is a flag that determines if waiting for various IO should increase the CPU utilization in bump up the cpu frequency. For example should you could the time it takes wait for a data transfer from another hardware block as cpu load even though the cpu is not actually doing anything during this time. Obviously setting this to 0 will mean the selected governor will increase the frequency less often. (MSM MPDECISION, ALUCARD_HOTPLUG, MSM_HOTPLUG)" name="hp_io_is_busy" action="generic_cortex /tmp/hp_io_is_busy" label="hp_io is busy"/>
+
 		<seekBar description="Set minimum number of cpus online. (Alucard Hotplug, IntelliPlug, MSM Hotplug) (Default: 1)" name="min_cpus_online" action="generic_cortex /tmp/min_cpus_online" unit="int" min="1" reversed="false" step="1" max="4"/>
 
 		<seekBar description="Set maximum number of cpus online. (IntelliPlug, MSM Hotplug) (Default: 4)" name="max_cpus_online" action="generic_cortex /tmp/max_cpus_online" unit="int" min="1" reversed="false" step="1" max="4"/>
