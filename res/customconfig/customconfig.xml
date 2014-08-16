@@ -172,6 +172,8 @@
 
 		<seekBar description="This is same as the up_threshold found for the Ondemand governor but for the opposite direction. For example when set to its default value of 30 it means that if the CPU usage needs to be below 30% between samples to have the frequency decreased. (Only for Conservative) (Default: 30%)" name="down_threshold" action="generic_cortex /tmp/down_threshold" unit="%" min="1" reversed="false" step="1" max="100"/>
 
+		<checkbox description="This is a flag that determines if waiting for various IO should increase the CPU utilization in bump up the cpu frequency. For example should you could the time it takes wait for a data transfer from another hardware block as cpu load even though the cpu is not actually doing anything during this time. Obviously setting this to 0 will mean the selected governor will increase the frequency less often." name="io_is_busy" action="generic_cortex /tmp/io_is_busy" label="io is busy"/>
+
 	</settingsPane>
 
 	<settingsPane description="Nightmare, Darkness and Alucard governor Configuration, see descriptions" name="NIGHTMARE | DARKNESS | ALUCARD GOV CONFIGURATON">
