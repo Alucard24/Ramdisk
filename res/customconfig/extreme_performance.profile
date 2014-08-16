@@ -42,6 +42,7 @@ freq_step=30
 down_differential=5
 freq_for_responsiveness=486000
 down_threshold=30
+io_is_busy=1
 inc_cpu_load_at_min_freq=60
 inc_cpu_load=80
 dec_cpu_load_at_min_freq=60
