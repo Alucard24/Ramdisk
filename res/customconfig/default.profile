@@ -95,6 +95,7 @@ hotplug_rq_4_0=300
 maxcoreslimit=4
 maxcoreslimit_sleep=2
 cpus_boosted=1
+hotplug_suspend=always_active
 hp_io_is_busy=0
 min_cpus_online=1
 max_cpus_online=4
