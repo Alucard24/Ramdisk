@@ -822,9 +822,9 @@
 
 	<settingsPane description="Select profile. You can also switch the default profiles (battery, default, performance) via Kernel-Recovery." name="STweaks Profiles">
 
-		<button description="extreme_battery.profile" name="extreme_battery.profile" action="push-actions/config_backup_restore 6" label="EXTREME BATTERY"/>
+		<button description="extreme_battery.profile" name="extreme_battery.profile" action="push-actions/config_backup_restore 6" label="SlimSaberKat undervolted"/>
 
-		<button description="battery.profile" name="battery.profile" action="push-actions/config_backup_restore 3" label="BATTERY"/>
+		<button description="battery.profile" name="battery.profile" action="push-actions/config_backup_restore 3" label="SlimSaberKat stock voltage"/>
 
 		<button description="default.profile" name="default.profile" action="push-actions/config_backup_restore 4" label="DEFAULT"/>
 
@@ -873,4 +873,3 @@
 </settingsTab>
 
 </settingsRoot>
-

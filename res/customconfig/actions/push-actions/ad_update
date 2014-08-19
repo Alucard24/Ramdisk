@@ -140,7 +140,7 @@ then
 
   # Set up the dns resolve file
   $ECHO "nameserver 8.8.8.8" > $conf_file
-  $ECHO "nameserver 4.4.8.8" >> $conf_file
+  $ECHO "nameserver 8.8.4.4" >> $conf_file
   for i in $dns1 $dns2 $dns3
   do 
     if [ "$i" ]
