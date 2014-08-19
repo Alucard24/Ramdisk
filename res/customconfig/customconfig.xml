@@ -103,10 +103,12 @@
 			<spinnerItem name="conservative" value="conservative"/> 
 			<spinnerItem name="darkness" value="darkness"/>
 			<spinnerItem name="HYPER" value="HYPER"/>
+			<spinnerItem name="intelliactive" value="intelliactive"/>
 			<spinnerItem name="interactive" value="interactive"/> 
 			<spinnerItem name="nightmare" value="nightmare"/> 
 			<spinnerItem name="ondemand" value="ondemand"/> 
-			<spinnerItem name="pegasusq" value="pegasusq"/> 
+			<spinnerItem name="pegasusq" value="pegasusq"/>
+			<spinnerItem name="slim" value="slim"/>
 		</spinner>
 
 		<spinner description="This will set the CPU1 governor. Default CPU governor will only be set during early stages of booting (before init.d execution), and can be overridden by any other scripts or applications. (Default: Alucard)" name="Default CPU Governor" action="generic /sys/devices/system/cpu/cpufreq/all_cpus/scaling_governor_cpu1">
@@ -114,10 +116,12 @@
 			<spinnerItem name="conservative" value="conservative"/> 
 			<spinnerItem name="darkness" value="darkness"/>
 			<spinnerItem name="HYPER" value="HYPER"/>
+			<spinnerItem name="intelliactive" value="intelliactive"/>
 			<spinnerItem name="interactive" value="interactive"/> 
 			<spinnerItem name="nightmare" value="nightmare"/> 
 			<spinnerItem name="ondemand" value="ondemand"/> 
-			<spinnerItem name="pegasusq" value="pegasusq"/> 
+			<spinnerItem name="pegasusq" value="pegasusq"/>
+			<spinnerItem name="slim" value="slim"/>
 		</spinner>
 
 		<spinner description="This will set the CPU2 governor. Default CPU governor will only be set during early stages of booting (before init.d execution), and can be overridden by any other scripts or applications. (Default: Alucard)" name="Default CPU Governor" action="generic /sys/devices/system/cpu/cpufreq/all_cpus/scaling_governor_cpu2">
@@ -125,10 +129,12 @@
 			<spinnerItem name="conservative" value="conservative"/> 
 			<spinnerItem name="darkness" value="darkness"/>
 			<spinnerItem name="HYPER" value="HYPER"/>
-			<spinnerItem name="interactive" value="interactive"/> 
+			<spinnerItem name="intelliactive" value="intelliactive"/>
+			<spinnerItem name="interactive" value="interactive"/>
 			<spinnerItem name="nightmare" value="nightmare"/> 
 			<spinnerItem name="ondemand" value="ondemand"/> 
-			<spinnerItem name="pegasusq" value="pegasusq"/> 
+			<spinnerItem name="pegasusq" value="pegasusq"/>
+			<spinnerItem name="slim" value="slim"/>
 		</spinner>
 
 		<spinner description="This will set the CPU3 governor. Default CPU governor will only be set during early stages of booting (before init.d execution), and can be overridden by any other scripts or applications. (Default: Alucard)" name="Default CPU Governor" action="generic /sys/devices/system/cpu/cpufreq/all_cpus/scaling_governor_cpu3">
@@ -136,10 +142,12 @@
 			<spinnerItem name="conservative" value="conservative"/> 
 			<spinnerItem name="darkness" value="darkness"/>
 			<spinnerItem name="HYPER" value="HYPER"/>
+			<spinnerItem name="intelliactive" value="intelliactive"/>
 			<spinnerItem name="interactive" value="interactive"/> 
 			<spinnerItem name="nightmare" value="nightmare"/> 
 			<spinnerItem name="ondemand" value="ondemand"/> 
-			<spinnerItem name="pegasusq" value="pegasusq"/> 
+			<spinnerItem name="pegasusq" value="pegasusq"/>
+			<spinnerItem name="slim" value="slim"/>
 		</spinner>
 
 		<button description="Use this button to push all new changes to the governor in real time!" name="GOV Policy Install" action="push-actions/cpu_tuning_update" label="Apply settings to GOV core"/>
@@ -163,6 +171,11 @@
 		<seekBar description="Until freq_for_responsiveness, Up Threshold considered for sampling load is up_threshold_at_min_freq. Also during the part where CPU is at maximum load frequency, governor need to find the optimal frequency as the next frequency - which should not trigger up_threshold in the next sampling. When such a frequency_next is found to be a) less than freq_for_responsiveness b) will not trigger down_threshold in the next sample, then the optimal frequency is set to freq_for_responsiveness. (Only for HYPER, PegasusQ, Nightmare) (Default: 486.000 kHz)" name="freq_for_responsiveness" action="generic_cortex /tmp/freq_for_responsiveness" unit="kHz" min="378000" reversed="false" step="108000" max="1890000"/>
 
 		<seekBar description="This is same as the up_threshold found for the Ondemand governor but for the opposite direction. For example when set to its default value of 30 it means that if the CPU usage needs to be below 30% between samples to have the frequency decreased. (Only for Conservative) (Default: 30%)" name="down_threshold" action="generic_cortex /tmp/down_threshold" unit="%" min="1" reversed="false" step="1" max="100"/>
+
+		<spinner description="This is a flag that determines if waiting for various IO should increase the CPU utilization in bump up the cpu frequency. For example should you could the time it takes wait for a data transfer from another hardware block as cpu load even though the cpu is not actually doing anything during this time. Obviously setting this to 0 will mean the selected governor will increase the frequency less often. (MSM MPDECISION, ALUCARD_HOTPLUG, MSM_HOTPLUG)" name="io_is_busy" action="generic_cortex /tmp/io_is_busy">
+			<spinnerItem name="Yes" value="1"/> 
+			<spinnerItem name="No" value="0"/> 
+		</spinner>
 
 	</settingsPane>
 
@@ -301,6 +314,16 @@
 	</settingsPane>
 
 	<settingsPane description="Tune in Common" name="Common">
+
+		<spinner description="CPU HotPlug Suspend Control - you can allow hotplug to be suspended when screen is OFF to save little more power on deepsleep, then resume when screen is ON, BUT it's will DELAY In Call screen wakeup! for 3sec as when screen is OFF, you have only ONE core active with suspend mode. also using suspend mode can prevent wake up for some devices for unknown reason!!!. so if you wish to test suspend mode go ahead, if you get SOD switch to Always Active mode and stay there (default mode). for many it's working fine. this is for all kernel hotplugs, default hotplug is not supported." name="Hot Plug Suspend Mode" action="hotplug_suspend">
+			<spinnerItem name="Always Active" value="always_active"/> 
+			<spinnerItem name="HotPlug Suspend" value="suspend_when_off"/> 
+		</spinner>
+
+		<spinner description="This is a flag that determines if waiting for various IO should increase the CPU utilization in bump up the cpu frequency. For example should you could the time it takes wait for a data transfer from another hardware block as cpu load even though the cpu is not actually doing anything during this time. Obviously setting this to 0 will mean the selected governor will increase the frequency less often. (MSM MPDECISION, ALUCARD_HOTPLUG, MSM_HOTPLUG)" name="hp_io_is_busy" action="generic_cortex /tmp/hp_io_is_busy">
+			<spinnerItem name="Yes" value="1"/> 
+			<spinnerItem name="No" value="0"/> 
+		</spinner>
 
 		<seekBar description="Set minimum number of cpus online. (Alucard Hotplug, IntelliPlug, MSM Hotplug) (Default: 1)" name="min_cpus_online" action="generic_cortex /tmp/min_cpus_online" unit="int" min="1" reversed="false" step="1" max="4"/>
 

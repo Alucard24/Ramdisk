@@ -23,7 +23,10 @@
 		grep "." * >> /data/.alucard/cpu_hotplug;
 		cd /;
 	else
+		cd /sys/devices/system/cpu/cpu0/rq-stats/;
 		echo "Tuning applied to 'MSM MPDecision' core!" > /data/.alucard/cpu_hotplug;
+		grep "." * >> /data/.alucard/cpu_hotplug;
+		cd /;
 	fi; 
 )&
 sleep 1;

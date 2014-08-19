@@ -16,7 +16,10 @@
 BB=/sbin/busybox
 
 # change mode for /tmp/
-mount -o remount,rw /;
+ROOTFS_MOUNT=$(mount | grep rootfs | cut -c26-27 | grep rw | wc -l)
+if [ "$ROOTFS_MOUNT" -eq "0" ]; then
+	mount -o remount,rw /;
+fi;
 chmod -R 777 /tmp/;
 
 # ==============================================================
@@ -35,7 +38,7 @@ TELE_DATA=init;
 # ==============================================================
 
 # get values from profile
-PROFILE=$(cat "$DATA_DIR"/.active.profile);
+PROFILE=$(cat $DATA_DIR/.active.profile);
 . "$DATA_DIR"/"$PROFILE".profile;
 
 # check if dumpsys exist in ROM
@@ -150,6 +153,11 @@ CPU_HOTPLUG_TWEAKS()
 			$BB renice -n -20 -p $(pgrep -f "/system/bin/start mpdecision");
 		fi;
 
+		# tune-settings
+		if [ "$state" == "tune" ]; then
+			echo "$hp_io_is_busy" > /sys/devices/system/cpu/cpu0/rq-stats/hp_io_is_busy;
+		fi;
+
 		log -p i -t "$FILE_NAME" "*** MSM_MPDECISION ***: enabled";
 	elif [ "$cpuhotplugging" -eq "2" ]; then
 		#disable MSM MPDecision
@@ -248,6 +256,7 @@ CPU_HOTPLUG_TWEAKS()
 			echo "$maxcoreslimit" > /sys/kernel/alucard_hotplug/maxcoreslimit;
 			echo "$maxcoreslimit_sleep" > /sys/kernel/alucard_hotplug/maxcoreslimit_sleep;
 			echo "$min_cpus_online" > /sys/kernel/alucard_hotplug/min_cpus_online;
+			echo "$hp_io_is_busy" > /sys/kernel/alucard_hotplug/hp_io_is_busy;
 		fi;
 
 		log -p i -t "$FILE_NAME" "*** ALUCARD_HOTPLUG ***: enabled";
@@ -284,6 +293,7 @@ CPU_HOTPLUG_TWEAKS()
 
 		# tune-settings
 		if [ "$state" == "tune" ]; then
+			echo "$hp_io_is_busy" > /sys/module/msm_hotplug/hp_io_is_busy;
 			echo "$min_cpus_online" > /sys/module/msm_hotplug/min_cpus_online;
 			echo "$max_cpus_online" > /sys/module/msm_hotplug/max_cpus_online;
 		fi;
@@ -478,6 +488,11 @@ CPU_GOV_TWEAKS()
 						pump_dec_step_4_tmp="/dev/null";
 					fi;
 
+					local io_is_busy_tmp="/sys/devices/system/cpu/cpufreq/$SYSTEM_GOVERNOR/io_is_busy";
+					if [ ! -e $io_is_busy_tmp ]; then
+						io_is_busy_tmp="/dev/null";
+					fi;
+
 					echo "$sampling_rate" > $sampling_rate_tmp;
 					echo "$up_threshold" > $up_threshold_tmp;
 					echo "$up_threshold_at_min_freq" > $up_threshold_at_min_freq_tmp;
@@ -509,6 +524,7 @@ CPU_GOV_TWEAKS()
 					echo "$pump_dec_step_2" > $pump_dec_step_2_tmp;
 					echo "$pump_dec_step_3" > $pump_dec_step_3_tmp;
 					echo "$pump_dec_step_4" > $pump_dec_step_4_tmp;
+					echo "$io_is_busy" > $io_is_busy_tmp;
 				fi;
 			done;
 		fi;
