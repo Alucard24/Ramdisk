@@ -1,12 +1,15 @@
 #!/sbin/busybox sh
 
+BB=/sbin/busybox
+
 WGET_CHECK1=`ls -la /system/xbin/wget | wc -l`;
 WGET_CHECK2=`ls -la /system/bin/wget | wc -l`;
+WGET_CHECK3=`ls -la /system/wget/wget | wc -l`;
 
-if [ "$WGET_CHECK1" -eq "1" ] || [ "$WGET_CHECK2" -eq "1" ]; then
+if [ "$WGET_CHECK1" -eq "1" ] || [ "$WGET_CHECK2" -eq "1" ] || [ "$WGET_CHECK3" -eq "1" ]; then
 
 	TMPFILE=$(mktemp -t);
-	mount -o remount,rw /;
+	$BB mount -o remount,rw /;
 
 	DNS1=`getprop net.dns1`;
 	DNS2=`getprop net.rmnet0.dns1`;
@@ -18,7 +21,7 @@ if [ "$WGET_CHECK1" -eq "1" ] || [ "$WGET_CHECK2" -eq "1" ]; then
 	echo "nameserver $DNS2" >> /system/etc/resolv.conf;
 	echo "nameserver $DNS3" >> /system/etc/resolv.conf;
 
-	TESTCONNECTION=`wget http://www.google.com -O $TMPFILE > /dev/null 2>&1`;
+	TESTCONNECTION=`/system/wget/wget http://www.google.com -O $TMPFILE > /dev/null 2>&1`;
 	if [ $? != 0 ]; then
 		echo "Problem: no internet connection! connect and try again";
 	else
@@ -28,7 +31,7 @@ if [ "$WGET_CHECK1" -eq "1" ] || [ "$WGET_CHECK2" -eq "1" ]; then
 		echo "updated time via ntp";
 	fi;
 
-	rm -f $TMPFILE;
+	$BB rm -f $TMPFILE;
 else
 	echo "Your BusyBox is not supported! Update to latest";
 fi;
