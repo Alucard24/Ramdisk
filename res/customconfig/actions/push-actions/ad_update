@@ -69,7 +69,7 @@ fi
 SED="$BUSYBOX sed"
 SLEEP="$BUSYBOX sleep"
 UNZIP="$BUSYBOX unzip"
-WGET="$BUSYBOX wget"
+WGET="/system/wget/wget"
 # ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 $ECHO "Ad Blocker"
