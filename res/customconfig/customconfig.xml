@@ -60,35 +60,35 @@
 
 		<button description="Use this button to see what CPU Voltage is used right now!" name="Check Active CPU Voltage" action="push-actions/check_cpu_voltage" label="Check CPU Voltage"/>
 
-		<seekBar description="CPU Voltage for 1890.000 KHz." name="CPU Voltage 189.000 KHz" action="cpu-voltage 1" unit="µV" min="1050000" reversed="false" step="12500" max="1300000"/>
+		<seekBar description="CPU Voltage for 1890.000 KHz." name="CPU Voltage 189.000 KHz" action="cpu-voltage 1" unit="µV" min="1062500" reversed="false" step="12500" max="1300000"/>
 
-		<seekBar description="CPU Voltage for 1782.000 KHz." name="CPU Voltage 1782.000 KHz" action="cpu-voltage 2" unit="µV" min="1025000" reversed="false" step="12500" max="1225000"/>
+		<seekBar description="CPU Voltage for 1782.000 KHz." name="CPU Voltage 1782.000 KHz" action="cpu-voltage 2" unit="µV" min="1012500" reversed="false" step="12500" max="1225000"/>
 
-		<seekBar description="CPU Voltage for 1674.000 KHz." name="CPU Voltage 1674.000 KHz" action="cpu-voltage 3" unit="µV" min="1000000" reversed="false" step="12500" max="1175000"/>
+		<seekBar description="CPU Voltage for 1674.000 KHz." name="CPU Voltage 1674.000 KHz" action="cpu-voltage 3" unit="µV" min="962500" reversed="false" step="12500" max="1175000"/>
 
-		<seekBar description="CPU Voltage for 1566.000 KHz." name="CPU Voltage 1566.000 KHz" action="cpu-voltage 4" unit="µV" min="975000" reversed="false" step="12500" max="1125000"/>
+		<seekBar description="CPU Voltage for 1566.000 KHz." name="CPU Voltage 1566.000 KHz" action="cpu-voltage 4" unit="µV" min="925000" reversed="false" step="12500" max="1125000"/>
 
-		<seekBar description="CPU Voltage for 1458.000 KHz." name="CPU Voltage 1458.000 KHz" action="cpu-voltage 5" unit="µV" min="962500" reversed="false" step="12500" max="1100000"/>
+		<seekBar description="CPU Voltage for 1458.000 KHz." name="CPU Voltage 1458.000 KHz" action="cpu-voltage 5" unit="µV" min="900000" reversed="false" step="12500" max="1100000"/>
 
-		<seekBar description="CPU Voltage for 1350.000 KHz." name="CPU Voltage 1350.000 KHz" action="cpu-voltage 6" unit="µV" min="950000" reversed="false" step="12500" max="1062500"/>
+		<seekBar description="CPU Voltage for 1350.000 KHz." name="CPU Voltage 1350.000 KHz" action="cpu-voltage 6" unit="µV" min="862500" reversed="false" step="12500" max="1062500"/>
 
-		<seekBar description="CPU Voltage for 1242.000 KHz." name="CPU Voltage 1242.000 KHz" action="cpu-voltage 7" unit="µV" min="937500" reversed="false" step="12500" max="1037500"/>
+		<seekBar description="CPU Voltage for 1242.000 KHz." name="CPU Voltage 1242.000 KHz" action="cpu-voltage 7" unit="µV" min="837500" reversed="false" step="12500" max="1037500"/>
 
-		<seekBar description="CPU Voltage for 1134.000 KHz." name="CPU Voltage 1134.000 KHz" action="cpu-voltage 8" unit="µV" min="925000" reversed="false" step="12500" max="1025000"/>
+		<seekBar description="CPU Voltage for 1134.000 KHz." name="CPU Voltage 1134.000 KHz" action="cpu-voltage 8" unit="µV" min="825000" reversed="false" step="12500" max="1025000"/>
 
-		<seekBar description="CPU Voltage for 1026.000 KHz." name="CPU Voltage 1026.000 KHz" action="cpu-voltage 9" unit="µV" min="900000" reversed="false" step="12500" max="1000000"/>
+		<seekBar description="CPU Voltage for 1026.000 KHz." name="CPU Voltage 1026.000 KHz" action="cpu-voltage 9" unit="µV" min="800000" reversed="false" step="12500" max="1000000"/>
 
-		<seekBar description="CPU Voltage for 918.000 KHz." name="CPU Voltage 918.000 KHz" action="cpu-voltage 10" unit="µV" min="887500" reversed="false" step="12500" max="975000"/>
+		<seekBar description="CPU Voltage for 918.000 KHz." name="CPU Voltage 918.000 KHz" action="cpu-voltage 10" unit="µV" min="775000" reversed="false" step="12500" max="975000"/>
 
-		<seekBar description="CPU Voltage for 810.000 KHz." name="CPU Voltage 810.000 KHz" action="cpu-voltage 11" unit="µV" min="875000" reversed="false" step="12500" max="962500"/>
+		<seekBar description="CPU Voltage for 810.000 KHz." name="CPU Voltage 810.000 KHz" action="cpu-voltage 11" unit="µV" min="762500" reversed="false" step="12500" max="962500"/>
 
-		<seekBar description="CPU Voltage for 702.000 KHz." name="CPU Voltage 702.000 KHz" action="cpu-voltage 12" unit="µV" min="850000" reversed="false" step="12500" max="950000"/>
+		<seekBar description="CPU Voltage for 702.000 KHz." name="CPU Voltage 702.000 KHz" action="cpu-voltage 12" unit="µV" min="750000" reversed="false" step="12500" max="950000"/>
 
-		<seekBar description="CPU Voltage for 594.000 KHz." name="CPU Voltage 594.000 KHz" action="cpu-voltage 13" unit="µV" min="850000" reversed="false" step="12500" max="950000"/>
+		<seekBar description="CPU Voltage for 594.000 KHz." name="CPU Voltage 594.000 KHz" action="cpu-voltage 13" unit="µV" min="750000" reversed="false" step="12500" max="950000"/>
 
-		<seekBar description="CPU Voltage for 486.000 KHz." name="CPU Voltage 486.000 KHz" action="cpu-voltage 14" unit="µV" min="850000" reversed="false" step="12500" max="950000"/>
+		<seekBar description="CPU Voltage for 486.000 KHz." name="CPU Voltage 486.000 KHz" action="cpu-voltage 14" unit="µV" min="750000" reversed="false" step="12500" max="950000"/>
 
-		<seekBar description="CPU Voltage for 378.000 KHz." name="CPU Voltage 378.000 KHz" action="cpu-voltage 15" unit="µV" min="825000" reversed="false" step="12500" max="925000"/>
+		<seekBar description="CPU Voltage for 378.000 KHz." name="CPU Voltage 378.000 KHz" action="cpu-voltage 15" unit="µV" min="750000" reversed="false" step="12500" max="925000"/>
 
 	</settingsPane>
 
