@@ -386,6 +386,19 @@
 
 	</settingsPane>
 
+	<settingsPane description="GPU Voltage Control. FOR ADVANCED USERS ONLY! USE IT AT YOUR OWN RISK!!!" name="GPU Voltage Control">
+
+      <checkbox description="Main switch for Voltage Control. If disabled, all below settings have no effect! If you are using an external application or script to configure GPU voltage, do not tick this checkbox. Do not start to mod voltage before you enable this switch! It will not have any effect and you will have to set all to default, and tune again!" name="GPU Voltage Main Switch" action="generic_cortex /tmp/gpu_voltage_switch" label="GPU Voltage Main Switch"/>
+
+      <seekBar description="GPU Voltage for the first (lowest) step" 
+		name="GPU Voltage Level1. (Default: 945000)" action="gpu-voltage 1" unit="µV" min="845000" reversed="false" step="25000" max="1050000"/>
+      <seekBar description="GPU Voltage for the second (mid) step" 
+		name="GPU Voltage Level2. (Default: 1050000)" action="gpu-voltage 2" unit="µV" min="950000" reversed="false" step="25000" max="1200000"/>
+      <seekBar description="GPU Voltage for the third (highest) step" 
+		name="GPU Voltage Level3. (Default: 1150000)" action="gpu-voltage 3" unit="µV" min="1050000" reversed="false" step="25000" max="1200000"/>
+
+    </settingsPane>
+
 	<settingsPane description="RGB colors Control. Please turn the SCREEN OFF and ON for the settings to be applied !" name="RGB colors Control">
       <seekBar description="Red tint control" 
 		name="Red tint. (Default: 60)" action="gamma_control r" unit="" min="0" reversed="false" step="2" max="120"/>
