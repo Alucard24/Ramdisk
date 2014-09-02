@@ -348,6 +348,8 @@
 
 		<seekBar description="Set CPU max HEAT before throttled down to cool and keep normal phone heat, depend on CPU Thermal control ON!" name="CPU Max Heat" action="generic /sys/module/msm_thermal/parameters/limit_temp_degC" unit="C" min="50" reversed="false" step="1" max="80"/>
 
+		<seekBar description="Thermal throttling stop when cpu temperature is less than limit_temp_degC minus temp_hysteresis_degC." name="CPU Max Heat" action="generic /sys/module/msm_thermal/parameters/temp_hysteresis_degC" unit="C" min="2" reversed="false" step="1" max="15"/>
+
 	</settingsPane>
 
 </settingsTab>
