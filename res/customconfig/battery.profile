@@ -103,6 +103,7 @@ msm_thermal=intelli_temp
 enabled=off
 core_limit_temp_degC=80
 limit_temp_degC=70
+temp_hysteresis_degC=10
 governor=ondemand
 max_pwrlevel=0
 min_pwrlevel=3
