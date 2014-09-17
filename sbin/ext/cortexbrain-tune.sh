@@ -143,8 +143,8 @@ CPU_HOTPLUG_TWEAKS()
 		fi;
 
 		#enable msm_rq_stats
-		if [ "$(cat /sys/devices/system/cpu/cpu0/rq-stats/hotplug_disable)" -eq "1" ]; then
-			echo "0" > /sys/devices/system/cpu/cpu0/rq-stats/hotplug_disable;
+		if [ "$(cat /sys/devices/system/cpu/cpu0/rq-stats/hotplug_enable)" -eq "0" ]; then
+			echo "1" > /sys/devices/system/cpu/cpu0/rq-stats/hotplug_enable;
 		fi;
 
 		#enable MSM MPDecision
@@ -166,8 +166,8 @@ CPU_HOTPLUG_TWEAKS()
 		fi;
 
 		#disable msm_rq_stats
-		if [ "$(cat /sys/devices/system/cpu/cpu0/rq-stats/hotplug_disable)" -eq "0" ]; then
-			echo "1" > /sys/devices/system/cpu/cpu0/rq-stats/hotplug_disable;
+		if [ "$(cat /sys/devices/system/cpu/cpu0/rq-stats/hotplug_enable)" -eq "1" ]; then
+			echo "0" > /sys/devices/system/cpu/cpu0/rq-stats/hotplug_enable;
 		fi;
 
 		#disable alucard_hotplug
@@ -203,8 +203,8 @@ CPU_HOTPLUG_TWEAKS()
 		fi;
 
 		#disable msm_rq_stats
-		if [ "$(cat /sys/devices/system/cpu/cpu0/rq-stats/hotplug_disable)" -eq "0" ]; then
-			echo "1" > /sys/devices/system/cpu/cpu0/rq-stats/hotplug_disable;
+		if [ "$(cat /sys/devices/system/cpu/cpu0/rq-stats/hotplug_enable)" -eq "1" ]; then
+			echo "0" > /sys/devices/system/cpu/cpu0/rq-stats/hotplug_enable;
 		fi;
 
 		#disable intelli_plug
@@ -268,8 +268,8 @@ CPU_HOTPLUG_TWEAKS()
 		fi;
 
 		#disable msm_rq_stats
-		if [ "$(cat /sys/devices/system/cpu/cpu0/rq-stats/hotplug_disable)" -eq "0" ]; then
-			echo "1" > /sys/devices/system/cpu/cpu0/rq-stats/hotplug_disable;
+		if [ "$(cat /sys/devices/system/cpu/cpu0/rq-stats/hotplug_enable)" -eq "1" ]; then
+			echo "0" > /sys/devices/system/cpu/cpu0/rq-stats/hotplug_enable;
 		fi;
 
 		#disable intelli_plug

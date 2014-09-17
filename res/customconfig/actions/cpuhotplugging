@@ -12,7 +12,7 @@ if [ "a$2" != "a" ]; then
 			echo "0" > /sys/kernel/intelli_plug/intelli_plug_active;
 			echo "0" > /sys/kernel/alucard_hotplug/hotplug_enable;
 			echo "0" > /sys/module/msm_hotplug/msm_enabled;
-			echo "0" > /sys/devices/system/cpu/cpu0/rq-stats/hotplug_disable;
+			echo "1" > /sys/devices/system/cpu/cpu0/rq-stats/hotplug_enable;
 			(
 				if [ "$(ps | grep "mpdecision" | wc -l)" -le "1" ]; then
 					sleep 3;
@@ -22,7 +22,7 @@ if [ "a$2" != "a" ]; then
 		;;
 		2)
 			/system/bin/stop mpdecision;
-			echo "1" > /sys/devices/system/cpu/cpu0/rq-stats/hotplug_disable;
+			echo "0" > /sys/devices/system/cpu/cpu0/rq-stats/hotplug_enable;
 			echo "0" > /sys/kernel/alucard_hotplug/hotplug_enable;
 			echo "0" > /sys/module/msm_hotplug/msm_enabled;
 			(
@@ -35,7 +35,7 @@ if [ "a$2" != "a" ]; then
 		;;
 		3)
 			/system/bin/stop mpdecision;
-			echo "1" > /sys/devices/system/cpu/cpu0/rq-stats/hotplug_disable;
+			echo "0" > /sys/devices/system/cpu/cpu0/rq-stats/hotplug_enable;
 			echo "0" > /sys/kernel/intelli_plug/intelli_plug_active;
 			echo "0" > /sys/module/msm_hotplug/msm_enabled;
 			(
@@ -48,7 +48,7 @@ if [ "a$2" != "a" ]; then
 		;;
 		4)
 			/system/bin/stop mpdecision;
-			echo "1" > /sys/devices/system/cpu/cpu0/rq-stats/hotplug_disable;
+			echo "0" > /sys/devices/system/cpu/cpu0/rq-stats/hotplug_enable;
 			echo "0" > /sys/kernel/intelli_plug/intelli_plug_active;
 			echo "0" > /sys/kernel/alucard_hotplug/hotplug_enable;
 			(
