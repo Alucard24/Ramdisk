@@ -9,7 +9,6 @@ scaling_min_freq_cpu2=378000
 scaling_min_freq_cpu3=378000
 gentle_fair_sleepers=off
 arch_power=on
-sched_mc_power_savings=2
 scaling_max_gps_freq=1890000
 scaling_max_suspend_freq=1134000
 scaling_max_oncall_freq=810000
