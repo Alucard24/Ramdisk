@@ -14,8 +14,8 @@ done;
 
 OPEN_RW()
 {
-	ROOTFS_MOUNT=$(mount | grep rootfs | cut -c26-27 | grep rw | wc -l)
-	SYSTEM_MOUNT=$(mount | grep system | cut -c69-70 | grep rw | wc -l)
+	ROOTFS_MOUNT=$(mount | grep rootfs | cut -c26-27 | grep -c rw | wc -l)
+	SYSTEM_MOUNT=$(mount | grep system | cut -c69-70 | grep -c rw | wc -l)
 	if [ "$ROOTFS_MOUNT" -eq "0" ]; then
 		$BB mount -o remount,rw /;
 	fi;
@@ -32,18 +32,6 @@ OPEN_RW;
 $BB echo "row" > /sys/block/mmcblk0/queue/scheduler;
 
 # clean old modules from /system and add new from ramdisk
-#if [ ! -d /system/lib/modules ]; then
-#        $BB mkdir /system/lib/modules;
-#fi;
-
-#cd /lib/modules/;
-#for i in *.ko; do
-#        $BB rm -f /system/lib/modules/"$i";
-#done;
-#cd /;
-
-#$BB chmod 755 /lib/modules/*.ko;
-#$BB cp -a /lib/modules/*.ko /system/lib/modules/;
 
 # create init.d folder if missing
 if [ ! -d /system/etc/init.d ]; then
@@ -148,29 +136,30 @@ fi;
 
 # reset profiles auto trigger to be used by kernel ADMIN, in case of need, if new value added in default profiles
 # just set numer $RESET_MAGIC + 1 and profiles will be reset one time on next boot with new kernel.
-# incase that ADMIN feel that something wrong with global STweaks config and profiles, then ADMIN can add +1 to CLEAN_DORI_DIR
+# incase that ADMIN feel that something wrong with global STweaks config and profiles, then ADMIN can add +1 to CLEAN_ALU_DIR
 # to clean all files on first boot from /data/.alucard/ folder.
-RESET_MAGIC=28;
-CLEAN_ALU_DIR=1;
+RESET_MAGIC=31;
+CLEAN_ALU_DIR=2;
+
 if [ ! -e /data/.alucard/reset_profiles ]; then
-	echo "0" > /data/.alucard/reset_profiles;
+	echo "$RESET_MAGIC" > /data/.alucard/reset_profiles;
 fi;
 if [ ! -e /data/reset_alu_dir ]; then
-	echo "0" > /data/reset_alu_dir;
+	echo "$CLEAN_ALU_DIR" > /data/reset_alu_dir;
 fi;
 if [ -e /data/.alucard/.active.profile ]; then
 	PROFILE=$(cat /data/.alucard/.active.profile);
+else
+	echo "default" > /data/.alucard/.active.profile;
+	PROFILE=$(cat /data/.alucard/.active.profile);
 fi;
 if [ "$(cat /data/reset_alu_dir)" -eq "$CLEAN_ALU_DIR" ]; then
-	if [ "$(cat /data/.alucard/reset_profiles)" -eq "$RESET_MAGIC" ]; then
-		echo "no need to reset profiles";
-	else
+	if [ "$(cat /data/.alucard/reset_profiles)" != "$RESET_MAGIC" ]; then
 		$BB rm -f /data/.alucard/*.profile;
 		echo "$RESET_MAGIC" > /data/.alucard/reset_profiles;
+	else
+		echo "no need to reset profiles or delete .alucard folder";
 	fi;
-elif [ ! -e /data/.alucard/.active.profile ]; then
-	echo "first boot with my kernel or user wipe";
-	echo "default" > /data/.alucard/.active.profile;
 else
 	# Clean /data/.alucard/ folder from all files to fix any mess but do it in smart way.
 	if [ -e /data/.alucard/"$PROFILE".profile ]; then
@@ -251,15 +240,12 @@ fi;
 echo "alucard" > /sys/devices/system/cpu/cpufreq/all_cpus/scaling_governor_all_cpus;
 
 if [ "$stweaks_boot_control" == "yes" ]; then
-	# stop uci.sh from running all the PUSH Buttons in stweaks on boot
-	OPEN_RW;
-
 	# apply STweaks settings
 	$BB pkill -f "com.gokhanmoral.stweaks.app";
 	$BB sh /res/uci.sh apply;
 
 	# Reduce heat limit during boot.
-	$BB sh /res/uci.sh generic /sys/module/msm_thermal/parameters/limit_temp_degC 65;
+	$BB sh /res/uci.sh generic /sys/module/msm_thermal/parameters/limit_temp_degC 70;
 
 	# Load Custom Modules
 	MODULES_LOAD;
@@ -285,7 +271,7 @@ fi;
 CRITICAL_PERM_FIX;
 
 # restore USER cpu heat temp from STweaks.
-$BB sh /res/uci.sh generic /sys/module/msm_thermal/parameters/limit_temp_degC $limit_temp_degC;
+$BB sh /res/uci.sh generic /sys/module/msm_thermal/parameters/limit_temp_degC "$limit_temp_degC";
 
 # Correct Kernel config after full boot.
 $BB sh /res/uci.sh oom_config_screen_on "$oom_config_screen_on";

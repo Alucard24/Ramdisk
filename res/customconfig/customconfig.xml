@@ -318,7 +318,7 @@
 			<spinnerItem name="HotPlug Suspend" value="suspend_when_off"/> 
 		</spinner>
 
-		<spinner description="This is a flag that determines if waiting for various IO should increase the CPU utilization in bump up the cpu frequency. For example should you could the time it takes wait for a data transfer from another hardware block as cpu load even though the cpu is not actually doing anything during this time. Obviously setting this to 0 will mean the selected governor will increase the frequency less often. (MSM MPDECISION, ALUCARD_HOTPLUG, MSM_HOTPLUG)" name="hp_io_is_busy" action="generic_cortex /tmp/hp_io_is_busy">
+		<spinner description="This is a flag that determines if waiting for various IO should increase the CPU utilization in bump up the cpu frequency. For example should you could the time it takes wait for a data transfer from another hardware block as cpu load even though the cpu is not actually doing anything during this time. Obviously setting this to 0 will mean the selected governor will increase the frequency less often. (ALUCARD_HOTPLUG, MSM_HOTPLUG)" name="hp_io_is_busy" action="generic_cortex /tmp/hp_io_is_busy">
 			<spinnerItem name="Yes" value="1"/> 
 			<spinnerItem name="No" value="0"/> 
 		</spinner>

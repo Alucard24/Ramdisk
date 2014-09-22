@@ -16,7 +16,7 @@
 BB=/sbin/busybox
 
 # change mode for /tmp/
-ROOTFS_MOUNT=$(mount | grep rootfs | cut -c26-27 | grep rw | wc -l)
+ROOTFS_MOUNT=$(mount | grep rootfs | cut -c26-27 | grep -c rw | wc -l)
 if [ "$ROOTFS_MOUNT" -eq "0" ]; then
 	mount -o remount,rw /;
 fi;
@@ -151,11 +151,6 @@ CPU_HOTPLUG_TWEAKS()
 		if [ "$(ps | grep "mpdecision" | wc -l)" -le "1" ]; then
 			/system/bin/start mpdecision
 			$BB renice -n -20 -p $(pgrep -f "/system/bin/start mpdecision");
-		fi;
-
-		# tune-settings
-		if [ "$state" == "tune" ]; then
-			echo "$hp_io_is_busy" > /sys/devices/system/cpu/cpu0/rq-stats/hp_io_is_busy;
 		fi;
 
 		log -p i -t "$FILE_NAME" "*** MSM_MPDECISION ***: enabled";
