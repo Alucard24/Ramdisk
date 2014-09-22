@@ -6,6 +6,13 @@
 
 BB=/sbin/busybox
 
+if [ -e /system/bin/mpdecision ]; then
+	if [ "$(pgrep -f "/system/bin/mpdecision" | wc -l)" -eq "0" ]; then
+		/system/bin/start mpdecision
+		$BB renice -n -20 -p "$(pgrep -f "/system/bin/mpdecision")";
+	fi;
+fi;
+
 if [ "$(pgrep -f "/system/bin/thermal-engine" | wc -l)" -eq "1" ]; then
 	$BB renice -n -20 -p "$(pgrep -f "/system/bin/thermal-engine")";
 fi;
@@ -19,34 +26,31 @@ if [ "a$2" != "a" ]; then
 			echo "0" > /sys/kernel/alucard_hotplug/hotplug_enable;
 			echo "0" > /sys/module/msm_hotplug/msm_enabled;
 			echo "1" > /sys/devices/system/cpu/cpu0/rq-stats/hotplug_enable;
-			if [ "$(pgrep -f "/system/bin/mpdecision" | wc -l)" -eq "0" ]; then
+			if [ -e /system/bin/mpdecision ]; then
+				/system/bin/stop mpdecision
 				/system/bin/start mpdecision
 				$BB renice -n -20 -p "$(pgrep -f "/system/bin/mpdecision")";
+			else
+				echo "0" > /sys/devices/system/cpu/cpu0/rq-stats/hotplug_enable;
+				echo "1" > /sys/module/msm_hotplug/msm_enabled;
 			fi;
 		;;
 		2)
-			if [ -e /system/bin/mpdecision ]; then
-				/system/bin/stop mpdecision;
-			fi;
-			echo "0" > /sys/devices/system/cpu/cpu0/rq-stats/hotplug_enable;
 			echo "0" > /sys/kernel/alucard_hotplug/hotplug_enable;
 			echo "0" > /sys/module/msm_hotplug/msm_enabled;
+			echo "0" > /sys/devices/system/cpu/cpu0/rq-stats/hotplug_enable;
 			echo "1" > /sys/kernel/intelli_plug/intelli_plug_active;
 		;;
 		3)
-			/system/bin/stop mpdecision;
-			echo "0" > /sys/devices/system/cpu/cpu0/rq-stats/hotplug_enable;
 			echo "0" > /sys/kernel/intelli_plug/intelli_plug_active;
 			echo "0" > /sys/module/msm_hotplug/msm_enabled;
+			echo "0" > /sys/devices/system/cpu/cpu0/rq-stats/hotplug_enable;
 			echo "1" > /sys/kernel/alucard_hotplug/hotplug_enable;
 		;;
 		4)
-			if [ -e /system/bin/mpdecision ]; then
-				/system/bin/stop mpdecision;
-			fi;
-			echo "0" > /sys/devices/system/cpu/cpu0/rq-stats/hotplug_enable;
 			echo "0" > /sys/kernel/intelli_plug/intelli_plug_active;
 			echo "0" > /sys/kernel/alucard_hotplug/hotplug_enable;
+			echo "0" > /sys/devices/system/cpu/cpu0/rq-stats/hotplug_enable;
 			echo "1" > /sys/module/msm_hotplug/msm_enabled;
 		;;
 		*)

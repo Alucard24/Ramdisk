@@ -335,12 +335,13 @@
 
 	<settingsPane description="Tune the msm thermal module" name="MSM Thermal Tuning">
 
-		<spinner description="CPU Thermal control, Can be Default driver without controls, or Intelli thermal driver with controls below, its will limit CPU frequency when CPU reach the max limit heat, till cooled and restore full power, this can help with too hot phone playing games! intelli driver is more aggressive and drop freq to 1.4 then to 1.2 then to 1.1ghz that will reduce performance in all bench apps! defaut will lock on 1.9Ghz most of the time, and burn the fingers but give you more SCORE to show off." name="CPU Temp Control" action="msm_thermal">
+		<spinner description="CPU Thermal control, Can be Default driver without controls, or Intelli thermal driver with controls below or Dual Intelligent Thermal driver with controls below and ROM thermal control, its will limit CPU frequency when CPU reach the max limit heat, till cooled and restore full power, this can help with too hot phone playing games! intelli driver is more aggressive and drop freq to 1.4 then to 1.2 then to 1.1ghz that will reduce performance in all bench apps! defaut will lock on 1.9Ghz most of the time, and burn the fingers but give you more SCORE to show off." name="CPU Temp Control" action="msm_thermal">
 			<spinnerItem name="Default Temp Control" value="msm_temp"/> 
-			<spinnerItem name="Intelli Temp Control" value="intelli_temp"/> 
+			<spinnerItem name="Intelli Temp Control" value="intelli_temp"/>
+			<spinnerItem name="Intelli Temp Control" value="intelli_temp_dual"/>
 		</spinner>
 
-		<checkbox description="Enable or Disable CPU Cores ON and OFF based on Cores HEAT set below, if OFF! then all cores work but get low freq on high temp! if ON! then cores turned off to help with CPU cooling, but loose performance! very bad for bench show off apps! but good for heat stability" name="CPU Core Controls" action="generic01 /sys/module/msm_thermal/core_control/enabled" label="CPU Cores Control"/>
+		<checkbox description="Enable or Disable CPU Cores ON and OFF based on Cores HEAT set below, if OFF! then all cores work but get low freq on high temp! if ON! then cores turned off to help with CPU cooling, but loose performance! very bad for bench show off apps! but good for heat stability" name="CPU Core Controls" action="generic01 /sys/module/msm_thermal/core_control/core_control_enabled" label="CPU Cores Control"/>
 
 		<seekBar description="Set CORES max HEAT before turning OFF cores from 3 to 1 and keep normal phone heat, if you tune above CPU max TEMP below, then all cores will stay ON when over heatted! This will work only with Intelli Temp Control ON!!!" name="CORE Max Heat" action="generic /sys/module/msm_thermal/parameters/core_limit_temp_degC" unit="C" min="50" reversed="false" step="1" max="85"/>
 

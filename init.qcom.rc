@@ -548,7 +548,7 @@ on property:sys.boot_completed=1
     write /sys/module/pm_8x60/modes/cpu2/standalone_power_collapse/idle_enabled 1
     write /sys/module/pm_8x60/modes/cpu3/standalone_power_collapse/idle_enabled 1
     write /sys/module/pm_8x60/modes/cpu0/power_collapse/idle_enabled 1
-    write /sys/module/msm_thermal/core_control/enabled 0
+    write /sys/module/msm_thermal/core_control/core_control_enabled 0
     write /sys/devices/system/cpu/cpu1/online 1
     write /sys/devices/system/cpu/cpu2/online 1
     write /sys/devices/system/cpu/cpu3/online 1
@@ -567,7 +567,7 @@ on property:sys.boot_completed=1
     write /sys/devices/system/cpu/cpu2/cpufreq/scaling_min_freq 384000
     write /sys/devices/system/cpu/cpu3/cpufreq/scaling_min_freq 384000
     write /dev/cpuctl/apps/cpu.notify_on_migrate 1
-    write /sys/module/msm_thermal/core_control/enabled 1
+    write /sys/module/msm_thermal/core_control/core_control_enabled 1
     chown root system /sys/devices/system/cpu/mfreq
     chmod 220 /sys/devices/system/cpu/mfreq
     chown system system /sys/devices/system/cpu/cpu1/online
@@ -719,7 +719,7 @@ on property:persist.sys.ssr.restart_level=3
 # Powersave
 #on property:sys.perf.profile=0
 #    stop mpdecision
-#    write /sys/module/msm_thermal/core_control/enabled 0
+#    write /sys/module/msm_thermal/core_control/core_control_enabled 0
 #    write /sys/devices/system/cpu/cpu0/online 1
 #    write /sys/devices/system/cpu/cpu1/online 1
 #    write /sys/devices/system/cpu/cpu2/online 1
@@ -736,13 +736,13 @@ on property:persist.sys.ssr.restart_level=3
 #    write /sys/devices/system/cpu/cpufreq/conservative/sampling_rate_min 180000
 #    write /sys/devices/system/cpu/cpufreq/conservative/up_threshold 90
 #    write /sys/class/kgsl/kgsl-3d0/pwrscale/trustzone/governor ondemand
-#    write /sys/module/msm_thermal/core_control/enabled 1
+#    write /sys/module/msm_thermal/core_control/core_control_enabled 1
 #    start mpdecision
 
 # Balanced
 #on property:sys.perf.profile=1
 #    stop mpdecision
-#    write /sys/module/msm_thermal/core_control/enabled 0
+#    write /sys/module/msm_thermal/core_control/core_control_enabled 0
 #    write /sys/devices/system/cpu/cpu0/online 1
 #    write /sys/devices/system/cpu/cpu1/online 1
 #    write /sys/devices/system/cpu/cpu2/online 1
@@ -764,7 +764,7 @@ on property:persist.sys.ssr.restart_level=3
 #    write /sys/devices/system/cpu/cpufreq/interactive/up_threshold_any_cpu_freq 810000
 #    write /sys/devices/system/cpu/cpufreq/interactive/up_threshold_any_cpu_load 70
 #    write /sys/class/kgsl/kgsl-3d0/pwrscale/trustzone/governor ondemand
-#    write /sys/module/msm_thermal/core_control/enabled 1
+#    write /sys/module/msm_thermal/core_control/core_control_enabled 1
 #    start mpdecision
 
 # High performance
