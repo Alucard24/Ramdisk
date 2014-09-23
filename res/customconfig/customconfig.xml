@@ -448,23 +448,9 @@
 
 	<settingsPane description="Tune IO settings managed by Kernel" name="IO Tuning">
 
-		<spinner description="Maximum number of kilobytes to read-ahead for INTERNAL SDCARD! file systems on this device. Works only if IO-Tweaks tweak is enabled! (Default: 1024 kB) !!! Depends on CortexBrain-Background-Process !!!" name="kilobytes to read-ahead" action="generic_cortex /tmp/intsd_read_ahead_kb">
-			<spinnerItem name="128 kB" value="128"/> 
-			<spinnerItem name="256 kB" value="256"/> 
-			<spinnerItem name="512 kB" value="512"/> 
-			<spinnerItem name="1024 kB" value="1024"/> 
-			<spinnerItem name="2048 kB" value="2048"/> 
-			<spinnerItem name="2560 kB" value="2560"/> 
-		</spinner>
+		<seekBar description="Maximum number of kilobytes to read-ahead for INTERNAL SDCARD! file systems on this device. Works only if IO-Tweaks tweak is enabled! (Default: 1024 kB) !!! Depends on CortexBrain-Background-Process !!!" name="kilobytes to read-ahead" action="generic_cortex /tmp/intsd_read_ahead_kb" unit="kB" min="128" reversed="false" step="128" max="4096"/>
 
-		<spinner description="Maximum number of kilobytes to read-ahead for EXTERNAL SDCARD! file systems on this device. Works only if IO-Tweaks tweak is enabled! (Default: 128 kB) !!! Depends on CortexBrain-Background-Process !!!" name="kilobytes to read-ahead" action="generic_cortex /tmp/extsd_read_ahead_kb">
-			<spinnerItem name="128 kB" value="128"/> 
-			<spinnerItem name="256 kB" value="256"/> 
-			<spinnerItem name="512 kB" value="512"/> 
-			<spinnerItem name="1024 kB" value="1024"/> 
-			<spinnerItem name="2048 kB" value="2048"/> 
-			<spinnerItem name="2560 kB" value="2560"/> 
-		</spinner>
+		<seekBar description="Maximum number of kilobytes to read-ahead for EXTERNAL SDCARD! file systems on this device. Works only if IO-Tweaks tweak is enabled! (Default: 128 kB) !!! Depends on CortexBrain-Background-Process !!!" name="kilobytes to read-ahead" action="generic_cortex /tmp/extsd_read_ahead_kb" unit="kB" min="128" reversed="false" step="128" max="4096"/>
 
 		<spinner description="This will set the default AWAKE IO scheduler for internal sdcard. (Default: ROW)" name="Default Awake IO Scheduler Int." action="iosched internal /sys/block/mmcblk0/queue/scheduler">
 			<spinnerItem name="BFQ" value="bfq"/>
