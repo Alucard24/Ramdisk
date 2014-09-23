@@ -812,14 +812,6 @@
 			<spinnerItem name="Debug" value="3"/>
 		</spinner>
 
-		<checkbox description="Enable or Disable the DATA turns off while screen is off function. !!! Depends on CortexBrain-Background-Process !!!" name="Auto-DATA" action="generic_cortex /tmp/cortexbrain_auto_tweak_mobile" label="Force Auto-Data"/>
-
-		<seekBar description="Set a delay before DATA is forced to OFF when screen is turned off. !!! Depends on CortexBrain-Auto-DATA!!!" name="DATA Turn Off Delay (in sec)" action="generic_cortex /tmp/cortexbrain_auto_tweak_mobile_sleep_delay" unit="sec" min="0" reversed="false" step="30" max="300"/>
-
-		<checkbox description="Enable or Disable the Wifi turns off while screen is off function. !!! Depends on CortexBrain-Background-Process !!!" name="Auto-Wifi" action="generic_cortex /tmp/cortexbrain_auto_tweak_wifi" label="Force Auto-Wifi"/>
-
-		<seekBar description="Set a delay before WIFI is forced to OFF when screen is turned off. !!! Depends on CortexBrain-Auto-Wifi !!!" name="WIFI Turn Off Delay (in sec)" action="generic_cortex /tmp/cortexbrain_auto_tweak_wifi_sleep_delay" unit="sec" min="0" reversed="false" step="30" max="300"/>
-
 		<checkbox description="Enable or Disable Memory-Tweaks (reboot needed)." name="Memory-Tweaks" action="generic_cortex /tmp/cortexbrain_memory" label="Memory-Tweaks"/>
 
 		<checkbox description="Enable or Disable System-Tweak (reboot needed)." name="System-Tweaks" action="generic_cortex /tmp/cortexbrain_system" label="System-Tweaks"/>

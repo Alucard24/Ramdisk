@@ -31,7 +31,6 @@ PIDOFCORTEX=$$;
 # (since we don't have the recovery source code I can't change the ".alucard" dir, so just leave it there for history)
 DATA_DIR=/data/.alucard;
 USB_POWER=0;
-TELE_DATA=init;
 
 # ==============================================================
 # INITIATE
@@ -40,27 +39,6 @@ TELE_DATA=init;
 # get values from profile
 PROFILE=$(cat $DATA_DIR/.active.profile);
 . "$DATA_DIR"/"$PROFILE".profile;
-
-# check if dumpsys exist in ROM
-if [ -e /system/bin/dumpsys ]; then
-	DUMPSYS_STATE=1;
-else
-	DUMPSYS_STATE=0;
-fi;
-
-# ==============================================================
-# FILES FOR VARIABLES || we need this for write variables from child-processes to parent
-# ==============================================================
-
-# WIFI HELPER
-WIFI_HELPER_AWAKE="$DATA_DIR/WIFI_HELPER_AWAKE";
-WIFI_HELPER_TMP="$DATA_DIR/WIFI_HELPER_TMP";
-echo "1" > $WIFI_HELPER_TMP;
-
-# MOBILE HELPER
-MOBILE_HELPER_AWAKE="$DATA_DIR/MOBILE_HELPER_AWAKE";
-MOBILE_HELPER_TMP="$DATA_DIR/MOBILE_HELPER_TMP";
-echo "1" > $MOBILE_HELPER_TMP;
 
 # ==============================================================
 # I/O-TWEAKS
@@ -494,132 +472,6 @@ if [ "$apply_cpu" == "update" ]; then
 	CPU_GOV_TWEAKS "tune";
 fi;
 
-# ==============================================================
-# GLOBAL-FUNCTIONS
-# ==============================================================
-
-WIFI_SET()
-{
-	local state="$1";
-
-	if [ "$state" == "off" ]; then
-		service call wifi 13 i32 0 > /dev/null;
-		svc wifi disable;
-		echo "1" > $WIFI_HELPER_AWAKE;
-	elif [ "$state" == "on" ]; then
-		service call wifi 13 i32 1 > /dev/null;
-		svc wifi enable;
-	fi;
-
-	log -p i -t "$FILE_NAME" "*** WIFI ***: $state";
-}
-
-WIFI()
-{
-	local state="$1";
-
-	if [ "$state" == "sleep" ]; then
-		if [ "$cortexbrain_auto_tweak_wifi" == "on" ]; then
-			if [ -e /sys/module/dhd/initstate ]; then
-				if [ "$cortexbrain_auto_tweak_wifi_sleep_delay" -eq "0" ]; then
-					WIFI_SET "off";
-				else
-					(
-						echo "0" > $WIFI_HELPER_TMP;
-						# screen time out but user want to keep it on and have wifi
-						sleep 10;
-						if [ `cat $WIFI_HELPER_TMP` -eq "0" ]; then
-							# user did not turned screen on, so keep waiting
-							local SLEEP_TIME_WIFI=$(( $cortexbrain_auto_tweak_wifi_sleep_delay - 10 ));
-							log -p i -t "$FILE_NAME" "*** DISABLE_WIFI $cortexbrain_auto_tweak_wifi_sleep_delay Sec Delay Mode ***";
-							sleep $SLEEP_TIME_WIFI;
-							if [ `cat $WIFI_HELPER_TMP` -eq "0" ]; then
-								# user left the screen off, then disable wifi
-								WIFI_SET "off";
-							fi;
-						fi;
-					)&
-				fi;
-			else
-				echo "0" > $WIFI_HELPER_AWAKE;
-			fi;
-		fi;
-	elif [ "$state" == "awake" ]; then
-		if [ "$cortexbrain_auto_tweak_wifi" == "on" ]; then
-			echo "1" > $WIFI_HELPER_TMP;
-			if [ `cat $WIFI_HELPER_AWAKE` -eq "1" ]; then
-				WIFI_SET "on";
-			fi;
-		fi;
-	fi;
-}
-
-MOBILE_DATA_SET()
-{
-	local state="$1";
-
-	if [ "$state" == "off" ]; then
-		svc data disable;
-		echo "1" > $MOBILE_HELPER_AWAKE;
-	elif [ "$state" == "on" ]; then
-		svc data enable;
-	fi;
-
-	log -p i -t "$FILE_NAME" "*** MOBILE DATA ***: $state";
-}
-
-MOBILE_DATA_STATE()
-{
-	DATA_STATE_CHECK=0;
-
-	if [ $DUMPSYS_STATE -eq "1" ]; then
-		local DATA_STATE=`echo "$TELE_DATA" | awk '/mDataConnectionState/ {print $1}'`;
-
-		if [ "$DATA_STATE" != "mDataConnectionState=0" ]; then
-			DATA_STATE_CHECK=1;
-		fi;
-	fi;
-}
-
-MOBILE_DATA()
-{
-	local state="$1";
-
-	if [ "$cortexbrain_auto_tweak_mobile" == "on" ]; then
-		if [ "$state" == "sleep" ]; then
-			MOBILE_DATA_STATE;
-			if [ "$DATA_STATE_CHECK" -eq "1" ]; then
-				if [ "$cortexbrain_auto_tweak_mobile_sleep_delay" -eq "0" ]; then
-					MOBILE_DATA_SET "off";
-				else
-					(
-						echo "0" > $MOBILE_HELPER_TMP;
-						# screen time out but user want to keep it on and have mobile data
-						sleep 10;
-						if [ `cat $MOBILE_HELPER_TMP` -eq "0" ]; then
-							# user did not turned screen on, so keep waiting
-							local SLEEP_TIME_DATA=$(( $cortexbrain_auto_tweak_mobile_sleep_delay - 10 ));
-							log -p i -t "$FILE_NAME" "*** DISABLE_MOBILE $cortexbrain_auto_tweak_mobile_sleep_delay Sec Delay Mode ***";
-							sleep $SLEEP_TIME_DATA;
-							if [ `cat $MOBILE_HELPER_TMP` -eq "0" ]; then
-								# user left the screen off, then disable mobile data
-								MOBILE_DATA_SET "off";
-							fi;
-						fi;
-					)&
-				fi;
-			else
-				echo "0" > $MOBILE_HELPER_AWAKE;
-			fi;
-		elif [ "$state" == "awake" ]; then
-			echo "1" > $MOBILE_HELPER_TMP;
-			if [ `cat $MOBILE_HELPER_AWAKE` -eq "1" ]; then
-				MOBILE_DATA_SET "on";
-			fi;
-		fi;
-	fi;
-}
-
 # mount sdcard and emmc, if usb mass storage is used
 MOUNT_SD_CARD()
 {
@@ -756,8 +608,6 @@ AWAKE_MODE()
 {
 	# not on call, check if was powerd by USB on sleep, or didnt sleep at all
 	if [ "$USB_POWER" -eq "0" ]; then
-		MOBILE_DATA "awake";
-		WIFI "awake";
 		IO_SCHEDULER "awake";
 	else
 		# Was powered by USB, and half sleep
@@ -787,8 +637,6 @@ SLEEP_MODE()
 	# check if we powered by USB, if not sleep
 	if [ "$CHARGING" -eq "1" ]; then
 		IO_SCHEDULER "sleep";
-		WIFI "sleep";
-		MOBILE_DATA "sleep";
 
 		log -p i -t "$FILE_NAME" "*** SLEEP mode ***";
 	else
