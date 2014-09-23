@@ -151,6 +151,7 @@ CPU_HOTPLUG_TWEAKS()
 				/system/bin/stop mpdecision
 				/system/bin/start mpdecision
 				$BB renice -n -20 -p "$(pgrep -f "/system/bin/start mpdecision")";
+				echo "20" > /sys/devices/system/cpu/cpu0/rq-stats/run_queue_poll_ms;
 			else
 				# Some !Stupid APP! changed mpdecision name, not my problem. use msm hotplug!
 				echo "0" > /sys/devices/system/cpu/cpu0/rq-stats/hotplug_enable;
