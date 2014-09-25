@@ -653,16 +653,18 @@ SLEEP_MODE()
 # Dynamic value do not change/delete
 cortexbrain_background_process=1;
 
-if [ "$cortexbrain_background_process" -eq "1" ] && [ `pgrep -f "cat /sys/power/wait_for_fb_sleep" | wc -l` -eq "0" ] && [ `pgrep -f "cat /sys/power/wait_for_fb_wake" | wc -l` -eq "0" ]; then
-	(while [ 1 ]; do
+if [ "$cortexbrain_background_process" -eq "1" ] && [ "$(pgrep -f "/sbin/ext/cortexbrain-tune.sh" | wc -l)" -eq "2" ]; then
+	(while true; do
+		while [ "$(cat /sys/power/autosleep)" != "off" ]; do
+			sleep "3";
+		done;
 		# AWAKE State. all system ON
-		cat /sys/power/wait_for_fb_wake > /dev/null 2>&1;
 		AWAKE_MODE;
-		sleep 2;
 
+		while [ "$(cat /sys/power/autosleep)" != "mem" ]; do
+			sleep "3";
+		done;
 		# SLEEP state. All system to power save
-		cat /sys/power/wait_for_fb_sleep > /dev/null 2>&1;
-		sleep 2;
 		SLEEP_MODE;
 	done &);
 else
