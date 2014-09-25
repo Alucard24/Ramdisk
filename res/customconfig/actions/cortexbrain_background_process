@@ -13,8 +13,6 @@ fi;
 case "${cortexbrain_background_process}" in
 	0)
 		pkill -f "/sbin/ext/cortexbrain-tune.sh";
-		pkill -f "cat /sys/power/wait_for_fb_sleep";
-		pkill -f "cat /sys/power/wait_for_fb_wake";
 		sed -i "s/cortexbrain_background_process=[0-1]*/cortexbrain_background_process=0/g" /sbin/ext/cortexbrain-tune.sh;
 	;;
 	1)
