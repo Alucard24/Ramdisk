@@ -11,12 +11,12 @@ fi;
 DEBUG_FILE="/sdcard/alucard_debug";
 DEBUG_FILE_LOGCAT="/sdcard/alucard_debug_logcat";
 
+PROFILE=`cat /data/.alucard/.active.profile`;
+. /data/.alucard/${PROFILE}.profile;
+
 case "${debug_to_sd}" in
 	1)
 		(
-			PROFILE=`cat /data/.alucard/.active.profile`;
-			. /data/.alucard/${PROFILE}.profile;
-
 			SEPARATOR()
 			{
 				echo "" >> $DEBUG_FILE;
