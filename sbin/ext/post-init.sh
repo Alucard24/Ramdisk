@@ -281,6 +281,12 @@ $BB sh /res/uci.sh oom_config_screen_on "$oom_config_screen_on";
 $BB sh /res/uci.sh oom_config_screen_off "$oom_config_screen_off";
 $BB sh /res/uci.sh cpuhotplugging "$cpuhotplugging";
 
+# Reload SuperSU daemonsu to fix SuperUser bugs.
+if [ -e /system/xbin/daemonsu ]; then
+	pkill -f "daemonsu";
+	/system/xbin/daemonsu --auto-daemon &
+fi;
+
 # script finish here, so let me know when
 TIME_NOW=$(date)
 echo "$TIME_NOW" > /data/boot_log_dm
