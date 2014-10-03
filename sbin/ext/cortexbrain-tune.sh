@@ -601,6 +601,22 @@ IO_SCHEDULER()
 	fi;
 }
 
+WORKQUEUE_CONTROL()
+{
+	local state="$1";
+
+	if [ "$state" == "awake" ]; then
+		if [ "$power_efficient" == "on" ]; then
+			echo "1" > /sys/module/workqueue/parameters/power_efficient;
+		else
+			echo "0" > /sys/module/workqueue/parameters/power_efficient;
+		fi;
+	elif [ "$state" == "sleep" ]; then
+		echo "1" > /sys/module/workqueue/parameters/power_efficient;
+	fi;
+	log -p i -t "$FILE_NAME" "*** WORKQUEUE_CONTROL ***: done";
+}
+
 # ==============================================================
 # TWEAKS: if Screen-ON
 # ==============================================================
@@ -609,6 +625,7 @@ AWAKE_MODE()
 	# not on call, check if was powerd by USB on sleep, or didnt sleep at all
 	if [ "$USB_POWER" -eq "0" ]; then
 		IO_SCHEDULER "awake";
+		WORKQUEUE_CONTROL "awake";
 	else
 		# Was powered by USB, and half sleep
 		USB_POWER=0;
@@ -637,6 +654,7 @@ SLEEP_MODE()
 	# check if we powered by USB, if not sleep
 	if [ "$CHARGING" -eq "1" ]; then
 		IO_SCHEDULER "sleep";
+		WORKQUEUE_CONTROL "sleep";
 
 		log -p i -t "$FILE_NAME" "*** SLEEP mode ***";
 	else
