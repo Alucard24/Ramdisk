@@ -161,8 +161,8 @@ case "${config_backup_restore}" in
 
 				if [ "$STWEAKSAPP_RUNNING" != "0" ]; then
 					# Killing stweaks, if was open it's will restart!
-					pkill -f "com.gokhanmoral.stweaks.app";
-					/system/bin/am start -a android.intent.action.MAIN -n com.gokhanmoral.stweaks.app/.MainActivity;
+					am force-stop com.gokhanmoral.stweaks.app 2> /dev/null;
+					am start -a android.intent.action.MAIN -n com.gokhanmoral.stweaks.app/.MainActivity 2> /dev/null;
 				fi;
 			)&
 
