@@ -158,6 +158,10 @@ else
 fi;
 if [ "$(cat /data/reset_alu_dir)" -eq "$CLEAN_ALU_DIR" ]; then
 	if [ "$(cat /data/.alucard/reset_profiles)" != "$RESET_MAGIC" ]; then
+		if [ ! -e /data/.alucard_old ]; then
+			mkdir /data/.alucard_old;
+		fi;
+		cp -a /data/.alucard/*.profile /data/.alucard_old/;
 		$BB rm -f /data/.alucard/*.profile;
 		echo "$RESET_MAGIC" > /data/.alucard/reset_profiles;
 	else
@@ -168,6 +172,10 @@ else
 	if [ -e /data/.alucard/"$PROFILE".profile ]; then
 		cp /data/.alucard/"$PROFILE".profile /sdcard/"$PROFILE".profile_backup;
 	fi;
+	if [ ! -e /data/.alucard_old ]; then
+		mkdir /data/.alucard_old;
+	fi;
+	cp -a /data/.alucard/* /data/.alucard_old/;
 	$BB rm -f /data/.alucard/*
 	echo "$CLEAN_ALU_DIR" > /data/reset_alu_dir;
 	echo "$RESET_MAGIC" > /data/.alucard/reset_profiles;
