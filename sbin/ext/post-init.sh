@@ -141,7 +141,7 @@ fi;
 # just set numer $RESET_MAGIC + 1 and profiles will be reset one time on next boot with new kernel.
 # incase that ADMIN feel that something wrong with global STweaks config and profiles, then ADMIN can add +1 to CLEAN_ALU_DIR
 # to clean all files on first boot from /data/.alucard/ folder.
-RESET_MAGIC=32;
+RESET_MAGIC=34;
 CLEAN_ALU_DIR=2;
 
 if [ ! -e /data/.alucard/reset_profiles ]; then
@@ -253,10 +253,8 @@ echo "alucard" > /sys/devices/system/cpu/cpufreq/all_cpus/scaling_governor_all_c
 if [ "$stweaks_boot_control" == "yes" ]; then
 	# apply STweaks settings
 	$BB pkill -f "com.gokhanmoral.stweaks.app";
+	$BB sh /sbin/uci;
 	$BB sh /res/uci.sh apply;
-
-	# Reduce heat limit during boot.
-	$BB sh /res/uci.sh generic /sys/module/msm_thermal/parameters/limit_temp_degC 70;
 
 	# Load Custom Modules
 	MODULES_LOAD;
@@ -280,9 +278,6 @@ fi;
 
 # Fix critical perms again after init.d mess
 CRITICAL_PERM_FIX;
-
-# restore USER cpu heat temp from STweaks.
-$BB sh /res/uci.sh generic /sys/module/msm_thermal/parameters/limit_temp_degC "$limit_temp_degC";
 
 # Correct Kernel config after full boot.
 $BB sh /res/uci.sh oom_config_screen_on "$oom_config_screen_on";
