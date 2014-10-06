@@ -10,43 +10,7 @@
 
 		<button description="Push to load all tuned settings if master switch is OFF or was OFF, if it was ON when phone booted then no need to push!! wait till you see that settings are loaded" name="LOAD ALL" action="push-actions/reload_settings" label="LOAD ALL"/>
 
-	</settingsPane>
-
-	<settingsPane description="The following settings are for all global CPU configuration, use it only if you know what you are doing." name="CPU Global Settings">
-
-		<seekBar description="Maximum CPU-Speed for CPU0. CPU Frequency steps by 108.000 kHz, from 378.000 kHz to 1.890.000 kHz! (Default: 1.890.000 kHz)" name="Max Normal Frequency" action="genericfreq /sys/devices/system/cpu/cpufreq/all_cpus/scaling_max_freq_cpu0" unit="kHz" min="378000" reversed="false" step="108000" max="1890000"/>
-
-		<seekBar description="Maximum CPU-Speed for CPU1. CPU Frequency steps by 108.000 kHz, from 378.000 kHz to 1.890.000 kHz! (Default: 1.890.000 kHz)" name="Max Normal Frequency" action="genericfreq /sys/devices/system/cpu/cpufreq/all_cpus/scaling_max_freq_cpu1" unit="kHz" min="378000" reversed="false" step="108000" max="1890000"/>
-
-		<seekBar description="Maximum CPU-Speed for CPU2. CPU Frequency steps by 108.000 kHz, from 378.000 kHz to 1.890.000 kHz! (Default: 1.890.000 kHz)" name="Max Normal Frequency" action="genericfreq /sys/devices/system/cpu/cpufreq/all_cpus/scaling_max_freq_cpu2" unit="kHz" min="378000" reversed="false" step="108000" max="1890000"/>
-
-		<seekBar description="Maximum CPU-Speed for CPU3. CPU Frequency steps by 108.000 kHz, from 378.000 kHz to 1.890.000 kHz! (Default: 1.890.000 kHz)" name="Max Normal Frequency" action="genericfreq /sys/devices/system/cpu/cpufreq/all_cpus/scaling_max_freq_cpu3" unit="kHz" min="378000" reversed="false" step="108000" max="1890000"/>
-
-		<seekBar description="Minimum CPU-Speed for CPU0. CPU Frequency step by 108.000 kHz are valid from 378.000 kHz to 1.890.000 kHz! (Default: 378.000 kHz)" name="Min Frequency" action="genericfreq /sys/devices/system/cpu/cpufreq/all_cpus/scaling_min_freq_cpu0" unit="kHz" min="378000" reversed="false" step="108000" max="1890000"/>
-
-		<seekBar description="Minimum CPU-Speed for CPU1. CPU Frequency step by 108.000 kHz are valid from 378.000 kHz to 1.890.000 kHz! (Default: 378.000 kHz)" name="Min Frequency" action="genericfreq /sys/devices/system/cpu/cpufreq/all_cpus/scaling_min_freq_cpu1" unit="kHz" min="378000" reversed="false" step="108000" max="1890000"/>
-
-		<seekBar description="Minimum CPU-Speed for CPU2. CPU Frequency step by 108.000 kHz are valid from 378.000 kHz to 1.890.000 kHz! (Default: 378.000 kHz)" name="Min Frequency" action="genericfreq /sys/devices/system/cpu/cpufreq/all_cpus/scaling_min_freq_cpu2" unit="kHz" min="378000" reversed="false" step="108000" max="1890000"/>
-
-		<seekBar description="Minimum CPU-Speed for CPU3. CPU Frequency step by 108.000 kHz are valid from 378.000 kHz to 1.890.000 kHz! (Default: 378.000 kHz)" name="Min Frequency" action="genericfreq /sys/devices/system/cpu/cpufreq/all_cpus/scaling_min_freq_cpu3" unit="kHz" min="378000" reversed="false" step="108000" max="1890000"/>
-
-	</settingsPane>
-
-	<settingsPane description="Set CPU settings to save power." name="CPU Idle and Power Settings">
-
-		<checkbox description="Disabling GENTLE_FAIR_SLEEPERS may give you better UI responsiveness." name="GENTLE_FAIR_SLEEPERS" action="generic01 /sys/kernel/sched/gentle_fair_sleepers" label="GENTLE_FAIR_SLEEPERS"/>
-
-		<checkbox description="Enable ARCH_POWER." name="ARCH_POWER" action="generic01 /sys/kernel/sched/arch_power" label="ARCH_POWER"/>
-
-		<checkbox description="Enable or disable Power-efficient Workqueues will help to reduce power consumption at the cost of slight performance overhead. By enabling this, PE workqueues are used for unbound scheduled work to save load on sibling CPU cores and queuing work on CPU 0." name="Power-efficient Workqueues"  action="generic01 /sys/module/workqueue/parameters/power_efficient" label="Power-efficient Workqueues"/>
-
-		<seekBar description="Maximum CPUs speed while using GPS. (Default: 1890.000 kHz)." name="scaling_max_gps_freq" action="genericfreq /sys/kernel/cpufreq_limit_manager/scaling_max_gps_freq" unit="kHz" min="810000" reversed="false" step="108000" max="1890000"/>
-
-		<seekBar description="Maximum DEEP SLEEP CPUs speed. (Default: 1242.000 kHz)." name="scaling_max_suspend_freq" action="genericfreq /sys/kernel/cpufreq_limit_manager/scaling_max_suspend_freq" unit="kHz" min="378000" reversed="false" step="108000" max="1890000"/>
-
-		<seekBar description="Maximum ON CALL CPUs speed. (Default: 810.000 kHz). When phone is on call and suspended." name="scaling_max_oncall_freq" action="genericfreq /sys/kernel/cpufreq_limit_manager/scaling_max_oncall_freq" unit="kHz" min="378000" reversed="false" step="108000" max="1890000"/>
-
-		<seekBar description="Minimum DEEP SLEEP CPUs speed. (Default: 378.000 kHz)." name="scaling_min_suspend_freq" action="genericfreq /sys/kernel/cpufreq_limit_manager/scaling_min_suspend_freq" unit="kHz" min="378000" reversed="false" step="108000" max="1890000"/>
+		<button description="To access CPU Global Settings from my kernel PUSH the BUTTON!" name="CPU Global Settings Access" action="push-actions/synapse_control" label="Switch to Synapse Controls"/>
 
 	</settingsPane>
 
@@ -343,7 +307,7 @@
 			<spinnerItem name="Intelli Temp Control Dual" value="intelli_temp_dual"/>
 		</spinner>
 
-		<button description="To access CPU Thermal Controls and LIVE stats from my kernel PUSH the BUTTON!" name="Thermal Controls Access" action="push-actions/thermal_control" label="Switch to Synapse Controls"/>
+		<button description="To access CPU Thermal Controls and LIVE stats from my kernel PUSH the BUTTON!" name="Thermal Controls Access" action="push-actions/synapse_control" label="Switch to Synapse Controls"/>
 
 	</settingsPane>
 
