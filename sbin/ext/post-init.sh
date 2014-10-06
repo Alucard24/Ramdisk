@@ -250,6 +250,9 @@ fi;
 # set alucard as default gov
 echo "alucard" > /sys/devices/system/cpu/cpufreq/all_cpus/scaling_governor_all_cpus;
 
+# Turn off CORE CONTROL, to boot on all cores!
+echo "0" > /sys/module/msm_thermal/core_control/core_control_enabled;
+
 if [ "$stweaks_boot_control" == "yes" ]; then
 	# apply STweaks settings
 	$BB pkill -f "com.gokhanmoral.stweaks.app";
