@@ -606,12 +606,12 @@ WORKQUEUE_CONTROL()
 
 	if [ "$state" == "awake" ]; then
 		if [ "$power_efficient" == "on" ]; then
-			echo "Y" > /sys/module/workqueue/parameters/power_efficient;
+			echo "1" > /sys/module/workqueue/parameters/power_efficient;
 		else
-			echo "N" > /sys/module/workqueue/parameters/power_efficient;
+			echo "0" > /sys/module/workqueue/parameters/power_efficient;
 		fi;
 	elif [ "$state" == "sleep" ]; then
-		echo "Y" > /sys/module/workqueue/parameters/power_efficient;
+		echo "1" > /sys/module/workqueue/parameters/power_efficient;
 	fi;
 	log -p i -t "$FILE_NAME" "*** WORKQUEUE_CONTROL ***: done";
 }
