@@ -30,6 +30,7 @@ FILE_NAME=$0;
 # (since we don't have the recovery source code I can't change the ".alucard" dir, so just leave it there for history)
 DATA_DIR=/data/.alucard;
 USB_POWER=0;
+WQPE=`cat /sys/module/workqueue/parameters/power_efficient`;
 
 # ==============================================================
 # INITIATE
@@ -605,12 +606,9 @@ WORKQUEUE_CONTROL()
 	local state="$1";
 
 	if [ "$state" == "awake" ]; then
-		if [ "$power_efficient" == "on" ]; then
-			echo "Y" > /sys/module/workqueue/parameters/power_efficient;
-		else
-			echo "N" > /sys/module/workqueue/parameters/power_efficient;
-		fi;
+		echo "$WQPE" > /sys/module/workqueue/parameters/power_efficient;
 	elif [ "$state" == "sleep" ]; then
+		WQPE=`cat /sys/module/workqueue/parameters/power_efficient`;
 		echo "Y" > /sys/module/workqueue/parameters/power_efficient;
 	fi;
 	log -p i -t "$FILE_NAME" "*** WORKQUEUE_CONTROL ***: done";
