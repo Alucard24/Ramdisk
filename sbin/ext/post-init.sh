@@ -26,7 +26,7 @@ OPEN_RW()
 OPEN_RW;
 
 # Turn off CORE CONTROL, to boot on all cores!
-echo "0" > /sys/module/msm_thermal/core_control/core_control_enabled;
+echo "0" > /sys/module/msm_thermal/core_control/core_control;
 
 # fix storage folder owner
 # $BB chown system.sdcard_rw /storage;
@@ -111,7 +111,7 @@ $BB chmod 666 /sys/devices/system/cpu/cpu1/online
 $BB chmod 666 /sys/devices/system/cpu/cpu2/online
 $BB chmod 666 /sys/devices/system/cpu/cpu3/online
 $BB chmod 666 /sys/module/msm_thermal/parameters/*
-$BB chmod 666 /sys/module/msm_thermal/core_control/core_control_enabled
+$BB chmod 666 /sys/module/msm_thermal/core_control/*
 $BB chmod 666 /sys/kernel/intelli_plug/*
 $BB chmod 666 /sys/class/kgsl/kgsl-3d0/max_gpuclk
 $BB chmod 666 /sys/devices/platform/kgsl-3d0/kgsl/kgsl-3d0/pwrscale/trustzone/governor
@@ -252,7 +252,7 @@ fi;
 echo "alucard" > /sys/devices/system/cpu/cpufreq/all_cpus/scaling_governor_all_cpus;
 
 # Turn off CORE CONTROL, to boot on all cores!
-echo "0" > /sys/module/msm_thermal/core_control/core_control_enabled;
+echo "0" > /sys/module/msm_thermal/core_control/core_control;
 
 if [ "$stweaks_boot_control" == "yes" ]; then
 	# apply STweaks settings
