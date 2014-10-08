@@ -283,6 +283,10 @@ fi;
 # Fix critical perms again after init.d mess
 CRITICAL_PERM_FIX;
 
+# Trim /system and data on boot!
+/sbin/busybox fstrim /system
+/sbin/busybox fstrim /data
+
 # Correct Kernel config after full boot.
 $BB sh /res/uci.sh oom_config_screen_on "$oom_config_screen_on";
 $BB sh /res/uci.sh oom_config_screen_off "$oom_config_screen_off";
