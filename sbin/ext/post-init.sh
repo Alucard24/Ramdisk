@@ -255,10 +255,23 @@ echo "alucard" > /sys/devices/system/cpu/cpufreq/all_cpus/scaling_governor_all_c
 echo "0" > /sys/module/msm_thermal/core_control/core_control;
 
 if [ "$stweaks_boot_control" == "yes" ]; then
+	echo "0" > /data/.alucard/uci_loading;
+	# function will wait for 3min for uci to finish.
+	(
+		UCI_COUNTER=0;
+		while [ "$(cat /data/.alucard/uci_loading)" == "0" ]; do
+			if [ "$UCI_COUNTER" -ge "30" ]; then
+				break;
+			fi;
+			$BB pkill -f "com.gokhanmoral.stweaks.app";
+			sleep 5;
+			UCI_COUNTER=$((UCI_COUNTER+1));
+		done;
+	)&
 	# apply STweaks settings
-	$BB pkill -f "com.gokhanmoral.stweaks.app";
 	$BB sh /sbin/uci;
 	$BB sh /res/uci.sh apply;
+	echo "1" > /data/.alucard/uci_loading;
 
 	# Load Custom Modules
 	MODULES_LOAD;
@@ -292,6 +305,10 @@ $BB sh /res/uci.sh oom_config_screen_on "$oom_config_screen_on";
 $BB sh /res/uci.sh oom_config_screen_off "$oom_config_screen_off";
 $BB sh /res/uci.sh selinux_control "$selinux_control";
 $BB sh /res/uci.sh cpuhotplugging "$cpuhotplugging";
+
+if [ -e /data/.alucard/uci_loading ]; then
+	rm /data/.alucard/uci_loading;
+fi;
 
 # Reload SuperSU daemonsu to fix SuperUser bugs.
 if [ -e /system/xbin/daemonsu ]; then
