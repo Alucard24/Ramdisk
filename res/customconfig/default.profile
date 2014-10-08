@@ -150,6 +150,7 @@ ac_charge_level=1900
 usb_charge_level=460
 failsafe=1
 tcp_congestion_control=cubic
+selinux_control=on
 gpsregion=No_GPS_Zone_changes
 init_d=off
 logger=off
