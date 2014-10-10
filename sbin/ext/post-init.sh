@@ -164,6 +164,9 @@ if [ "$(cat /data/reset_alu_dir)" -eq "$CLEAN_ALU_DIR" ]; then
 		fi;
 		cp -a /data/.alucard/*.profile /data/.alucard_old/;
 		$BB rm -f /data/.alucard/*.profile;
+		if [ -e /data/data/com.af.synapse/databases ]; then
+			$BB rm -R /data/data/com.af.synapse/databases;
+		fi;
 		echo "$RESET_MAGIC" > /data/.alucard/reset_profiles;
 	else
 		echo "no need to reset profiles or delete .alucard folder";
@@ -178,6 +181,9 @@ else
 	fi;
 	cp -a /data/.alucard/* /data/.alucard_old/;
 	$BB rm -f /data/.alucard/*
+	if [ -e /data/data/com.af.synapse/databases ]; then
+		$BB rm -R /data/data/com.af.synapse/databases;
+	fi;
 	echo "$CLEAN_ALU_DIR" > /data/reset_alu_dir;
 	echo "$RESET_MAGIC" > /data/.alucard/reset_profiles;
 	echo "$PROFILE" > /data/.alucard/.active.profile;
@@ -268,10 +274,11 @@ if [ "$stweaks_boot_control" == "yes" ]; then
 			UCI_COUNTER=$((UCI_COUNTER+1));
 		done;
 	)&
-	# apply STweaks settings
+	# apply STweaks and Synapse settings
 	$BB sh /sbin/uci;
 	$BB sh /res/uci.sh apply;
 	echo "1" > /data/.alucard/uci_loading;
+	$BB sh /sbin/uci;
 
 	# Load Custom Modules
 	MODULES_LOAD;
@@ -299,6 +306,7 @@ CRITICAL_PERM_FIX;
 # Trim /system and data on boot!
 /sbin/busybox fstrim /system
 /sbin/busybox fstrim /data
+/sbin/busybox fstrim /cache
 
 # Correct Kernel config after full boot.
 $BB sh /res/uci.sh oom_config_screen_on "$oom_config_screen_on";
