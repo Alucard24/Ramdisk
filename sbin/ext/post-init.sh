@@ -25,6 +25,9 @@ OPEN_RW()
 }
 OPEN_RW;
 
+# run ROM scripts
+$BB sh /init.qcom.post_boot.sh;
+
 # Turn off CORE CONTROL, to boot on all cores!
 $BB chmod 666 /sys/module/msm_thermal/core_control/*
 echo "0" > /sys/module/msm_thermal/core_control/core_control;
@@ -60,17 +63,6 @@ fi;
 $BB rm -rf /cache/lost+found/* 2> /dev/null;
 $BB rm -rf /data/lost+found/* 2> /dev/null;
 $BB rm -rf /data/tombstones/* 2> /dev/null;
-
-(
-	if [ ! -d /data/init.d_bkp ]; then
-		$BB mkdir /data/init.d_bkp;
-	fi;
-	$BB mv /system/etc/init.d/* /data/init.d_bkp/;
-	# run ROM scripts
-	if [ -e /system/etc/init.qcom.post_boot.sh ]; then
-		/system/bin/sh /system/etc/init.qcom.post_boot.sh
-	fi;
-)&
 
 OPEN_RW;
 
