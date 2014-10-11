@@ -136,9 +136,9 @@ case "${debug_to_sd}" in
 			#SEPARATOR;
 
 			# Wakeup
-			echo "Wakeup-Info:" >> $DEBUG_FILE;
-			cat /sys/kernel/debug/wakeup_sources >> $DEBUG_FILE;
-			SEPARATOR;
+			#echo "Wakeup-Info:" >> $DEBUG_FILE;
+			#cat /sys/kernel/debug/wakeup_sources >> $DEBUG_FILE;
+			#SEPARATOR;
 
 			# Suspend
 			echo "Suspend-Info:" >> $DEBUG_FILE;
@@ -214,7 +214,7 @@ case "${debug_to_sd}" in
 			# last kmsg
 			echo "last_kmsg-Info:" >> $DEBUG_FILE;
 			if [ -e /proc/last_kmsg ]; then
-				cat /proc/last_kmsg >> $DEBUG_FILE;
+				cat /proc/last_kmsg | tail -n 300 >> $DEBUG_FILE;
 				SEPARATOR;
 			else
 				echo "there was no /proc/last_kmsg to read from" >> $DEBUG_FILE;
@@ -229,14 +229,16 @@ case "${debug_to_sd}" in
 		(
 			# overwrite old debug-file
 			echo "" > $DEBUG_FILE_LOGCAT;
+			echo "1" > /sys/module/logger/parameters/log_mode;
 
 			logcat -f $DEBUG_FILE_LOGCAT;
 
-			wait 60;
-			pkill logcat;
-			#maybe we can also grep / remove personal infos here (e.g . email address)
+			sleep 30;
+			pkill -f "logcat";
+			echo "android_logger" > /sys/module/logger/parameters/log_mode;
+			pkill -f "com.gokhanmoral.stweaks.app";
 		)&
-		echo "Collecting logs for 60Sec please wait";
+		echo "Collecting logs for 30Sec please wait till STweaks will CLOSE";
 	;;
 	*)
 		echo "need input";

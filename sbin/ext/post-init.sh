@@ -26,6 +26,7 @@ OPEN_RW()
 OPEN_RW;
 
 # Turn off CORE CONTROL, to boot on all cores!
+$BB chmod 666 /sys/module/msm_thermal/core_control/*
 echo "0" > /sys/module/msm_thermal/core_control/core_control;
 
 # fix storage folder owner
@@ -111,7 +112,6 @@ $BB chmod 666 /sys/devices/system/cpu/cpu1/online
 $BB chmod 666 /sys/devices/system/cpu/cpu2/online
 $BB chmod 666 /sys/devices/system/cpu/cpu3/online
 $BB chmod 666 /sys/module/msm_thermal/parameters/*
-$BB chmod 666 /sys/module/msm_thermal/core_control/*
 $BB chmod 666 /sys/kernel/intelli_plug/*
 $BB chmod 666 /sys/class/kgsl/kgsl-3d0/max_gpuclk
 $BB chmod 666 /sys/devices/platform/kgsl-3d0/kgsl/kgsl-3d0/pwrscale/trustzone/governor
@@ -206,9 +206,6 @@ read_config;
 #	$BB sh /sbin/ext/install.sh;
 #)&
 
-# enable force fast charge on USB to charge faster
-echo "$force_fast_charge" > /sys/kernel/fast_charge/force_fast_charge;
-
 ######################################
 # Loading Modules
 ######################################
@@ -231,9 +228,8 @@ MODULES_LOAD()
 echo "0" > /proc/sys/kernel/kptr_restrict;
 
 # disable debugging on some modules
-if [ "$logger" == "off" ]; then
+if [ "$android_logger" -ge "1" ]; then
 	echo "N" > /sys/module/kernel/parameters/initcall_debug;
-	echo "0" > /sys/module/earlysuspend/parameters/debug_mask;
 #	echo "0" > /sys/module/alarm/parameters/debug_mask;
 #	echo "0" > /sys/module/alarm_dev/parameters/debug_mask;
 #	echo "0" > /sys/module/binder/parameters/debug_mask;
@@ -257,28 +253,12 @@ fi;
 # set alucard as default gov
 echo "alucard" > /sys/devices/system/cpu/cpufreq/all_cpus/scaling_governor_all_cpus;
 
-# Turn off CORE CONTROL, to boot on all cores!
-echo "0" > /sys/module/msm_thermal/core_control/core_control;
-
 if [ "$stweaks_boot_control" == "yes" ]; then
-	echo "0" > /data/.alucard/uci_loading;
-	# function will wait for 3min for uci to finish.
-	(
-		UCI_COUNTER=0;
-		while [ "$(cat /data/.alucard/uci_loading)" == "0" ]; do
-			if [ "$UCI_COUNTER" -ge "30" ]; then
-				break;
-			fi;
-			$BB pkill -f "com.gokhanmoral.stweaks.app";
-			sleep 5;
-			UCI_COUNTER=$((UCI_COUNTER+1));
-		done;
-	)&
-	# apply STweaks and Synapse settings
-	$BB sh /sbin/uci;
-	$BB sh /res/uci.sh apply;
-	echo "1" > /data/.alucard/uci_loading;
-	$BB sh /sbin/uci;
+	OPEN_RW;
+	# apply STweaks settings
+	$BB sh /res/uci_boot.sh apply;
+	sleep 3;
+	$BB mv /res/uci_boot.sh /res/uci.sh;
 
 	# Load Custom Modules
 	MODULES_LOAD;
@@ -287,10 +267,11 @@ if [ "$stweaks_boot_control" == "yes" ]; then
 fi;
 
 # Start any init.d scripts that may be present in the rom or added by the user
-$BB mv /data/init.d_bkp/* /system/etc/init.d/
 if [ "$init_d" == "on" ]; then
 	$BB chmod 755 /system/etc/init.d/*;
-	$BB run-parts /system/etc/init.d/;
+	(
+		$BB run-parts /system/etc/init.d/;
+	)&
 else
 	if [ -e /system/etc/init.d/99SuperSUDaemon ]; then
 		$BB chmod 755 /system/etc/init.d/*;
@@ -300,23 +281,24 @@ else
 	fi;
 fi;
 
+# if user waiting for STweaks to work, reload it.
+if [ "$(pgrep -f com.gokhanmoral.stweaks.app | wc -l)" -eq "1" ]; then
+	am force-stop com.gokhanmoral.stweaks.app 2> /dev/null;
+	am start -a android.intent.action.MAIN -n com.gokhanmoral.stweaks.app/.MainActivity 2> /dev/null;
+fi;
+
 # Fix critical perms again after init.d mess
 CRITICAL_PERM_FIX;
+
+sleep 35;
+echo "0" > /cputemp/freq_limit_debug;
 
 # Trim /system and data on boot!
 /sbin/busybox fstrim /system
 /sbin/busybox fstrim /data
 /sbin/busybox fstrim /cache
 
-# Correct Kernel config after full boot.
-$BB sh /res/uci.sh oom_config_screen_on "$oom_config_screen_on";
-$BB sh /res/uci.sh oom_config_screen_off "$oom_config_screen_off";
-$BB sh /res/uci.sh selinux_control "$selinux_control";
 $BB sh /res/uci.sh cpuhotplugging "$cpuhotplugging";
-
-if [ -e /data/.alucard/uci_loading ]; then
-	rm /data/.alucard/uci_loading;
-fi;
 
 # Reload SuperSU daemonsu to fix SuperUser bugs.
 if [ -e /system/xbin/daemonsu ]; then
