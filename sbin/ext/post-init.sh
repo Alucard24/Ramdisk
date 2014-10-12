@@ -28,10 +28,6 @@ OPEN_RW;
 # run ROM scripts
 $BB sh /init.qcom.post_boot.sh;
 
-# Turn off CORE CONTROL, to boot on all cores!
-$BB chmod 666 /sys/module/msm_thermal/core_control/*
-echo "0" > /sys/module/msm_thermal/core_control/core_control;
-
 # fix storage folder owner
 # $BB chown system.sdcard_rw /storage;
 
@@ -95,11 +91,11 @@ $BB chown system /sys/devices/system/cpu/cpu1/online
 $BB chown system /sys/devices/system/cpu/cpu2/online
 $BB chown system /sys/devices/system/cpu/cpu3/online
 $BB chmod 666 /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor
-$BB chmod 666 /sys/devices/system/cpu/cpufreq/all_cpus/*
 $BB chmod 666 /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq
 $BB chmod 666 /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq
 $BB chmod 444 /sys/devices/system/cpu/cpu0/cpufreq/cpuinfo_cur_freq
 $BB chmod 444 /sys/devices/system/cpu/cpu0/cpufreq/stats/*
+$BB chmod 666 /sys/devices/system/cpu/cpufreq/all_cpus/*
 $BB chmod 666 /sys/devices/system/cpu/cpu1/online
 $BB chmod 666 /sys/devices/system/cpu/cpu2/online
 $BB chmod 666 /sys/devices/system/cpu/cpu3/online
@@ -110,10 +106,6 @@ $BB chmod 666 /sys/devices/platform/kgsl-3d0/kgsl/kgsl-3d0/pwrscale/trustzone/go
 
 # make sure our max gpu clock is set via sysfs
 echo 450000000 > /sys/class/kgsl/kgsl-3d0/max_gpuclk
-
-# set min max boot freq to default.
-echo "1890000" > /sys/devices/system/cpu/cpufreq/all_cpus/scaling_max_freq_all_cpus;
-echo "378000" > /sys/devices/system/cpu/cpufreq/all_cpus/scaling_min_freq_all_cpus;
 
 # Fix ROM dev wrong sets.
 setprop persist.adb.notify 0
@@ -193,6 +185,14 @@ $BB chmod -R 0777 /data/.alucard/;
 read_defaults;
 read_config;
 
+if [ "$stweaks_boot_control" == "yes" ]; then
+        OPEN_RW;
+        # apply STweaks settings
+        $BB sh /res/uci.sh apply;
+        $BB mv /res/uci.sh /res/uci.sh;
+	$BB sh /res/synapse/uci;
+fi;
+
 #(
 #	# Apps Install
 #	$BB sh /sbin/ext/install.sh;
@@ -242,21 +242,10 @@ if [ ! -d /mnt/ntfs ]; then
 	$BB mount -t tmpfs -o mode=0777,gid=1000 tmpfs /mnt/ntfs
 fi;
 
-# set alucard as default gov
-echo "alucard" > /sys/devices/system/cpu/cpufreq/all_cpus/scaling_governor_all_cpus;
 
-if [ "$stweaks_boot_control" == "yes" ]; then
-	OPEN_RW;
-	# apply STweaks settings
-	$BB sh /res/uci_boot.sh apply;
-	sleep 3;
-	$BB mv /res/uci_boot.sh /res/uci.sh;
-
-	# Load Custom Modules
-	MODULES_LOAD;
-
-	$BB sh /sbin/ext/cortexbrain-tune.sh apply_cpu update > /dev/null;
-fi;
+# Turn off CORE CONTROL, to boot on all cores!
+$BB chmod 666 /sys/module/msm_thermal/core_control/*
+echo "0" > /sys/module/msm_thermal/core_control/core_control;
 
 # Start any init.d scripts that may be present in the rom or added by the user
 if [ "$init_d" == "on" ]; then
@@ -273,16 +262,14 @@ else
 	fi;
 fi;
 
-# if user waiting for STweaks to work, reload it.
-if [ "$(pgrep -f com.gokhanmoral.stweaks.app | wc -l)" -eq "1" ]; then
-	am force-stop com.gokhanmoral.stweaks.app 2> /dev/null;
-	am start -a android.intent.action.MAIN -n com.gokhanmoral.stweaks.app/.MainActivity 2> /dev/null;
-fi;
-
 # Fix critical perms again after init.d mess
 CRITICAL_PERM_FIX;
 
-sleep 35;
+if [ "$stweaks_boot_control" == "yes" ]; then
+	$BB sh /sbin/ext/cortexbrain-tune.sh apply_cpu update > /dev/null;
+	$BB sh /res/uci.sh cpuhotplugging "$cpuhotplugging";
+fi;
+
 echo "0" > /cputemp/freq_limit_debug;
 
 # Trim /system and data on boot!
@@ -290,12 +277,14 @@ echo "0" > /cputemp/freq_limit_debug;
 /sbin/busybox fstrim /data
 /sbin/busybox fstrim /cache
 
-$BB sh /res/uci.sh cpuhotplugging "$cpuhotplugging";
+sleep 30;
 
-# Reload SuperSU daemonsu to fix SuperUser bugs.
-if [ -e /system/xbin/daemonsu ]; then
-	pkill -f "daemonsu";
-	/system/xbin/daemonsu --auto-daemon &
+if [ "$(cat /sys/power/autosleep)" != "mem" ]; then
+	# Reload SuperSU daemonsu to fix SuperUser bugs.
+	if [ -e /system/xbin/daemonsu ]; then
+        	pkill -f "daemonsu";
+        	/system/xbin/daemonsu --auto-daemon &
+	fi;
 fi;
 
 # script finish here, so let me know when
