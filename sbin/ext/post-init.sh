@@ -188,8 +188,8 @@ read_config;
 if [ "$stweaks_boot_control" == "yes" ]; then
         OPEN_RW;
         # apply STweaks settings
-        $BB sh /res/uci.sh apply;
-        $BB mv /res/uci.sh /res/uci.sh;
+        $BB sh /res/uci_boot.sh apply;
+        $BB mv /res/uci_boot.sh /res/uci.sh;
 	$BB sh /res/synapse/uci;
 fi;
 

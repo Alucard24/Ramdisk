@@ -15,7 +15,7 @@ case "$1" in
 		done;
 	;;
 	LiveDefaultCPU0Governor)
-		$BB echo "`$BB cat /sys/devices/system/cpu/cpufreq/all_cpus/scaling_governor_cpu0`";
+		$BB echo "`$BB cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor`";
 	;;
 	LiveDefaultCPU1Governor)
 		$BB echo "`$BB cat /sys/devices/system/cpu/cpufreq/all_cpus/scaling_governor_cpu1`";
@@ -42,8 +42,8 @@ case "$1" in
 		$BB echo "`$BB cat /proc/sys/net/ipv4/tcp_congestion_control`";
 	;;
 	LiveCPU0_MAX_MIN_Freq)
-		FREQMAXCPU0="$(expr `cat /sys/devices/system/cpu/cpufreq/all_cpus/scaling_max_freq_cpu0` / 1000)MHz"
-		FREQMINCPU0="$(expr `cat /sys/devices/system/cpu/cpufreq/all_cpus/scaling_min_freq_cpu0` / 1000)MHz"
+		FREQMAXCPU0="$(expr `cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq` / 1000)MHz"
+		FREQMINCPU0="$(expr `cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq` / 1000)MHz"
 		echo "Max CPU0 Freq: $FREQMAXCPU0@nMin CPU0 Freq: $FREQMINCPU0"
 	;;
 	LiveCPU1_MAX_MIN_Freq)
