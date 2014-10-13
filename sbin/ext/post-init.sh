@@ -272,11 +272,6 @@ fi;
 
 echo "0" > /cputemp/freq_limit_debug;
 
-# Trim /system and data on boot!
-/sbin/busybox fstrim /system
-/sbin/busybox fstrim /data
-/sbin/busybox fstrim /cache
-
 sleep 30;
 
 if [ "$(cat /sys/power/autosleep)" != "mem" ]; then

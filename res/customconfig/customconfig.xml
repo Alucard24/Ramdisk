@@ -745,6 +745,8 @@
 
 		<seekBar description="Vibration force level. (Default: 75)" name="Vibration force" action="generic /sys/devices/virtual/timed_output/vibrator/pwm_value" unit="%" min="0" reversed="false" step="5" max="100"/>
 
+		<button description="Use this button to Trim System, Data and Cache Nand partitions to speed up Read and Write Access, good to use once in a day or two." name="Trim System, Data and Cache" action="push-actions/fstrim" label="Trim NOW"/>
+
 	</settingsPane>
 
 	<settingsPane description="USB and SDCARD settings and options." name="USB - SDCARD">
