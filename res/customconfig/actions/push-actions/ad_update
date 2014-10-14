@@ -1,171 +1,37 @@
 #!/sbin/busybox sh
 
-##############################################################################
-Get_File(){
-##############################################################################
-  local url_file=$1
-  
-  ALL_OK=0
-  $ECHO "Downloading Ad Blocker..."
-  $RM -f $WGET_FILE 2>/dev/null
-  $RM -f $ERR_FILE 2>/dev/null
-  
-  $WGET http://$url_file -O $WGET_FILE 2>$ERR_FILE
-  if [ -s $WGET_FILE ]
-  then
-    $ECHO "Applying Ad Blocker..."
-    $UNZIP -p $WGET_FILE HOSTS > $HOST_FILE
-    $CHMOD 644 $HOST_FILE
-    $DOS2UNIX -u $HOST_FILE
-	ALL_OK=1
-  else
-    $ECHO "Download failed!"
-	if [ -s $ERR_FILE ]
-	then
-	  $CAT $ERR_FILE
+
+WGET_CHECK1=`ls -la /system/wget/wget | wc -l`;
+
+if [ "$WGET_CHECK1" -eq "1" ]; then
+
+	mount -o remount,rw /;
+	mount -o remount,rw /system;
+
+	TMPFILE=$(mktemp -t);
+	HOST_FILE="/system/etc/hosts";
+
+	DNS1=`getprop net.dns1`;
+	DNS2=`getprop net.rmnet0.dns1`;
+	DNS3=`getprop net.rmnet0.dns2`;
+
+	echo "nameserver 8.8.8.8" > /system/etc/resolv.conf;
+	echo "nameserver 4.4.8.8" >> /system/etc/resolv.conf;
+	echo "nameserver $DNS1" >> /system/etc/resolv.conf;
+	echo "nameserver $DNS2" >> /system/etc/resolv.conf;
+	echo "nameserver $DNS3" >> /system/etc/resolv.conf;
+
+	TESTCONNECTION=`wget http://www.google.com -O $TMPFILE > /dev/null 2>&1`;
+	if [ $? != 0 ]; then
+		echo "Problem: no internet connection! connect and try again";
 	else
-	  $ECHO "(Unknown error)"
-	fi
-  fi
-}
-
-##############################################################################
-# Main()
-##############################################################################
-
-BUSYBOX=""
-# Check if $BUSYBOX has been installed
-for i in /tmp /system/xbin /sbin /system/bin
-do
-  if [ -e $i/busybox ]
-  then
-    BUSYBOX=$i/busybox
-    break
-  fi
-done
-if [ ! "$BUSYBOX" ]
-then
-  echo "Ad Blocker: BusyBox not found!"
-  exit 1
-fi
-
-# Set all the required the commands with the correct path to busybox
-CAT="$BUSYBOX cat"
-CHMOD="$BUSYBOX chmod"
-DOS2UNIX="$BUSYBOX dos2unix"
-ECHO="$BUSYBOX echo"
-GREP="$BUSYBOX grep"
-HEAD="$BUSYBOX head"
-MKTEMP="$BUSYBOX mktemp"
-MOUNT="$BUSYBOX mount"
-if [ -x /system/bin/ping ]
-then
-  PING1="/system/bin/ping"
-  PING2="$BUSYBOX ping"
+		wget http://winhelp2002.mvps.org/hosts.zip -O $TMPFILE > /dev/null 2>&1;
+		unzip -p $TMPFILE HOSTS > $HOST_FILE;
+		chmod 644 $HOST_FILE;
+		dos2unix -u /system/etc/hosts;
+		echo "AD Blocker: installed to /system/etc/hosts, reboot to use.";
+	fi;
+		rm -f $TMPFILE;
 else
-  PING1="$BUSYBOX ping"
-  PING2=""
-fi
-SED="$BUSYBOX sed"
-SLEEP="$BUSYBOX sleep"
-UNZIP="$BUSYBOX unzip"
-WGET="/system/wget/wget"
-# ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-$ECHO "Ad Blocker"
-$ECHO "----------"
-
-$MOUNT -o remount,rw /
-$MOUNT -o remount,rw /system
-
-WGET_FILE=$($MKTEMP -t).zip
-ERR_FILE=$($MKTEMP -t)
-HOST_FILE=/system/etc/hosts
-
-domain="www.winhelp2002.mvps.org"	
-zip_url="$domain/hosts.zip"
-
-# Get this host's ip address
-$ECHO "Resolving $domain..."
-ipaddr=`$PING1 -c 1 $domain | $SED -n 's@^.*(\([0-9]*\.[0-9]*\.[0-9]*\.[0-9]*\).*$@\1@p' | $HEAD -1`
-if [ ! "$ipaddr" ] && [ "$PING2" ]
-then
-  $ECHO "Fallback Ping..."
-  ipaddr=`$PING2 -c 1 $domain | $SED -n 's@^.*(\([0-9]*\.[0-9]*\.[0-9]*\.[0-9]*\).*$@\1@p' | $HEAD -1`
-fi
-if [ "$ipaddr" ]
-then
-  $ECHO "IP Address: $ipaddr"
-  # IP Address for Ad Blocker domain found
-  # See if the domain is in the host file
-  # If not then temporarily add it
-  add_domain=1
-  if [ -e $HOST_FILE ]
-  then
-    $GREP -i $domain $HOST_FILE 1>/dev/null 2>/dev/null
-    if [ $? -eq 0 ]
-    then
-      add_domain=0
-    fi
-  fi
-  if [ $add_domain -eq 1 ]
-  then
-	# Temporarily add this domain's ip address to the hosts file
-	# so that the wget command will work properly
-	$ECHO >> $HOST_FILE
-	$ECHO "# $domain added by Ad Blocker vvvvv" >> $HOST_FILE
-	$ECHO "$ipaddr $domain">>$HOST_FILE
-	$ECHO "# ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^" >> $HOST_FILE
-	$SLEEP 1
-  fi
-fi
-
-add_nameserver=1
-if [ -e $HOST_FILE ]
-then
-  $GREP -i $domain $HOST_FILE 1>/dev/null 2>/dev/null
-  if [ $? -eq 0 ]
-  then
-    add_nameserver=0
-  fi
-fi
-if [ $add_nameserver -eq 1 ]
-then
-  $ECHO "Unknown IP-Address for $domain"
-  $ECHO "Attempting with DNS resolution..."
-  conf_file=/system/etc/resolv.conf
-  dns1=`getprop net.dns1`
-  dns2=`getprop net.rmnet0.dns1`
-  dns3=`getprop net.rmnet0.dns2`
-
-  # Set up the dns resolve file
-  $ECHO "nameserver 8.8.8.8" > $conf_file
-  $ECHO "nameserver 4.4.8.8" >> $conf_file
-  for i in $dns1 $dns2 $dns3
-  do 
-    if [ "$i" ]
-    then      
-      $ECHO "nameserver $i" >> $conf_file
-    fi
-  done
-  $CHMOD 644 $conf_file
-fi
-
-# Attempt to download the hosts.zip file
-Get_File $zip_url
-
-if [ $ALL_OK -eq 1 ]
-then
-  $ECHO "Installed new $HOST_FILE"
-  $ECHO "Reboot to apply."
-  exit_val=0
-else
-  $ECHO "Unable to download Ad Blocker hosts file"
-  $ECHO "Please try again!"
-  exit_val=1
-fi
-
-$RM -f $WGET_FILE 2>/dev/null
-$RM -f $ERR_FILE 2>/dev/null
-
-exit $exit_val
+	echo "Your System dont have WGET binary from my kernel, reinstall my kernel.";
+fi;

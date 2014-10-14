@@ -72,7 +72,7 @@ case "${debug_to_sd}" in
 
 			# CPU
 			echo "CPU-Info:" >> $DEBUG_FILE;
-			scaling_governor0=$(cat /sys/devices/system/cpu/cpufreq/all_cpus/scaling_governor_cpu0)
+			scaling_governor0=$(cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor)
 			echo "CPU0-Governor: $scaling_governor_cpu0" >> $DEBUG_FILE;
 			scaling_governor1=$(cat /sys/devices/system/cpu/cpufreq/all_cpus/scaling_governor_cpu1)
 			echo "CPU1-Governor: $scaling_governor_cpu1" >> $DEBUG_FILE;
@@ -82,7 +82,7 @@ case "${debug_to_sd}" in
 			echo "CPU3-Governor: $scaling_governor_cpu3" >> $DEBUG_FILE;
 			cpuinfo_cur_freq=$(cat /sys/devices/system/cpu/cpu0/cpufreq/cpuinfo_cur_freq);
 			echo "Cur.-Freq: $cpuinfo_cur_freq" >> $DEBUG_FILE;
-			scaling_max_freq0=$(cat /sys/devices/system/cpu/cpufreq/all_cpus/scaling_max_freq_cpu0);
+			scaling_max_freq0=$(cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq);
 			echo "Max.-Freq CPU0: $scaling_max_freq0" >> $DEBUG_FILE;
 			scaling_max_freq1=$(cat /sys/devices/system/cpu/cpufreq/all_cpus/scaling_max_freq_cpu1);
 			echo "Max.-Freq CPU1: $scaling_max_freq1" >> $DEBUG_FILE;
@@ -90,7 +90,7 @@ case "${debug_to_sd}" in
 			echo "Max.-Freq CPU2: $scaling_max_freq2" >> $DEBUG_FILE;
 			scaling_max_freq3=$(cat /sys/devices/system/cpu/cpufreq/all_cpus/scaling_max_freq_cpu3);
 			echo "Max.-Freq CPU3: $scaling_max_freq3" >> $DEBUG_FILE;
-			scaling_min_freq0=$(cat /sys/devices/system/cpu/cpufreq/all_cpus/scaling_min_freq_cpu0);
+			scaling_min_freq0=$(cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq);
 			echo "Min.-Freq CPU0: $scaling_min_freq0" >> $DEBUG_FILE;
 			scaling_min_freq1=$(cat /sys/devices/system/cpu/cpufreq/all_cpus/scaling_min_freq_cpu1);
 			echo "Min.-Freq CPU1: $scaling_min_freq1" >> $DEBUG_FILE;
@@ -221,8 +221,17 @@ case "${debug_to_sd}" in
 				SEPARATOR;
 			fi;
 
+			if [ -e /system/xbin/zip ]; then
+				chmod 755 /system/xbin/zip
+				/system/xbin/zip ${DEBUG_FILE}.zip $DEBUG_FILE > /dev/null;
+				rm $DEBUG_FILE;
+			fi;
 		)&
-		echo "All Data collected and ready at $DEBUG_FILE";
+		if [ -e /system/xbin/zip ]; then
+			echo "All Data collected and ready at ${DEBUG_FILE}.zip";
+		else
+			echo "All Data collected and ready at ${DEBUG_FILE}";
+		fi;
 	;;
 	2)
 		# logcat
