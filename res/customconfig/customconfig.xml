@@ -417,13 +417,13 @@
 
 	<settingsPane description="Set Boost Touch time" name="Touch Time">
 
-		<seekBar description="Duration of the initial boost period (input_boost_freq). From 20 ms to 500 ms (Default: 40 ms)" name="input_boost_ms" action="generic /sys/module/alu_t_boost/parameters/input_boost_ms" unit="ms" min="20" reversed="false" step="10" max="500"/>
+		<seekBar description="Duration of the initial boost period (input_boost_freq). From 20 ms to 500 ms (Default: 50 ms)" name="input_boost_ms" action="generic /sys/module/alu_t_boost/parameters/input_boost_ms" unit="ms" min="20" reversed="false" step="10" max="500"/>
 
 	</settingsPane>
 
 	<settingsPane description="Set Boost Touch nr. cpus" name="Touch Boost Cpus">
 
-		<seekBar description="Number of cpus affected by touchboost control. From 1 cpu to 4 cpus (Default: 4 cpus)" name="nr_boost_cpus" action="generic /sys/module/alu_t_boost/parameters/nr_boost_cpus" unit="cpus" min="1" reversed="false" step="1" max="4"/>
+		<seekBar description="Number of cpus affected by touchboost control. From 1 cpu to 4 cpus (Default: 2 cpus)" name="nr_boost_cpus" action="generic /sys/module/alu_t_boost/parameters/nr_boost_cpus" unit="cpus" min="1" reversed="false" step="1" max="4"/>
 
 		<checkbox description="When cpu within the nr_boost_cpus range and touchboost is in progress, cpu will become online and improve its own frequency to input_boost_freq value if cpu frequency is currently less than input_boost_freq." name="hotplug_boost" action="generic01 /sys/module/alu_t_boost/parameters/hotplug_boost" label="TOUCH HOTPLUG BOOST"/>
 
