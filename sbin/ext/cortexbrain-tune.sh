@@ -228,10 +228,44 @@ CPU_HOTPLUG_TWEAKS()
 	fi;
 }
 
-apply_cpu="$2";
-if [ "$apply_cpu" == "update" ]; then
-	CPU_HOTPLUG_TWEAKS "tune";
-fi;
+FORCE_CPUS_ONOFF()
+{
+	local state="$1";
+
+	if [ "$state" == "online" ]; then
+		if [ "$(cat /sys/kernel/alucard_hotplug/hotplug_enable)" -eq "1" ]; then
+			echo "0" > /sys/kernel/alucard_hotplug/hotplug_enable;
+		fi;
+		if [ "$(cat /sys/module/msm_hotplug/msm_enabled)" -eq "1" ]; then
+			echo "0" > /sys/module/msm_hotplug/msm_enabled;
+		fi;
+		if [ "$(cat /sys/kernel/intelli_plug/intelli_plug_active)" -eq "1" ]; then
+			echo "0" > /sys/kernel/intelli_plug/intelli_plug_active;
+		fi;
+		if [ "$(cat /sys/devices/system/cpu/cpu0/rq-stats/hotplug_enable)" -eq "1" ]; then
+			echo "0" > /sys/devices/system/cpu/cpu0/rq-stats/hotplug_enable;
+		fi;
+		echo "1" > /sys/devices/system/cpu/cpu1/online
+		echo "1" > /sys/devices/system/cpu/cpu2/online
+		echo "1" > /sys/devices/system/cpu/cpu3/online
+	elif [ "$state" == "offline" ]; then
+		if [ "$(cat /sys/kernel/alucard_hotplug/hotplug_enable)" -eq "1" ]; then
+			echo "0" > /sys/kernel/alucard_hotplug/hotplug_enable;
+		fi;
+		if [ "$(cat /sys/module/msm_hotplug/msm_enabled)" -eq "1" ]; then
+			echo "0" > /sys/module/msm_hotplug/msm_enabled;
+		fi;
+		if [ "$(cat /sys/kernel/intelli_plug/intelli_plug_active)" -eq "1" ]; then
+			echo "0" > /sys/kernel/intelli_plug/intelli_plug_active;
+		fi;
+		if [ "$(cat /sys/devices/system/cpu/cpu0/rq-stats/hotplug_enable)" -eq "1" ]; then
+			echo "0" > /sys/devices/system/cpu/cpu0/rq-stats/hotplug_enable;
+		fi;
+		echo "0" > /sys/devices/system/cpu/cpu1/online
+		echo "0" > /sys/devices/system/cpu/cpu2/online
+		echo "0" > /sys/devices/system/cpu/cpu3/online
+	fi;
+}
 
 CPU_GOV_TWEAKS()
 {
@@ -244,6 +278,9 @@ CPU_GOV_TWEAKS()
 		
 		# tune-settings
 		if [ "$state" == "tune" ]; then
+			#put online all cpus for applying cpu governor parameters
+			FORCE_CPUS_ONOFF "online";
+
 			for i in $SYSTEM_GOVERNOR_PATH; do
 				local SYSTEM_GOVERNOR=$(cat "$i");
 				if [ "$(echo "$PREV_SYSTEM_GOVERNOR" | grep "$SYSTEM_GOVERNOR" | wc -l)" -lt "1" ]; then
@@ -453,6 +490,9 @@ CPU_GOV_TWEAKS()
 					echo "$io_is_busy" > $io_is_busy_tmp;
 				fi;
 			done;
+
+			#restore cpu hotplug parameters
+			CPU_HOTPLUG_TWEAKS "tune";
 		fi;
 
 		log -p i -t "$FILE_NAME" "*** CPU_GOV_TWEAKS: $state ***: enabled";
