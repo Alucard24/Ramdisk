@@ -89,10 +89,7 @@ IO_TWEAKS()
 		return 0;
 	fi;
 }
-apply_cpu="$2";
-if [ "$apply_cpu" != "update" ]; then
-	IO_TWEAKS;
-fi;
+IO_TWEAKS;
 
 # ==============================================================
 # CPU-TWEAKS
@@ -483,10 +480,7 @@ MOUNT_SD_CARD()
 	fi;
 }
 # run dual mount on boot
-apply_cpu="$2";
-if [ "$apply_cpu" != "update" ]; then
-	MOUNT_SD_CARD;
-fi;
+MOUNT_SD_CARD;
 
 # ==============================================================
 # KERNEL-TWEAKS
@@ -510,10 +504,7 @@ KERNEL_TWEAKS()
 		echo "memory_tweaks disabled";
 	fi;
 }
-apply_cpu="$2";
-if [ "$apply_cpu" != "update" ]; then
-	KERNEL_TWEAKS;
-fi;
+KERNEL_TWEAKS;
 
 # ==============================================================
 # SYSTEM-TWEAKS
@@ -528,10 +519,7 @@ SYSTEM_TWEAKS()
 		echo "system_tweaks disabled";
 	fi;
 }
-apply_cpu="$2";
-if [ "$apply_cpu" != "update" ]; then
-	SYSTEM_TWEAKS;
-fi;
+SYSTEM_TWEAKS;
 
 # ==============================================================
 # MEMORY-TWEAKS
@@ -554,10 +542,7 @@ MEMORY_TWEAKS()
 		return 0;
 	fi;
 }
-apply_cpu="$2";
-if [ "$apply_cpu" != "update" ]; then
-	MEMORY_TWEAKS;
-fi;
+MEMORY_TWEAKS;
 
 IO_SCHEDULER()
 {

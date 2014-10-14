@@ -109,8 +109,6 @@ echo 450000000 > /sys/class/kgsl/kgsl-3d0/max_gpuclk
 
 # Fix ROM dev wrong sets.
 setprop persist.adb.notify 0
-setprop persist.service.adb.enable 1
-setprop dalvik.vm.execution-mode int:jit
 setprop pm.sleep_mode 1
 
 if [ ! -d /data/.alucard ]; then
@@ -187,16 +185,16 @@ read_config;
 
 if [ "$stweaks_boot_control" == "yes" ]; then
         OPEN_RW;
-        # apply STweaks settings
-        $BB sh /res/uci_boot.sh apply;
-        $BB mv /res/uci_boot.sh /res/uci.sh;
-	$BB sh /res/synapse/uci;
+	(
+		# apply STweaks settings
+		$BB sh /res/uci_boot.sh apply;
+		$BB mv /res/uci_boot.sh /res/uci.sh;
+		$BB sh /res/synapse/uci;
+	)&
 fi;
 
-#(
 #	# Apps Install
-#	$BB sh /sbin/ext/install.sh;
-#)&
+# $BB sh /sbin/ext/install.sh;
 
 ######################################
 # Loading Modules
@@ -266,13 +264,14 @@ fi;
 CRITICAL_PERM_FIX;
 
 if [ "$stweaks_boot_control" == "yes" ]; then
-	$BB sh /sbin/ext/cortexbrain-tune.sh apply_cpu update > /dev/null;
-	$BB sh /res/uci.sh cpuhotplugging "$cpuhotplugging";
+	(
+		$BB sh /sbin/ext/cortexbrain-tune.sh apply_cpu update > /dev/null;
+	)&
 fi;
 
 echo "0" > /cputemp/freq_limit_debug;
 
-sleep 30;
+sleep 35;
 
 if [ "$(cat /sys/power/autosleep)" != "mem" ]; then
 	# Reload SuperSU daemonsu to fix SuperUser bugs.
