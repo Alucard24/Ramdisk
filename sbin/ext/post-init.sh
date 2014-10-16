@@ -273,14 +273,6 @@ echo "0" > /cputemp/freq_limit_debug;
 
 sleep 35;
 
-if [ "$(cat /sys/power/autosleep)" != "mem" ]; then
-	# Reload SuperSU daemonsu to fix SuperUser bugs.
-	if [ -e /system/xbin/daemonsu ]; then
-        	pkill -f "daemonsu";
-        	/system/xbin/daemonsu --auto-daemon &
-	fi;
-fi;
-
 # script finish here, so let me know when
 TIME_NOW=$(date)
 echo "$TIME_NOW" > /data/boot_log_dm

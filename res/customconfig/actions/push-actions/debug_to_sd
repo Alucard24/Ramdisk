@@ -34,7 +34,10 @@ case "${debug_to_sd}" in
 			cat /proc/version >> $DEBUG_FILE;
 			SEPARATOR;
 
-			date +"Last Reboot: %d.%m.%y / %H:%m" -d @$(( $(date +%s) - $(cut -f1 -d. /proc/uptime) )) >> $DEBUG_FILE;
+			TOTAL_UPTIME_CHECK=$(awk '{ print $1 }' /proc/uptime);
+			TOTAL_UPTIME=$(echo - | awk -v "S=$TOTAL_TOTAL_UPTIME_CHECK" '{printf "%dh:%dm:%ds",S/(60*60),S%(60*60)/60,S%60}');
+			date +"Last Reboot: %d.%m.%y / %H:%m" >> $DEBUG_FILE;
+			echo "Uptime is $TOTAL_UPTIME" >> $DEBUG_FILE;
 			SEPARATOR;
 
 			# System
@@ -69,6 +72,29 @@ case "${debug_to_sd}" in
 			#	fi;
 			#done;
 			#SEPARATOR;
+
+			# HotPlug configuration
+			echo "HotPlugs Config:" >> $DEBUG_FILE;
+			SEPARATOR;
+
+			echo "HotPlug Alucard:" >> $DEBUG_FILE;
+			SEPARATOR;
+			cd /hotplugs/alucard;
+			grep "." * >> $DEBUG_FILE;
+			SEPARATOR;
+
+			echo "HotPlug MSM:" >> $DEBUG_FILE;
+			SEPARATOR;
+			cd /hotplugs/msm_hotplug;
+			grep "." * >> $DEBUG_FILE;
+			SEPARATOR;
+
+			echo "HotPlug Intelli:" >> $DEBUG_FILE;
+			SEPARATOR;
+			cd /hotplugs/intelli;
+			grep "." * >> $DEBUG_FILE;
+			cd /;
+			SEPARATOR;
 
 			# CPU
 			echo "CPU-Info:" >> $DEBUG_FILE;
@@ -181,7 +207,7 @@ case "${debug_to_sd}" in
 
 			# Processes
 			echo "Process-Info: top" >> $DEBUG_FILE;
-			top -n 1 -m 7 >> $DEBUG_FILE;
+			top -n 2 -m 10 >> $DEBUG_FILE;
 			SEPARATOR;
 
 			echo "Process-Info: ps" >> $DEBUG_FILE;
@@ -228,8 +254,10 @@ case "${debug_to_sd}" in
 			fi;
 		)&
 		if [ -e /system/xbin/zip ]; then
+			sleep 2;
 			echo "All Data collected and ready at ${DEBUG_FILE}.zip";
 		else
+			sleep 2;
 			echo "All Data collected and ready at ${DEBUG_FILE}";
 		fi;
 	;;
