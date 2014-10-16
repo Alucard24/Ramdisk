@@ -114,7 +114,6 @@ gamma_b=60
 input_boost_freq=1458000
 input_boost_ms=60
 nr_boost_cpus=4
-hotplug_boost=on
 intsd_read_ahead_kb=1024
 extsd_read_ahead_kb=128
 internal_iosched=row

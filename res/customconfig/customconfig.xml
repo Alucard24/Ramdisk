@@ -425,8 +425,6 @@
 
 		<seekBar description="Number of cpus affected by touchboost control. From 1 cpu to 4 cpus (Default: 2 cpus)" name="nr_boost_cpus" action="generic /sys/module/alu_t_boost/parameters/nr_boost_cpus" unit="cpus" min="1" reversed="false" step="1" max="4"/>
 
-		<checkbox description="When cpu within the nr_boost_cpus range and touchboost is in progress, cpu will become online and improve its own frequency to input_boost_freq value if cpu frequency is currently less than input_boost_freq." name="hotplug_boost" action="generic01 /sys/module/alu_t_boost/parameters/hotplug_boost" label="TOUCH HOTPLUG BOOST"/>
-
 	</settingsPane>
 
 </settingsTab>
