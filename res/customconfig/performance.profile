@@ -101,6 +101,7 @@ min_cpus_online=1
 max_cpus_online=4
 msm_thermal=intelli_temp
 core_control=0
+core_mask=3
 core_limit_temp_degC=80
 limit_temp_degC=70
 temp_hysteresis_degC=5
