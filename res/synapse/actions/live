@@ -46,6 +46,7 @@ case $1 in
 	;;
 	CPU3_MAX_MIN_Freq)
 		$BB echo `sh $DEVICE LiveCPU3_MAX_MIN_Freq`;
+	;;
 	CPU_HOTPLUG)
 		$BB echo `sh $DEVICE LiveCPU_HOTPLUG`;
 	;;
