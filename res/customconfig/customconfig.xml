@@ -419,6 +419,8 @@
 
 		<seekBar description="Duration of the initial boost period (input_boost_freq). From 20 ms to 500 ms (Default: 50 ms)" name="input_boost_ms" action="generic /sys/module/alu_t_boost/parameters/input_boost_ms" unit="ms" min="20" reversed="false" step="10" max="500"/>
 
+		<seekBar description="Here you can set Touch Boost interval in micro seconds! 100ms is equal 0.1sec, when touch screen report touch here we set timer for how long to wait before setting core min frequency for duration above, this is Ultra Fast even on 500ms" name="CPU Touch Boost Interval" action="generic /sys/module/alu_t_boost/parameters/min_input_interval" unit="ms" min="100" reversed="false" step="50" max="1500"/>
+
 	</settingsPane>
 
 	<settingsPane description="Set Boost Touch nr. cpus" name="Touch Boost Cpus">

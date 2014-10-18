@@ -7,26 +7,32 @@ cat << CTAG
 			{ SLiveLabel:{
 				title:"CPU0 Scaling Frequencies",
 				description: "CPU0 Scaling Min Max frequencies are affected by thermal engine/driver and CPU Boost driver. You may enable and use MSM Limiter Driver below to make sure scaling frequencies are desired ranges most of the time.",
-				refresh:1000,
+				refresh:2000,
 				action:"live CPU0_MAX_MIN_Freq"
 			}},
 			{ SLiveLabel:{
 				title:"CPU1 Scaling Frequencies",
 				description: "CPU1 Scaling Min Max frequencies are affected by thermal engine/driver and CPU Boost driver. You may enable and use MSM Limiter Driver below to make sure scaling frequencies are desired ranges most of the time.",
-				refresh:1000,
+				refresh:2000,
 				action:"live CPU1_MAX_MIN_Freq"
 			}},
 			{ SLiveLabel:{
 				title:"CPU2 Scaling Frequencies",
 				description: "CPU2 Scaling Min Max frequencies are affected by thermal engine/driver and CPU Boost driver. You may enable and use MSM Limiter Driver below to make sure scaling frequencies are desired ranges most of the time.",
-				refresh:1000,
+				refresh:2000,
 				action:"live CPU2_MAX_MIN_Freq"
 			}},
 			{ SLiveLabel:{
 				title:"CPU3 Scaling Frequencies",
 				description: "CPU3 Scaling Min Max frequencies are affected by thermal engine/driver and CPU Boost driver. You may enable and use MSM Limiter Driver below to make sure scaling frequencies are desired ranges most of the time.",
-				refresh:1000,
+				refresh:2000,
 				action:"live CPU3_MAX_MIN_Freq"
+			}},
+			{ SLiveLabel:{
+				title:"CPU Cores State",
+				description: "Actual CORES state, Active or Sleeping.",
+				refresh:1000,
+				action:"live CPU_CORES_ON_OFF"
 			}},
 			{ SLiveLabel:{
 				title:"CPU Temperature:",
@@ -56,6 +62,12 @@ cat << CTAG
 				description: "Display Current Active CPU3 Governor",
 				refresh:10000,
 				action:"live DefaultCPU3Governor"
+			}},
+			{ SLiveLabel:{
+				title:"Current Active CPU HotPlug",
+				description: "Display Current Active CPU HotPlug Driver",
+				refresh:8000,
+				action:"live CPU_HOTPLUG"
 			}},
 			{ SLiveLabel:{
 				title:"Battery Temperature:",

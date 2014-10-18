@@ -113,6 +113,7 @@ gamma_g=60
 gamma_b=60
 input_boost_freq=1242000
 input_boost_ms=40
+min_input_interval=500
 nr_boost_cpus=1
 intsd_read_ahead_kb=1024
 extsd_read_ahead_kb=128
