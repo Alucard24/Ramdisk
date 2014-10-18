@@ -125,7 +125,7 @@ fi;
 # incase that ADMIN feel that something wrong with global STweaks config and profiles, then ADMIN can add +1 to CLEAN_ALU_DIR
 # to clean all files on first boot from /data/.alucard/ folder.
 RESET_MAGIC=35;
-CLEAN_ALU_DIR=3;
+CLEAN_ALU_DIR=4;
 
 if [ ! -e /data/.alucard/reset_profiles ]; then
 	echo "$RESET_MAGIC" > /data/.alucard/reset_profiles;
