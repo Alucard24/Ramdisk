@@ -1,5 +1,5 @@
 #!/system/bin/sh
-# Copyright (c) 2012-2013, The Linux Foundation. All rights reserved.
+# Copyright (c) 2012, The Linux Foundation. All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions are met:
@@ -28,21 +28,9 @@
 
 # Set platform variables
 target=`getprop ro.board.platform`
-if [ -f /sys/devices/soc0/hw_platform ]; then
-    soc_hwplatform=`cat /sys/devices/soc0/hw_platform` 2> /dev/null
-else
-    soc_hwplatform=`cat /sys/devices/system/soc/soc0/hw_platform` 2> /dev/null
-fi
-if [ -f /sys/devices/soc0/soc_id ]; then
-    soc_hwid=`cat /sys/devices/soc0/soc_id` 2> /dev/null
-else
-    soc_hwid=`cat /sys/devices/system/soc/soc0/id` 2> /dev/null
-fi
-if [ -f /sys/devices/soc0/platform_version ]; then
-    soc_hwver=`cat /sys/devices/soc0/platform_version` 2> /dev/null
-else
-    soc_hwver=`cat /sys/devices/system/soc/soc0/platform_version` 2> /dev/null
-fi
+soc_hwplatform=`cat /sys/devices/system/soc/soc0/hw_platform` 2> /dev/null
+soc_hwid=`cat /sys/devices/system/soc/soc0/id` 2> /dev/null
+soc_hwver=`cat /sys/devices/system/soc/soc0/platform_version` 2> /dev/null
 
 
 # Dynamic Memory Managment (DMM) provides a sys file system to the userspace
@@ -186,8 +174,11 @@ fake_batt_capacity=`getprop persist.bms.fake_batt_capacity`
 case "$fake_batt_capacity" in
     "") ;; #Do nothing here
     * )
-    echo "$fake_batt_capacity" > /sys/class/power_supply/battery/capacity
-    ;;
+    case $target in
+        "msm8960")
+        echo "$fake_batt_capacity" > /sys/module/pm8921_bms/parameters/bms_fake_battery
+        ;;
+    esac
 esac
 
 case "$target" in
