@@ -258,13 +258,8 @@ fi;
 # Fix critical perms again after init.d mess
 CRITICAL_PERM_FIX;
 
-# disabling knox security at boot
-pm disable com.sec.knox.seandroid;
-
 if [ "$stweaks_boot_control" == "yes" ]; then
-	(
-		$BB sh /sbin/ext/cortexbrain-tune.sh apply_cpu update > /dev/null;
-	)&
+	$BB sh /sbin/ext/cortexbrain-tune.sh apply_cpu update > /dev/null;
 fi;
 
 echo "0" > /cputemp/freq_limit_debug;
