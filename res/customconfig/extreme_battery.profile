@@ -153,7 +153,6 @@ use_mtp_during_fast_charge=1
 screen_on_current_limit=1
 ac_charge_level=1900
 usb_charge_level=460
-failsafe=1
 tcp_congestion_control=cubic
 selinux_control=off
 gpsregion=No_GPS_Zone_changes
