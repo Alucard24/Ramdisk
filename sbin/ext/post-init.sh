@@ -178,13 +178,15 @@ $BB chmod -R 0777 /data/.alucard/;
 read_defaults;
 read_config;
 
+OPEN_RW;
+
+# apply STweaks settings
 if [ "$stweaks_boot_control" == "yes" ]; then
-        OPEN_RW;
 	(
-		# apply STweaks settings
 		$BB sh /res/uci_boot.sh apply;
 		$BB mv /res/uci_boot.sh /res/uci.sh;
 		$BB sh /res/synapse/uci;
+		$BB sh /sbin/ext/cortexbrain-tune.sh apply_cpu update > /dev/null;
 	)&
 fi;
 
@@ -258,9 +260,9 @@ fi;
 # Fix critical perms again after init.d mess
 CRITICAL_PERM_FIX;
 
-if [ "$stweaks_boot_control" == "yes" ]; then
-	$BB sh /sbin/ext/cortexbrain-tune.sh apply_cpu update > /dev/null;
-fi;
+#if [ "$stweaks_boot_control" == "yes" ]; then
+#	$BB sh /sbin/ext/cortexbrain-tune.sh apply_cpu update > /dev/null;
+#fi;
 
 echo "0" > /cputemp/freq_limit_debug;
 

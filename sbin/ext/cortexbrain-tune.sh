@@ -245,9 +245,9 @@ FORCE_CPUS_ONOFF()
 		if [ "$(cat /sys/devices/system/cpu/cpu0/rq-stats/hotplug_enable)" -eq "1" ]; then
 			echo "0" > /sys/devices/system/cpu/cpu0/rq-stats/hotplug_enable;
 		fi;
-		echo "1" > /sys/devices/system/cpu/cpu1/online
-		echo "1" > /sys/devices/system/cpu/cpu2/online
-		echo "1" > /sys/devices/system/cpu/cpu3/online
+		echo "1" > /sys/devices/system/cpu/cpu1/online;
+		echo "1" > /sys/devices/system/cpu/cpu2/online;
+		echo "1" > /sys/devices/system/cpu/cpu3/online;
 	elif [ "$state" == "offline" ]; then
 		if [ "$(cat /sys/kernel/alucard_hotplug/hotplug_enable)" -eq "1" ]; then
 			echo "0" > /sys/kernel/alucard_hotplug/hotplug_enable;
@@ -261,9 +261,9 @@ FORCE_CPUS_ONOFF()
 		if [ "$(cat /sys/devices/system/cpu/cpu0/rq-stats/hotplug_enable)" -eq "1" ]; then
 			echo "0" > /sys/devices/system/cpu/cpu0/rq-stats/hotplug_enable;
 		fi;
-		echo "0" > /sys/devices/system/cpu/cpu1/online
-		echo "0" > /sys/devices/system/cpu/cpu2/online
-		echo "0" > /sys/devices/system/cpu/cpu3/online
+		echo "0" > /sys/devices/system/cpu/cpu1/online;
+		echo "0" > /sys/devices/system/cpu/cpu2/online;
+		echo "0" > /sys/devices/system/cpu/cpu3/online;
 	fi;
 }
 
