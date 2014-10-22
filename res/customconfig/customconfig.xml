@@ -183,11 +183,11 @@
 
 		<seekBar description="This threshold is used as up threshold while sampling at frequencies less than freq_for_responsiveness. Above that, normal inc_cpu_load is used. This gives us an option to make scaling aggressive/relaxed until a frequency and normal for higher frequencies. (Only for Nightmare, Alucard). (Default: 60%)" name="inc_cpu_load_at_min_freq" action="generic_cortex /tmp/inc_cpu_load_at_min_freq" unit="%" min="1" reversed="false" step="1" max="100"/>
 
-		<seekBar description="The frequency at which governor scales CPU up. Load big or equal inc_cpu_load: cpu scaled up. (Only for Nightmare, Alucard). (Default: 80%)" name="inc_cpu_load" action="generic_cortex /tmp/inc_cpu_load" unit="%" min="10" reversed="false" step="1" max="100"/>
+		<seekBar description="The frequency at which governor scales CPU up. Load big or equal inc_cpu_load: cpu scaled up. (Only for Nightmare, Alucard). (Default: 70%)" name="inc_cpu_load" action="generic_cortex /tmp/inc_cpu_load" unit="%" min="10" reversed="false" step="1" max="100"/>
 
 		<seekBar description="This threshold is used as down threshold while sampling at frequencies less than freq_responsiveness. Above that, normal dec_cpu_load is used. This gives us an option to make scaling aggressive/relaxed until a frequency and normal for higher frequencies. (Only for Alucard). (Default: 60%)" name="dec_cpu_load_at_min_freq" action="generic_cortex /tmp/dec_cpu_load_at_min_freq" unit="%" min="1" reversed="false" step="1" max="100"/>
 
-		<seekBar description="The frequency at which governor scales CPU down. Load less than dec_cpu_load: cpu scaled down. (Only for Nightmare, Alucard). (Default: 80%)" name="dec_cpu_load" action="generic_cortex /tmp/dec_cpu_load" unit="%" min="10" reversed="false" step="1" max="100"/>
+		<seekBar description="The frequency at which governor scales CPU down. Load less than dec_cpu_load: cpu scaled down. (Only for Nightmare, Alucard). (Default: 70%)" name="dec_cpu_load" action="generic_cortex /tmp/dec_cpu_load" unit="%" min="10" reversed="false" step="1" max="100"/>
 
 		<seekBar description="When current freq is greater than freq_for_responsiviness_max, freq_step_dec will be equal to freq_step_dec_at_max_freq. (Only for Nightmare). (Default: 1890.000 kHz)" name="freq_for_responsiveness_max" action="generic_cortex /tmp/freq_for_responsiveness_max" unit="kHz" min="378000" reversed="false" step="108000" max="1890000"/>
 
@@ -201,13 +201,13 @@
 
 		<seekBar description="Governor should increase CPU3 frequency by n step each time CPU load reaches inc_cpu_load_at_min_freq. (Only for Alucard) (Default: 2)" name="pump_inc_step_at_min_freq_4" action="generic_cortex /tmp/pump_inc_step_at_min_freq_4" unit="step" min="1" reversed="false" step="1" max="3"/>
 
-		<seekBar description="Governor should increase CPU0 frequency by n step each time CPU load reaches inc_cpu_load. (Only for Alucard) (Default: 2)" name="pump_inc_step_1" action="generic_cortex /tmp/pump_inc_step_1" unit="step" min="1" reversed="false" step="1" max="3"/>
+		<seekBar description="Governor should increase CPU0 frequency by n step each time CPU load reaches inc_cpu_load. (Only for Alucard) (Default: 1)" name="pump_inc_step_1" action="generic_cortex /tmp/pump_inc_step_1" unit="step" min="1" reversed="false" step="1" max="3"/>
 
-		<seekBar description="Governor should increase CPU1 frequency by n step each time CPU load reaches inc_cpu_load. (Only for Alucard) (Default: 2)" name="pump_inc_step_2" action="generic_cortex /tmp/pump_inc_step_2" unit="step" min="1" reversed="false" step="1" max="3"/>
+		<seekBar description="Governor should increase CPU1 frequency by n step each time CPU load reaches inc_cpu_load. (Only for Alucard) (Default: 1)" name="pump_inc_step_2" action="generic_cortex /tmp/pump_inc_step_2" unit="step" min="1" reversed="false" step="1" max="3"/>
 
-		<seekBar description="Governor should increase CPU2 frequency by n step each time CPU load reaches inc_cpu_load. (Only for Alucard) (Default: 2)" name="pump_inc_step_3" action="generic_cortex /tmp/pump_inc_step_3" unit="step" min="1" reversed="false" step="1" max="3"/>
+		<seekBar description="Governor should increase CPU2 frequency by n step each time CPU load reaches inc_cpu_load. (Only for Alucard) (Default: 1)" name="pump_inc_step_3" action="generic_cortex /tmp/pump_inc_step_3" unit="step" min="1" reversed="false" step="1" max="3"/>
 
-		<seekBar description="Governor should increase CPU3 frequency by n step each time CPU load reaches inc_cpu_load. (Only for Alucard) (Default: 2)" name="pump_inc_step_4" action="generic_cortex /tmp/pump_inc_step_4" unit="step" min="1" reversed="false" step="1" max="3"/>
+		<seekBar description="Governor should increase CPU3 frequency by n step each time CPU load reaches inc_cpu_load. (Only for Alucard) (Default: 1)" name="pump_inc_step_4" action="generic_cortex /tmp/pump_inc_step_4" unit="step" min="1" reversed="false" step="1" max="3"/>
 
 		<seekBar description="Governor should decrease CPU0 frequency by n step each time CPU load reaches dec_cpu_load. (Only for Alucard) (Default: 1)" name="pump_dec_step_1" action="generic_cortex /tmp/pump_dec_step_1" unit="step" min="1" reversed="false" step="1" max="3"/>
 
@@ -427,7 +427,7 @@
 
 	<settingsPane description="Set BOOST Touch options" name="Touch Boost">
 
-		<seekBar description="When the screen is touched the initial boost (minimum CPU frequency) is set to this value for the duration set in (input_boost_ms). From 810.000 kHz to 1.890.000 kHz (Default: 1.242.000 kHz)" name="input_boost_freq" action="genericfreq /sys/module/alu_t_boost/parameters/input_boost_freq" unit="kHz" min="810000" reversed="false" step="108000" max="1890000"/>
+		<seekBar description="When the screen is touched the initial boost (minimum CPU frequency) is set to this value for the duration set in (input_boost_ms). From 810.000 kHz to 1.890.000 kHz (Default: 1.134.000 kHz)" name="input_boost_freq" action="genericfreq /sys/module/alu_t_boost/parameters/input_boost_freq" unit="kHz" min="810000" reversed="false" step="108000" max="1890000"/>
 
 	</settingsPane>
 
