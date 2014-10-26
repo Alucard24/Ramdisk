@@ -456,6 +456,16 @@ CPU_GOV_TWEAKS()
 						io_is_busy_tmp="/dev/null";
 					fi;
 
+					local cpus_up_rate_tmp="/sys/devices/system/cpu/cpufreq/$SYSTEM_GOVERNOR/cpus_up_rate";
+					if [ ! -e $cpus_up_rate_tmp ]; then
+						cpus_up_rate_tmp="/dev/null";
+					fi;
+
+					local cpus_down_rate_tmp="/sys/devices/system/cpu/cpufreq/$SYSTEM_GOVERNOR/cpus_down_rate";
+					if [ ! -e $cpus_down_rate_tmp ]; then
+						cpus_down_rate_tmp="/dev/null";
+					fi;
+
 					echo "$sampling_rate" > $sampling_rate_tmp;
 					echo "$up_threshold" > $up_threshold_tmp;
 					echo "$up_threshold_at_min_freq" > $up_threshold_at_min_freq_tmp;
@@ -488,6 +498,8 @@ CPU_GOV_TWEAKS()
 					echo "$pump_dec_step_3" > $pump_dec_step_3_tmp;
 					echo "$pump_dec_step_4" > $pump_dec_step_4_tmp;
 					echo "$io_is_busy" > $io_is_busy_tmp;
+					echo "$cpus_up_rate" > $cpus_up_rate_tmp;
+					echo "$cpus_down_rate" > $cpus_down_rate_tmp;
 				fi;
 			done;
 
