@@ -14,7 +14,7 @@
 
 	<settingsPane description="The following settings are for all global CPU configuration, use it only if you know what you are doing." name="CPU Global Settings">
 
-		<seekBar description="Maximum CPU-Speed for CPU0. CPU Frequency steps by 108.000 kHz, from 378.000 kHz to 1.890.000 kHz! (Default: 1.890.000 kHz)" name="Max Normal Frequency" action="genericfreq /sys/devices/system/cpu/cpufreq/all_cpus/scaling_max_freq_cpu0" unit="kHz" min="378000" reversed="false" step="108000" max="1890000"/>
+		<seekBar description="Maximum CPU-Speed for CPU0. CPU Frequency steps by 108.000 kHz, from 378.000 kHz to 1.890.000 kHz! (Default: 1.890.000 kHz)" name="Max Normal Frequency" action="scaling_max_freq_cpu0" unit="kHz" min="378000" reversed="false" step="108000" max="1890000"/>
 
 		<seekBar description="Maximum CPU-Speed for CPU1. CPU Frequency steps by 108.000 kHz, from 378.000 kHz to 1.890.000 kHz! (Default: 1.890.000 kHz)" name="Max Normal Frequency" action="genericfreq /sys/devices/system/cpu/cpufreq/all_cpus/scaling_max_freq_cpu1" unit="kHz" min="378000" reversed="false" step="108000" max="1890000"/>
 
@@ -22,7 +22,7 @@
 
 		<seekBar description="Maximum CPU-Speed for CPU3. CPU Frequency steps by 108.000 kHz, from 378.000 kHz to 1.890.000 kHz! (Default: 1.890.000 kHz)" name="Max Normal Frequency" action="genericfreq /sys/devices/system/cpu/cpufreq/all_cpus/scaling_max_freq_cpu3" unit="kHz" min="378000" reversed="false" step="108000" max="1890000"/>
 
-		<seekBar description="Minimum CPU-Speed for CPU0. CPU Frequency step by 108.000 kHz are valid from 378.000 kHz to 1.890.000 kHz! (Default: 378.000 kHz)" name="Min Frequency" action="genericfreq /sys/devices/system/cpu/cpufreq/all_cpus/scaling_min_freq_cpu0" unit="kHz" min="378000" reversed="false" step="108000" max="1890000"/>
+		<seekBar description="Minimum CPU-Speed for CPU0. CPU Frequency step by 108.000 kHz are valid from 378.000 kHz to 1.890.000 kHz! (Default: 378.000 kHz)" name="Min Frequency" action="scaling_min_freq_cpu0" unit="kHz" min="378000" reversed="false" step="108000" max="1890000"/>
 
 		<seekBar description="Minimum CPU-Speed for CPU1. CPU Frequency step by 108.000 kHz are valid from 378.000 kHz to 1.890.000 kHz! (Default: 378.000 kHz)" name="Min Frequency" action="genericfreq /sys/devices/system/cpu/cpufreq/all_cpus/scaling_min_freq_cpu1" unit="kHz" min="378000" reversed="false" step="108000" max="1890000"/>
 
@@ -38,7 +38,7 @@
 
 		<checkbox description="Enable ARCH_POWER." name="ARCH_POWER" action="generic01 /sys/kernel/sched/arch_power" label="ARCH_POWER"/>
 
-		<seekBar description="Sets the sched_mc value which changes the cpu scheduler behaviour for multi-cpu systems. 0 is kernel's default value which turns sched_mc off. Setting it to 1 means that the first core will be tried to be loaded more and setting it to 2 will bias task wake-ups to semi-idle cpu package for power savings. (default: 2)" name="sched_mc" action="generic /sys/devices/system/cpu/sched_mc_power_savings" unit="" min="0" reversed="false" step="1" max="2"/>
+		<checkbox description="Enable or disable Power-efficient Workqueues will help to reduce power consumption at the cost of slight performance overhead. By enabling this, PE workqueues are used for unbound scheduled work to save load on sibling CPU cores and queuing work on CPU 0." name="Power-efficient Workqueues"  action="generic01 /sys/module/workqueue/parameters/power_efficient" label="Power-efficient Workqueues"/>
 
 		<seekBar description="Maximum CPUs speed while using GPS. (Default: 1890.000 kHz)." name="scaling_max_gps_freq" action="genericfreq /sys/kernel/cpufreq_limit_manager/scaling_max_gps_freq" unit="kHz" min="810000" reversed="false" step="108000" max="1890000"/>
 
@@ -98,7 +98,7 @@
 
 	<settingsPane description="Set advanced governor settings. These settings are active only if the screen is on." name="Governor Parameters tuning">
 
-		<spinner description="This will set the CPU0 governor. Default CPU governor will only be set during early stages of booting (before init.d execution), and can be overridden by any other scripts or applications. (Default: Alucard)" name="Default CPU Governor" action="generic /sys/devices/system/cpu/cpufreq/all_cpus/scaling_governor_cpu0">
+		<spinner description="This will set the CPU0 governor. Default CPU governor will only be set during early stages of booting (before init.d execution), and can be overridden by any other scripts or applications. (Default: Alucard)" name="Default CPU Governor" action="scaling_governor_cpu0">
 			<spinnerItem name="alucard" value="alucard"/>
 			<spinnerItem name="conservative" value="conservative"/> 
 			<spinnerItem name="darkness" value="darkness"/>
@@ -160,7 +160,7 @@
 
 		<seekBar description="This threshold is used as up threshold while sampling at frequencies less than freq_for_responsiveness. Above that, normal up_threshold is used. This gives the option to make scaling aggressive or relaxed until a frequency and normal for higher frequencies. Again, during calculation of optimal frequency which should not trigger up policy, down threshold to consider is difference between up_threshold_at_min_freq and down_differential. (Only for HYPER, Ondemand and PegasusQ) (Default: 60%)" name="up_threshold_at_min_freq" action="generic_cortex /tmp/up_threshold_at_min_freq" unit="%" min="1" reversed="false" step="1" max="100"/>
 
-		<seekBar description="Sampling Interval, measured in µs. This factor determines how often the governor should poll for CPU usage in terms of frequency and load percentage to make scaling decisions - either scale CPU Up or scale it Down. (Only for HYPER, OnDemand, PegasusQ, Conservative, Nightmare, Darkness, Alucard) (Default: 60.000 µs)" name="sampling_rate" action="generic_cortex /tmp/sampling_rate" unit="µs" min="10000" reversed="false" step="5000" max="200000"/>
+		<seekBar description="Sampling Interval, measured in µs. This factor determines how often the governor should poll for CPU usage in terms of frequency and load percentage to make scaling decisions - either scale CPU Up or scale it Down. (Only for HYPER, OnDemand, PegasusQ, Conservative, Nightmare, Darkness, Alucard) (Default: 50.000 µs)" name="sampling_rate" action="generic_cortex /tmp/sampling_rate" unit="µs" min="10000" reversed="false" step="5000" max="200000"/>
 
 		<seekBar description="Acts as a multiplier for sampling interval for re-evaluating the load when CPU is truly busy and is on highest clock frequency (policy max). Setting to 1 makes no difference and causes CPU to immediately scale down from highest frequency. Sampling down factor is NOT valid for lower frequencies and low load conditions. Note that CPU is scaled up to max frequency when max_load_freq is greater than up_threshold X current frequency. (or to cur_freq + (freq_step X policy.max_freq) whichever is smaller) Max_load_freq is an arbitrary frequency calculated as the maximum of load_frequencies. (Only for HYPER, Ondemand, PegasusQ, Conservartive) (Default: 1)" name="sampling_down_factor" action="generic_cortex /tmp/sampling_down_factor" unit="int" min="1" reversed="false" step="1" max="10"/>
 
@@ -172,7 +172,7 @@
 
 		<seekBar description="This is same as the up_threshold found for the Ondemand governor but for the opposite direction. For example when set to its default value of 30 it means that if the CPU usage needs to be below 30% between samples to have the frequency decreased. (Only for Conservative) (Default: 30%)" name="down_threshold" action="generic_cortex /tmp/down_threshold" unit="%" min="1" reversed="false" step="1" max="100"/>
 
-		<spinner description="This is a flag that determines if waiting for various IO should increase the CPU utilization in bump up the cpu frequency. For example should you could the time it takes wait for a data transfer from another hardware block as cpu load even though the cpu is not actually doing anything during this time. Obviously setting this to 0 will mean the selected governor will increase the frequency less often. (MSM MPDECISION, ALUCARD_HOTPLUG, MSM_HOTPLUG)" name="io_is_busy" action="generic_cortex /tmp/io_is_busy">
+		<spinner description="This is a flag that determines if waiting for various IO should increase the CPU utilization in bump up the cpu frequency. For example should you could the time it takes wait for a data transfer from another hardware block as cpu load even though the cpu is not actually doing anything during this time. Obviously setting this to 0 will mean the selected governor will increase the frequency less often." name="io_is_busy" action="generic_cortex /tmp/io_is_busy">
 			<spinnerItem name="Yes" value="1"/> 
 			<spinnerItem name="No" value="0"/> 
 		</spinner>
@@ -183,11 +183,11 @@
 
 		<seekBar description="This threshold is used as up threshold while sampling at frequencies less than freq_for_responsiveness. Above that, normal inc_cpu_load is used. This gives us an option to make scaling aggressive/relaxed until a frequency and normal for higher frequencies. (Only for Nightmare, Alucard). (Default: 60%)" name="inc_cpu_load_at_min_freq" action="generic_cortex /tmp/inc_cpu_load_at_min_freq" unit="%" min="1" reversed="false" step="1" max="100"/>
 
-		<seekBar description="The frequency at which governor scales CPU up. Load big or equal inc_cpu_load: cpu scaled up. (Only for Nightmare, Alucard). (Default: 80%)" name="inc_cpu_load" action="generic_cortex /tmp/inc_cpu_load" unit="%" min="10" reversed="false" step="1" max="100"/>
+		<seekBar description="The frequency at which governor scales CPU up. Load big or equal inc_cpu_load: cpu scaled up. (Only for Nightmare, Alucard). (Default: 70%)" name="inc_cpu_load" action="generic_cortex /tmp/inc_cpu_load" unit="%" min="10" reversed="false" step="1" max="100"/>
 
 		<seekBar description="This threshold is used as down threshold while sampling at frequencies less than freq_responsiveness. Above that, normal dec_cpu_load is used. This gives us an option to make scaling aggressive/relaxed until a frequency and normal for higher frequencies. (Only for Alucard). (Default: 60%)" name="dec_cpu_load_at_min_freq" action="generic_cortex /tmp/dec_cpu_load_at_min_freq" unit="%" min="1" reversed="false" step="1" max="100"/>
 
-		<seekBar description="The frequency at which governor scales CPU down. Load less than dec_cpu_load: cpu scaled down. (Only for Nightmare, Alucard). (Default: 80%)" name="dec_cpu_load" action="generic_cortex /tmp/dec_cpu_load" unit="%" min="10" reversed="false" step="1" max="100"/>
+		<seekBar description="The frequency at which governor scales CPU down. Load less than dec_cpu_load: cpu scaled down. (Only for Nightmare, Alucard). (Default: 70%)" name="dec_cpu_load" action="generic_cortex /tmp/dec_cpu_load" unit="%" min="10" reversed="false" step="1" max="100"/>
 
 		<seekBar description="When current freq is greater than freq_for_responsiviness_max, freq_step_dec will be equal to freq_step_dec_at_max_freq. (Only for Nightmare). (Default: 1890.000 kHz)" name="freq_for_responsiveness_max" action="generic_cortex /tmp/freq_for_responsiveness_max" unit="kHz" min="378000" reversed="false" step="108000" max="1890000"/>
 
@@ -201,13 +201,13 @@
 
 		<seekBar description="Governor should increase CPU3 frequency by n step each time CPU load reaches inc_cpu_load_at_min_freq. (Only for Alucard) (Default: 2)" name="pump_inc_step_at_min_freq_4" action="generic_cortex /tmp/pump_inc_step_at_min_freq_4" unit="step" min="1" reversed="false" step="1" max="3"/>
 
-		<seekBar description="Governor should increase CPU0 frequency by n step each time CPU load reaches inc_cpu_load. (Only for Alucard) (Default: 2)" name="pump_inc_step_1" action="generic_cortex /tmp/pump_inc_step_1" unit="step" min="1" reversed="false" step="1" max="3"/>
+		<seekBar description="Governor should increase CPU0 frequency by n step each time CPU load reaches inc_cpu_load. (Only for Alucard) (Default: 1)" name="pump_inc_step_1" action="generic_cortex /tmp/pump_inc_step_1" unit="step" min="1" reversed="false" step="1" max="3"/>
 
-		<seekBar description="Governor should increase CPU1 frequency by n step each time CPU load reaches inc_cpu_load. (Only for Alucard) (Default: 2)" name="pump_inc_step_2" action="generic_cortex /tmp/pump_inc_step_2" unit="step" min="1" reversed="false" step="1" max="3"/>
+		<seekBar description="Governor should increase CPU1 frequency by n step each time CPU load reaches inc_cpu_load. (Only for Alucard) (Default: 1)" name="pump_inc_step_2" action="generic_cortex /tmp/pump_inc_step_2" unit="step" min="1" reversed="false" step="1" max="3"/>
 
-		<seekBar description="Governor should increase CPU2 frequency by n step each time CPU load reaches inc_cpu_load. (Only for Alucard) (Default: 2)" name="pump_inc_step_3" action="generic_cortex /tmp/pump_inc_step_3" unit="step" min="1" reversed="false" step="1" max="3"/>
+		<seekBar description="Governor should increase CPU2 frequency by n step each time CPU load reaches inc_cpu_load. (Only for Alucard) (Default: 1)" name="pump_inc_step_3" action="generic_cortex /tmp/pump_inc_step_3" unit="step" min="1" reversed="false" step="1" max="3"/>
 
-		<seekBar description="Governor should increase CPU3 frequency by n step each time CPU load reaches inc_cpu_load. (Only for Alucard) (Default: 2)" name="pump_inc_step_4" action="generic_cortex /tmp/pump_inc_step_4" unit="step" min="1" reversed="false" step="1" max="3"/>
+		<seekBar description="Governor should increase CPU3 frequency by n step each time CPU load reaches inc_cpu_load. (Only for Alucard) (Default: 1)" name="pump_inc_step_4" action="generic_cortex /tmp/pump_inc_step_4" unit="step" min="1" reversed="false" step="1" max="3"/>
 
 		<seekBar description="Governor should decrease CPU0 frequency by n step each time CPU load reaches dec_cpu_load. (Only for Alucard) (Default: 1)" name="pump_dec_step_1" action="generic_cortex /tmp/pump_dec_step_1" unit="step" min="1" reversed="false" step="1" max="3"/>
 
@@ -226,6 +226,10 @@
 		<seekBar description="Defines how much as a percentage of maximum frequency, governor should decrease CPU frequency each time CPU load reaches dec_cpu_load. Only for Nightmare). Default: 10%)" name="freq_step_dec" action="generic_cortex /tmp/freq_step_dec" unit="%" min="0" reversed="false" step="1" max="100"/>
 
 		<seekBar description="Defines how much as a percentage of maximum frequency, governor should decrease CPU frequency each time CPU load reaches dec_cpu_load and current freq is greater than freq_for_responsiviness_max. (Only for Nightmare). (Default: 10%)" name="freq_step_dec_at_max_freq" action="generic_cortex /tmp/freq_step_dec_at_max_freq" unit="%" min="0" reversed="false" step="1" max="100"/>
+
+		<seekBar description="Number of samples to evaluate cpus frequency scaling up when current cpu frequency is greater than freq_responsiveness. (Default: 1)" name="cpus_up_rate" action="generic_cortex /tmp/cpus_up_rate" unit="int" min="1" reversed="false" step="1" max="5"/>
+
+		<seekBar description="Number of samples to evaluate cpu frequency scaling down when current cpu frequency is greater than freq_responsiveness. (Default: 2)" name="cpus_down_rate" action="generic_cortex /tmp/cpus_down_rate" unit="int" min="1" reversed="false" step="1" max="5"/>
 
 	</settingsPane>
 
@@ -248,19 +252,19 @@
 
 	<settingsPane description="Tune alucard hotplug" name="alucard hotplug Tuning">
 
-		<seekBar description="Sampling Interval, measured in ms. This factor determines how often the governor should poll for CPU usage in terms of frequency and load percentage to make hotplugging decisions. (Default: 60 ms)" name="hotplug_sampling_rate" action="generic /sys/kernel/alucard_hotplug/hotplug_sampling_rate" unit="ms" min="10" reversed="false" step="5" max="100"/>
+		<seekBar description="Sampling Interval, measured in ms. This factor determines how often the governor should poll for CPU usage in terms of frequency and load percentage to make hotplugging decisions. (Default: 30 ms)" name="hotplug_sampling_rate" action="generic /sys/kernel/alucard_hotplug/hotplug_sampling_rate" unit="ms" min="10" reversed="false" step="10" max="100"/>
 
 		<seekBar description="Number of samples to evaluate cpu1 hotplug in. (Default: 1)" name="hotplug_rate_1_1" action="generic /sys/kernel/alucard_hotplug/hotplug_rate_1_1" unit="int" min="1" reversed="false" step="1" max="10"/>
 
-		<seekBar description="Number of samples to evaluate cpu1 hotplug out. (Default: 4)" name="hotplug_rate_2_0" action="generic /sys/kernel/alucard_hotplug/hotplug_rate_2_0" unit="int" min="1" reversed="false" step="1" max="10"/>
+		<seekBar description="Number of samples to evaluate cpu1 hotplug out. (Default: 5)" name="hotplug_rate_2_0" action="generic /sys/kernel/alucard_hotplug/hotplug_rate_2_0" unit="int" min="1" reversed="false" step="1" max="10"/>
 
 		<seekBar description="Number of samples to evaluate cpu2 hotplug in. (Default: 2)" name="hotplug_rate_2_1" action="generic /sys/kernel/alucard_hotplug/hotplug_rate_2_1" unit="int" min="1" reversed="false" step="1" max="10"/>
 
-		<seekBar description="Number of samples to evaluate cpu2 hotplug out. (Default: 4)" name="hotplug_rate_3_0" action="generic /sys/kernel/alucard_hotplug/hotplug_rate_3_0" unit="int" min="1" reversed="false" step="1" max="10"/>
+		<seekBar description="Number of samples to evaluate cpu2 hotplug out. (Default: 5)" name="hotplug_rate_3_0" action="generic /sys/kernel/alucard_hotplug/hotplug_rate_3_0" unit="int" min="1" reversed="false" step="1" max="10"/>
 
 		<seekBar description="Number of samples to evaluate cpu3 hotplug in. (Default: 2)" name="hotplug_rate_3_1" action="generic /sys/kernel/alucard_hotplug/hotplug_rate_3_1" unit="int" min="1" reversed="false" step="1" max="10"/>
 
-		<seekBar description="Number of samples to evaluate cpu3 hotplug out. (Default: 4)" name="hotplug_rate_4_0" action="generic /sys/kernel/alucard_hotplug/hotplug_rate_4_0" unit="int" min="1" reversed="false" step="1" max="10"/>
+		<seekBar description="Number of samples to evaluate cpu3 hotplug out. (Default: 5)" name="hotplug_rate_4_0" action="generic /sys/kernel/alucard_hotplug/hotplug_rate_4_0" unit="int" min="1" reversed="false" step="1" max="10"/>
 
 		<seekBar description="Up threshold frequency to turn second core On, when some other conditions is also met. ie If (minimum frequency greater than or equal to hotplug_freq 1 1) Hotplug IN Second Core. Higher value corresponds to delay in turning on second core. (Default: 1242.000 kHz)" name="hotplug_freq_1_1" action="genericfreq /sys/kernel/alucard_hotplug/hotplug_freq_1_1" unit="kHz" min="378000" reversed="false" step="108000" max="1890000"/>
 
@@ -270,9 +274,9 @@
 
 		<seekBar description="Down threshold frequency to turn third core Off, when some other conditions is also met. ie If (maximum frequency less than hotplug_freq 3 0) Hotplug OUT Third Core. Lower value corresponds to delay in turning off third core. (Default: 918.000 kHz)" name="hotplug_freq_3_0" action="genericfreq /sys/kernel/alucard_hotplug/hotplug_freq_3_0" unit="kHz" min="378000" reversed="false" step="108000" max="1890000"/>
 
-		<seekBar description="Up threshold frequency to turn fourth core On, when some other conditions is also met. ie If (minimum frequency greater than or equal to hotplug_freq 3 1) Hotplug IN Fourth Core. Higher value corresponds to delay in turning on Fourth core. (Default: 1674.000 kHz)" name="hotplug_freq_3_1" action="genericfreq /sys/kernel/alucard_hotplug/hotplug_freq_3_1" unit="kHz" min="378000" reversed="false" step="108000" max="1890000"/>
+		<seekBar description="Up threshold frequency to turn fourth core On, when some other conditions is also met. ie If (minimum frequency greater than or equal to hotplug_freq 3 1) Hotplug IN Fourth Core. Higher value corresponds to delay in turning on Fourth core. (Default: 1566.000 kHz)" name="hotplug_freq_3_1" action="genericfreq /sys/kernel/alucard_hotplug/hotplug_freq_3_1" unit="kHz" min="378000" reversed="false" step="108000" max="1890000"/>
 
-		<seekBar description="Down threshold frequency to turn fourth core Off, when some other conditions is also met. ie If (maximum frequency less than hotplug_freq 4 0) Hotplug OUT Fourth Core. Lower value corresponds to delay in turning off fourth core. (Default: 1026.000 kHz)" name="hotplug_freq_4_0" action="genericfreq /sys/kernel/alucard_hotplug/hotplug_freq_4_0" unit="kHz" min="378000" reversed="false" step="108000" max="1890000"/>
+		<seekBar description="Down threshold frequency to turn fourth core Off, when some other conditions is also met. ie If (maximum frequency less than hotplug_freq 4 0) Hotplug OUT Fourth Core. Lower value corresponds to delay in turning off fourth core. (Default: 918.000 kHz)" name="hotplug_freq_4_0" action="genericfreq /sys/kernel/alucard_hotplug/hotplug_freq_4_0" unit="kHz" min="378000" reversed="false" step="108000" max="1890000"/>
 
 		<seekBar description="The CPU load at which governor scales CPU up. Current Load equal or greater than up_load: CPU Hotplug IN. Value corresponding to 101 causes not HOTPLUG IN. (Default: 60%)" name="hotplug_load_1_1" action="generic /sys/kernel/alucard_hotplug/hotplug_load_1_1" unit="%" min="10" reversed="false" step="1" max="101"/>
 
@@ -284,19 +288,19 @@
 
 		<seekBar description="The CPU load at which governor scales CPU up. Current Load equal or greater than up_load: CPU Hotplug IN. Value corresponding to 101 causes not HOTPLUG IN. (Default: 65%)" name="hotplug_load_3_1" action="generic /sys/kernel/alucard_hotplug/hotplug_load_3_1" unit="%" min="10" reversed="false" step="1" max="101"/>
 
-		<seekBar description="The CPU load at which governor scales CPU down. Current Load less than down_load and CPU online greater than 1: CPU Hotplug OUT. Value corresponding to 101 causes immediately HOTPLUG OUT. (Default: 30%)" name="hotplug_load_4_0" action="generic /sys/kernel/alucard_hotplug/hotplug_load_4_0" unit="%" min="0" reversed="false" step="1" max="101"/>
+		<seekBar description="The CPU load at which governor scales CPU down. Current Load less than down_load and CPU online greater than 1: CPU Hotplug OUT. Value corresponding to 101 causes immediately HOTPLUG OUT. (Default: 20%)" name="hotplug_load_4_0" action="generic /sys/kernel/alucard_hotplug/hotplug_load_4_0" unit="%" min="0" reversed="false" step="1" max="101"/>
 
-		<seekBar description="Threshold run queue length for second core to turn on. (Default: 100)" name="hotplug_rq_1_1" action="generic /sys/kernel/alucard_hotplug/hotplug_rq_1_1" unit="uint" min="0" reversed="false" step="100" max="1200"/>
+		<seekBar description="Threshold run queue length for second core to turn on. (Default: 100)" name="hotplug_rq_1_1" action="generic /sys/kernel/alucard_hotplug/hotplug_rq_1_1" unit="uint" min="0" reversed="false" step="100" max="3000"/>
 
-		<seekBar description="Threshold run queue length for second core to turn off. (Default: 100)" name="hotplug_rq_2_0" action="generic /sys/kernel/alucard_hotplug/hotplug_rq_2_0" unit="uint" min="0" reversed="false" step="100" max="1200"/>
+		<seekBar description="Threshold run queue length for second core to turn off. (Default: 100)" name="hotplug_rq_2_0" action="generic /sys/kernel/alucard_hotplug/hotplug_rq_2_0" unit="uint" min="0" reversed="false" step="100" max="3000"/>
 
-		<seekBar description="Threshold run queue length for third core to turn on. (Default: 200)" name="hotplug_rq_2_1" action="generic /sys/kernel/alucard_hotplug/hotplug_rq_2_1" unit="uint" min="0" reversed="false" step="100" max="1200"/>
+		<seekBar description="Threshold run queue length for third core to turn on. (Default: 200)" name="hotplug_rq_2_1" action="generic /sys/kernel/alucard_hotplug/hotplug_rq_2_1" unit="uint" min="0" reversed="false" step="100" max="3000"/>
 
-		<seekBar description="Threshold run queue length for third core to turn off. (Default: 200)" name="hotplug_rq_3_0" action="generic /sys/kernel/alucard_hotplug/hotplug_rq_3_0" unit="uint" min="0" reversed="false" step="100" max="1200"/>
+		<seekBar description="Threshold run queue length for third core to turn off. (Default: 200)" name="hotplug_rq_3_0" action="generic /sys/kernel/alucard_hotplug/hotplug_rq_3_0" unit="uint" min="0" reversed="false" step="100" max="3000"/>
 
-		<seekBar description="Threshold run queue length for fourth core to turn on. (Default: 300)" name="hotplug_rq_3_1" action="generic /sys/kernel/alucard_hotplug/hotplug_rq_3_1" unit="uint" min="0" reversed="false" step="100" max="1200"/>
+		<seekBar description="Threshold run queue length for fourth core to turn on. (Default: 300)" name="hotplug_rq_3_1" action="generic /sys/kernel/alucard_hotplug/hotplug_rq_3_1" unit="uint" min="0" reversed="false" step="100" max="3000"/>
 
-		<seekBar description="Threshold run queue length for fourth core to turn off. (Default: 300)" name="hotplug_rq_4_0" action="generic /sys/kernel/alucard_hotplug/hotplug_rq_4_0" unit="uint" min="0" reversed="false" step="100" max="1200"/>
+		<seekBar description="Threshold run queue length for fourth core to turn off. (Default: 300)" name="hotplug_rq_4_0" action="generic /sys/kernel/alucard_hotplug/hotplug_rq_4_0" unit="uint" min="0" reversed="false" step="100" max="3000"/>
 
 		<seekBar description="Max CPU's hotplugging limit. (Default: 4)" name="maxcoreslimit" action="generic /sys/kernel/alucard_hotplug/maxcoreslimit" unit="int" min="1" reversed="false" step="1" max="4"/>
 
@@ -320,7 +324,7 @@
 			<spinnerItem name="HotPlug Suspend" value="suspend_when_off"/> 
 		</spinner>
 
-		<spinner description="This is a flag that determines if waiting for various IO should increase the CPU utilization in bump up the cpu frequency. For example should you could the time it takes wait for a data transfer from another hardware block as cpu load even though the cpu is not actually doing anything during this time. Obviously setting this to 0 will mean the selected governor will increase the frequency less often. (MSM MPDECISION, ALUCARD_HOTPLUG, MSM_HOTPLUG)" name="hp_io_is_busy" action="generic_cortex /tmp/hp_io_is_busy">
+		<spinner description="This is a flag that determines if waiting for various IO should increase the CPU utilization in bump up the cpu frequency. For example should you could the time it takes wait for a data transfer from another hardware block as cpu load even though the cpu is not actually doing anything during this time. Obviously setting this to 0 will mean the selected governor will increase the frequency less often. (ALUCARD_HOTPLUG, MSM_HOTPLUG)" name="hp_io_is_busy" action="generic_cortex /tmp/hp_io_is_busy">
 			<spinnerItem name="Yes" value="1"/> 
 			<spinnerItem name="No" value="0"/> 
 		</spinner>
@@ -337,12 +341,23 @@
 
 	<settingsPane description="Tune the msm thermal module" name="MSM Thermal Tuning">
 
-		<spinner description="CPU Thermal control, Can be Default driver without controls, or Intelli thermal driver with controls below, its will limit CPU frequency when CPU reach the max limit heat, till cooled and restore full power, this can help with too hot phone playing games! intelli driver is more aggressive and drop freq to 1.4 then to 1.2 then to 1.1ghz that will reduce performance in all bench apps! defaut will lock on 1.9Ghz most of the time, and burn the fingers but give you more SCORE to show off." name="CPU Temp Control" action="msm_thermal">
+		<spinner description="CPU Thermal control, Can be Default driver without controls, or Intelli thermal driver with controls below or Dual Intelligent Thermal driver with controls below and ROM thermal control, its will limit CPU frequency when CPU reach the max limit heat, till cooled and restore full power, this can help with too hot phone playing games! intelli driver is more aggressive and drop freq to 1.4 then to 1.2 then to 1.1ghz that will reduce performance in all bench apps! defaut will lock on 1.9Ghz most of the time, and burn the fingers but give you more SCORE to show off." name="CPU Temp Control" action="msm_thermal">
 			<spinnerItem name="Default Temp Control" value="msm_temp"/> 
-			<spinnerItem name="Intelli Temp Control" value="intelli_temp"/> 
+			<spinnerItem name="Intelli Temp Control" value="intelli_temp"/>
+			<spinnerItem name="Intelli Temp Control Dual" value="intelli_temp_dual"/>
 		</spinner>
 
-		<checkbox description="Enable or Disable CPU Cores ON and OFF based on Cores HEAT set below, if OFF! then all cores work but get low freq on high temp! if ON! then cores turned off to help with CPU cooling, but loose performance! very bad for bench show off apps! but good for heat stability" name="CPU Core Controls" action="generic01 /sys/module/msm_thermal/core_control/enabled" label="CPU Cores Control"/>
+		<spinner description="Hotplug CPU Thermal control main switch, this allow to shutdown cores 1,2,3 and leave core 0 as main core on high frequency. but it's reduces global performance on high temp, if set disabled then all CPU cores will be online and operate at lower frequencies when the temperature is high!" name="HotPlug Thermal CPU Control" action="generic /sys/module/msm_thermal/core_control/core_control">
+			<spinnerItem name="Enabled" value="1"/> 
+			<spinnerItem name="Disabled" value="0"/> 
+		</spinner>
+
+		<spinner description="Here you can control how many cores will stay active on high temp, more cores OFF will give you higher frequency on cores that remain Online, disabled Cores can go online by auto if temp is below the set mark in control below, Change will take effect ONLY on LOW Temp! do not change on high CPU stress, depend on Hotplug CPU Thermal control Enabled above!" name="Max online CPU's" action="core_mask">
+			<spinnerItem name="Core0" value="1"/> 
+			<spinnerItem name="Core0,1" value="2"/> 
+			<spinnerItem name="Core0,1,2" value="3"/> 
+			<spinnerItem name="All Cores ON" value="4"/> 
+		</spinner>
 
 		<seekBar description="Set CORES max HEAT before turning OFF cores from 3 to 1 and keep normal phone heat, if you tune above CPU max TEMP below, then all cores will stay ON when over heatted! This will work only with Intelli Temp Control ON!!!" name="CORE Max Heat" action="generic /sys/module/msm_thermal/parameters/core_limit_temp_degC" unit="C" min="50" reversed="false" step="1" max="85"/>
 
@@ -401,36 +416,36 @@
 
     </settingsPane>
 
+	<settingsPane description="RGB colors Control. Please turn the SCREEN OFF and ON for the settings to be applied !" name="RGB colors Control">
+      <seekBar description="Red tint control" 
+		name="Red tint. (Default: 60)" action="gamma_control r" unit="" min="0" reversed="false" step="2" max="120"/>
+      <seekBar description="Green tint control" 
+		name="Green tint. (Default: 60)" action="gamma_control g" unit="" min="0" reversed="false" step="2" max="120"/>
+      <seekBar description="Blue tint control" 
+		name="Blue tint. (Default: 60)" action="gamma_control b" unit="" min="0" reversed="false" step="2" max="120"/>
+    </settingsPane>
+
 </settingsTab>
 
 <settingsTab name="TOUCH INTERFACE">
 
-	<settingsPane description="Set CPU BOOST touch options" name="Touch Boost">
+	<settingsPane description="Set BOOST Touch options" name="Touch Boost">
 
-		<seekBar description="When the screen is touched the initial boost (minimum CPU frequency) is set to this value for the duration set in (input_boost_ms). From 810.000 kHz to 1.890.000 kHz (Default: 1.242.000 kHz)" name="input_boost_freq" action="genericfreq /sys/module/cpu_boost/parameters/input_boost_freq" unit="kHz" min="810000" reversed="false" step="108000" max="1890000"/>
-
-		<spinner description="After the initial boost period ends the second boost period starts (minimum CPU frequency) and is set to this value. When the screen touch ends the second boost will stop after the period set in (boost_ms) if it is greater than 0. From 0 to 1.458.000 kHz (Default: 0)" name="sync_threshold" action="genericfreq /sys/module/cpu_boost/parameters/sync_threshold">
-			<spinnerItem name="Disabled" value="0"/> 
-			<spinnerItem name="378.000 kHz" value="378000"/> 
-			<spinnerItem name="486.000 kHz" value="486000"/> 
-			<spinnerItem name="594.000 kHz" value="594000"/>
-			<spinnerItem name="702.000 kHz" value="702000"/>
-			<spinnerItem name="810.000 kHz" value="810000"/>
-			<spinnerItem name="918.000 kHz" value="918000"/>
-			<spinnerItem name="1026.000 kHz" value="1026000"/>
-			<spinnerItem name="1134.000 kHz" value="1134000"/>
-			<spinnerItem name="1242.000 kHz" value="1242000"/>
-			<spinnerItem name="1350.000 kHz" value="1350000"/>
-			<spinnerItem name="1458.000 kHz" value="1458000"/>
-		</spinner>
+		<seekBar description="When the screen is touched the initial boost (minimum CPU frequency) is set to this value for the duration set in (input_boost_ms). From 810.000 kHz to 1.890.000 kHz (Default: 1.134.000 kHz)" name="input_boost_freq" action="genericfreq /sys/module/alu_t_boost/parameters/input_boost_freq" unit="kHz" min="810000" reversed="false" step="108000" max="1890000"/>
 
 	</settingsPane>
 
 	<settingsPane description="Set Boost Touch time" name="Touch Time">
 
-		<seekBar description="Duration of the initial boost period (input_boost_freq). From 20 ms to 500 ms (Default: 40 ms)" name="input_boost_ms" action="generic /sys/module/cpu_boost/parameters/input_boost_ms" unit="ms" min="20" reversed="false" step="10" max="500"/>
+		<seekBar description="Duration of the initial boost period (input_boost_freq). From 20 ms to 500 ms (Default: 50 ms)" name="input_boost_ms" action="generic /sys/module/alu_t_boost/parameters/input_boost_ms" unit="ms" min="20" reversed="false" step="10" max="500"/>
 
-		<seekBar description="Period after which the second boost ends after the screen is released (sync_threshold greater than 0). From 20 ms to 500 ms (Default: 40 ms)" name="boost_ms" action="generic /sys/module/cpu_boost/parameters/boost_ms" unit="ms" min="20" reversed="false" step="10" max="500"/>
+		<seekBar description="Here you can set Touch Boost interval in micro seconds! 100ms is equal 0.1sec, when touch screen report touch here we set timer for how long to wait before setting core min frequency for duration above, this is Ultra Fast even on 500ms" name="CPU Touch Boost Interval" action="generic /sys/module/alu_t_boost/parameters/min_input_interval" unit="ms" min="100" reversed="false" step="50" max="1500"/>
+
+	</settingsPane>
+
+	<settingsPane description="Set Boost Touch nr. cpus" name="Touch Boost Cpus">
+
+		<seekBar description="Number of cpus affected by touchboost control. From 1 cpu to 4 cpus (Default: 2 cpus)" name="nr_boost_cpus" action="generic /sys/module/alu_t_boost/parameters/nr_boost_cpus" unit="cpus" min="1" reversed="false" step="1" max="4"/>
 
 	</settingsPane>
 
@@ -440,23 +455,9 @@
 
 	<settingsPane description="Tune IO settings managed by Kernel" name="IO Tuning">
 
-		<spinner description="Maximum number of kilobytes to read-ahead for INTERNAL SDCARD! file systems on this device. Works only if IO-Tweaks tweak is enabled! (Default: 1024 kB) !!! Depends on CortexBrain-Background-Process !!!" name="kilobytes to read-ahead" action="generic_cortex /tmp/intsd_read_ahead_kb">
-			<spinnerItem name="128 kB" value="128"/> 
-			<spinnerItem name="256 kB" value="256"/> 
-			<spinnerItem name="512 kB" value="512"/> 
-			<spinnerItem name="1024 kB" value="1024"/> 
-			<spinnerItem name="2048 kB" value="2048"/> 
-			<spinnerItem name="2560 kB" value="2560"/> 
-		</spinner>
+		<seekBar description="Maximum number of kilobytes to read-ahead for INTERNAL SDCARD! file systems on this device. Works only if IO-Tweaks tweak is enabled! (Default: 1024 kB) !!! Depends on CortexBrain-Background-Process !!!" name="kilobytes to read-ahead" action="generic_cortex /tmp/intsd_read_ahead_kb" unit="kB" min="128" reversed="false" step="128" max="4096"/>
 
-		<spinner description="Maximum number of kilobytes to read-ahead for EXTERNAL SDCARD! file systems on this device. Works only if IO-Tweaks tweak is enabled! (Default: 128 kB) !!! Depends on CortexBrain-Background-Process !!!" name="kilobytes to read-ahead" action="generic_cortex /tmp/extsd_read_ahead_kb">
-			<spinnerItem name="128 kB" value="128"/> 
-			<spinnerItem name="256 kB" value="256"/> 
-			<spinnerItem name="512 kB" value="512"/> 
-			<spinnerItem name="1024 kB" value="1024"/> 
-			<spinnerItem name="2048 kB" value="2048"/> 
-			<spinnerItem name="2560 kB" value="2560"/> 
-		</spinner>
+		<seekBar description="Maximum number of kilobytes to read-ahead for EXTERNAL SDCARD! file systems on this device. Works only if IO-Tweaks tweak is enabled! (Default: 128 kB) !!! Depends on CortexBrain-Background-Process !!!" name="kilobytes to read-ahead" action="generic_cortex /tmp/extsd_read_ahead_kb" unit="kB" min="128" reversed="false" step="128" max="4096"/>
 
 		<spinner description="This will set the default AWAKE IO scheduler for internal sdcard. (Default: ROW)" name="Default Awake IO Scheduler Int." action="iosched internal /sys/block/mmcblk0/queue/scheduler">
 			<spinnerItem name="BFQ" value="bfq"/>
@@ -636,10 +637,9 @@
 
 	<settingsPane description="AC and USB charging control" name="AC and USB charging control">
 
-		<spinner description="This will force fast charging! (Disabled: Disabled | Enabled: Substitute AC to USB | Custom: Use custom mA configured) (Default: Disabled)" name="Force Fast Charging" action="generic /sys/kernel/fast_charge/force_fast_charge">
+		<spinner description="This will force fast charging! (Disabled: Disabled | Enabled: Substitute AC to USB) (Default: Disabled)" name="Force Fast Charging" action="generic /sys/kernel/fast_charge/force_fast_charge">
 			<spinnerItem name="Disabled" value="0"/>
 			<spinnerItem name="Enabled" value="1"/>
-			<spinnerItem name="Custom" value="2"/>
 		</spinner>
 
 		<spinner description="When enabled, mtp can be used during fast_charge. (Default: Enabled)" name="Use MTP during Fast Charging" action="generic /sys/kernel/fast_charge/use_mtp_during_fast_charge">
@@ -663,11 +663,6 @@
 			<spinnerItem name="460 mA" value="460"/>
 			<spinnerItem name="700 mA" value="700"/>
 			<spinnerItem name="1000 mA" value="1000"/>
-		</spinner>
-
-		<spinner description="When disabled allow anything up to 1900 mA each hour to be used as AC and USB custom current. It is recommended to keep it ENABLED!!!!!. (Default: Enabled)" name="Fail safe" action="generic /sys/kernel/fast_charge/failsafe">
-			<spinnerItem name="Disabled" value="0"/>
-			<spinnerItem name="Enabled" value="1"/>
 		</spinner>
 
 	</settingsPane>
@@ -698,6 +693,11 @@
 		<button description="Click here to start Zipaligning ONLY user apps. System may be unresponsive, it is OK, do not use phone for 2 minutes. WARNING! Backup all user applications before use! This process will remove applications that are BROKEN and not compressed or compiled correctly, so you may find some apps missing. USE it AT YOUR OWN RISK, and update the broken applications!." name="ZIPALIGN" action="push-actions/zipalign" label="ZIPALIGN ALL APPS"/>
 
 		<button description="Click here to start applications Database Optimization. Compacting, cleaning and indexing will take max 2min." name="DB OPTIMIZATION" action="push-actions/database_optimizing" label="DATABASE OPTIMIZATON"/>
+
+		<spinner description="Allows you to change your SELinux (Security-Enhanced Linux) Status from Enforcing (policy is enforced) to Permissive (prints warnings instead of enforcing)." name="SeLinux Control" action="selinux_control">
+			<spinnerItem name="Enforcing" value="on"/> 
+			<spinnerItem name="Permissive" value="off"/> 
+		</spinner>
 
 	</settingsPane>
 
@@ -748,7 +748,9 @@
 
 	<settingsPane description="General tweaks" name="General tweaks">
 
-		<seekBar description="Vibration force level. (Default: 75)" name="Vibration force" action="generic /sys/vibrator/pwm_val" unit="%" min="0" reversed="false" step="5" max="100"/>
+		<seekBar description="Vibration force level. (Default: 75)" name="Vibration force" action="generic /sys/devices/virtual/timed_output/vibrator/pwm_value" unit="%" min="0" reversed="false" step="5" max="100"/>
+
+		<button description="Use this button to Trim System, Data and Cache Nand partitions to speed up Read and Write Access, good to use once in a day or two." name="Trim System, Data and Cache" action="push-actions/fstrim" label="Trim NOW"/>
 
 	</settingsPane>
 
@@ -775,15 +777,6 @@
 
 	</settingsPane>
 
-	<settingsPane description="FS tweaks" name="FS tweaks">
-
-		<spinner description="Here, It is possible to enable or disable DYNAMIC FSYNC! (Default: Enabled)" name="Dyn_fsync_active" action="generic /sys/kernel/dyn_fsync/Dyn_fsync_active">
-			<spinnerItem name="Enabled" value="1"/> 
-			<spinnerItem name="Disabled" value="0"/> 
-		</spinner>
-
-	</settingsPane>
-
 </settingsTab>
 
 <settingsTab name="Cortex Tweaks">
@@ -803,14 +796,6 @@
 			<spinnerItem name="Always Disabled" value="2"/>
 			<spinnerItem name="Debug" value="3"/>
 		</spinner>
-
-		<checkbox description="Enable or Disable the DATA turns off while screen is off function. !!! Depends on CortexBrain-Background-Process !!!" name="Auto-DATA" action="generic_cortex /tmp/cortexbrain_auto_tweak_mobile" label="Force Auto-Data"/>
-
-		<seekBar description="Set a delay before DATA is forced to OFF when screen is turned off. !!! Depends on CortexBrain-Auto-DATA!!!" name="DATA Turn Off Delay (in sec)" action="generic_cortex /tmp/cortexbrain_auto_tweak_mobile_sleep_delay" unit="sec" min="0" reversed="false" step="30" max="300"/>
-
-		<checkbox description="Enable or Disable the Wifi turns off while screen is off function. !!! Depends on CortexBrain-Background-Process !!!" name="Auto-Wifi" action="generic_cortex /tmp/cortexbrain_auto_tweak_wifi" label="Force Auto-Wifi"/>
-
-		<seekBar description="Set a delay before WIFI is forced to OFF when screen is turned off. !!! Depends on CortexBrain-Auto-Wifi !!!" name="WIFI Turn Off Delay (in sec)" action="generic_cortex /tmp/cortexbrain_auto_tweak_wifi_sleep_delay" unit="sec" min="0" reversed="false" step="30" max="300"/>
 
 		<checkbox description="Enable or Disable Memory-Tweaks (reboot needed)." name="Memory-Tweaks" action="generic_cortex /tmp/cortexbrain_memory" label="Memory-Tweaks"/>
 

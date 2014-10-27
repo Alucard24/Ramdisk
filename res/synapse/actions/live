@@ -1,0 +1,80 @@
+BB=/sbin/busybox;
+DEVICE=/res/synapse/files/sgs4.sh;
+
+case $1 in
+	CPUFrequencyList)
+		$BB echo `sh $DEVICE LiveCPUFrequencyList`;
+	;;
+	CPUGovernorList)
+		$BB echo `sh $DEVICE LiveCPUGovernorList`;
+	;;
+	DefaultCPU0Governor)
+		$BB echo `sh $DEVICE LiveDefaultCPU0Governor`;
+	;;
+	DefaultCPU1Governor)
+		$BB echo `sh $DEVICE LiveDefaultCPU1Governor`;
+	;;
+	DefaultCPU2Governor)
+		$BB echo `sh $DEVICE LiveDefaultCPU2Governor`;
+	;;
+	DefaultCPU3Governor)
+		$BB echo `sh $DEVICE LiveDefaultCPU3Governor`;
+	;;
+	IntIOReadAheadSize)
+		$BB echo `sh $DEVICE LiveIntIOReadAheadSize`;
+	;;
+	ExtIOReadAheadSize)
+		$BB echo `sh $DEVICE LiveExtIOReadAheadSize`;
+	;;
+	IntIOScheduler)
+		$BB echo `sh $DEVICE LiveIntIOScheduler`;
+	;;
+	ExtIOScheduler)
+		$BB echo `sh $DEVICE LiveExtIOScheduler`;
+	;;
+	TCPCongestion)
+		$BB echo `sh $DEVICE LiveTCPCongestion`;
+	;;
+	CPU0_MAX_MIN_Freq)
+		$BB echo `sh $DEVICE LiveCPU0_MAX_MIN_Freq`;
+	;;
+	CPU1_MAX_MIN_Freq)
+		$BB echo `sh $DEVICE LiveCPU1_MAX_MIN_Freq`;
+	;;
+	CPU2_MAX_MIN_Freq)
+		$BB echo `sh $DEVICE LiveCPU2_MAX_MIN_Freq`;
+	;;
+	CPU3_MAX_MIN_Freq)
+		$BB echo `sh $DEVICE LiveCPU3_MAX_MIN_Freq`;
+	;;
+	CPU_HOTPLUG)
+		$BB echo `sh $DEVICE LiveCPU_HOTPLUG`;
+	;;
+	CPU_CORES_ON_OFF)
+		$BB echo `sh $DEVICE LiveCPU_CORES_ON_OFF`;
+	;;
+	CURFreq)
+		$BB echo `sh $DEVICE LiveCURFreq`;
+	;;
+	BatteryTemperature)
+		$BB echo `sh $DEVICE LiveBatteryTemperature`;
+	;;
+	CPUFrequency)
+		$BB echo `sh $DEVICE LiveCPUFrequency`;
+	;;
+	CPUTemperature)
+		$BB echo `sh $DEVICE LiveCPUTemperature`;
+	;;
+	Memory)
+		$BB echo `sh $DEVICE LiveMemory`;
+	;;
+	Time)
+		$BB echo `sh $DEVICE LiveTime $2 $3`;
+	;;
+	UpTime)
+		$BB echo `sh $DEVICE LiveUpTime`;
+	;;
+	UnUsed)
+		$BB echo `sh $DEVICE LiveUnUsed`;
+	;;
+esac

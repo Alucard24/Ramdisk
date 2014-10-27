@@ -14,8 +14,8 @@ done;
 
 OPEN_RW()
 {
-	ROOTFS_MOUNT=$(mount | grep rootfs | cut -c26-27 | grep rw | wc -l)
-	SYSTEM_MOUNT=$(mount | grep system | cut -c69-70 | grep rw | wc -l)
+	ROOTFS_MOUNT=$(mount | grep rootfs | cut -c26-27 | grep -c rw | wc -l)
+	SYSTEM_MOUNT=$(mount | grep system | cut -c69-70 | grep -c rw | wc -l)
 	if [ "$ROOTFS_MOUNT" -eq "0" ]; then
 		$BB mount -o remount,rw /;
 	fi;
@@ -25,6 +25,9 @@ OPEN_RW()
 }
 OPEN_RW;
 
+# run ROM scripts
+$BB sh /init.qcom.post_boot.sh;
+
 # fix storage folder owner
 # $BB chown system.sdcard_rw /storage;
 
@@ -32,18 +35,6 @@ OPEN_RW;
 $BB echo "row" > /sys/block/mmcblk0/queue/scheduler;
 
 # clean old modules from /system and add new from ramdisk
-#if [ ! -d /system/lib/modules ]; then
-#        $BB mkdir /system/lib/modules;
-#fi;
-
-#cd /lib/modules/;
-#for i in *.ko; do
-#        $BB rm -f /system/lib/modules/"$i";
-#done;
-#cd /;
-
-#$BB chmod 755 /lib/modules/*.ko;
-#$BB cp -a /lib/modules/*.ko /system/lib/modules/;
 
 # create init.d folder if missing
 if [ ! -d /system/etc/init.d ]; then
@@ -61,23 +52,13 @@ if [ ! -e /cpufreq ]; then
 	$BB ln -s /sys/kernel/alucard_hotplug/ /hotplugs/alucard;
 	$BB ln -s /sys/kernel/intelli_plug/ /hotplugs/intelli;
 	$BB ln -s /sys/module/msm_hotplug/ /hotplugs/msm_hotplug;
+	$BB ln -s /sys/devices/system/cpu/cpufreq/all_cpus/ /all_cpus;
 fi;
 
 # cleaning
 $BB rm -rf /cache/lost+found/* 2> /dev/null;
 $BB rm -rf /data/lost+found/* 2> /dev/null;
 $BB rm -rf /data/tombstones/* 2> /dev/null;
-
-(
-	if [ ! -d /data/init.d_bkp ]; then
-		$BB mkdir /data/init.d_bkp;
-	fi;
-	$BB mv /system/etc/init.d/* /data/init.d_bkp/;
-	# run ROM scripts
-	if [ -e /system/etc/init.qcom.post_boot.sh ]; then
-		/system/bin/sh /system/etc/init.qcom.post_boot.sh
-	fi;
-)&
 
 OPEN_RW;
 
@@ -110,16 +91,15 @@ $BB chown system /sys/devices/system/cpu/cpu1/online
 $BB chown system /sys/devices/system/cpu/cpu2/online
 $BB chown system /sys/devices/system/cpu/cpu3/online
 $BB chmod 666 /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor
-$BB chmod 666 /sys/devices/system/cpu/cpufreq/all_cpus/*
 $BB chmod 666 /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq
 $BB chmod 666 /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq
 $BB chmod 444 /sys/devices/system/cpu/cpu0/cpufreq/cpuinfo_cur_freq
 $BB chmod 444 /sys/devices/system/cpu/cpu0/cpufreq/stats/*
+$BB chmod 666 /sys/devices/system/cpu/cpufreq/all_cpus/*
 $BB chmod 666 /sys/devices/system/cpu/cpu1/online
 $BB chmod 666 /sys/devices/system/cpu/cpu2/online
 $BB chmod 666 /sys/devices/system/cpu/cpu3/online
 $BB chmod 666 /sys/module/msm_thermal/parameters/*
-$BB chmod 666 /sys/module/msm_thermal/core_control/enabled
 $BB chmod 666 /sys/kernel/intelli_plug/*
 $BB chmod 666 /sys/class/kgsl/kgsl-3d0/max_gpuclk
 $BB chmod 666 /sys/devices/platform/kgsl-3d0/kgsl/kgsl-3d0/pwrscale/trustzone/governor
@@ -127,56 +107,60 @@ $BB chmod 666 /sys/devices/platform/kgsl-3d0/kgsl/kgsl-3d0/pwrscale/trustzone/go
 # make sure our max gpu clock is set via sysfs
 echo 450000000 > /sys/class/kgsl/kgsl-3d0/max_gpuclk
 
-# set min max boot freq to default.
-echo "1890000" > /sys/devices/system/cpu/cpufreq/all_cpus/scaling_max_freq_all_cpus;
-echo "378000" > /sys/devices/system/cpu/cpufreq/all_cpus/scaling_min_freq_all_cpus;
-
 # Fix ROM dev wrong sets.
 setprop persist.adb.notify 0
-setprop persist.service.adb.enable 1
-setprop dalvik.vm.execution-mode int:jit
 setprop pm.sleep_mode 1
 
 if [ ! -d /data/.alucard ]; then
 	$BB mkdir -p /data/.alucard;
 fi;
 
-# reset config-backup-restore
-if [ -f /data/.alucard/restore_running ]; then
-	$BB rm -f /data/.alucard/restore_running;
-fi;
-
 # reset profiles auto trigger to be used by kernel ADMIN, in case of need, if new value added in default profiles
 # just set numer $RESET_MAGIC + 1 and profiles will be reset one time on next boot with new kernel.
-# incase that ADMIN feel that something wrong with global STweaks config and profiles, then ADMIN can add +1 to CLEAN_DORI_DIR
+# incase that ADMIN feel that something wrong with global STweaks config and profiles, then ADMIN can add +1 to CLEAN_ALU_DIR
 # to clean all files on first boot from /data/.alucard/ folder.
-RESET_MAGIC=28;
-CLEAN_ALU_DIR=1;
+RESET_MAGIC=37;
+CLEAN_ALU_DIR=4;
+
 if [ ! -e /data/.alucard/reset_profiles ]; then
-	echo "0" > /data/.alucard/reset_profiles;
+	echo "$RESET_MAGIC" > /data/.alucard/reset_profiles;
 fi;
 if [ ! -e /data/reset_alu_dir ]; then
-	echo "0" > /data/reset_alu_dir;
+	echo "$CLEAN_ALU_DIR" > /data/reset_alu_dir;
 fi;
 if [ -e /data/.alucard/.active.profile ]; then
 	PROFILE=$(cat /data/.alucard/.active.profile);
+else
+	echo "default" > /data/.alucard/.active.profile;
+	PROFILE=$(cat /data/.alucard/.active.profile);
 fi;
 if [ "$(cat /data/reset_alu_dir)" -eq "$CLEAN_ALU_DIR" ]; then
-	if [ "$(cat /data/.alucard/reset_profiles)" -eq "$RESET_MAGIC" ]; then
-		echo "no need to reset profiles";
-	else
+	if [ "$(cat /data/.alucard/reset_profiles)" != "$RESET_MAGIC" ]; then
+		if [ ! -e /data/.alucard_old ]; then
+			mkdir /data/.alucard_old;
+		fi;
+		cp -a /data/.alucard/*.profile /data/.alucard_old/;
 		$BB rm -f /data/.alucard/*.profile;
+		if [ -e /data/data/com.af.synapse/databases ]; then
+			$BB rm -R /data/data/com.af.synapse/databases;
+		fi;
 		echo "$RESET_MAGIC" > /data/.alucard/reset_profiles;
+	else
+		echo "no need to reset profiles or delete .alucard folder";
 	fi;
-elif [ ! -e /data/.alucard/.active.profile ]; then
-	echo "first boot with my kernel or user wipe";
-	echo "default" > /data/.alucard/.active.profile;
 else
 	# Clean /data/.alucard/ folder from all files to fix any mess but do it in smart way.
 	if [ -e /data/.alucard/"$PROFILE".profile ]; then
 		cp /data/.alucard/"$PROFILE".profile /sdcard/"$PROFILE".profile_backup;
 	fi;
+	if [ ! -e /data/.alucard_old ]; then
+		mkdir /data/.alucard_old;
+	fi;
+	cp -a /data/.alucard/* /data/.alucard_old/;
 	$BB rm -f /data/.alucard/*
+	if [ -e /data/data/com.af.synapse/databases ]; then
+		$BB rm -R /data/data/com.af.synapse/databases;
+	fi;
 	echo "$CLEAN_ALU_DIR" > /data/reset_alu_dir;
 	echo "$RESET_MAGIC" > /data/.alucard/reset_profiles;
 	echo "$PROFILE" > /data/.alucard/.active.profile;
@@ -194,13 +178,20 @@ $BB chmod -R 0777 /data/.alucard/;
 read_defaults;
 read_config;
 
-#(
-#	# Apps Install
-#	$BB sh /sbin/ext/install.sh;
-#)&
+OPEN_RW;
 
-# enable force fast charge on USB to charge faster
-echo "$force_fast_charge" > /sys/kernel/fast_charge/force_fast_charge;
+# apply STweaks settings
+if [ "$stweaks_boot_control" == "yes" ]; then
+	(
+		$BB sh /res/uci_boot.sh apply;
+		$BB mv /res/uci_boot.sh /res/uci.sh;
+		$BB sh /res/synapse/uci;
+		$BB sh /sbin/ext/cortexbrain-tune.sh apply_cpu update > /dev/null;
+	)&
+fi;
+
+#	# Apps Install
+# $BB sh /sbin/ext/install.sh;
 
 ######################################
 # Loading Modules
@@ -224,9 +215,8 @@ MODULES_LOAD()
 echo "0" > /proc/sys/kernel/kptr_restrict;
 
 # disable debugging on some modules
-if [ "$logger" == "off" ]; then
+if [ "$android_logger" -ge "1" ]; then
 	echo "N" > /sys/module/kernel/parameters/initcall_debug;
-	echo "0" > /sys/module/earlysuspend/parameters/debug_mask;
 #	echo "0" > /sys/module/alarm/parameters/debug_mask;
 #	echo "0" > /sys/module/alarm_dev/parameters/debug_mask;
 #	echo "0" > /sys/module/binder/parameters/debug_mask;
@@ -247,31 +237,17 @@ if [ ! -d /mnt/ntfs ]; then
 	$BB mount -t tmpfs -o mode=0777,gid=1000 tmpfs /mnt/ntfs
 fi;
 
-# set alucard as default gov
-echo "alucard" > /sys/devices/system/cpu/cpufreq/all_cpus/scaling_governor_all_cpus;
 
-if [ "$stweaks_boot_control" == "yes" ]; then
-	# stop uci.sh from running all the PUSH Buttons in stweaks on boot
-	OPEN_RW;
-
-	# apply STweaks settings
-	$BB pkill -f "com.gokhanmoral.stweaks.app";
-	$BB sh /res/uci.sh apply;
-
-	# Reduce heat limit during boot.
-	$BB sh /res/uci.sh generic /sys/module/msm_thermal/parameters/limit_temp_degC 65;
-
-	# Load Custom Modules
-	MODULES_LOAD;
-
-	$BB sh /sbin/ext/cortexbrain-tune.sh apply_cpu update > /dev/null;
-fi;
+# Turn off CORE CONTROL, to boot on all cores!
+$BB chmod 666 /sys/module/msm_thermal/core_control/*
+echo "0" > /sys/module/msm_thermal/core_control/core_control;
 
 # Start any init.d scripts that may be present in the rom or added by the user
-$BB mv /data/init.d_bkp/* /system/etc/init.d/
 if [ "$init_d" == "on" ]; then
 	$BB chmod 755 /system/etc/init.d/*;
-	$BB run-parts /system/etc/init.d/;
+	(
+		$BB run-parts /system/etc/init.d/;
+	)&
 else
 	if [ -e /system/etc/init.d/99SuperSUDaemon ]; then
 		$BB chmod 755 /system/etc/init.d/*;
@@ -284,13 +260,13 @@ fi;
 # Fix critical perms again after init.d mess
 CRITICAL_PERM_FIX;
 
-# restore USER cpu heat temp from STweaks.
-$BB sh /res/uci.sh generic /sys/module/msm_thermal/parameters/limit_temp_degC $limit_temp_degC;
+#if [ "$stweaks_boot_control" == "yes" ]; then
+#	$BB sh /sbin/ext/cortexbrain-tune.sh apply_cpu update > /dev/null;
+#fi;
 
-# Correct Kernel config after full boot.
-$BB sh /res/uci.sh oom_config_screen_on "$oom_config_screen_on";
-$BB sh /res/uci.sh oom_config_screen_off "$oom_config_screen_off";
-$BB sh /res/uci.sh cpuhotplugging "$cpuhotplugging";
+echo "0" > /cputemp/freq_limit_debug;
+
+sleep 35;
 
 # script finish here, so let me know when
 TIME_NOW=$(date)

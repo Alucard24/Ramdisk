@@ -11,12 +11,12 @@ fi;
 DEBUG_FILE="/sdcard/alucard_debug";
 DEBUG_FILE_LOGCAT="/sdcard/alucard_debug_logcat";
 
+PROFILE=`cat /data/.alucard/.active.profile`;
+. /data/.alucard/${PROFILE}.profile;
+
 case "${debug_to_sd}" in
 	1)
 		(
-			PROFILE=`cat /data/.alucard/.active.profile`;
-			. /data/.alucard/${PROFILE}.profile;
-
 			SEPARATOR()
 			{
 				echo "" >> $DEBUG_FILE;
@@ -34,7 +34,10 @@ case "${debug_to_sd}" in
 			cat /proc/version >> $DEBUG_FILE;
 			SEPARATOR;
 
-			date +"Last Reboot: %d.%m.%y / %H:%m" -d @$(( $(date +%s) - $(cut -f1 -d. /proc/uptime) )) >> $DEBUG_FILE;
+			TOTAL_UPTIME_CHECK=$(awk '{ print $1 }' /proc/uptime);
+			TOTAL_UPTIME=$(echo - | awk -v "S=$TOTAL_TOTAL_UPTIME_CHECK" '{printf "%dh:%dm:%ds",S/(60*60),S%(60*60)/60,S%60}');
+			date +"Last Reboot: %d.%m.%y / %H:%m" >> $DEBUG_FILE;
+			echo "Uptime is $TOTAL_UPTIME" >> $DEBUG_FILE;
 			SEPARATOR;
 
 			# System
@@ -70,9 +73,32 @@ case "${debug_to_sd}" in
 			#done;
 			#SEPARATOR;
 
+			# HotPlug configuration
+			echo "HotPlugs Config:" >> $DEBUG_FILE;
+			SEPARATOR;
+
+			echo "HotPlug Alucard:" >> $DEBUG_FILE;
+			SEPARATOR;
+			cd /hotplugs/alucard;
+			grep "." * >> $DEBUG_FILE;
+			SEPARATOR;
+
+			echo "HotPlug MSM:" >> $DEBUG_FILE;
+			SEPARATOR;
+			cd /hotplugs/msm_hotplug;
+			grep "." * >> $DEBUG_FILE;
+			SEPARATOR;
+
+			echo "HotPlug Intelli:" >> $DEBUG_FILE;
+			SEPARATOR;
+			cd /hotplugs/intelli;
+			grep "." * >> $DEBUG_FILE;
+			cd /;
+			SEPARATOR;
+
 			# CPU
 			echo "CPU-Info:" >> $DEBUG_FILE;
-			scaling_governor0=$(cat /sys/devices/system/cpu/cpufreq/all_cpus/scaling_governor_cpu0)
+			scaling_governor0=$(cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor)
 			echo "CPU0-Governor: $scaling_governor_cpu0" >> $DEBUG_FILE;
 			scaling_governor1=$(cat /sys/devices/system/cpu/cpufreq/all_cpus/scaling_governor_cpu1)
 			echo "CPU1-Governor: $scaling_governor_cpu1" >> $DEBUG_FILE;
@@ -82,7 +108,7 @@ case "${debug_to_sd}" in
 			echo "CPU3-Governor: $scaling_governor_cpu3" >> $DEBUG_FILE;
 			cpuinfo_cur_freq=$(cat /sys/devices/system/cpu/cpu0/cpufreq/cpuinfo_cur_freq);
 			echo "Cur.-Freq: $cpuinfo_cur_freq" >> $DEBUG_FILE;
-			scaling_max_freq0=$(cat /sys/devices/system/cpu/cpufreq/all_cpus/scaling_max_freq_cpu0);
+			scaling_max_freq0=$(cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq);
 			echo "Max.-Freq CPU0: $scaling_max_freq0" >> $DEBUG_FILE;
 			scaling_max_freq1=$(cat /sys/devices/system/cpu/cpufreq/all_cpus/scaling_max_freq_cpu1);
 			echo "Max.-Freq CPU1: $scaling_max_freq1" >> $DEBUG_FILE;
@@ -90,7 +116,7 @@ case "${debug_to_sd}" in
 			echo "Max.-Freq CPU2: $scaling_max_freq2" >> $DEBUG_FILE;
 			scaling_max_freq3=$(cat /sys/devices/system/cpu/cpufreq/all_cpus/scaling_max_freq_cpu3);
 			echo "Max.-Freq CPU3: $scaling_max_freq3" >> $DEBUG_FILE;
-			scaling_min_freq0=$(cat /sys/devices/system/cpu/cpufreq/all_cpus/scaling_min_freq_cpu0);
+			scaling_min_freq0=$(cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq);
 			echo "Min.-Freq CPU0: $scaling_min_freq0" >> $DEBUG_FILE;
 			scaling_min_freq1=$(cat /sys/devices/system/cpu/cpufreq/all_cpus/scaling_min_freq_cpu1);
 			echo "Min.-Freq CPU1: $scaling_min_freq1" >> $DEBUG_FILE;
@@ -136,9 +162,9 @@ case "${debug_to_sd}" in
 			#SEPARATOR;
 
 			# Wakeup
-			echo "Wakeup-Info:" >> $DEBUG_FILE;
-			cat /sys/kernel/debug/wakeup_sources >> $DEBUG_FILE;
-			SEPARATOR;
+			#echo "Wakeup-Info:" >> $DEBUG_FILE;
+			#cat /sys/kernel/debug/wakeup_sources >> $DEBUG_FILE;
+			#SEPARATOR;
 
 			# Suspend
 			echo "Suspend-Info:" >> $DEBUG_FILE;
@@ -181,7 +207,7 @@ case "${debug_to_sd}" in
 
 			# Processes
 			echo "Process-Info: top" >> $DEBUG_FILE;
-			top -n 1 -m 7 >> $DEBUG_FILE;
+			top -n 2 -m 10 >> $DEBUG_FILE;
 			SEPARATOR;
 
 			echo "Process-Info: ps" >> $DEBUG_FILE;
@@ -214,29 +240,42 @@ case "${debug_to_sd}" in
 			# last kmsg
 			echo "last_kmsg-Info:" >> $DEBUG_FILE;
 			if [ -e /proc/last_kmsg ]; then
-				cat /proc/last_kmsg >> $DEBUG_FILE;
+				cat /proc/last_kmsg | tail -n 300 >> $DEBUG_FILE;
 				SEPARATOR;
 			else
 				echo "there was no /proc/last_kmsg to read from" >> $DEBUG_FILE;
 				SEPARATOR;
 			fi;
 
+			if [ -e /system/xbin/zip ]; then
+				chmod 755 /system/xbin/zip
+				/system/xbin/zip ${DEBUG_FILE}.zip $DEBUG_FILE > /dev/null;
+				rm $DEBUG_FILE;
+			fi;
 		)&
-		echo "All Data collected and ready at $DEBUG_FILE";
+		if [ -e /system/xbin/zip ]; then
+			sleep 2;
+			echo "All Data collected and ready at ${DEBUG_FILE}.zip";
+		else
+			sleep 2;
+			echo "All Data collected and ready at ${DEBUG_FILE}";
+		fi;
 	;;
 	2)
 		# logcat
 		(
 			# overwrite old debug-file
 			echo "" > $DEBUG_FILE_LOGCAT;
+			echo "1" > /sys/module/logger/parameters/log_mode;
 
 			logcat -f $DEBUG_FILE_LOGCAT;
 
-			wait 60;
-			pkill logcat;
-			#maybe we can also grep / remove personal infos here (e.g . email address)
+			sleep 30;
+			pkill -f "logcat";
+			echo "android_logger" > /sys/module/logger/parameters/log_mode;
+			pkill -f "com.gokhanmoral.stweaks.app";
 		)&
-		echo "Collecting logs for 60Sec please wait";
+		echo "Collecting logs for 30Sec please wait till STweaks will CLOSE";
 	;;
 	*)
 		echo "need input";

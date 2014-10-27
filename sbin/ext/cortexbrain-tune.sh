@@ -16,7 +16,7 @@
 BB=/sbin/busybox
 
 # change mode for /tmp/
-ROOTFS_MOUNT=$(mount | grep rootfs | cut -c26-27 | grep rw | wc -l)
+ROOTFS_MOUNT=$(mount | grep rootfs | cut -c26-27 | grep -c rw | wc -l)
 if [ "$ROOTFS_MOUNT" -eq "0" ]; then
 	mount -o remount,rw /;
 fi;
@@ -27,11 +27,9 @@ chmod -R 777 /tmp/;
 # ==============================================================
 
 FILE_NAME=$0;
-PIDOFCORTEX=$$;
 # (since we don't have the recovery source code I can't change the ".alucard" dir, so just leave it there for history)
 DATA_DIR=/data/.alucard;
 USB_POWER=0;
-TELE_DATA=init;
 
 # ==============================================================
 # INITIATE
@@ -40,27 +38,6 @@ TELE_DATA=init;
 # get values from profile
 PROFILE=$(cat $DATA_DIR/.active.profile);
 . "$DATA_DIR"/"$PROFILE".profile;
-
-# check if dumpsys exist in ROM
-if [ -e /system/bin/dumpsys ]; then
-	DUMPSYS_STATE=1;
-else
-	DUMPSYS_STATE=0;
-fi;
-
-# ==============================================================
-# FILES FOR VARIABLES || we need this for write variables from child-processes to parent
-# ==============================================================
-
-# WIFI HELPER
-WIFI_HELPER_AWAKE="$DATA_DIR/WIFI_HELPER_AWAKE";
-WIFI_HELPER_TMP="$DATA_DIR/WIFI_HELPER_TMP";
-echo "1" > $WIFI_HELPER_TMP;
-
-# MOBILE HELPER
-MOBILE_HELPER_AWAKE="$DATA_DIR/MOBILE_HELPER_AWAKE";
-MOBILE_HELPER_TMP="$DATA_DIR/MOBILE_HELPER_TMP";
-echo "1" > $MOBILE_HELPER_TMP;
 
 # ==============================================================
 # I/O-TWEAKS
@@ -112,10 +89,7 @@ IO_TWEAKS()
 		return 0;
 	fi;
 }
-apply_cpu="$2";
-if [ "$apply_cpu" != "update" ]; then
-	IO_TWEAKS;
-fi;
+IO_TWEAKS;
 
 # ==============================================================
 # CPU-TWEAKS
@@ -125,68 +99,53 @@ CPU_HOTPLUG_TWEAKS()
 {
 	local state="$1";
 
-	if [ "$cpuhotplugging" -eq "1" ]; then
+	if [ "$(pgrep -f "/system/bin/thermal-engine" | wc -l)" -eq "1" ]; then
+		$BB renice -n -20 -p "$(pgrep -f "/system/bin/thermal-engine")";
+	fi;
 
-		#disable intelli_plug
+	if [ "$cpuhotplugging" -eq "1" ]; then
+		if [ -e /system/bin/mpdecision ]; then
+			if [ "$(pgrep -f "/system/bin/mpdecision" | wc -l)" -eq "0" ]; then
+				/system/bin/start mpdecision
+				$BB renice -n -20 -p "$(pgrep -f "/system/bin/start mpdecision")";
+			fi;
+		fi;
 		if [ "$(cat /sys/kernel/intelli_plug/intelli_plug_active)" -eq "1" ]; then
 			echo "0" > /sys/kernel/intelli_plug/intelli_plug_active;
 		fi;
-
-		#disable alucard_hotplug
 		if [ "$(cat /sys/kernel/alucard_hotplug/hotplug_enable)" -eq "1" ]; then
 			echo "0" > /sys/kernel/alucard_hotplug/hotplug_enable;
 		fi;
-
-		#disable msm_hotplug
 		if [ "$(cat /sys/module/msm_hotplug/msm_enabled)" -eq "1" ]; then
 			echo "0" > /sys/module/msm_hotplug/msm_enabled;
 		fi;
-
-		#enable msm_rq_stats
-		if [ "$(cat /sys/devices/system/cpu/cpu0/rq-stats/hotplug_disable)" -eq "1" ]; then
-			echo "0" > /sys/devices/system/cpu/cpu0/rq-stats/hotplug_disable;
-		fi;
-
-		#enable MSM MPDecision
-		if [ "$(ps | grep "mpdecision" | wc -l)" -le "1" ]; then
-			/system/bin/start mpdecision
-			$BB renice -n -20 -p $(pgrep -f "/system/bin/start mpdecision");
-		fi;
-
-		# tune-settings
-		if [ "$state" == "tune" ]; then
-			echo "$hp_io_is_busy" > /sys/devices/system/cpu/cpu0/rq-stats/hp_io_is_busy;
+		if [ "$(cat /sys/devices/system/cpu/cpu0/rq-stats/hotplug_enable)" -eq "0" ]; then
+			echo "1" > /sys/devices/system/cpu/cpu0/rq-stats/hotplug_enable;
+			if [ -e /system/bin/mpdecision ]; then
+				/system/bin/stop mpdecision
+				/system/bin/start mpdecision
+				$BB renice -n -20 -p "$(pgrep -f "/system/bin/start mpdecision")";
+				echo "20" > /sys/devices/system/cpu/cpu0/rq-stats/run_queue_poll_ms;
+			else
+				# Some !Stupid APP! changed mpdecision name, not my problem. use msm hotplug!
+				echo "0" > /sys/devices/system/cpu/cpu0/rq-stats/hotplug_enable;
+				echo "1" > /sys/module/msm_hotplug/msm_enabled;
+			fi;
 		fi;
 
 		log -p i -t "$FILE_NAME" "*** MSM_MPDECISION ***: enabled";
 	elif [ "$cpuhotplugging" -eq "2" ]; then
-		#disable MSM MPDecision
-		if [ "$(ps | grep "mpdecision" | wc -l)" -ge "1" ]; then
-			/system/bin/stop mpdecision
-		fi;
-
-		#disable msm_rq_stats
-		if [ "$(cat /sys/devices/system/cpu/cpu0/rq-stats/hotplug_disable)" -eq "0" ]; then
-			echo "1" > /sys/devices/system/cpu/cpu0/rq-stats/hotplug_disable;
-		fi;
-
-		#disable alucard_hotplug
 		if [ "$(cat /sys/kernel/alucard_hotplug/hotplug_enable)" -eq "1" ]; then
 			echo "0" > /sys/kernel/alucard_hotplug/hotplug_enable;
 		fi;
-
-		#disable msm_hotplug
 		if [ "$(cat /sys/module/msm_hotplug/msm_enabled)" -eq "1" ]; then
 			echo "0" > /sys/module/msm_hotplug/msm_enabled;
 		fi;
-
-		#enable intelli_plug
 		if [ "$(cat /sys/kernel/intelli_plug/intelli_plug_active)" -eq "0" ]; then
 			echo "1" > /sys/kernel/intelli_plug/intelli_plug_active;
 		fi;
-
-		if [ "$(ps | grep /system/bin/thermal-engine | wc -l)" -ge "1" ]; then
-			$BB renice -n -20 -p $(pgrep -f "/system/bin/thermal-engine");
+		if [ "$(cat /sys/devices/system/cpu/cpu0/rq-stats/hotplug_enable)" -eq "1" ]; then
+			echo "0" > /sys/devices/system/cpu/cpu0/rq-stats/hotplug_enable;
 		fi;
 
 		# tune-settings
@@ -197,33 +156,17 @@ CPU_HOTPLUG_TWEAKS()
 
 		log -p i -t "$FILE_NAME" "*** INTELLI_PLUG ***: enabled";
 	elif [ "$cpuhotplugging" -eq "3" ]; then
-		#disable MSM MPDecision
-		if [ "$(ps | grep "mpdecision" | wc -l)" -ge "1" ]; then
-			/system/bin/stop mpdecision
-		fi;
-
-		#disable msm_rq_stats
-		if [ "$(cat /sys/devices/system/cpu/cpu0/rq-stats/hotplug_disable)" -eq "0" ]; then
-			echo "1" > /sys/devices/system/cpu/cpu0/rq-stats/hotplug_disable;
-		fi;
-
-		#disable intelli_plug
 		if [ "$(cat /sys/kernel/intelli_plug/intelli_plug_active)" -eq "1" ]; then
 			echo "0" > /sys/kernel/intelli_plug/intelli_plug_active;
 		fi;
-
-		#disable msm_hotplug
 		if [ "$(cat /sys/module/msm_hotplug/msm_enabled)" -eq "1" ]; then
 			echo "0" > /sys/module/msm_hotplug/msm_enabled;
 		fi;
-
-		#enable alucard_hotplug
 		if [ "$(cat /sys/kernel/alucard_hotplug/hotplug_enable)" -eq "0" ]; then
 			echo "1" > /sys/kernel/alucard_hotplug/hotplug_enable;
 		fi;
-
-		if [ "$(ps | grep /system/bin/thermal-engine | wc -l)" -ge "1" ]; then
-			$BB renice -n -20 -p $(pgrep -f "/system/bin/thermal-engine");
+		if [ "$(cat /sys/devices/system/cpu/cpu0/rq-stats/hotplug_enable)" -eq "1" ]; then
+			echo "0" > /sys/devices/system/cpu/cpu0/rq-stats/hotplug_enable;
 		fi;
 
 		# tune-settings
@@ -261,34 +204,17 @@ CPU_HOTPLUG_TWEAKS()
 
 		log -p i -t "$FILE_NAME" "*** ALUCARD_HOTPLUG ***: enabled";
 	elif [ "$cpuhotplugging" -eq "4" ]; then
-
-		#disable MSM MPDecision
-		if [ "$(ps | grep "mpdecision" | wc -l)" -ge "1" ]; then
-			/system/bin/stop mpdecision
-		fi;
-
-		#disable msm_rq_stats
-		if [ "$(cat /sys/devices/system/cpu/cpu0/rq-stats/hotplug_disable)" -eq "0" ]; then
-			echo "1" > /sys/devices/system/cpu/cpu0/rq-stats/hotplug_disable;
-		fi;
-
-		#disable intelli_plug
 		if [ "$(cat /sys/kernel/intelli_plug/intelli_plug_active)" -eq "1" ]; then
 			echo "0" > /sys/kernel/intelli_plug/intelli_plug_active;
 		fi;
-
-		#disable alucard_hotplug
 		if [ "$(cat /sys/kernel/alucard_hotplug/hotplug_enable)" -eq "1" ]; then
 			echo "0" > /sys/kernel/alucard_hotplug/hotplug_enable;
 		fi;
-
-		#enable msm_hotplug
 		if [ "$(cat /sys/module/msm_hotplug/msm_enabled)" -eq "0" ]; then
 			echo "1" > /sys/module/msm_hotplug/msm_enabled;
 		fi;
-
-		if [ "$(ps | grep /system/bin/thermal-engine | wc -l)" -ge "1" ]; then
-			$BB renice -n -20 -p $(pgrep -f "/system/bin/thermal-engine");
+		if [ "$(cat /sys/devices/system/cpu/cpu0/rq-stats/hotplug_enable)" -eq "1" ]; then
+			echo "0" > /sys/devices/system/cpu/cpu0/rq-stats/hotplug_enable;
 		fi;
 
 		# tune-settings
@@ -302,10 +228,44 @@ CPU_HOTPLUG_TWEAKS()
 	fi;
 }
 
-apply_cpu="$2";
-if [ "$apply_cpu" == "update" ]; then
-	CPU_HOTPLUG_TWEAKS "tune";
-fi;
+FORCE_CPUS_ONOFF()
+{
+	local state="$1";
+
+	if [ "$state" == "online" ]; then
+		if [ "$(cat /sys/kernel/alucard_hotplug/hotplug_enable)" -eq "1" ]; then
+			echo "0" > /sys/kernel/alucard_hotplug/hotplug_enable;
+		fi;
+		if [ "$(cat /sys/module/msm_hotplug/msm_enabled)" -eq "1" ]; then
+			echo "0" > /sys/module/msm_hotplug/msm_enabled;
+		fi;
+		if [ "$(cat /sys/kernel/intelli_plug/intelli_plug_active)" -eq "1" ]; then
+			echo "0" > /sys/kernel/intelli_plug/intelli_plug_active;
+		fi;
+		if [ "$(cat /sys/devices/system/cpu/cpu0/rq-stats/hotplug_enable)" -eq "1" ]; then
+			echo "0" > /sys/devices/system/cpu/cpu0/rq-stats/hotplug_enable;
+		fi;
+		echo "1" > /sys/devices/system/cpu/cpu1/online;
+		echo "1" > /sys/devices/system/cpu/cpu2/online;
+		echo "1" > /sys/devices/system/cpu/cpu3/online;
+	elif [ "$state" == "offline" ]; then
+		if [ "$(cat /sys/kernel/alucard_hotplug/hotplug_enable)" -eq "1" ]; then
+			echo "0" > /sys/kernel/alucard_hotplug/hotplug_enable;
+		fi;
+		if [ "$(cat /sys/module/msm_hotplug/msm_enabled)" -eq "1" ]; then
+			echo "0" > /sys/module/msm_hotplug/msm_enabled;
+		fi;
+		if [ "$(cat /sys/kernel/intelli_plug/intelli_plug_active)" -eq "1" ]; then
+			echo "0" > /sys/kernel/intelli_plug/intelli_plug_active;
+		fi;
+		if [ "$(cat /sys/devices/system/cpu/cpu0/rq-stats/hotplug_enable)" -eq "1" ]; then
+			echo "0" > /sys/devices/system/cpu/cpu0/rq-stats/hotplug_enable;
+		fi;
+		echo "0" > /sys/devices/system/cpu/cpu1/online;
+		echo "0" > /sys/devices/system/cpu/cpu2/online;
+		echo "0" > /sys/devices/system/cpu/cpu3/online;
+	fi;
+}
 
 CPU_GOV_TWEAKS()
 {
@@ -318,6 +278,9 @@ CPU_GOV_TWEAKS()
 		
 		# tune-settings
 		if [ "$state" == "tune" ]; then
+			#put online all cpus for applying cpu governor parameters
+			FORCE_CPUS_ONOFF "online";
+
 			for i in $SYSTEM_GOVERNOR_PATH; do
 				local SYSTEM_GOVERNOR=$(cat "$i");
 				if [ "$(echo "$PREV_SYSTEM_GOVERNOR" | grep "$SYSTEM_GOVERNOR" | wc -l)" -lt "1" ]; then
@@ -493,6 +456,16 @@ CPU_GOV_TWEAKS()
 						io_is_busy_tmp="/dev/null";
 					fi;
 
+					local cpus_up_rate_tmp="/sys/devices/system/cpu/cpufreq/$SYSTEM_GOVERNOR/cpus_up_rate";
+					if [ ! -e $cpus_up_rate_tmp ]; then
+						cpus_up_rate_tmp="/dev/null";
+					fi;
+
+					local cpus_down_rate_tmp="/sys/devices/system/cpu/cpufreq/$SYSTEM_GOVERNOR/cpus_down_rate";
+					if [ ! -e $cpus_down_rate_tmp ]; then
+						cpus_down_rate_tmp="/dev/null";
+					fi;
+
 					echo "$sampling_rate" > $sampling_rate_tmp;
 					echo "$up_threshold" > $up_threshold_tmp;
 					echo "$up_threshold_at_min_freq" > $up_threshold_at_min_freq_tmp;
@@ -525,8 +498,13 @@ CPU_GOV_TWEAKS()
 					echo "$pump_dec_step_3" > $pump_dec_step_3_tmp;
 					echo "$pump_dec_step_4" > $pump_dec_step_4_tmp;
 					echo "$io_is_busy" > $io_is_busy_tmp;
+					echo "$cpus_up_rate" > $cpus_up_rate_tmp;
+					echo "$cpus_down_rate" > $cpus_down_rate_tmp;
 				fi;
 			done;
+
+			#restore cpu hotplug parameters
+			CPU_HOTPLUG_TWEAKS "tune";
 		fi;
 
 		log -p i -t "$FILE_NAME" "*** CPU_GOV_TWEAKS: $state ***: enabled";
@@ -542,132 +520,6 @@ if [ "$apply_cpu" == "update" ]; then
 	CPU_GOV_TWEAKS "tune";
 fi;
 
-# ==============================================================
-# GLOBAL-FUNCTIONS
-# ==============================================================
-
-WIFI_SET()
-{
-	local state="$1";
-
-	if [ "$state" == "off" ]; then
-		service call wifi 13 i32 0 > /dev/null;
-		svc wifi disable;
-		echo "1" > $WIFI_HELPER_AWAKE;
-	elif [ "$state" == "on" ]; then
-		service call wifi 13 i32 1 > /dev/null;
-		svc wifi enable;
-	fi;
-
-	log -p i -t "$FILE_NAME" "*** WIFI ***: $state";
-}
-
-WIFI()
-{
-	local state="$1";
-
-	if [ "$state" == "sleep" ]; then
-		if [ "$cortexbrain_auto_tweak_wifi" == "on" ]; then
-			if [ -e /sys/module/dhd/initstate ]; then
-				if [ "$cortexbrain_auto_tweak_wifi_sleep_delay" -eq "0" ]; then
-					WIFI_SET "off";
-				else
-					(
-						echo "0" > $WIFI_HELPER_TMP;
-						# screen time out but user want to keep it on and have wifi
-						sleep 10;
-						if [ `cat $WIFI_HELPER_TMP` -eq "0" ]; then
-							# user did not turned screen on, so keep waiting
-							local SLEEP_TIME_WIFI=$(( $cortexbrain_auto_tweak_wifi_sleep_delay - 10 ));
-							log -p i -t "$FILE_NAME" "*** DISABLE_WIFI $cortexbrain_auto_tweak_wifi_sleep_delay Sec Delay Mode ***";
-							sleep $SLEEP_TIME_WIFI;
-							if [ `cat $WIFI_HELPER_TMP` -eq "0" ]; then
-								# user left the screen off, then disable wifi
-								WIFI_SET "off";
-							fi;
-						fi;
-					)&
-				fi;
-			else
-				echo "0" > $WIFI_HELPER_AWAKE;
-			fi;
-		fi;
-	elif [ "$state" == "awake" ]; then
-		if [ "$cortexbrain_auto_tweak_wifi" == "on" ]; then
-			echo "1" > $WIFI_HELPER_TMP;
-			if [ `cat $WIFI_HELPER_AWAKE` -eq "1" ]; then
-				WIFI_SET "on";
-			fi;
-		fi;
-	fi;
-}
-
-MOBILE_DATA_SET()
-{
-	local state="$1";
-
-	if [ "$state" == "off" ]; then
-		svc data disable;
-		echo "1" > $MOBILE_HELPER_AWAKE;
-	elif [ "$state" == "on" ]; then
-		svc data enable;
-	fi;
-
-	log -p i -t "$FILE_NAME" "*** MOBILE DATA ***: $state";
-}
-
-MOBILE_DATA_STATE()
-{
-	DATA_STATE_CHECK=0;
-
-	if [ $DUMPSYS_STATE -eq "1" ]; then
-		local DATA_STATE=`echo "$TELE_DATA" | awk '/mDataConnectionState/ {print $1}'`;
-
-		if [ "$DATA_STATE" != "mDataConnectionState=0" ]; then
-			DATA_STATE_CHECK=1;
-		fi;
-	fi;
-}
-
-MOBILE_DATA()
-{
-	local state="$1";
-
-	if [ "$cortexbrain_auto_tweak_mobile" == "on" ]; then
-		if [ "$state" == "sleep" ]; then
-			MOBILE_DATA_STATE;
-			if [ "$DATA_STATE_CHECK" -eq "1" ]; then
-				if [ "$cortexbrain_auto_tweak_mobile_sleep_delay" -eq "0" ]; then
-					MOBILE_DATA_SET "off";
-				else
-					(
-						echo "0" > $MOBILE_HELPER_TMP;
-						# screen time out but user want to keep it on and have mobile data
-						sleep 10;
-						if [ `cat $MOBILE_HELPER_TMP` -eq "0" ]; then
-							# user did not turned screen on, so keep waiting
-							local SLEEP_TIME_DATA=$(( $cortexbrain_auto_tweak_mobile_sleep_delay - 10 ));
-							log -p i -t "$FILE_NAME" "*** DISABLE_MOBILE $cortexbrain_auto_tweak_mobile_sleep_delay Sec Delay Mode ***";
-							sleep $SLEEP_TIME_DATA;
-							if [ `cat $MOBILE_HELPER_TMP` -eq "0" ]; then
-								# user left the screen off, then disable mobile data
-								MOBILE_DATA_SET "off";
-							fi;
-						fi;
-					)&
-				fi;
-			else
-				echo "0" > $MOBILE_HELPER_AWAKE;
-			fi;
-		elif [ "$state" == "awake" ]; then
-			echo "1" > $MOBILE_HELPER_TMP;
-			if [ `cat $MOBILE_HELPER_AWAKE` -eq "1" ]; then
-				MOBILE_DATA_SET "on";
-			fi;
-		fi;
-	fi;
-}
-
 # mount sdcard and emmc, if usb mass storage is used
 MOUNT_SD_CARD()
 {
@@ -680,10 +532,7 @@ MOUNT_SD_CARD()
 	fi;
 }
 # run dual mount on boot
-apply_cpu="$2";
-if [ "$apply_cpu" != "update" ]; then
-	MOUNT_SD_CARD;
-fi;
+MOUNT_SD_CARD;
 
 # ==============================================================
 # KERNEL-TWEAKS
@@ -707,10 +556,7 @@ KERNEL_TWEAKS()
 		echo "memory_tweaks disabled";
 	fi;
 }
-apply_cpu="$2";
-if [ "$apply_cpu" != "update" ]; then
-	KERNEL_TWEAKS;
-fi;
+KERNEL_TWEAKS;
 
 # ==============================================================
 # SYSTEM-TWEAKS
@@ -725,10 +571,7 @@ SYSTEM_TWEAKS()
 		echo "system_tweaks disabled";
 	fi;
 }
-apply_cpu="$2";
-if [ "$apply_cpu" != "update" ]; then
-	SYSTEM_TWEAKS;
-fi;
+SYSTEM_TWEAKS;
 
 # ==============================================================
 # MEMORY-TWEAKS
@@ -751,10 +594,7 @@ MEMORY_TWEAKS()
 		return 0;
 	fi;
 }
-apply_cpu="$2";
-if [ "$apply_cpu" != "update" ]; then
-	MEMORY_TWEAKS;
-fi;
+MEMORY_TWEAKS;
 
 IO_SCHEDULER()
 {
@@ -797,6 +637,22 @@ IO_SCHEDULER()
 	fi;
 }
 
+WORKQUEUE_CONTROL()
+{
+	local state="$1";
+
+	if [ "$state" == "awake" ]; then
+		if [ "$power_efficient" == "on" ]; then
+			echo "1" > /sys/module/workqueue/parameters/power_efficient;
+		else
+			echo "0" > /sys/module/workqueue/parameters/power_efficient;
+		fi;
+	elif [ "$state" == "sleep" ]; then
+		echo "1" > /sys/module/workqueue/parameters/power_efficient;
+	fi;
+	log -p i -t "$FILE_NAME" "*** WORKQUEUE_CONTROL ***: done";
+}
+
 # ==============================================================
 # TWEAKS: if Screen-ON
 # ==============================================================
@@ -804,9 +660,8 @@ AWAKE_MODE()
 {
 	# not on call, check if was powerd by USB on sleep, or didnt sleep at all
 	if [ "$USB_POWER" -eq "0" ]; then
-		MOBILE_DATA "awake";
-		WIFI "awake";
 		IO_SCHEDULER "awake";
+		WORKQUEUE_CONTROL "awake";
 	else
 		# Was powered by USB, and half sleep
 		USB_POWER=0;
@@ -835,8 +690,7 @@ SLEEP_MODE()
 	# check if we powered by USB, if not sleep
 	if [ "$CHARGING" -eq "1" ]; then
 		IO_SCHEDULER "sleep";
-		WIFI "sleep";
-		MOBILE_DATA "sleep";
+		WORKQUEUE_CONTROL "sleep";
 
 		log -p i -t "$FILE_NAME" "*** SLEEP mode ***";
 	else
@@ -853,16 +707,18 @@ SLEEP_MODE()
 # Dynamic value do not change/delete
 cortexbrain_background_process=1;
 
-if [ "$cortexbrain_background_process" -eq "1" ] && [ `pgrep -f "cat /sys/power/wait_for_fb_sleep" | wc -l` -eq "0" ] && [ `pgrep -f "cat /sys/power/wait_for_fb_wake" | wc -l` -eq "0" ]; then
-	(while [ 1 ]; do
+if [ "$cortexbrain_background_process" -eq "1" ] && [ "$(pgrep -f "/sbin/ext/cortexbrain-tune.sh" | wc -l)" -eq "2" ]; then
+	(while true; do
+		while [ "$(cat /sys/power/autosleep)" != "off" ]; do
+			sleep "3";
+		done;
 		# AWAKE State. all system ON
-		cat /sys/power/wait_for_fb_wake > /dev/null 2>&1;
 		AWAKE_MODE;
-		sleep 2;
 
+		while [ "$(cat /sys/power/autosleep)" != "mem" ]; do
+			sleep "3";
+		done;
 		# SLEEP state. All system to power save
-		cat /sys/power/wait_for_fb_sleep > /dev/null 2>&1;
-		sleep 2;
 		SLEEP_MODE;
 	done &);
 else
