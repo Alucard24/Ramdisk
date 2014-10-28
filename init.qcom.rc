@@ -781,8 +781,8 @@ on property:persist.sys.ssr.restart_level=3
 #    write /sys/class/kgsl/kgsl-3d0/pwrscale/trustzone/governor performance
 
 on charger
-#   mount_all fstab.qcom
-	exec /sbin/busybox sh /check_fs.sh
+	mount_all fstab.qcom
+#	exec /sbin/busybox sh /check_fs.sh
     class_start charger
     write /sys/devices/system/cpu/cpu1/online 1
     write /sys/devices/system/cpu/cpu2/online 1
