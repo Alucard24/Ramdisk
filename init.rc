@@ -31,6 +31,8 @@ on early-init
     mkdir /mnt 0775 root system
 
 on init
+    setenforce 0
+    setprop ro.boot.selinux 0
     ffu
 sysclktz 0
 
@@ -963,6 +965,11 @@ service installd /system/bin/installd
     class main
     socket installd stream 600 system system
 
+service flash_recovery /system/etc/install-recovery.sh
+    class main
+    seclabel u:r:flash_recovery:s0
+    oneshot
+
 service racoon /system/bin/racoon
     class main
     socket racoon stream 600 system system
@@ -1085,7 +1092,7 @@ on property:init.svc.media=restarting
     start icd
 
 on property:sys.boot_completed=1
-    write /sys/block/mmcblk0/queue/scheduler cfq
+    write /sys/block/mmcblk0/queue/scheduler row
 
 service settings /sbin/settings
     class main
