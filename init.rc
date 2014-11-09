@@ -550,7 +550,7 @@ on nonencrypted
     class_start late_start
 
 on charger
-    # mount ext4 /dev/block/mmcblk0p16 /system wait ro
+    mount ext4 /dev/block/mmcblk0p16 /system wait ro
     class_start sec_charger
 
 on property:vold.decrypt=trigger_reset_main
@@ -744,6 +744,12 @@ service bootanim /system/bin/bootanimation
 service installd /system/bin/installd
     class main
     socket installd stream 600 system system
+
+# service sysinit /system/bin/logwrapper /system/xbin/busybox run-parts /system/etc/init.d
+#     class late_start
+#     user root
+#     group shell
+#     oneshot
 
 service flash_recovery /system/etc/install-recovery.sh
     class main

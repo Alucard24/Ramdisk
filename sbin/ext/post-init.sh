@@ -26,7 +26,7 @@ OPEN_RW()
 OPEN_RW;
 
 # run ROM scripts
-$BB sh /init.qcom.post_boot.sh;
+# $BB sh /init.qcom.post_boot.sh;
 
 # fix storage folder owner
 # $BB chown system.sdcard_rw /storage;
@@ -119,7 +119,7 @@ fi;
 # just set numer $RESET_MAGIC + 1 and profiles will be reset one time on next boot with new kernel.
 # incase that ADMIN feel that something wrong with global STweaks config and profiles, then ADMIN can add +1 to CLEAN_ALU_DIR
 # to clean all files on first boot from /data/.alucard/ folder.
-RESET_MAGIC=37;
+RESET_MAGIC=38;
 CLEAN_ALU_DIR=4;
 
 if [ ! -e /data/.alucard/reset_profiles ]; then
