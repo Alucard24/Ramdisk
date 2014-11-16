@@ -596,47 +596,6 @@ MEMORY_TWEAKS()
 }
 MEMORY_TWEAKS;
 
-IO_SCHEDULER()
-{
-	if [ "$cortexbrain_io" == "on" ]; then
-
-		local state="$1";
-		local sys_mmc0_scheduler_tmp="/sys/block/mmcblk0/queue/scheduler";
-		local sys_mmc1_scheduler_tmp="/sys/block/mmcblk1/queue/scheduler";
-		local tmp_scheduler=$(cat "$sys_mmc0_scheduler_tmp" | sed -n 's/^.*\[\([a-z|A-Z]*\)\].*/\1/p');
-		local tmp_scheduler_sd=$(cat "$sys_mmc1_scheduler_tmp" | sed -n 's/^.*\[\([a-z|A-Z]*\)\].*/\1/p');
-		local new_scheduler="";
-		local new_scheduler_sd="";
-
-		if [ ! -e "$sys_mmc1_scheduler_tmp" ]; then
-			sys_mmc1_scheduler_tmp="/dev/null";
-		fi;
-
-		if [ "$state" == "awake" ]; then
-			new_scheduler=$internal_iosched;
-			new_scheduler_sd=$sd_iosched;
-		elif [ "$state" == "sleep" ]; then
-			new_scheduler=$internal_iosched_sleep;
-			new_scheduler_sd=$sd_iosched_sleep;
-		fi;
-
-		if [ "$tmp_scheduler" != "$new_scheduler" ]; then
-			echo "$new_scheduler" > $sys_mmc0_scheduler_tmp;
-		fi;
-
-		log -p i -t "$FILE_NAME" "*** INTERNAL IO_SCHEDULER: $state - $new_scheduler ***: done";
-
-		if [ "$tmp_scheduler_sd" != "$new_scheduler_sd" ]; then
-			echo "$new_scheduler_sd" > $sys_mmc1_scheduler_tmp;
-		fi;
-
-		log -p i -t "$FILE_NAME" "*** EXTERNAL IO_SCHEDULER: $state - $new_scheduler_sd ***: done";
-
-	else
-		log -p i -t "$FILE_NAME" "*** Cortex IO_SCHEDULER: Disabled ***";
-	fi;
-}
-
 WORKQUEUE_CONTROL()
 {
 	local state="$1";
@@ -660,7 +619,6 @@ AWAKE_MODE()
 {
 	# not on call, check if was powerd by USB on sleep, or didnt sleep at all
 	if [ "$USB_POWER" -eq "0" ]; then
-		IO_SCHEDULER "awake";
 		WORKQUEUE_CONTROL "awake";
 	else
 		# Was powered by USB, and half sleep
@@ -689,7 +647,6 @@ SLEEP_MODE()
 
 	# check if we powered by USB, if not sleep
 	if [ "$CHARGING" -eq "1" ]; then
-		IO_SCHEDULER "sleep";
 		WORKQUEUE_CONTROL "sleep";
 
 		log -p i -t "$FILE_NAME" "*** SLEEP mode ***";
