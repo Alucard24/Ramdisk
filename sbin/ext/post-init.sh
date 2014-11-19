@@ -119,8 +119,8 @@ fi;
 # just set numer $RESET_MAGIC + 1 and profiles will be reset one time on next boot with new kernel.
 # incase that ADMIN feel that something wrong with global STweaks config and profiles, then ADMIN can add +1 to CLEAN_ALU_DIR
 # to clean all files on first boot from /data/.alucard/ folder.
-RESET_MAGIC=37;
-CLEAN_ALU_DIR=4;
+RESET_MAGIC=38;
+CLEAN_ALU_DIR=5;
 
 if [ ! -e /data/.alucard/reset_profiles ]; then
 	echo "$RESET_MAGIC" > /data/.alucard/reset_profiles;
