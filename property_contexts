@@ -62,6 +62,6 @@ ctl.                    u:object_r:ctl_default_prop:s0
 
 # NFC properties
 nfc.                    u:object_r:nfc_prop:s0
-#line 1 "device/qcom/common/sepolicy/common/property_contexts"
+#line 1 "device/qcom/sepolicy/common/property_contexts"
 wc_transport.              u:object_r:bluetooth_prop:s0
 usb_uicc.                  u:object_r:uicc_prop:s0
