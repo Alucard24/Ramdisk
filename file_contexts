@@ -258,6 +258,8 @@
 /system/bin/auditd        u:object_r:logd_exec:s0
 /data/misc/audit(/.*)?    u:object_r:auditd_log:s0
 
+/system/bin/sysinit       u:object_r:sysinit_exec:s0
+
 #############################
 # performance-related sysfs files (CM)
 /sys/kernel/mm/ksm(/.*)?       --          u:object_r:sysfs_writable:s0
@@ -317,6 +319,10 @@
 /dev/wwan_ioctl                                 u:object_r:ipa_dev:s0
 /dev/ipaNatTable                                u:object_r:ipa_dev:s0
 /dev/block/mmcblk0                              u:object_r:mmc_block_device:s0
+/dev/rmnet_ctrl.*                               u:object_r:rmnet_device:s0
+/dev/dpl_ctrl                                   u:object_r:rmnet_device:s0
+/dev/wcnss_ctrl                                 u:object_r:wcnss_device:s0
+/dev/wcnss_wlan                                 u:object_r:wcnss_device:s0
 
 ###################################
 # Dev socket nodes
@@ -411,7 +417,8 @@
 /system/bin/garden_app                          u:object_r:location_exec:s0
 /system/bin/gpsone_daemon                       u:object_r:location_exec:s0
 /system/vendor/bin/slim_ap_daemon               u:object_r:location_exec:s0
-
+/system/vendor/bin/qti                          u:object_r:qti_exec:s0
+/system/bin/wcnss_service                       u:object_r:wcnss_service_exec:s0
 
 ###################################
 # sysfs files
