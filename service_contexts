@@ -124,8 +124,6 @@ wifi                                      u:object_r:system_server_service:s0
 window                                    u:object_r:system_server_service:s0
 
 *                                         u:object_r:default_android_service:s0
-#line 1 "vendor/cm/sepolicy/service_contexts"
-edgegestureservice                        u:object_r:system_server_service:s0
 #line 1 "device/qcom/sepolicy/common/service_contexts"
 AtCmdFwd                                       u:object_r:atfwd_service:s0
 dpmservice                                     u:object_r:dpmservice:s0
@@ -134,3 +132,5 @@ cneservice                                     u:object_r:cne_service:s0
 vendor.qcom.PeripheralManager                  u:object_r:per_mgr_service:s0
 wbc_service                                    u:object_r:wbc_service:s0
 dun                                            u:object_r:dun_service:s0
+#line 1 "vendor/cm/sepolicy/service_contexts"
+edgegestureservice                        u:object_r:system_server_service:s0
