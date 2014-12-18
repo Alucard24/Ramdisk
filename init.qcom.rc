@@ -25,6 +25,7 @@
 # ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #
 
+import init.carrier.rc
 import init.target.rc
 import init.qcom.usb.rc
 
@@ -220,6 +221,7 @@ on post-fs-data
     chmod 0664 /data/.ant.info
 
     # for WIFI Version
+    restorecon /data/.wifiver.info
     write /data/.wifiver.info 0
     chown system root /data/.wifiver.info
     chmod 0666 /data/.wifiver.info
