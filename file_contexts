@@ -15,7 +15,6 @@
 /charger		u:object_r:rootfs:s0
 /init			u:object_r:rootfs:s0
 /sbin(/.*)?		u:object_r:rootfs:s0
-/sbin/busybox           u:object_r:rootfs:s0
 
 # Empty directories
 /lost\+found		u:object_r:rootfs:s0
@@ -152,7 +151,6 @@
 /system/bin/racoon	u:object_r:racoon_exec:s0
 /system/xbin/su		u:object_r:su_exec:s0
 /system/vendor/bin/gpsd u:object_r:gpsd_exec:s0
-/system/xbin/wget       u:object_r:rootfs:s0
 /system/bin/dnsmasq     u:object_r:dnsmasq_exec:s0
 /system/bin/hostapd     u:object_r:hostapd_exec:s0
 /system/bin/clatd	u:object_r:clatd_exec:s0
@@ -599,7 +597,13 @@
 
 /dev/bcm2079x									u:object_r:nfc_device:s0
 /dev/block/mmcblk0(.*)								u:object_r:mmc_block_device:s0
+/dev/btlock									u:object_r:bluetooth_dev:s0
 
+/efs/hw_offset									u:object_r:sensors_efs_file:s0
+/efs/gyro_cal_data								u:object_r:sensors_efs_file:s0
+/efs/prox_cal									u:object_r:sensors_efs_file:s0
+/efs/FactoryApp/baro_delta							u:object_r:sensors_efs_file:s0
+/efs/bluetooth/bt_addr								u:object_r:bluetooth_efs_file:s0
 /efs/wifi/.mac.info								u:object_r:wifi_efs_file:s0
 
 /sys/class/misc/gammacontrol/tuner						u:object_r:panel_dev:s0
@@ -630,7 +634,7 @@
 #############################
 # performance-related sysfs files (CM)
 /sys/devices/system/cpu.*/cpufreq(/.*)? --  u:object_r:sysfs_devices_system_cpu:s0
-/sys/block/mmcblk0/queue/scheduler  --    u:object_r:sysfs_writable:s0
+/sys/block/mmcblk.*/queue/scheduler  --    u:object_r:sysfs_devices_system_iosched:s0
 
 /data/hostapd(/.*)?         u:object_r:wifi_data_file:s0
 /data/misc/radio(/.*)?      u:object_r:radio_data_file:s0
