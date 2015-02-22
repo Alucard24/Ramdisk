@@ -35,6 +35,9 @@ USB_POWER=0;
 # INITIATE
 # ==============================================================
 
+# For CHARGER CHECK.
+echo "1" > /data/alu_cortex_sleep;
+
 # get values from profile
 PROFILE=$(cat $DATA_DIR/.active.profile);
 . "$DATA_DIR"/"$PROFILE".profile;
@@ -620,6 +623,7 @@ AWAKE_MODE()
 	# not on call, check if was powerd by USB on sleep, or didnt sleep at all
 	if [ "$USB_POWER" -eq "0" ]; then
 		WORKQUEUE_CONTROL "awake";
+		echo "0" > /data/alu_cortex_sleep;
 	else
 		# Was powered by USB, and half sleep
 		USB_POWER=0;
@@ -648,11 +652,12 @@ SLEEP_MODE()
 	# check if we powered by USB, if not sleep
 	if [ "$CHARGING" -eq "1" ]; then
 		WORKQUEUE_CONTROL "sleep";
-
+		echo "1" > /data/alu_cortex_sleep;
 		log -p i -t "$FILE_NAME" "*** SLEEP mode ***";
 	else
 		# Powered by USB
 		USB_POWER=1;
+		echo "0" > /data/alu_cortex_sleep;
 		log -p i -t "$FILE_NAME" "*** SLEEP mode: USB CABLE CONNECTED! No real sleep mode! ***";
 	fi;
 }
