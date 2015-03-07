@@ -668,6 +668,12 @@ on property:sys.boot_completed=1
 #    group system radio
 #    onrestart /system/bin/log -t RIL-ATFWD -p w "ATFWD daemon restarted"
 
+    # Set up KSM
+    write /sys/kernel/mm/ksm/deferred_timer 1
+    write /sys/kernel/mm/ksm/pages_to_scan 100
+    write /sys/kernel/mm/ksm/sleep_millisecs 500
+    write /sys/kernel/mm/ksm/run 1
+
 service hdmid /system/bin/hdmid
     class late_start
     socket hdmid stream 0660 root system graphics
@@ -710,15 +716,11 @@ service sdcard /system/bin/sdcard -u 1023 -g 1023 -l /data/media /mnt/shell/emul
     class late_start
     oneshot
 
-service fuse_sdcard0 /system/bin/sdcard -u 1023 -g 1023 -d /mnt/media_rw/sdcard0 /storage/sdcard0
+service fuse_sdcard1 /system/bin/sdcard -u 1023 -g 1023 -w 1023 /mnt/media_rw/sdcard1 /storage/sdcard1
     class late_start
     disabled
 
-service fuse_sdcard1 /system/bin/sdcard -u 1023 -g 1023 -d /mnt/media_rw/sdcard1 /storage/sdcard1
-    class late_start
-    disabled
-
-service fuse_usbdisk /system/bin/sdcard -u 1023 -g 1023 /mnt/media_rw/usbdisk /storage/usbdisk
+service fuse_usbdisk /system/bin/sdcard -u 1023 -g 1023 -w 1023 /mnt/media_rw/usbdisk /storage/usbdisk
     class late_start
     disabled
 
@@ -734,6 +736,7 @@ on property:vold.decrypt=trigger_restart_framework
 
 service charger /charger
     class charger
+    seclabel u:r:healthd:s0
 
 #Disable boot timeout for external modems.
 on property:persist.sys.mdm.timeout_disable=1
@@ -809,7 +812,7 @@ on property:persist.sys.ssr.restart_level=3
 #    write /sys/class/kgsl/kgsl-3d0/pwrscale/trustzone/governor performance
 
 on charger
-	mount_all fstab.qcom
+    mount_all fstab.qcom
     class_start charger
     write /sys/devices/system/cpu/cpu1/online 1
     write /sys/devices/system/cpu/cpu2/online 1

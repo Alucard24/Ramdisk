@@ -589,6 +589,7 @@
 /sys/class/android_usb/f_rmnet_smd_sdio/transport  --  u:object_r:sysfs_rmnet:s0
 /sys/devices/virtual/android_usb/android0/f_rmnet_smd_sdio/transport  --  u:object_r:sysfs_rmnet:s0
 #line 1 "device/samsung/jf-common/sepolicy/file_contexts"
+/data/.cid.info									u:object_r:wifi_data_file:s0
 /data/.psm.info									u:object_r:wifi_data_file:s0
 /data/.wifiver.info								u:object_r:wifi_data_file:s0
 /data/cam_socket(.*)								u:object_r:camera_socket:s0
@@ -618,6 +619,8 @@
 
 #line 1 "vendor/cm/sepolicy/file_contexts"
 /cache/dalvik-cache(/.*)? u:object_r:dalvikcache_data_file:s0
+
+/cache/recovery(/.*)?     u:object_r:recovery_cache_file:s0
 
 # Auditd is a logging daemon. Put it into logd's context
 /system/bin/auditd        u:object_r:logd_exec:s0
