@@ -73,6 +73,16 @@ on early-boot
     # set RLIMIT_MEMLOCK to 64MB
     setrlimit 8 67108864 67108864
     setprop qcom.audio.init complete
+    chown system graphics /sys/class/graphics/fb1/hpd
+    chown system graphics /sys/class/graphics/fb1/vendor_name
+    chown system graphics /sys/class/graphics/fb1/product_description
+    chown system system /sys/class/graphics/fb1/format_3d
+    chmod 0664 /sys/class/graphics/fb1/hpd
+    chmod 0664 /sys/class/graphics/fb1/vendor_name
+    chmod 0664 /sys/class/graphics/fb1/product_description
+    chmod 0664 /sys/class/graphics/fb1/format_3d
+    chmod 0664 /sys/class/graphics/fb1/video_mode
+    symlink /dev/graphics/fb1 /dev/graphics/hdmi
 
 on boot-pause
     exec system/bin/battery_charging
@@ -134,19 +144,6 @@ on boot
     # For setting tcp delayed ack
     chown system system /sys/kernel/ipv4/tcp_delack_seg
     chown system system /sys/kernel/ipv4/tcp_use_userconfig
-
-    #   Define TCP buffer sizes for various networks
-    #   ReadMin, ReadInitial, ReadMax, WriteMin, WriteInitial, WriteMax,
-    setprop net.tcp.buffersize.default 4096,87380,110208,4096,16384,110208
-    setprop net.tcp.buffersize.lte     524288,1048576,2097152,262144,524288,1048576
-    setprop net.tcp.buffersize.umts    4094,87380,110208,4096,16384,110208
-    setprop net.tcp.buffersize.hspa    4094,87380,1220608,4096,16384,1220608
-    setprop net.tcp.buffersize.hsupa   4094,87380,1220608,4096,16384,1220608
-    setprop net.tcp.buffersize.hsdpa   4094,87380,1220608,4096,16384,1220608
-    setprop net.tcp.buffersize.hspap   4094,87380,1220608,4096,16384,1220608
-    setprop net.tcp.buffersize.edge    4093,26280,35040,4096,16384,35040
-    setprop net.tcp.buffersize.gprs    4092,8760,11680,4096,8760,11680
-    setprop net.tcp.buffersize.evdo    4094,87380,262144,4096,16384,262144
 
     # Define TCP delayed ack settings for WiFi & LTE
     setprop net.tcp.delack.default     1
@@ -300,7 +297,7 @@ on post-fs-data
     mkdir /data/misc/location/mq 0770 gps gps
     mkdir /data/misc/location/xtwifi 0770 gps gps
     mkdir /data/misc/location/gpsone_d 0770 system gps
-    mkdir /data/misc/location/quipc 0770 gps system
+    mkdir /data/misc/location/quipc 0770 system gps
     mkdir /data/misc/location/gsiff 0770 gps gps
 
     #Create directory from IMS services
@@ -487,11 +484,6 @@ service iprenew_bt-pan /system/bin/dhcpcd -n
     class late_start
     disabled
     oneshot
-
-service loc_launcher /system/bin/loc_launcher
-    #loc_launcher will start as root and set its uid to gps
-    class late_start
-    group gps qcom_oncrpc inet net_raw qcom_diag net_admin wifi
 
 #for WiFi MFG(TestMode)
 service mfgloader /system/bin/mfgloader
