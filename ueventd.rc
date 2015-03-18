@@ -37,6 +37,7 @@ subsystem adf
 /dev/uhid                 0660   system     net_bt_stack
 /dev/uinput               0660   system     net_bt_stack
 /dev/alarm                0664   system     radio
+/dev/hidg*                0777   system     system
 /dev/rtc0                 0640   system     system
 /dev/tty0                 0660   root       system
 /dev/graphics/*           0660   system     graphics
