@@ -661,6 +661,11 @@
 			<spinnerItem name="Permissive" value="off"/> 
 		</spinner>
 
+		<spinner description="Google Play Services Battery Drain Workaround" name="Enable On Boot" action="generic_cortex /tmp/gpservicefix">
+			<spinnerItem name="Enabled" value="yes"/> 
+			<spinnerItem name="Disabled" value="no"/> 
+		</spinner>
+
 	</settingsPane>
 
 	<settingsPane description="WIFI Settings" name="WIFI">
