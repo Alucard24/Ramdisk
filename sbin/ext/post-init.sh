@@ -120,7 +120,7 @@ fi;
 # just set numer $RESET_MAGIC + 1 and profiles will be reset one time on next boot with new kernel.
 # incase that ADMIN feel that something wrong with global STweaks config and profiles, then ADMIN can add +1 to CLEAN_ALU_DIR
 # to clean all files on first boot from /data/.alucard/ folder.
-RESET_MAGIC=37;
+RESET_MAGIC=10;
 CLEAN_ALU_DIR=4;
 
 if [ ! -e /data/.alucard/reset_profiles ]; then
@@ -190,10 +190,11 @@ fi;
 
 if [ "$stweaks_boot_control" == "yes" ]; then
 	OPEN_RW;
+	# apply Synapse monitor
+	$BB sh /res/synapse/uci reset;
 	# apply STweaks settings
 	$BB sh /res/uci_boot.sh apply;
 	$BB mv /res/uci_boot.sh /res/uci.sh;
-	$BB sh /res/synapse/uci;
 fi;
 
 ######################################

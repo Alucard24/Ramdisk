@@ -86,13 +86,71 @@ IO_TWEAKS()
 		echo "45" > /proc/sys/fs/lease-break-time;
 
 		log -p i -t "$FILE_NAME" "*** IO_TWEAKS ***: enabled";
-
-		return 1;
 	else
 		return 0;
 	fi;
 }
 IO_TWEAKS;
+
+# ==============================================================
+# KERNEL-TWEAKS
+# ==============================================================
+KERNEL_TWEAKS()
+{
+	if [ "$cortexbrain_kernel_tweaks" == "on" ]; then
+		echo "0" > /proc/sys/vm/oom_kill_allocating_task;
+		echo "0" > /proc/sys/vm/panic_on_oom;
+		echo "30" > /proc/sys/kernel/panic;
+
+		log -p i -t "$FILE_NAME" "*** KERNEL_TWEAKS ***: enabled";
+	else
+		echo "kernel_tweaks disabled";
+	fi;
+	if [ "$cortexbrain_memory" == "on" ]; then
+		echo "32 32" > /proc/sys/vm/lowmem_reserve_ratio;
+
+		log -p i -t "$FILE_NAME" "*** MEMORY_TWEAKS ***: enabled";
+	else
+		echo "memory_tweaks disabled";
+	fi;
+}
+KERNEL_TWEAKS;
+
+# ==============================================================
+# SYSTEM-TWEAKS
+# ==============================================================
+SYSTEM_TWEAKS()
+{
+	if [ "$cortexbrain_system" == "on" ]; then
+		setprop windowsmgr.max_events_per_sec 240;
+
+		log -p i -t "$FILE_NAME" "*** SYSTEM_TWEAKS ***: enabled";
+	else
+		echo "system_tweaks disabled";
+	fi;
+}
+SYSTEM_TWEAKS;
+
+# ==============================================================
+# MEMORY-TWEAKS
+# ==============================================================
+MEMORY_TWEAKS()
+{
+	if [ "$cortexbrain_memory" == "on" ]; then
+		echo "$dirty_background_ratio" > /proc/sys/vm/dirty_background_ratio; # default: 10
+		echo "$dirty_ratio" > /proc/sys/vm/dirty_ratio; # default: 20
+		echo "4" > /proc/sys/vm/min_free_order_shift; # default: 4
+		echo "1" > /proc/sys/vm/overcommit_memory; # default: 1
+		echo "50" > /proc/sys/vm/overcommit_ratio; # default: 50
+		echo "3" > /proc/sys/vm/page-cluster; # default: 3
+		echo "4096" > /proc/sys/vm/min_free_kbytes;
+
+		log -p i -t "$FILE_NAME" "*** MEMORY_TWEAKS ***: enabled";
+	else
+		return 0;
+	fi;
+}
+MEMORY_TWEAKS;
 
 # ==============================================================
 # CPU-TWEAKS
@@ -511,8 +569,6 @@ CPU_GOV_TWEAKS()
 		fi;
 
 		log -p i -t "$FILE_NAME" "*** CPU_GOV_TWEAKS: $state ***: enabled";
-
-		return 1;
 	else
 		return 0;
 	fi;
@@ -536,68 +592,6 @@ MOUNT_SD_CARD()
 }
 # run dual mount on boot
 MOUNT_SD_CARD;
-
-# ==============================================================
-# KERNEL-TWEAKS
-# ==============================================================
-KERNEL_TWEAKS()
-{
-	if [ "$cortexbrain_kernel_tweaks" == "on" ]; then
-		echo "0" > /proc/sys/vm/oom_kill_allocating_task;
-		echo "0" > /proc/sys/vm/panic_on_oom;
-		echo "30" > /proc/sys/kernel/panic;
-
-		log -p i -t "$FILE_NAME" "*** KERNEL_TWEAKS ***: enabled";
-	else
-		echo "kernel_tweaks disabled";
-	fi;
-	if [ "$cortexbrain_memory" == "on" ]; then
-		echo "32 32" > /proc/sys/vm/lowmem_reserve_ratio;
-
-		log -p i -t "$FILE_NAME" "*** MEMORY_TWEAKS ***: enabled";
-	else
-		echo "memory_tweaks disabled";
-	fi;
-}
-KERNEL_TWEAKS;
-
-# ==============================================================
-# SYSTEM-TWEAKS
-# ==============================================================
-SYSTEM_TWEAKS()
-{
-	if [ "$cortexbrain_system" == "on" ]; then
-		setprop windowsmgr.max_events_per_sec 240;
-
-		log -p i -t "$FILE_NAME" "*** SYSTEM_TWEAKS ***: enabled";
-	else
-		echo "system_tweaks disabled";
-	fi;
-}
-SYSTEM_TWEAKS;
-
-# ==============================================================
-# MEMORY-TWEAKS
-# ==============================================================
-MEMORY_TWEAKS()
-{
-	if [ "$cortexbrain_memory" == "on" ]; then
-		echo "$dirty_background_ratio" > /proc/sys/vm/dirty_background_ratio; # default: 10
-		echo "$dirty_ratio" > /proc/sys/vm/dirty_ratio; # default: 20
-		echo "4" > /proc/sys/vm/min_free_order_shift; # default: 4
-		echo "1" > /proc/sys/vm/overcommit_memory; # default: 1
-		echo "50" > /proc/sys/vm/overcommit_ratio; # default: 50
-		echo "3" > /proc/sys/vm/page-cluster; # default: 3
-		echo "4096" > /proc/sys/vm/min_free_kbytes;
-
-		log -p i -t "$FILE_NAME" "*** MEMORY_TWEAKS ***: enabled";
-
-		return 1;
-	else
-		return 0;
-	fi;
-}
-MEMORY_TWEAKS;
 
 WORKQUEUE_CONTROL()
 {
@@ -690,25 +684,3 @@ else
 		echo "Cortex background process already running!";
 	fi;
 fi;
-
-# ==============================================================
-# Logic Explanations
-#
-# This script will manipulate all the system / cpu / battery behavior
-# Based on chosen STWEAKS profile+tweaks and based on SCREEN ON/OFF state.
-#
-# When User select battery/default profile all tuning will be toward battery save.
-# But user loose performance -20% and get more stable system and more battery left.
-#
-# When user select performance profile, tuning will be to max performance on screen ON.
-# When screen OFF all tuning switched to max power saving. as with battery profile,
-# So user gets max performance and max battery save but only on screen OFF.
-#
-# This script change governors and tuning for them on the fly.
-# Also switch on/off hotplug CPU core based on screen on/off.
-# This script reset battery stats when battery is 100% charged.
-# This script tune Network and System VM settings and ROM settings tuning.
-# This script changing default MOUNT options and I/O tweaks for all flash disks and ZRAM.
-#
-# TODO: add more description, explanations & default vaules ...
-#
