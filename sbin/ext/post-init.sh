@@ -265,6 +265,14 @@ fi;
 # Fix critical perms again after init.d mess
 CRITICAL_PERM_FIX;
 
+if [ "$stweaks_boot_control" == "yes" ]; then
+	$BB sh /sbin/ext/cortexbrain-tune.sh apply_cpu update > /dev/null;
+	# Load Custom Modules
+	MODULES_LOAD;
+fi;
+
+echo "0" > /cputemp/freq_limit_debug;
+
 # Temporary GooglePlayService fix.
 if [ "$gpservicefix" == "yes" ]; then
 	pm enable com.google.android.gms/.update.SystemUpdateActivity
@@ -279,15 +287,7 @@ if [ "$gpservicefix" == "yes" ]; then
 	pm enable com.google.android.gsf/.update.SystemUpdateService$SecretCodeReceiver
 fi;
 
-if [ "$stweaks_boot_control" == "yes" ]; then
-	$BB sh /sbin/ext/cortexbrain-tune.sh apply_cpu update > /dev/null;
-	# Load Custom Modules
-	MODULES_LOAD;
-fi;
-
-echo "0" > /cputemp/freq_limit_debug;
-
-sleep 35;
+sleep 40;
 
 # script finish here, so let me know when
 TIME_NOW=$(date)
