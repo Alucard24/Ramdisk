@@ -14,8 +14,8 @@ done;
 
 OPEN_RW()
 {
-	ROOTFS_MOUNT=$(mount | grep rootfs | cut -c26-27 | grep -c rw | wc -l)
-	SYSTEM_MOUNT=$(mount | grep system | cut -c69-70 | grep -c rw | wc -l)
+	ROOTFS_MOUNT=$(mount | grep rootfs | cut -c26-27 | grep -c rw)
+	SYSTEM_MOUNT=$(mount | grep system | cut -c69-70 | grep -c rw)
 	if [ "$ROOTFS_MOUNT" -eq "0" ]; then
 		$BB mount -o remount,rw /;
 	fi;
@@ -186,14 +186,16 @@ if [ "$(pgrep -f "cortexbrain-tune.sh" | wc -l)" -eq "0" ]; then
 fi;
 
 #	# Apps Install
+OPEN_RW;
 # $BB sh /sbin/ext/install.sh;
 
 if [ "$stweaks_boot_control" == "yes" ]; then
-	OPEN_RW;
 	# apply Synapse monitor
 	$BB sh /res/synapse/uci reset;
 	# apply STweaks settings
 	$BB sh /res/uci_boot.sh apply;
+	$BB mv /res/uci_boot.sh /res/uci.sh;
+else
 	$BB mv /res/uci_boot.sh /res/uci.sh;
 fi;
 
@@ -290,4 +292,6 @@ sleep 35;
 # script finish here, so let me know when
 TIME_NOW=$(date)
 echo "$TIME_NOW" > /data/boot_log_dm
+
+$BB mount -o remount,ro /system;
 
