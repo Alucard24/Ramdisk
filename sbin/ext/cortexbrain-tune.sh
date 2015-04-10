@@ -71,15 +71,7 @@ IO_TWEAKS()
 		echo "$intsd_read_ahead_kb" > /sys/block/mmcblk0/queue/read_ahead_kb;
 		echo "$intsd_read_ahead_kb" > /sys/block/mmcblk0/bdi/read_ahead_kb;
 
-		local SD=$(find /sys/block/mmcblk1*);
-		for i in $SD; do
-			echo "$sd_iosched" > "$i"/queue/scheduler;
-			echo "0" > "$i"/queue/rotational;
-			echo "0" > "$i"/queue/iostats;
-			echo "1" > "$i"/queue/rq_affinity;
-		done;
-
-		echo "64" > /sys/block/mmcblk1/queue/nr_requests; # default: 64
+		# echo "64" > /sys/block/mmcblk1/queue/nr_requests; # default: 64
 
 		echo "$extsd_read_ahead_kb" > /sys/block/mmcblk1/queue/read_ahead_kb;
 
