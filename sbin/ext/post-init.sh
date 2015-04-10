@@ -273,6 +273,8 @@ fi;
 
 echo "0" > /cputemp/freq_limit_debug;
 
+sleep 40;
+
 # Temporary GooglePlayService fix.
 if [ "$gpservicefix" == "yes" ]; then
 	pm enable com.google.android.gms/.update.SystemUpdateActivity
@@ -287,7 +289,11 @@ if [ "$gpservicefix" == "yes" ]; then
 	pm enable com.google.android.gsf/.update.SystemUpdateService$SecretCodeReceiver
 fi;
 
-sleep 40;
+# tune I/O controls to boost I/O performance
+echo "1" > /sys/devices/msm_sdcc.1/mmc_host/mmc0/mmc0:0001/block/mmcblk0/queue/nomerges;
+echo "1" > /sys/devices/msm_sdcc.1/mmc_host/mmc0/mmc0:0001/block/mmcblk0/mmcblk0rpmb/queue/nomerges;
+echo "2" > /sys/devices/msm_sdcc.1/mmc_host/mmc0/mmc0:0001/block/mmcblk0/queue/rq_affinity;
+echo "2" > /sys/devices/msm_sdcc.1/mmc_host/mmc0/mmc0:0001/block/mmcblk0/mmcblk0rpmb/queue/rq_affinity;
 
 # script finish here, so let me know when
 TIME_NOW=$(date)
