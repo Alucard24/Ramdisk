@@ -681,6 +681,13 @@ service ppd /system/bin/mm-pp-daemon
     socket pps stream 0660 system system graphics
     group system graphics
 
+service hostapd /system/bin/hostapd -dddd /data/hostapd/hostapd.conf
+    class late_start
+    user root
+    group root
+    oneshot
+    disabled
+
 service ds_fmc_appd /system/bin/ds_fmc_appd -p "rmnet0" -D
     class late_start
     group radio wifi inet
@@ -705,11 +712,15 @@ service sdcard /system/bin/sdcard -u 1023 -g 1023 -l /data/media /mnt/shell/emul
     class late_start
     oneshot
 
-service fuse_sdcard1 /system/bin/sdcard -u 1023 -g 1023 -w 1023 /mnt/media_rw/sdcard1 /storage/sdcard1
+service fuse_sdcard0 /system/bin/sdcard -u 1023 -g 1023 -d /mnt/media_rw/sdcard0 /storage/sdcard0
     class late_start
     disabled
 
-service fuse_usbdisk /system/bin/sdcard -u 1023 -g 1023 -w 1023 /mnt/media_rw/usbdisk /storage/usbdisk
+service fuse_sdcard1 /system/bin/sdcard -u 1023 -g 1023 -d /mnt/media_rw/sdcard1 /storage/sdcard1
+    class late_start
+    disabled
+
+service fuse_usbdisk /system/bin/sdcard -u 1023 -g 1023 /mnt/media_rw/usbdisk /storage/usbdisk
     class late_start
     disabled
 

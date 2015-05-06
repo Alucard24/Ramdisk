@@ -9,7 +9,7 @@ import /init.usb.rc
 import /init.${ro.hardware}.rc
 import /init.${ro.zygote}.rc
 import /init.trace.rc
-# Include CM's extra init file
+# Include SLIM's extra init file
 import /init.cm.rc
 
 
