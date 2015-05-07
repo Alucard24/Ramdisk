@@ -814,29 +814,5 @@
 
 </settingsTab>
 
-<settingsTab name="KERNEL THREAD and DONATION">
-
-	<settingsPane description="@XDA Kernel Thread and Donation" name="@XDA Thread-Donation">
-
-		<button description="Kernel thread on XDA" name="Kernel-Thread" action="push-actions/kernelxda" label="KERNEL-THREAD"/>
-
-		<button description="If you like my work, donate clicking here" name="Donation" action="push-actions/donation" label="DONATION"/>
-
-	</settingsPane>
-
-</settingsTab>
-
-<settingsTab name="BUG-REPORT">
-
-	<settingsPane description="Debug to SD-Card sdcard" name="Bug-Report">
-
-		<button description="Bug-Report for Kernel" name="Kernel-Bug" action="push-actions/debug_to_sd 1" label="KERNEL-BUG"/>
-
-		<button description="Bug-Report for Apps" name="App-Bug" action="push-actions/debug_to_sd 2" label="APP-BUG"/>
-
-	</settingsPane>
-
-</settingsTab>
-
 </settingsRoot>
 
