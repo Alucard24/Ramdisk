@@ -7,21 +7,10 @@ BB=/sbin/busybox
 # protect init from oom
 echo "-1000" > /proc/1/oom_score_adj;
 
-PIDOFINIT=$(pgrep -f "/sbin/ext/post-init.sh");
-for i in $PIDOFINIT; do
-	echo "-600" > /proc/"$i"/oom_score_adj;
-done;
-
 OPEN_RW()
 {
-	ROOTFS_MOUNT=$(mount | grep rootfs | cut -c26-27 | grep -c rw)
-	SYSTEM_MOUNT=$(mount | grep system | cut -c69-70 | grep -c rw)
-	if [ "$ROOTFS_MOUNT" -eq "0" ]; then
-		$BB mount -o remount,rw /;
-	fi;
-	if [ "$SYSTEM_MOUNT" -eq "0" ]; then
-		$BB mount -o remount,rw /system;
-	fi;
+	$BB mount -o remount,rw /;
+	$BB mount -o remount,rw /system;
 }
 OPEN_RW;
 
@@ -30,9 +19,6 @@ $BB sh /init.qcom.post_boot.sh;
 
 # fix storage folder owner
 # $BB chown system.sdcard_rw /storage;
-
-# Boot with ROW I/O Gov
-$BB echo "row" > /sys/block/mmcblk0/queue/scheduler;
 
 # clean old modules from /system and add new from ramdisk
 
@@ -59,8 +45,6 @@ fi;
 $BB rm -rf /cache/lost+found/* 2> /dev/null;
 $BB rm -rf /data/lost+found/* 2> /dev/null;
 $BB rm -rf /data/tombstones/* 2> /dev/null;
-
-OPEN_RW;
 
 CRITICAL_PERM_FIX()
 {
@@ -120,8 +104,8 @@ fi;
 # just set numer $RESET_MAGIC + 1 and profiles will be reset one time on next boot with new kernel.
 # incase that ADMIN feel that something wrong with global STweaks config and profiles, then ADMIN can add +1 to CLEAN_ALU_DIR
 # to clean all files on first boot from /data/.alucard/ folder.
-RESET_MAGIC=11;
-CLEAN_ALU_DIR=5;
+RESET_MAGIC=3;
+CLEAN_ALU_DIR=1;
 
 if [ ! -e /data/.alucard/reset_profiles ]; then
 	echo "$RESET_MAGIC" > /data/.alucard/reset_profiles;
@@ -185,9 +169,7 @@ if [ "$(pgrep -f "cortexbrain-tune.sh" | wc -l)" -eq "0" ]; then
 	$BB nohup $BB sh /sbin/ext/cortexbrain-tune.sh > /data/.alucard/cortex.txt &
 fi;
 
-#	# Apps Install
 OPEN_RW;
-# $BB sh /sbin/ext/install.sh;
 
 if [ "$stweaks_boot_control" == "yes" ]; then
 	# apply Synapse monitor
@@ -272,6 +254,13 @@ if [ "$stweaks_boot_control" == "yes" ]; then
 fi;
 
 echo "0" > /cputemp/freq_limit_debug;
+
+# Reload usb driver to open MTP and fix fast charge.
+CHARGER_STATE=$(cat /sys/class/power_supply/battery/batt_charging_source);
+if [ "$CHARGER_STATE" -gt "1" ]; then
+	echo "0" > /sys/class/android_usb/android0/enable;
+	echo "1" > /sys/class/android_usb/android0/enable;
+fi;
 
 sleep 40;
 

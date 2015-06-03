@@ -56,7 +56,7 @@ IO_TWEAKS()
 			echo "$internal_iosched" > "$i"/queue/scheduler;
 			echo "0" > "$i"/queue/rotational;
 			echo "0" > "$i"/queue/iostats;
-			echo "1" > "$i"/queue/rq_affinity;
+			echo "2" > "$i"/queue/rq_affinity;
 		done;
 
 		# This controls how many requests may be allocated
@@ -70,8 +70,6 @@ IO_TWEAKS()
 		# see https://github.com/Keff/samsung-kernel-msm7x30/commit/a53f8445ff8d947bd11a214ab42340cc6d998600#L1R627
 		echo "$intsd_read_ahead_kb" > /sys/block/mmcblk0/queue/read_ahead_kb;
 		echo "$intsd_read_ahead_kb" > /sys/block/mmcblk0/bdi/read_ahead_kb;
-
-		# echo "64" > /sys/block/mmcblk1/queue/nr_requests; # default: 64
 
 		echo "$extsd_read_ahead_kb" > /sys/block/mmcblk1/queue/read_ahead_kb;
 
@@ -129,13 +127,14 @@ SYSTEM_TWEAKS;
 MEMORY_TWEAKS()
 {
 	if [ "$cortexbrain_memory" == "on" ]; then
-		echo "$dirty_background_ratio" > /proc/sys/vm/dirty_background_ratio; # default: 10
-		echo "$dirty_ratio" > /proc/sys/vm/dirty_ratio; # default: 20
+		echo "$dirty_background_ratio" > /proc/sys/vm/dirty_background_ratio; # default: 20
+		echo "$dirty_ratio" > /proc/sys/vm/dirty_ratio; # default: 25
 		echo "4" > /proc/sys/vm/min_free_order_shift; # default: 4
 		echo "1" > /proc/sys/vm/overcommit_memory; # default: 1
 		echo "50" > /proc/sys/vm/overcommit_ratio; # default: 50
 		echo "3" > /proc/sys/vm/page-cluster; # default: 3
-		echo "4096" > /proc/sys/vm/min_free_kbytes;
+		echo "8192" > /proc/sys/vm/min_free_kbytes; # default: 2572
+		# mem calc here in pages. so 8192 x 4 = 32MB reserved for fast access be kernel and VM
 
 		log -p i -t "$FILE_NAME" "*** MEMORY_TWEAKS ***: enabled";
 	else
@@ -632,7 +631,7 @@ SLEEP_MODE()
 	if [ "$android_logger" -eq "3" ]; then
 		CHARGING=1;
 	else
-		CHARGING=`cat /sys/class/power_supply/battery/batt_charging_source`;
+		CHARGING=$(cat /sys/class/power_supply/battery/batt_charging_source);
 	fi;
 
 	# check if we powered by USB, if not sleep
