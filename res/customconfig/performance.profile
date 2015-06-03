@@ -126,6 +126,7 @@ sd_iosched=zen
 auto_oom=on
 oom_config_screen_on=default
 oom_config_screen_off=default
+highmem_is_dirtyable=off
 dirty_background_ratio=20
 dirty_ratio=25
 swappiness=60
