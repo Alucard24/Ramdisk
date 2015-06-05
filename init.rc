@@ -9,6 +9,8 @@ import /init.usb.rc
 import /init.${ro.hardware}.rc
 import /init.${ro.zygote}.rc
 import /init.trace.rc
+# Include AOSP extra init file
+import /init.aosp.rc
 
 on early-init
     # Set init and its forked children's oom_adj.
