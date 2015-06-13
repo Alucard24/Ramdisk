@@ -7,21 +7,10 @@ BB=/sbin/busybox
 # protect init from oom
 echo "-1000" > /proc/1/oom_score_adj;
 
-PIDOFINIT=$(pgrep -f "/sbin/ext/post-init.sh");
-for i in $PIDOFINIT; do
-	echo "-600" > /proc/"$i"/oom_score_adj;
-done;
-
 OPEN_RW()
 {
-	ROOTFS_MOUNT=$(mount | grep rootfs | cut -c26-27 | grep -c rw | wc -l)
-	SYSTEM_MOUNT=$(mount | grep system | cut -c69-70 | grep -c rw | wc -l)
-	if [ "$ROOTFS_MOUNT" -eq "0" ]; then
-		$BB mount -o remount,rw /;
-	fi;
-	if [ "$SYSTEM_MOUNT" -eq "0" ]; then
-		$BB mount -o remount,rw /system;
-	fi;
+	$BB mount -o remount,rw /;
+	$BB mount -o remount,rw /system;
 }
 OPEN_RW;
 
@@ -30,9 +19,6 @@ OPEN_RW;
 
 # fix storage folder owner
 # $BB chown system.sdcard_rw /storage;
-
-# Boot with ROW I/O Gov
-$BB echo "row" > /sys/block/mmcblk0/queue/scheduler;
 
 # clean old modules from /system and add new from ramdisk
 
@@ -59,8 +45,6 @@ fi;
 $BB rm -rf /cache/lost+found/* 2> /dev/null;
 $BB rm -rf /data/lost+found/* 2> /dev/null;
 $BB rm -rf /data/tombstones/* 2> /dev/null;
-
-OPEN_RW;
 
 CRITICAL_PERM_FIX()
 {
@@ -110,6 +94,7 @@ echo 450000000 > /sys/class/kgsl/kgsl-3d0/max_gpuclk
 # Fix ROM dev wrong sets.
 setprop persist.adb.notify 0
 setprop pm.sleep_mode 1
+setprop persist.service.btui.use_aptx 1
 
 if [ ! -d /data/.alucard ]; then
 	$BB mkdir -p /data/.alucard;
@@ -119,8 +104,8 @@ fi;
 # just set numer $RESET_MAGIC + 1 and profiles will be reset one time on next boot with new kernel.
 # incase that ADMIN feel that something wrong with global STweaks config and profiles, then ADMIN can add +1 to CLEAN_ALU_DIR
 # to clean all files on first boot from /data/.alucard/ folder.
-RESET_MAGIC=38;
-CLEAN_ALU_DIR=4;
+RESET_MAGIC=3;
+CLEAN_ALU_DIR=1;
 
 if [ ! -e /data/.alucard/reset_profiles ]; then
 	echo "$RESET_MAGIC" > /data/.alucard/reset_profiles;
@@ -178,19 +163,23 @@ $BB chmod -R 0777 /data/.alucard/;
 read_defaults;
 read_config;
 
-OPEN_RW;
-
-# apply STweaks settings
-if [ "$stweaks_boot_control" == "yes" ]; then
-	(
-		$BB sh /res/uci_boot.sh apply;
-		$BB mv /res/uci_boot.sh /res/uci.sh;
-		$BB sh /res/synapse/uci;
-	)&
+# start CORTEX by tree root, so it's will not be terminated.
+sed -i "s/cortexbrain_background_process=[0-1]*/cortexbrain_background_process=1/g" /sbin/ext/cortexbrain-tune.sh;
+if [ "$(pgrep -f "cortexbrain-tune.sh" | wc -l)" -eq "0" ]; then
+	$BB nohup $BB sh /sbin/ext/cortexbrain-tune.sh > /data/.alucard/cortex.txt &
 fi;
 
-#	# Apps Install
-# $BB sh /sbin/ext/install.sh;
+OPEN_RW;
+
+if [ "$stweaks_boot_control" == "yes" ]; then
+	# apply Synapse monitor
+	$BB sh /res/synapse/uci reset;
+	# apply STweaks settings
+	$BB sh /res/uci_boot.sh apply;
+	$BB mv /res/uci_boot.sh /res/uci.sh;
+else
+	$BB mv /res/uci_boot.sh /res/uci.sh;
+fi;
 
 ######################################
 # Loading Modules
@@ -242,15 +231,14 @@ $BB chmod 666 /sys/module/msm_thermal/core_control/*
 echo "0" > /sys/module/msm_thermal/core_control/core_control;
 
 # Start any init.d scripts that may be present in the rom or added by the user
+$BB chmod 755 /system/etc/init.d/*;
 if [ "$init_d" == "on" ]; then
-	$BB chmod 755 /system/etc/init.d/*;
 	(
-		$BB run-parts /system/etc/init.d/;
+		$BB nohup $BB run-parts /system/etc/init.d/ > /data/.alucard/init.d.txt &
 	)&
 else
 	if [ -e /system/etc/init.d/99SuperSUDaemon ]; then
-		$BB chmod 755 /system/etc/init.d/*;
-		$BB sh /system/etc/init.d/99SuperSUDaemon;
+		$BB nohup $BB sh /system/etc/init.d/99SuperSUDaemon > /data/.alucard/root.txt &
 	else
 		echo "no root script in init.d";
 	fi;
@@ -261,13 +249,44 @@ CRITICAL_PERM_FIX;
 
 if [ "$stweaks_boot_control" == "yes" ]; then
 	$BB sh /sbin/ext/cortexbrain-tune.sh apply_cpu update > /dev/null;
+	# Load Custom Modules
+	MODULES_LOAD;
 fi;
 
 echo "0" > /cputemp/freq_limit_debug;
 
-sleep 35;
+# Reload usb driver to open MTP and fix fast charge.
+CHARGER_STATE=$(cat /sys/class/power_supply/battery/batt_charging_source);
+if [ "$CHARGER_STATE" -gt "1" ]; then
+	echo "0" > /sys/class/android_usb/android0/enable;
+	echo "1" > /sys/class/android_usb/android0/enable;
+fi;
+
+sleep 40;
+
+# Temporary GooglePlayService fix.
+if [ "$gpservicefix" == "yes" ]; then
+	pm enable com.google.android.gms/.update.SystemUpdateActivity
+	pm enable com.google.android.gms/.update.SystemUpdateService
+	pm enable com.google.android.gms/.update.SystemUpdateService$ActiveReceiver
+	pm enable com.google.android.gms/.update.SystemUpdateService$Receiver
+	pm enable com.google.android.gms/.update.SystemUpdateService$SecretCodeReceiver
+	pm enable com.google.android.gsf/.update.SystemUpdateActivity
+	pm enable com.google.android.gsf/.update.SystemUpdatePanoActivity
+	pm enable com.google.android.gsf/.update.SystemUpdateService
+	pm enable com.google.android.gsf/.update.SystemUpdateService$Receiver
+	pm enable com.google.android.gsf/.update.SystemUpdateService$SecretCodeReceiver
+fi;
+
+# tune I/O controls to boost I/O performance
+echo "1" > /sys/devices/msm_sdcc.1/mmc_host/mmc0/mmc0:0001/block/mmcblk0/queue/nomerges;
+echo "1" > /sys/devices/msm_sdcc.1/mmc_host/mmc0/mmc0:0001/block/mmcblk0/mmcblk0rpmb/queue/nomerges;
+echo "2" > /sys/devices/msm_sdcc.1/mmc_host/mmc0/mmc0:0001/block/mmcblk0/queue/rq_affinity;
+echo "2" > /sys/devices/msm_sdcc.1/mmc_host/mmc0/mmc0:0001/block/mmcblk0/mmcblk0rpmb/queue/rq_affinity;
 
 # script finish here, so let me know when
 TIME_NOW=$(date)
 echo "$TIME_NOW" > /data/boot_log_dm
+
+$BB mount -o remount,ro /system;
 

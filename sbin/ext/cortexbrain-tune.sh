@@ -16,7 +16,7 @@
 BB=/sbin/busybox
 
 # change mode for /tmp/
-ROOTFS_MOUNT=$(mount | grep rootfs | cut -c26-27 | grep -c rw | wc -l)
+ROOTFS_MOUNT=$(mount | grep rootfs | cut -c26-27 | grep -c rw)
 if [ "$ROOTFS_MOUNT" -eq "0" ]; then
 	mount -o remount,rw /;
 fi;
@@ -34,6 +34,9 @@ USB_POWER=0;
 # ==============================================================
 # INITIATE
 # ==============================================================
+
+# For CHARGER CHECK.
+echo "1" > /data/alu_cortex_sleep;
 
 # get values from profile
 PROFILE=$(cat $DATA_DIR/.active.profile);
@@ -53,7 +56,7 @@ IO_TWEAKS()
 			echo "$internal_iosched" > "$i"/queue/scheduler;
 			echo "0" > "$i"/queue/rotational;
 			echo "0" > "$i"/queue/iostats;
-			echo "1" > "$i"/queue/rq_affinity;
+			echo "2" > "$i"/queue/rq_affinity;
 		done;
 
 		# This controls how many requests may be allocated
@@ -68,28 +71,77 @@ IO_TWEAKS()
 		echo "$intsd_read_ahead_kb" > /sys/block/mmcblk0/queue/read_ahead_kb;
 		echo "$intsd_read_ahead_kb" > /sys/block/mmcblk0/bdi/read_ahead_kb;
 
-		local SD=$(find /sys/block/mmcblk1*);
-		for i in $SD; do
-			echo "$sd_iosched" > "$i"/queue/scheduler;
-			echo "0" > "$i"/queue/rotational;
-			echo "0" > "$i"/queue/iostats;
-			echo "1" > "$i"/queue/rq_affinity;
-		done;
-
-		echo "64" > /sys/block/mmcblk1/queue/nr_requests; # default: 64
-
 		echo "$extsd_read_ahead_kb" > /sys/block/mmcblk1/queue/read_ahead_kb;
 
 		echo "45" > /proc/sys/fs/lease-break-time;
 
 		log -p i -t "$FILE_NAME" "*** IO_TWEAKS ***: enabled";
-
-		return 1;
 	else
 		return 0;
 	fi;
 }
 IO_TWEAKS;
+
+# ==============================================================
+# KERNEL-TWEAKS
+# ==============================================================
+KERNEL_TWEAKS()
+{
+	if [ "$cortexbrain_kernel_tweaks" == "on" ]; then
+		echo "0" > /proc/sys/vm/oom_kill_allocating_task;
+		echo "0" > /proc/sys/vm/panic_on_oom;
+		echo "30" > /proc/sys/kernel/panic;
+
+		log -p i -t "$FILE_NAME" "*** KERNEL_TWEAKS ***: enabled";
+	else
+		echo "kernel_tweaks disabled";
+	fi;
+	if [ "$cortexbrain_memory" == "on" ]; then
+		echo "32 32" > /proc/sys/vm/lowmem_reserve_ratio;
+
+		log -p i -t "$FILE_NAME" "*** MEMORY_TWEAKS ***: enabled";
+	else
+		echo "memory_tweaks disabled";
+	fi;
+}
+KERNEL_TWEAKS;
+
+# ==============================================================
+# SYSTEM-TWEAKS
+# ==============================================================
+SYSTEM_TWEAKS()
+{
+	if [ "$cortexbrain_system" == "on" ]; then
+		setprop windowsmgr.max_events_per_sec 240;
+
+		log -p i -t "$FILE_NAME" "*** SYSTEM_TWEAKS ***: enabled";
+	else
+		echo "system_tweaks disabled";
+	fi;
+}
+SYSTEM_TWEAKS;
+
+# ==============================================================
+# MEMORY-TWEAKS
+# ==============================================================
+MEMORY_TWEAKS()
+{
+	if [ "$cortexbrain_memory" == "on" ]; then
+		echo "$dirty_background_ratio" > /proc/sys/vm/dirty_background_ratio; # default: 20
+		echo "$dirty_ratio" > /proc/sys/vm/dirty_ratio; # default: 25
+		echo "4" > /proc/sys/vm/min_free_order_shift; # default: 4
+		echo "1" > /proc/sys/vm/overcommit_memory; # default: 1
+		echo "50" > /proc/sys/vm/overcommit_ratio; # default: 50
+		echo "3" > /proc/sys/vm/page-cluster; # default: 3
+		echo "8192" > /proc/sys/vm/min_free_kbytes; # default: 2572
+		# mem calc here in pages. so 8192 x 4 = 32MB reserved for fast access be kernel and VM
+
+		log -p i -t "$FILE_NAME" "*** MEMORY_TWEAKS ***: enabled";
+	else
+		return 0;
+	fi;
+}
+MEMORY_TWEAKS;
 
 # ==============================================================
 # CPU-TWEAKS
@@ -508,8 +560,6 @@ CPU_GOV_TWEAKS()
 		fi;
 
 		log -p i -t "$FILE_NAME" "*** CPU_GOV_TWEAKS: $state ***: enabled";
-
-		return 1;
 	else
 		return 0;
 	fi;
@@ -533,68 +583,6 @@ MOUNT_SD_CARD()
 }
 # run dual mount on boot
 MOUNT_SD_CARD;
-
-# ==============================================================
-# KERNEL-TWEAKS
-# ==============================================================
-KERNEL_TWEAKS()
-{
-	if [ "$cortexbrain_kernel_tweaks" == "on" ]; then
-		echo "0" > /proc/sys/vm/oom_kill_allocating_task;
-		echo "0" > /proc/sys/vm/panic_on_oom;
-		echo "30" > /proc/sys/kernel/panic;
-
-		log -p i -t "$FILE_NAME" "*** KERNEL_TWEAKS ***: enabled";
-	else
-		echo "kernel_tweaks disabled";
-	fi;
-	if [ "$cortexbrain_memory" == "on" ]; then
-		echo "32 32" > /proc/sys/vm/lowmem_reserve_ratio;
-
-		log -p i -t "$FILE_NAME" "*** MEMORY_TWEAKS ***: enabled";
-	else
-		echo "memory_tweaks disabled";
-	fi;
-}
-KERNEL_TWEAKS;
-
-# ==============================================================
-# SYSTEM-TWEAKS
-# ==============================================================
-SYSTEM_TWEAKS()
-{
-	if [ "$cortexbrain_system" == "on" ]; then
-		setprop windowsmgr.max_events_per_sec 240;
-
-		log -p i -t "$FILE_NAME" "*** SYSTEM_TWEAKS ***: enabled";
-	else
-		echo "system_tweaks disabled";
-	fi;
-}
-SYSTEM_TWEAKS;
-
-# ==============================================================
-# MEMORY-TWEAKS
-# ==============================================================
-MEMORY_TWEAKS()
-{
-	if [ "$cortexbrain_memory" == "on" ]; then
-		echo "$dirty_background_ratio" > /proc/sys/vm/dirty_background_ratio; # default: 10
-		echo "$dirty_ratio" > /proc/sys/vm/dirty_ratio; # default: 20
-		echo "4" > /proc/sys/vm/min_free_order_shift; # default: 4
-		echo "1" > /proc/sys/vm/overcommit_memory; # default: 1
-		echo "50" > /proc/sys/vm/overcommit_ratio; # default: 50
-		echo "3" > /proc/sys/vm/page-cluster; # default: 3
-		echo "4096" > /proc/sys/vm/min_free_kbytes;
-
-		log -p i -t "$FILE_NAME" "*** MEMORY_TWEAKS ***: enabled";
-
-		return 1;
-	else
-		return 0;
-	fi;
-}
-MEMORY_TWEAKS;
 
 WORKQUEUE_CONTROL()
 {
@@ -620,6 +608,7 @@ AWAKE_MODE()
 	# not on call, check if was powerd by USB on sleep, or didnt sleep at all
 	if [ "$USB_POWER" -eq "0" ]; then
 		WORKQUEUE_CONTROL "awake";
+		echo "0" > /data/alu_cortex_sleep;
 	else
 		# Was powered by USB, and half sleep
 		USB_POWER=0;
@@ -642,17 +631,18 @@ SLEEP_MODE()
 	if [ "$android_logger" -eq "3" ]; then
 		CHARGING=1;
 	else
-		CHARGING=`cat /sys/class/power_supply/battery/batt_charging_source`;
+		CHARGING=$(cat /sys/class/power_supply/battery/batt_charging_source);
 	fi;
 
 	# check if we powered by USB, if not sleep
 	if [ "$CHARGING" -eq "1" ]; then
 		WORKQUEUE_CONTROL "sleep";
-
+		echo "1" > /data/alu_cortex_sleep;
 		log -p i -t "$FILE_NAME" "*** SLEEP mode ***";
 	else
 		# Powered by USB
 		USB_POWER=1;
+		echo "0" > /data/alu_cortex_sleep;
 		log -p i -t "$FILE_NAME" "*** SLEEP mode: USB CABLE CONNECTED! No real sleep mode! ***";
 	fi;
 }
@@ -685,25 +675,3 @@ else
 		echo "Cortex background process already running!";
 	fi;
 fi;
-
-# ==============================================================
-# Logic Explanations
-#
-# This script will manipulate all the system / cpu / battery behavior
-# Based on chosen STWEAKS profile+tweaks and based on SCREEN ON/OFF state.
-#
-# When User select battery/default profile all tuning will be toward battery save.
-# But user loose performance -20% and get more stable system and more battery left.
-#
-# When user select performance profile, tuning will be to max performance on screen ON.
-# When screen OFF all tuning switched to max power saving. as with battery profile,
-# So user gets max performance and max battery save but only on screen OFF.
-#
-# This script change governors and tuning for them on the fly.
-# Also switch on/off hotplug CPU core based on screen on/off.
-# This script reset battery stats when battery is 100% charged.
-# This script tune Network and System VM settings and ROM settings tuning.
-# This script changing default MOUNT options and I/O tweaks for all flash disks and ZRAM.
-#
-# TODO: add more description, explanations & default vaules ...
-#

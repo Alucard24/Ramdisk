@@ -5,8 +5,28 @@ BB=/sbin/busybox
 $BB mount -o remount,rw /system;
 $BB mount -o remount,rw /;
 
+CLEAN_BUSYBOX()
+{
+	for f in *; do
+		case "$($BB readlink "$f")" in *usybox*)
+			$BB rm "$f"
+		;;
+		esac
+	done;
+}
+
+# Cleanup the old busybox symlinks
+cd /system/xbin/;
+CLEAN_BUSYBOX;
+
+cd /system/bin/;
+CLEAN_BUSYBOX;
+
+cd /;
+
 # Install latest busybox to ROM
 $BB cp /sbin/busybox /system/xbin/;
+
 /system/xbin/busybox --install -s /system/xbin/
 if [ -e /system/xbin/wget ]; then
 	rm /system/xbin/wget;

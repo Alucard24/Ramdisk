@@ -217,7 +217,7 @@
 
 		<seekBar description="Number of samples to evaluate cpus frequency scaling up when current cpu frequency is greater than freq_responsiveness. (Default: 1)" name="cpus_up_rate" action="generic_cortex /tmp/cpus_up_rate" unit="int" min="1" reversed="false" step="1" max="5"/>
 
-		<seekBar description="Number of samples to evaluate cpu frequency scaling down when current cpu frequency is greater than freq_responsiveness. (Default: 2)" name="cpus_down_rate" action="generic_cortex /tmp/cpus_down_rate" unit="int" min="1" reversed="false" step="1" max="5"/>
+		<seekBar description="Number of samples to evaluate cpu frequency scaling down when current cpu frequency is greater than freq_responsiveness. (Default: 1)" name="cpus_down_rate" action="generic_cortex /tmp/cpus_down_rate" unit="int" min="1" reversed="false" step="1" max="5"/>
 
 	</settingsPane>
 
@@ -258,23 +258,23 @@
 
 		<seekBar description="Down threshold frequency to turn second core Off, when some other conditions is also met. ie If (maximum frequency less than hotplug_freq 2 0) Hotplug OUT Second Core. Lower value corresponds to delay in turning off second core. (Default: 810.000 kHz)" name="hotplug_freq_2_0" action="genericfreq /sys/kernel/alucard_hotplug/hotplug_freq_2_0" unit="kHz" min="378000" reversed="false" step="108000" max="1890000"/>
 
-		<seekBar description="Up threshold frequency to turn third core On, when some other conditions is also met. ie If (minimum frequency greater than or equal to hotplug_freq 2 1) Hotplug IN Third Core. Higher value corresponds to delay in turning on Third core. (Default: 1566.000 kHz)" name="hotplug_freq_2_1" action="genericfreq /sys/kernel/alucard_hotplug/hotplug_freq_2_1" unit="kHz" min="378000" reversed="false" step="108000" max="1890000"/>
+		<seekBar description="Up threshold frequency to turn third core On, when some other conditions is also met. ie If (minimum frequency greater than or equal to hotplug_freq 2 1) Hotplug IN Third Core. Higher value corresponds to delay in turning on Third core. (Default: 1242.000 kHz)" name="hotplug_freq_2_1" action="genericfreq /sys/kernel/alucard_hotplug/hotplug_freq_2_1" unit="kHz" min="378000" reversed="false" step="108000" max="1890000"/>
 
-		<seekBar description="Down threshold frequency to turn third core Off, when some other conditions is also met. ie If (maximum frequency less than hotplug_freq 3 0) Hotplug OUT Third Core. Lower value corresponds to delay in turning off third core. (Default: 918.000 kHz)" name="hotplug_freq_3_0" action="genericfreq /sys/kernel/alucard_hotplug/hotplug_freq_3_0" unit="kHz" min="378000" reversed="false" step="108000" max="1890000"/>
+		<seekBar description="Down threshold frequency to turn third core Off, when some other conditions is also met. ie If (maximum frequency less than hotplug_freq 3 0) Hotplug OUT Third Core. Lower value corresponds to delay in turning off third core. (Default: 810.000 kHz)" name="hotplug_freq_3_0" action="genericfreq /sys/kernel/alucard_hotplug/hotplug_freq_3_0" unit="kHz" min="378000" reversed="false" step="108000" max="1890000"/>
 
-		<seekBar description="Up threshold frequency to turn fourth core On, when some other conditions is also met. ie If (minimum frequency greater than or equal to hotplug_freq 3 1) Hotplug IN Fourth Core. Higher value corresponds to delay in turning on Fourth core. (Default: 1566.000 kHz)" name="hotplug_freq_3_1" action="genericfreq /sys/kernel/alucard_hotplug/hotplug_freq_3_1" unit="kHz" min="378000" reversed="false" step="108000" max="1890000"/>
+		<seekBar description="Up threshold frequency to turn fourth core On, when some other conditions is also met. ie If (minimum frequency greater than or equal to hotplug_freq 3 1) Hotplug IN Fourth Core. Higher value corresponds to delay in turning on Fourth core. (Default: 1242.000 kHz)" name="hotplug_freq_3_1" action="genericfreq /sys/kernel/alucard_hotplug/hotplug_freq_3_1" unit="kHz" min="378000" reversed="false" step="108000" max="1890000"/>
 
-		<seekBar description="Down threshold frequency to turn fourth core Off, when some other conditions is also met. ie If (maximum frequency less than hotplug_freq 4 0) Hotplug OUT Fourth Core. Lower value corresponds to delay in turning off fourth core. (Default: 918.000 kHz)" name="hotplug_freq_4_0" action="genericfreq /sys/kernel/alucard_hotplug/hotplug_freq_4_0" unit="kHz" min="378000" reversed="false" step="108000" max="1890000"/>
+		<seekBar description="Down threshold frequency to turn fourth core Off, when some other conditions is also met. ie If (maximum frequency less than hotplug_freq 4 0) Hotplug OUT Fourth Core. Lower value corresponds to delay in turning off fourth core. (Default: 810.000 kHz)" name="hotplug_freq_4_0" action="genericfreq /sys/kernel/alucard_hotplug/hotplug_freq_4_0" unit="kHz" min="378000" reversed="false" step="108000" max="1890000"/>
 
 		<seekBar description="The CPU load at which governor scales CPU up. Current Load equal or greater than up_load: CPU Hotplug IN. Value corresponding to 101 causes not HOTPLUG IN. (Default: 60%)" name="hotplug_load_1_1" action="generic /sys/kernel/alucard_hotplug/hotplug_load_1_1" unit="%" min="10" reversed="false" step="1" max="101"/>
 
-		<seekBar description="The CPU load at which governor scales CPU down. Current Load less than down_load and CPU online greater than 1: CPU Hotplug OUT. Value corresponding to 101 causes immediately HOTPLUG OUT. (Default: 30%)" name="hotplug_load_2_0" action="generic /sys/kernel/alucard_hotplug/hotplug_load_2_0" unit="%" min="0" reversed="false" step="1" max="101"/>
+		<seekBar description="The CPU load at which governor scales CPU down. Current Load less than down_load and CPU online greater than 1: CPU Hotplug OUT. Value corresponding to 101 causes immediately HOTPLUG OUT. (Default: 20%)" name="hotplug_load_2_0" action="generic /sys/kernel/alucard_hotplug/hotplug_load_2_0" unit="%" min="0" reversed="false" step="1" max="101"/>
 
-		<seekBar description="The CPU load at which governor scales CPU up. Current Load equal or greater than up_load: CPU Hotplug IN. Value corresponding to 101 causes not HOTPLUG IN. (Default: 65%)" name="hotplug_load_2_1" action="generic /sys/kernel/alucard_hotplug/hotplug_load_2_1" unit="%" min="10" reversed="false" step="1" max="101"/>
+		<seekBar description="The CPU load at which governor scales CPU up. Current Load equal or greater than up_load: CPU Hotplug IN. Value corresponding to 101 causes not HOTPLUG IN. (Default: 60%)" name="hotplug_load_2_1" action="generic /sys/kernel/alucard_hotplug/hotplug_load_2_1" unit="%" min="10" reversed="false" step="1" max="101"/>
 
-		<seekBar description="The CPU load at which governor scales CPU down. Current Load less than down_load and CPU online greater than 1: CPU Hotplug OUT. Value corresponding to 101 causes immediately HOTPLUG OUT. (Default: 30%)" name="hotplug_load_3_0" action="generic /sys/kernel/alucard_hotplug/hotplug_load_3_0" unit="%" min="0" reversed="false" step="1" max="101"/>
+		<seekBar description="The CPU load at which governor scales CPU down. Current Load less than down_load and CPU online greater than 1: CPU Hotplug OUT. Value corresponding to 101 causes immediately HOTPLUG OUT. (Default: 20%)" name="hotplug_load_3_0" action="generic /sys/kernel/alucard_hotplug/hotplug_load_3_0" unit="%" min="0" reversed="false" step="1" max="101"/>
 
-		<seekBar description="The CPU load at which governor scales CPU up. Current Load equal or greater than up_load: CPU Hotplug IN. Value corresponding to 101 causes not HOTPLUG IN. (Default: 65%)" name="hotplug_load_3_1" action="generic /sys/kernel/alucard_hotplug/hotplug_load_3_1" unit="%" min="10" reversed="false" step="1" max="101"/>
+		<seekBar description="The CPU load at which governor scales CPU up. Current Load equal or greater than up_load: CPU Hotplug IN. Value corresponding to 101 causes not HOTPLUG IN. (Default: 60%)" name="hotplug_load_3_1" action="generic /sys/kernel/alucard_hotplug/hotplug_load_3_1" unit="%" min="10" reversed="false" step="1" max="101"/>
 
 		<seekBar description="The CPU load at which governor scales CPU down. Current Load less than down_load and CPU online greater than 1: CPU Hotplug OUT. Value corresponding to 101 causes immediately HOTPLUG OUT. (Default: 20%)" name="hotplug_load_4_0" action="generic /sys/kernel/alucard_hotplug/hotplug_load_4_0" unit="%" min="0" reversed="false" step="1" max="101"/>
 
@@ -362,7 +362,6 @@
 	<settingsPane description="Tune GPU" name="Gpu Tuning">
 
 		<spinner description="This will set GPU governor. (Default: ondemand)" name="GPU Governor" action="generic /sys/devices/platform/kgsl-3d0.0/kgsl/kgsl-3d0/pwrscale/trustzone/governor">
-			<spinnerItem name="conservative" value="conservative"/>
 			<spinnerItem name="ondemand" value="ondemand"/>
 			<spinnerItem name="performance" value="performance"/>
 			<spinnerItem name="simple" value="simple"/> 
@@ -402,15 +401,6 @@
       <seekBar description="GPU Voltage for the third (highest) step" 
 		name="GPU Voltage Level3. (Default: 1150000)" action="gpu-voltage 3" unit="µV" min="1050000" reversed="false" step="25000" max="1200000"/>
 
-    </settingsPane>
-
-	<settingsPane description="RGB colors Control. Please turn the SCREEN OFF and ON for the settings to be applied !" name="RGB colors Control">
-      <seekBar description="Red tint control" 
-		name="Red tint. (Default: 60)" action="gamma_control r" unit="" min="0" reversed="false" step="2" max="120"/>
-      <seekBar description="Green tint control" 
-		name="Green tint. (Default: 60)" action="gamma_control g" unit="" min="0" reversed="false" step="2" max="120"/>
-      <seekBar description="Blue tint control" 
-		name="Blue tint. (Default: 60)" action="gamma_control b" unit="" min="0" reversed="false" step="2" max="120"/>
     </settingsPane>
 
 </settingsTab>
@@ -498,6 +488,8 @@
 			<spinnerItem name="aggressive" value="aggressive"/> 
 			<spinnerItem name="exterminate" value="exterminate"/> 
 		</spinner>
+
+		<checkbox description="Allow kernel to release highmem RAM and allocate free RAM to onscreen APP. this may improve UI and APPS performance, but it's also can unload the home app from RAM and other services, use for testing, if all OK, great, if any strange problems, turn it OFF (default is unchecked! OFF)" name="High Mem Dirtyable" action="generic01 /proc/sys/vm/highmem_is_dirtyable" label="High MEM Release"/>
 
 		<seekBar description="Dirty background memory buffer, more you set, more memory will be used for write buffer for background operations. Buffer is released on need to free RAM" name="Dirty Background ratio" action="generic /proc/sys/vm/dirty_background_ratio" unit="%" min="5" reversed="false" step="5" max="80"/>
 
@@ -661,6 +653,11 @@
 			<spinnerItem name="Permissive" value="off"/> 
 		</spinner>
 
+		<spinner description="Google Play Services Battery Drain Workaround" name="Enable On Boot" action="generic_cortex /tmp/gpservicefix">
+			<spinnerItem name="Enabled" value="yes"/> 
+			<spinnerItem name="Disabled" value="no"/> 
+		</spinner>
+
 	</settingsPane>
 
 	<settingsPane description="WIFI Settings" name="WIFI">
@@ -814,30 +811,6 @@
 		<button description="Backup STweaks User Settings!" name="Settings Backup" action="push-actions/config_backup_restore 1" label="BACKUP NOW"/>
 
 		<button description="Restore STweaks User Settings!" name="Settings Restore" action="push-actions/config_backup_restore 2" label="RESTORE NOW"/>
-
-	</settingsPane>
-
-</settingsTab>
-
-<settingsTab name="KERNEL THREAD and DONATION">
-
-	<settingsPane description="@XDA Kernel Thread and Donation" name="@XDA Thread-Donation">
-
-		<button description="Kernel thread on XDA" name="Kernel-Thread" action="push-actions/kernelxda" label="KERNEL-THREAD"/>
-
-		<button description="If you like my work, donate clicking here" name="Donation" action="push-actions/donation" label="DONATION"/>
-
-	</settingsPane>
-
-</settingsTab>
-
-<settingsTab name="BUG-REPORT">
-
-	<settingsPane description="Debug to SD-Card sdcard" name="Bug-Report">
-
-		<button description="Bug-Report for Kernel" name="Kernel-Bug" action="push-actions/debug_to_sd 1" label="KERNEL-BUG"/>
-
-		<button description="Bug-Report for Apps" name="App-Bug" action="push-actions/debug_to_sd 2" label="APP-BUG"/>
 
 	</settingsPane>
 
