@@ -121,6 +121,7 @@ min_input_interval=150
 nr_boost_cpus=4
 intsd_read_ahead_kb=1024
 extsd_read_ahead_kb=128
+mmc_mode=performance
 internal_iosched=zen
 sd_iosched=zen
 auto_oom=on
