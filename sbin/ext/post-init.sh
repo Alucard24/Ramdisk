@@ -15,7 +15,7 @@ OPEN_RW()
 OPEN_RW;
 
 # run ROM scripts
-$BB sh /init.qcom.post_boot.sh;
+# $BB sh /init.qcom.post_boot.sh;
 
 # fix storage folder owner
 # $BB chown system.sdcard_rw /storage;
