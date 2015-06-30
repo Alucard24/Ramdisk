@@ -88,9 +88,6 @@ $BB chmod 666 /sys/kernel/intelli_plug/*
 $BB chmod 666 /sys/class/kgsl/kgsl-3d0/max_gpuclk
 $BB chmod 666 /sys/devices/platform/kgsl-3d0/kgsl/kgsl-3d0/pwrscale/trustzone/governor
 
-# make sure our max gpu clock is set via sysfs
-echo 450000000 > /sys/class/kgsl/kgsl-3d0/max_gpuclk
-
 # Fix ROM dev wrong sets.
 setprop persist.adb.notify 0
 setprop pm.sleep_mode 1
