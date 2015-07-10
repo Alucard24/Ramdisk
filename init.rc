@@ -329,6 +329,9 @@ on post-fs-data
     restorecon /data/user
     restorecon /data/user/0
 
+    # Run sysinit
+    start sysinit
+    
     # If there is no fs-post-data action in the init.<device>.rc file, you
     # must uncomment this line, otherwise encrypted filesystems
     # won't work.
@@ -508,6 +511,12 @@ service console /system/bin/sh
     user shell
     group shell log
     seclabel u:r:shell:s0
+
+# sysinit (/system/etc/init.d)
+service sysinit /system/bin/sysinit
+    user root
+    oneshot
+    disabled
 
 on property:ro.debuggable=1
     start console
