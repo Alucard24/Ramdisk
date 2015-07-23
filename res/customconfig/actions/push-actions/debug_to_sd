@@ -19,9 +19,7 @@ PROFILE=`cat /data/.alucard/.active.profile`;
 case "${debug_to_sd}" in
 	1)
 		(
-			if [ "$($BB mount | grep system | grep -c ro)" -eq "1" ]; then
-				$BB mount -o remount,rw /system;
-			fi;
+			mount -o remount,rw /system;
 
 			SEPARATOR()
 			{
