@@ -56,7 +56,7 @@ IO_TWEAKS()
 			echo "$internal_iosched" > "$i"/queue/scheduler;
 			echo "0" > "$i"/queue/rotational;
 			echo "0" > "$i"/queue/iostats;
-			echo "2" > "$i"/queue/rq_affinity;
+			echo "2" > "$i"/queue/nomerges;
 		done;
 
 		# This controls how many requests may be allocated
@@ -96,13 +96,6 @@ KERNEL_TWEAKS()
 	else
 		echo "kernel_tweaks disabled";
 	fi;
-	if [ "$cortexbrain_memory" == "on" ]; then
-		echo "32 32" > /proc/sys/vm/lowmem_reserve_ratio;
-
-		log -p i -t "$FILE_NAME" "*** MEMORY_TWEAKS ***: enabled";
-	else
-		echo "memory_tweaks disabled";
-	fi;
 }
 KERNEL_TWEAKS;
 
@@ -133,8 +126,10 @@ MEMORY_TWEAKS()
 		echo "1" > /proc/sys/vm/overcommit_memory; # default: 1
 		echo "50" > /proc/sys/vm/overcommit_ratio; # default: 50
 		echo "3" > /proc/sys/vm/page-cluster; # default: 3
-		echo "8192" > /proc/sys/vm/min_free_kbytes; # default: 2572
-		# mem calc here in pages. so 8192 x 4 = 32MB reserved for fast access be kernel and VM
+		echo "4096" > /proc/sys/vm/min_free_kbytes; #default: 2572
+		# mem calc here in pages. so 16384 x 4 = 64MB reserved for fast access by kernel and VM
+		echo "32 32" > /proc/sys/vm/lowmem_reserve_ratio;
+		echo "32768" > /proc/sys/vm/mmap_min_addr; #default: 32768
 
 		log -p i -t "$FILE_NAME" "*** MEMORY_TWEAKS ***: enabled";
 	else
@@ -656,13 +651,13 @@ cortexbrain_background_process=1;
 
 if [ "$cortexbrain_background_process" -eq "1" ] && [ "$(pgrep -f "/sbin/ext/cortexbrain-tune.sh" | wc -l)" -eq "2" ]; then
 	(while true; do
-		while [ "$(cat /sys/power/autosleep)" != "off" ]; do
+		while [ "$(cat /sys/module/powersuspend/parameters/sleep_state)" != "0" ]; do
 			sleep "3";
 		done;
 		# AWAKE State. all system ON
 		AWAKE_MODE;
 
-		while [ "$(cat /sys/power/autosleep)" != "mem" ]; do
+		while [ "$(cat /sys/module/powersuspend/parameters/sleep_state)" != "1" ]; do
 			sleep "3";
 		done;
 		# SLEEP state. All system to power save
