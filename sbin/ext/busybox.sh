@@ -2,12 +2,8 @@
 
 BB=/sbin/busybox
 
-if [ "$($BB mount | $BB grep rootfs | $BB cut -c 26-27 | $BB grep -c ro)" -eq "1" ]; then
-	$BB mount -o remount,rw /;
-fi;
-if [ "$($BB mount | $BB grep system | $BB grep -c ro)" -eq "1" ]; then
-	$BB mount -o remount,rw /system;
-fi;
+$BB mount -o remount,rw /system;
+$BB mount -o remount,rw /;
 
 CLEAN_BUSYBOX()
 {

@@ -3,16 +3,10 @@
 
 WGET_CHECK1=`ls -la /system/wget/wget | wc -l`;
 
-BB=/sbin/busybox
-
 if [ "$WGET_CHECK1" -eq "1" ]; then
 
-	if [ "$($BB mount | grep rootfs | cut -c 26-27 | grep -c ro)" -eq "1" ]; then
-		$BB mount -o remount,rw /;
-	fi;
-	if [ "$($BB mount | grep system | grep -c ro)" -eq "1" ]; then
-		$BB mount -o remount,rw /system;
-	fi;
+	mount -o remount,rw /;
+	mount -o remount,rw /system;
 
 	TMPFILE=$(mktemp -t);
 	HOST_FILE="/system/etc/hosts";

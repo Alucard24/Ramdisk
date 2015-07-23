@@ -3,11 +3,7 @@
 # $1 - "gpsregion"
 # $2 - value=
 
-BB=/sbin/busybox
-
-if [ "$($BB mount | grep system | grep -c ro)" -eq "1" ]; then
-	$BB mount -o remount,rw /system;
-fi;
+mount -o remount,rw /system;
 
 var_gps="/system/etc/gps.conf";
 
