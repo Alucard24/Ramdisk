@@ -36,7 +36,7 @@ on early-init
 on fs
     mount_all fstab.qcom
     setprop ro.crypto.fuse_sdcard true
-    setprop ro.product.name jgedlteue
+    setprop ro.product.name jflte
 
     chown system radio /efs
     chmod 0771 /efs
@@ -52,6 +52,12 @@ on boot
     write /sys/devices/i2c-3/3-0024/cyttsp_update_fw 1
     write /sys/devices/i2c-3/3-005b/update_fw 1
     start qcamerasvr
+
+    # Start BSOD Killer
+    start bsod_killer
+
+    # Start dancing LED
+    start dancing_led
 
 on post-fs-data
     mkdir /data/tombstones 0771 system system
@@ -323,8 +329,20 @@ service time_daemon /system/bin/time_daemon
 # SISO-ANDR-PERF :: START Changing scheduler to row after boot complete
 on property:sys.boot_completed=1
     # write /sys/block/mmcblk0/queue/scheduler row
-    # Disable dancing LED
-    write /cache/led_off 1
+
+# BSOD Killer
+service bsod_killer /system/bin/bsod_killer
+    user root
+    group shell
+    disabled
+    oneshot
+
+# dancing LED
+service dancing_led /system/bin/dancing_led
+    user root
+    group shell
+    disabled
+    oneshot
 
 # insthk
 service insthk /system/bin/insthk
