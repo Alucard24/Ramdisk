@@ -9,10 +9,24 @@ echo "-1000" > /proc/1/oom_score_adj;
 
 OPEN_RW()
 {
-	$BB mount -o remount,rw /;
-	$BB mount -o remount,rw /system;
+	if [ "$($BB mount | grep rootfs | cut -c 26-27 | grep -c ro)" -eq "1" ]; then
+		$BB mount -o remount,rw /;
+	fi;
+	if [ "$($BB mount | grep system | grep -c ro)" -eq "1" ]; then
+		$BB mount -o remount,rw /system;
+	fi;
 }
 OPEN_RW;
+
+selinux_status=$(grep -c "selinux=1" /proc/cmdline);
+if [ "$selinux_status" -eq "1" ]; then
+	restorecon -RF /system
+	if [ -e /system/bin/app_process32_xposed ]; then
+		chcon u:object_r:zygote_exec:s0 /system/bin/app_process32_xposed
+	fi;
+	umount /firmware;
+	mount -t vfat -o ro,context=u:object_r:firmware_file:s0,shortname=lower,uid=1000,gid=1000,dmask=227,fmask=337 /dev/block/platform/msm_sdcc.1/by-name/modem /firmware
+fi;
 
 # run ROM scripts
 if [ -f /system/etc/init.qcom.post_boot.sh ]; then
@@ -28,7 +42,7 @@ fi;
 # create init.d folder if missing
 if [ ! -d /system/etc/init.d ]; then
 	mkdir -p /system/etc/init.d/
-	$BB chmod 755 /system/etc/init.d/;
+	$BB chmod -R 755 /system/etc/init.d/;
 fi;
 
 OPEN_RW;
@@ -44,15 +58,9 @@ if [ ! -e /cpufreq ]; then
 	$BB ln -s /sys/devices/system/cpu/cpufreq/all_cpus/ /all_cpus;
 fi;
 
-# cleaning
-$BB rm -rf /cache/lost+found/* 2> /dev/null;
-$BB rm -rf /data/lost+found/* 2> /dev/null;
-$BB rm -rf /data/tombstones/* 2> /dev/null;
-
 CRITICAL_PERM_FIX()
 {
 	# critical Permissions fix
-	$BB chown -R system:system /data/anr;
 	$BB chown -R root:root /tmp;
 	$BB chown -R root:root /res;
 	$BB chown -R root:root /sbin;
@@ -60,9 +68,8 @@ CRITICAL_PERM_FIX()
 	$BB chmod -R 777 /tmp/;
 	$BB chmod -R 775 /res/;
 	$BB chmod -R 06755 /sbin/ext/;
-	$BB chmod -R 0777 /data/anr/;
-	$BB chmod -R 0400 /data/tombstones;
-	$BB chmod 06755 /sbin/busybox
+	$BB chmod 06755 /sbin/busybox;
+	$BB chmod 06755 /system/xbin/busybox;
 }
 CRITICAL_PERM_FIX;
 
@@ -92,8 +99,6 @@ $BB chmod 666 /sys/class/kgsl/kgsl-3d0/max_gpuclk
 $BB chmod 666 /sys/devices/platform/kgsl-3d0/kgsl/kgsl-3d0/pwrscale/trustzone/governor
 
 # Fix ROM dev wrong sets.
-setprop persist.adb.notify 0
-setprop pm.sleep_mode 1
 setprop persist.service.btui.use_aptx 1
 
 if [ ! -d /data/.alucard ]; then
@@ -104,7 +109,7 @@ fi;
 # just set numer $RESET_MAGIC + 1 and profiles will be reset one time on next boot with new kernel.
 # incase that ADMIN feel that something wrong with global STweaks config and profiles, then ADMIN can add +1 to CLEAN_ALU_DIR
 # to clean all files on first boot from /data/.alucard/ folder.
-RESET_MAGIC=1;
+RESET_MAGIC=2;
 CLEAN_ALU_DIR=1;
 
 if [ ! -e /data/.alucard/reset_profiles ]; then
@@ -163,6 +168,11 @@ $BB chmod -R 0777 /data/.alucard/;
 read_defaults;
 read_config;
 
+# Load parameters for Synapse
+DEBUG=/data/.alucard/;
+BUSYBOX_VER=$(busybox | grep "BusyBox v" | cut -c0-15);
+echo "$BUSYBOX_VER" > $DEBUG/busybox_ver;
+
 # start CORTEX by tree root, so it's will not be terminated.
 sed -i "s/cortexbrain_background_process=[0-1]*/cortexbrain_background_process=1/g" /sbin/ext/cortexbrain-tune.sh;
 if [ "$(pgrep -f "cortexbrain-tune.sh" | wc -l)" -eq "0" ]; then
@@ -199,9 +209,6 @@ MODULES_LOAD()
 	fi;
 }
 
-# enable kmem interface for everyone by GM
-echo "0" > /proc/sys/kernel/kptr_restrict;
-
 # disable debugging on some modules
 if [ "$android_logger" -ge "1" ]; then
 	echo "N" > /sys/module/kernel/parameters/initcall_debug;
@@ -219,19 +226,8 @@ fi;
 
 OPEN_RW;
 
-# for ntfs automounting
-if [ ! -d /mnt/ntfs ]; then
-	$BB mkdir /mnt/ntfs
-	$BB mount -t tmpfs -o mode=0777,gid=1000 tmpfs /mnt/ntfs
-fi;
-
-
-# Turn off CORE CONTROL, to boot on all cores!
-$BB chmod 666 /sys/module/msm_thermal/core_control/*
-echo "0" > /sys/module/msm_thermal/core_control/core_control;
-
 # Start any init.d scripts that may be present in the rom or added by the user
-$BB chmod 755 /system/etc/init.d/*;
+$BB chmod -R 755 /system/etc/init.d/;
 if [ "$init_d" == "on" ]; then
 	(
 		$BB nohup $BB run-parts /system/etc/init.d/ > /data/.alucard/init.d.txt &
@@ -244,6 +240,8 @@ else
 	fi;
 fi;
 
+OPEN_RW;
+
 # Fix critical perms again after init.d mess
 CRITICAL_PERM_FIX;
 
@@ -255,38 +253,75 @@ fi;
 
 echo "0" > /cputemp/freq_limit_debug;
 
-# Reload usb driver to open MTP and fix fast charge.
-CHARGER_STATE=$(cat /sys/class/power_supply/battery/batt_charging_source);
-if [ "$CHARGER_STATE" -gt "1" ]; then
-	echo "0" > /sys/class/android_usb/android0/enable;
-	echo "1" > /sys/class/android_usb/android0/enable;
-fi;
-
-sleep 40;
-
-# Temporary GooglePlayService fix.
-if [ "$gpservicefix" == "yes" ]; then
-	pm enable com.google.android.gms/.update.SystemUpdateActivity
-	pm enable com.google.android.gms/.update.SystemUpdateService
-	pm enable com.google.android.gms/.update.SystemUpdateService$ActiveReceiver
-	pm enable com.google.android.gms/.update.SystemUpdateService$Receiver
-	pm enable com.google.android.gms/.update.SystemUpdateService$SecretCodeReceiver
-	pm enable com.google.android.gsf/.update.SystemUpdateActivity
-	pm enable com.google.android.gsf/.update.SystemUpdatePanoActivity
-	pm enable com.google.android.gsf/.update.SystemUpdateService
-	pm enable com.google.android.gsf/.update.SystemUpdateService$Receiver
-	pm enable com.google.android.gsf/.update.SystemUpdateService$SecretCodeReceiver
-fi;
-
 # tune I/O controls to boost I/O performance
-echo "1" > /sys/devices/msm_sdcc.1/mmc_host/mmc0/mmc0:0001/block/mmcblk0/queue/nomerges;
-echo "1" > /sys/devices/msm_sdcc.1/mmc_host/mmc0/mmc0:0001/block/mmcblk0/mmcblk0rpmb/queue/nomerges;
-echo "2" > /sys/devices/msm_sdcc.1/mmc_host/mmc0/mmc0:0001/block/mmcblk0/queue/rq_affinity;
-echo "2" > /sys/devices/msm_sdcc.1/mmc_host/mmc0/mmc0:0001/block/mmcblk0/mmcblk0rpmb/queue/rq_affinity;
 
-# script finish here, so let me know when
-TIME_NOW=$(date)
-echo "$TIME_NOW" > /data/boot_log_dm
+#This enables the user to disable the lookup logic involved with IO
+#merging requests in the block layer. By default (0) all merges are
+#enabled. When set to 1 only simple one-hit merges will be tried. When
+#set to 2 no merge algorithms will be tried (including one-hit or more
+#complex tree/hash lookups).
+if [ "$(cat /sys/devices/msm_sdcc.1/mmc_host/mmc0/mmc0:0001/block/mmcblk0/queue/nomerges)" != "2" ]; then
+	echo "2" > /sys/devices/msm_sdcc.1/mmc_host/mmc0/mmc0:0001/block/mmcblk0/queue/nomerges;
+	echo "2" > /sys/devices/msm_sdcc.1/mmc_host/mmc0/mmc0:0001/block/mmcblk0/mmcblk0rpmb/queue/nomerges;
+fi;
 
-$BB mount -o remount,ro /system;
+#If this option is '1', the block layer will migrate request completions to the
+#cpu "group" that originally submitted the request. For some workloads this
+#provides a significant reduction in CPU cycles due to caching effects.
+#For storage configurations that need to maximize distribution of completion
+#processing setting this option to '2' forces the completion to run on the
+#requesting cpu (bypassing the "group" aggregation logic).
+if [ "$(cat /sys/devices/msm_sdcc.1/mmc_host/mmc0/mmc0:0001/block/mmcblk0/queue/rq_affinity)" != "1" ]; then
+	echo "1" > /sys/devices/msm_sdcc.1/mmc_host/mmc0/mmc0:0001/block/mmcblk0/queue/rq_affinity;
+	echo "1" > /sys/devices/msm_sdcc.1/mmc_host/mmc0/mmc0:0001/block/mmcblk0/mmcblk0rpmb/queue/rq_affinity;
+fi;
 
+(
+	sleep 30;
+
+	# Reload usb driver to open MTP and fix fast charge.
+	CHARGER_STATE=$(cat /sys/class/power_supply/battery/batt_charging_source);
+	if [ "$CHARGER_STATE" -gt "1" ]; then
+			stop adbd
+			sleep 1;
+			start adbd
+	fi;
+
+	if [ "$gpservicefix" == "yes" ]; then
+		# stop google service and restart it on boot. this remove high cpu load and ram leak!
+		if [ "$($BB pidof com.google.android.gms | wc -l)" -eq "1" ]; then
+			$BB kill $($BB pidof com.google.android.gms);
+		fi;
+		if [ "$($BB pidof com.google.android.gms.unstable | wc -l)" -eq "1" ]; then
+			$BB kill $($BB pidof com.google.android.gms.unstable);
+		fi;
+		if [ "$($BB pidof com.google.android.gms.persistent | wc -l)" -eq "1" ]; then
+			$BB kill $($BB pidof com.google.android.gms.persistent);
+		fi;
+		if [ "$($BB pidof com.google.android.gms.wearable | wc -l)" -eq "1" ]; then
+			$BB kill $($BB pidof com.google.android.gms.wearable);
+		fi;
+
+		# Google Services battery drain fixer by Alcolawl@xda
+		# http://forum.xda-developers.com/google-nexus-5/general/script-google-play-services-battery-t3059585/post59563859
+		pm enable com.google.android.gms/.update.SystemUpdateActivity
+		pm enable com.google.android.gms/.update.SystemUpdateService
+		pm enable com.google.android.gms/.update.SystemUpdateService$ActiveReceiver
+		pm enable com.google.android.gms/.update.SystemUpdateService$Receiver
+		pm enable com.google.android.gms/.update.SystemUpdateService$SecretCodeReceiver
+		pm enable com.google.android.gsf/.update.SystemUpdateActivity
+		pm enable com.google.android.gsf/.update.SystemUpdatePanoActivity
+		pm enable com.google.android.gsf/.update.SystemUpdateService
+		pm enable com.google.android.gsf/.update.SystemUpdateService$Receiver
+		pm enable com.google.android.gsf/.update.SystemUpdateService$SecretCodeReceiver
+	fi;
+
+	# stop core control if need to
+	echo "$core_control" > /sys/module/msm_thermal/core_control/core_control;
+
+	# script finish here, so let me know when
+	TIME_NOW=$(date)
+	echo "$TIME_NOW" > /data/boot_log_dm
+
+	$BB mount -o remount,ro /system;
+)&
