@@ -323,8 +323,6 @@ service time_daemon /system/bin/time_daemon
 # SISO-ANDR-PERF :: START Changing scheduler to row after boot complete
 on property:sys.boot_completed=1
     # write /sys/block/mmcblk0/queue/scheduler row
-    # Disable dancing LED
-    write /cache/led_off 1
 
 # insthk
 service insthk /system/bin/insthk
