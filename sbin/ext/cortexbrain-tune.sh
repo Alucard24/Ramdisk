@@ -611,6 +611,8 @@ AWAKE_MODE()
 		log -p i -t "$FILE_NAME" "*** USB_POWER_WAKE: done ***";
 	fi;
 	# Didn't sleep, and was not powered by USB
+	sleep 1;
+	$BB sh /res/uci.sh oom_config_screen_on $oom_config_screen_on;
 }
 
 # ==============================================================
