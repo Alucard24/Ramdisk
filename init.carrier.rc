@@ -1,56 +1,114 @@
-# Copyright (c) 2009-2012, Code Aurora Forum. All rights reserved.
+# Copyright (C) 2012 The Android Open Source Project
 #
-# Redistribution and use in source and binary forms, with or without
-# modification, are permitted provided that the following conditions are met:
-#     * Redistributions of source code must retain the above copyright
-#       notice, this list of conditions and the following disclaimer.
-#     * Redistributions in binary form must reproduce the above copyright
-#       notice, this list of conditions and the following disclaimer in the
-#       documentation and/or other materials provided with the distribution.
-#     * Neither the name of Code Aurora nor
-#       the names of its contributors may be used to endorse or promote
-#       products derived from this software without specific prior written
-#       permission.
-#
-# THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
-# AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-# IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
-# NON-INFRINGEMENT ARE DISCLAIMED.  IN NO EVENT SHALL THE COPYRIGHT OWNER OR
-# CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
-# EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
-# PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
-# OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
-# WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
-# OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
-# ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+# IMPORTANT: Do not create world writable files or directories.
+# This is a common source of Android security bugs.
 #
 
+on early-boot
+    chown bluetooth net_bt_stack /dev/ttyHS0
+    chmod 0660 /dev/ttyHS0
+
+# permissions for Multiverse
+    chown system system /sys/class/sec/Multiverse/Brane
+    chmod 0600 /sys/class/sec/Multiverse/Brane
+
+# efs
+    chmod 0660 /dev/block/mmcblk0p12
+    chown system system /dev/block/mmcblk0p12
+
+on init
+    mkdir /preload 0771 system system
+#Private Mode
+    mkdir /mnt/shell/privatemode 0700 system system
+    mkdir /storage/Private 0000 system system
+
+on post-fs-data
+#Private Mode
+    mkdir /data/privatemode 0770 system system
+    chown system system /data/privatemode
+    restorecon /data/privatemode
+
 on boot
+# permission for Input Device(Touchkey).
+    chmod 0660 /sys/class/input/input1/enabled
+    chown system system /sys/class/input/input1/enabled
+    chmod 0660 /sys/class/input/input2/enabled
+    chown system system /sys/class/input/input2/enabled
+    chown radio system /sys/class/sec/sec_touchkey/touch_sensitivity
+    chown radio system /sys/class/sec/sec_touchkey/touchkey_firm_update
+    chown system radio /sys/class/sec/sec_touchkey/glove_mode
+    chown system radio /sys/class/sec/sec_touchkey/flip_mode
+    chown system radio /sys/class/sec/sec_touchkey/1mm_mode
+    chown system radio /sys/class/sec/sec_touchkey/boost_level
 
 # permissions for bluetooth.
     setprop ro.bt.bdaddr_path "/efs/bluetooth/bt_addr"
     chown bluetooth net_bt_stack ro.bt.bdaddr_path
-    chown bluetooth net_bt_stack /dev/ttyHS0
-    chmod 0660 /dev/ttyHS0
+    chown radio net_bt_stack /efs/bluetooth/bt_addr
+    chmod 0640 /efs/bluetooth/bt_addr
     chmod 0660 /sys/class/rfkill/rfkill0/state
     chown bluetooth net_bt_stack /sys/class/rfkill/rfkill0/state
     chown bluetooth net_bt_stack /sys/class/rfkill/rfkill0/type
 
 # bluetooth LPM
-    chmod 0220 /proc/bluetooth/sleep/lpm
+    chmod 0660 /proc/bluetooth/sleep/lpm
     chmod 0220 /proc/bluetooth/sleep/btwrite
     chown bluetooth net_bt_stack /proc/bluetooth/sleep/lpm
     chown bluetooth net_bt_stack /proc/bluetooth/sleep/btwrite
     chmod 0600 /dev/btlock
     chown bluetooth bluetooth /dev/btlock
 
+# permission for Expander.
+    chown system system /sys/class/sec/expander/expgpio
 
-	chown radio system /sys/class/sec/switch/usb_sel
-	chown radio system /sys/class/sec/switch/usb_state
-	chown radio system /sys/class/sec/switch/uart_sel
-	chown radio system /sys/class/sec/switch/apo_factory
+# permission for mDNIe
+    chown system system /sys/class/mdnie/mdnie/sensorRGB
 
-# Define TCP buffer sizes for various networks
+# permission for IPSec
+    chown root system /dev/socket
+    chmod 0775 /dev/socket
+
+# bluetooth dhcp config
+
+# Fingerprint
+    mkdir /dev/validity 0770 system system
+
+# SSWAP
+    write /proc/sys/vm/swappiness 130
+
+# SENSOR FRAMEWORK : starts fingerprintService
+service vcsFPService /system/bin/vcsFPService
+    class late_start
+    user system
+    group system
+
+#Private Mode
+service privatemode /system/bin/sdcard /data/privatemode /mnt/shell/privatemode 1000 1000
+    class late_start
+    oneshot
+
+on fs
+
+  # Support Preload install apks
+    wait /dev/block/platform/msm_sdcc.1/by-name/hidden 
+    mount ext4 /dev/block/platform/msm_sdcc.1/by-name/hidden /preload nosuid nodev ro barrier=1
+    setprop storage.preload.complete 1
+
+#For Absolute Persistence Partition
+
+    mkdir /persdata 0755 system system
+    mkdir /persdata/absolute 0750 system system
+
+    wait /dev/block/platform/msm_sdcc.1/by-name/persdata
+    check_fs /dev/block/platform/msm_sdcc.1/by-name/persdata ext4
+    mount ext4 /dev/block/platform/msm_sdcc.1/by-name/persdata /persdata/absolute nosuid nodev barrier=1
+
+    chown system system /persdata
+    chmod 0755 /persdata
+    chown system system /persdata/absolute
+    chmod 0750 /persdata/absolute
+
+    # Define TCP buffer sizes for various networks
 #   ReadMin, ReadInitial, ReadMax, WriteMin, WriteInitial, WriteMax,
     setprop net.tcp.buffersize.default 4096,87380,110208,4096,16384,110208
     setprop net.tcp.buffersize.wifi    524288,1048576,2097152,262144,524288,1048576
@@ -64,13 +122,78 @@ on boot
     setprop net.tcp.buffersize.gprs    4092,8760,11680,4096,8760,11680
     setprop net.tcp.buffersize.evdo    4094,87380,262144,4096,16384,262144
 
-# TVout
-service TvoutService_C /system/bin/bintvoutservice
+# service for TZPR provisioning version check app
+service scranton_RD /system/bin/scranton_RD
     class main
+    user root
+    disabled
+    oneshot
+
+# bootchecker
+service bootchecker /system/bin/bootchecker
+    class late_start
     user system
-    group system
+    group system log
+    oneshot
 
-# MM Property
-#on property:sys.qseecomd.enable=true
-#    exec /system/bin/scranton_RD
+# start for TZPR provisioning version check app
+on property:sys.qseecomd.enable=true
+    start scranton_RD
 
+# TODO: replace it with device's DEXPREOPT_BOOT_JARS
+
+# AT Distributor for factory test
+service at_distributor /system/bin/at_distributor
+    class late_start
+    user root
+    group radio misc log
+
+# diag app for cp uart
+service diag_uart_log /system/bin/diag_uart_log
+    class main
+    user root
+    group radio
+
+# service for TZPR provisioning version check app
+service scranton_RD /system/bin/scranton_RD
+    class main
+    user root
+    disabled
+    oneshot
+
+# start for TZPR provisioning version check app
+on property:sys.qseecomd.enable=true
+    start scranton_RD
+
+    mkdir /efs/drm/playready 0775
+    chown drm system /efs/drm/playready
+    chmod 0775 /efs/drm/playready
+
+
+
+# SSWAP
+service swapon /sbin/sswap -s
+    class core
+    user root
+    group root
+    seclabel u:r:sswap:s0
+    oneshot
+
+# IPSec for VOLTE
+service ipsec-daemon /system/bin/IPSecService
+    class main
+    socket ipsec_socket stream 660 system system
+    user system
+    group system net_raw inet net_admin
+
+## WTL_EDM_START
+## EDM AuditLog
+
+# Increase min_free_kbytes from 2755 to 5120
+    write /proc/sys/vm/min_free_kbytes 5120
+	
+service edmaudit /system/bin/edmaudit
+    class main
+    user root
+
+## WTL_EDM_END
