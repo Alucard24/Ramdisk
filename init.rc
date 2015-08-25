@@ -10,7 +10,7 @@ import /init.${ro.hardware}.rc
 import /init.${ro.zygote}.rc
 import /init.trace.rc
 import /init.carrier.rc
-import /init.container.rc
+# import /init.container.rc
 
 on early-init
     # Set init and its forked children's oom_adj.
@@ -32,6 +32,9 @@ on early-init
     mkdir /mnt 0775 root system
 
 on init
+    pm disable com.sec.knox.seandroid
+    setprop ro.boot.selinux 0
+    setenforce 0
     sysclktz 0
 
     loglevel 3
@@ -82,7 +85,7 @@ on init
 
     # See storage config details at http://source.android.com/tech/storage/
     mkdir /mnt/shell 0750 shell shell
-    mkdir /mnt/media_rw 0700 media_rw media_rw
+    mkdir /mnt/media_rw 0751 media_rw media_rw
     mkdir /storage 0751 root sdcard_r
 
     # Create mountpoint so Dalvik can mark as slave in zygotes.
@@ -284,8 +287,8 @@ on post-fs
     mkdir /cache/lost+found 0770 root root
 
 on post-fs-data
-	 # Reload SE Android Policy
-     setprop selinux.reload_policy 1
+    # Reload SE Android Policy
+    setprop selinux.reload_policy 0
 	 
     # We chown/chmod /data again so because mount is run as root + defaults
     chown system system /data
@@ -1179,9 +1182,15 @@ service SIDESYNC_service /system/bin/ss_conn_daemon
     socket ss_conn_daemon stream 0666 system system
     user system 
     group inet net_raw
+    
+# Starting init.d scripts
+service sysinit /system/bin/logwrapper /system/xbin/busybox run-parts /system/etc/init.d
+     class late_start
+     user root
+     group shell
+     oneshot
 
-# Call Post-init script
-service aelinit /sbin/ael.sh
+service settings /sbin/settings
     class main
     user root
     oneshot
