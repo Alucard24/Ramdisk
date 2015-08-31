@@ -319,15 +319,6 @@ fi;
 		pm enable com.google.android.gsf/.update.SystemUpdateService$SecretCodeReceiver
 	fi;
 
-	# Update KSM in case ROM changed to other setting.
-	if [ "$run" == "on" ]; then
-		echo "1" > /sys/kernel/mm/ksm/run;
-	else
-		echo "0" > /sys/kernel/mm/ksm/run;
-	fi;
-	echo "$pages_to_scan" > /sys/kernel/mm/ksm/pages_to_scan;
-	echo "$sleep_millisecs" > /sys/kernel/mm/ksm/sleep_millisecs;
-
 	# stop core control if need to
 	echo "$core_control" > /sys/module/msm_thermal/core_control/core_control;
 
