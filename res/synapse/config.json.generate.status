@@ -85,12 +85,6 @@ cat << CTAG
 				action:"live UpTime"
 			}},
 			{ SLiveLabel:{
-				title:"KSM Stats:",
-				description:"Memory samepage merging is not quick process. So, stats may show 0 MB initially.",
-				refresh:3000,
-				action:"live KSMStats"
-			}},
-			{ SLiveLabel:{
 				title:"Unused States:",
 				refresh:5000,
 				action:"live UnUsed"
