@@ -34,9 +34,6 @@ if [ -f /system/etc/init.qcom.post_boot.sh ]; then
 	$BB sh /system/etc/init.qcom.post_boot.sh;
 fi;
 
-# fix storage folder owner
-# $BB chown system.sdcard_rw /storage;
-
 # clean old modules from /system and add new from ramdisk
 
 # create init.d folder if missing
@@ -97,9 +94,6 @@ $BB chmod 666 /sys/module/msm_thermal/parameters/*
 $BB chmod 666 /sys/kernel/intelli_plug/*
 $BB chmod 666 /sys/class/kgsl/kgsl-3d0/max_gpuclk
 $BB chmod 666 /sys/devices/platform/kgsl-3d0/kgsl/kgsl-3d0/pwrscale/trustzone/governor
-
-# Fix ROM dev wrong sets.
-setprop persist.service.btui.use_aptx 1
 
 if [ ! -d /data/.alucard ]; then
 	$BB mkdir -p /data/.alucard;
@@ -212,16 +206,25 @@ MODULES_LOAD()
 # disable debugging on some modules
 if [ "$android_logger" -ge "1" ]; then
 	echo "N" > /sys/module/kernel/parameters/initcall_debug;
-#	echo "0" > /sys/module/alarm/parameters/debug_mask;
-#	echo "0" > /sys/module/alarm_dev/parameters/debug_mask;
-#	echo "0" > /sys/module/binder/parameters/debug_mask;
-	echo "0" > /sys/module/xt_qtaguid/parameters/debug_mask;
-#	echo "0" > /sys/kernel/debug/clk/debug_suspend;
-#	echo "0" > /sys/kernel/debug/msm_vidc/debug_level;
-#	echo "0" > /sys/module/ipc_router/parameters/debug_mask;
-#	echo "0" > /sys/module/msm_serial_hs/parameters/debug_mask;
-#	echo "0" > /sys/module/msm_show_resume_irq/parameters/debug_mask;
+#	echo "0" > /sys/module/smd/parameters/debug_mask
+#	echo "0" > /sys/module/rpm_regulator_smd/parameters/debug_mask
+	echo "0" > /sys/module/ipc_router/parameters/debug_mask
+	echo "0" > /sys/module/event_timer/parameters/debug_mask
+	echo "0" > /sys/module/msm_serial_hs/parameters/debug_mask
+#	echo "0" > /sys/module/powersuspend/parameters/debug_mask
+#	echo "0" > /sys/module/msm_hotplug/parameters/debug_mask
+#	echo "0" > /sys/module/cpufreq_limit/parameters/debug_mask
+#	echo "0" > /sys/module/rpm_smd/parameters/debug_mask
+#	echo "0" > /sys/module/smd_pkt/parameters/debug_mask
+	echo "0" > /sys/module/xt_qtaguid/parameters/debug_mask
+	echo "0" > /sys/module/binder/parameters/debug_mask
+#	echo "0" > /sys/module/msm_show_resume_irq/parameters/debug_mask
+	echo "0" > /sys/module/alarm_dev/parameters/debug_mask
 #	echo "0" > /sys/module/pm_8x60/parameters/debug_mask;
+#	echo "0" > /sys/module/spm_v2/parameters/debug_mask
+	echo "0" > /sys/module/alu_t_boost/parameters/debug_mask
+	echo "0" > /sys/module/ipc_router_smd_xprt/parameters/debug_mask
+	echo "0" > /sys/module/x_tables/parameters/debug_mask
 fi;
 
 OPEN_RW;
