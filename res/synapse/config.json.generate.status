@@ -129,7 +129,7 @@ cat << CTAG
 					action:"live UnUsed"
 				}},
 			{ STitleBar:{
-				title:title:"Time in States:"
+				title:"Time in States:"
 			}},
 				{ SLiveLabel:{
 					refresh:5000,
