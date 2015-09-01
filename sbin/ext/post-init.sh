@@ -103,8 +103,8 @@ fi;
 # just set numer $RESET_MAGIC + 1 and profiles will be reset one time on next boot with new kernel.
 # incase that ADMIN feel that something wrong with global STweaks config and profiles, then ADMIN can add +1 to CLEAN_ALU_DIR
 # to clean all files on first boot from /data/.alucard/ folder.
-RESET_MAGIC=3;
-CLEAN_ALU_DIR=2;
+RESET_MAGIC=4;
+CLEAN_ALU_DIR=1;
 
 if [ ! -e /data/.alucard/reset_profiles ]; then
 	echo "$RESET_MAGIC" > /data/.alucard/reset_profiles;
@@ -319,14 +319,14 @@ fi;
 		pm enable com.google.android.gsf/.update.SystemUpdateService$SecretCodeReceiver
 	fi;
 
-	# Update KSM in case ROM changed to other setting.
+	# Update UKSM in case ROM changed to other setting.
 	if [ "$run" == "on" ]; then
-		echo "1" > /sys/kernel/mm/ksm/run;
+		echo "1" > /sys/kernel/mm/uksm/run;
 	else
-		echo "0" > /sys/kernel/mm/ksm/run;
+		echo "0" > /sys/kernel/mm/uksm/run;
 	fi;
-	echo "$pages_to_scan" > /sys/kernel/mm/ksm/pages_to_scan;
-	echo "$sleep_millisecs" > /sys/kernel/mm/ksm/sleep_millisecs;
+	echo "100" > /sys/kernel/mm/ksm/pages_to_scan;
+	echo "$sleep_millisecs" > /sys/kernel/mm/uksm/sleep_millisecs;
 
 	# stop core control if need to
 	echo "$core_control" > /sys/module/msm_thermal/core_control/core_control;
