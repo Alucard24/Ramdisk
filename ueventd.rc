@@ -104,9 +104,7 @@ subsystem adf
 /sys/devices/system/cpu/cpufreq ondemand/boosttime   0664    system  system
 /sys/devices/system/cpu/cpufreq ondemand/down_differential   0664    system  system
 /sys/devices/system/cpu/cpufreq ondemand/down_differential_multi_core   0664    system  system
-/sys/devices/system/cpu/cpufreq ondemand/ignore_nice_load   0664    system  system
 /sys/devices/system/cpu/cpufreq ondemand/input_boost   0664    system  system
-/sys/devices/system/cpu/cpufreq ondemand/io_is_busy      0664    system  system
 /sys/devices/system/cpu/cpufreq ondemand/optimal_freq   0664    system  system
 /sys/devices/system/cpu/cpufreq ondemand/powersave_bias  0664    system  system
 /sys/devices/system/cpu/cpufreq ondemand/sampling_down_factor    0664    system  system
@@ -124,7 +122,6 @@ subsystem adf
 /sys/devices/system/cpu/cpufreq interactive/boostpulse_duration  0664    system  system
 /sys/devices/system/cpu/cpufreq interactive/go_hispeed_load 0664    system  system
 /sys/devices/system/cpu/cpufreq interactive/hispeed_freq    0664    system  system
-/sys/devices/system/cpu/cpufreq interactive/io_is_busy      0664    system  system
 /sys/devices/system/cpu/cpufreq interactive/max_freq_hysteresis 0664    system  system
 /sys/devices/system/cpu/cpufreq interactive/min_sample_rate 0664    system  system
 /sys/devices/system/cpu/cpufreq interactive/min_sample_time 0664    system  system

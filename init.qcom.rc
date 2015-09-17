@@ -584,7 +584,6 @@ on property:sys.boot_completed=1
     # write /sys/devices/system/cpu/cpufreq/interactive/sync_freq 810000
     # write /sys/devices/system/cpu/cpufreq/interactive/sync_freq_load_threshold 80
     # write /sys/devices/system/cpu/cpufreq/interactive/go_hispeed_load 90
-    # write /sys/devices/system/cpu/cpufreq/interactive/io_is_busy 1
     # write /sys/devices/system/cpu/cpufreq/interactive/up_threshold_any_cpu_freq 810000
     # write /sys/devices/system/cpu/cpufreq/interactive/up_threshold_any_cpu_load 70
     write /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq 384000
@@ -750,7 +749,6 @@ on property:persist.sys.ssr.restart_level=3
 #    write /sys/devices/system/cpu/cpu3/cpufreq/scaling_governor conservative
 #    write /sys/devices/system/cpu/cpufreq/conservative/down_threshold 65
 #    write /sys/devices/system/cpu/cpufreq/conservative/freq_step 5
-#    write /sys/devices/system/cpu/cpufreq/conservative/ignore_nice_load 1
 #    write /sys/devices/system/cpu/cpufreq/conservative/sampling_down_factor 1
 #    write /sys/devices/system/cpu/cpufreq/conservative/sampling_rate 180000
 #    write /sys/devices/system/cpu/cpufreq/conservative/sampling_rate_min 180000
@@ -774,7 +772,6 @@ on property:persist.sys.ssr.restart_level=3
 #    write /sys/devices/system/cpu/cpufreq/interactive/above_hispeed_delay 30000
 #    write /sys/devices/system/cpu/cpufreq/interactive/go_hispeed_load 90
 #    write /sys/devices/system/cpu/cpufreq/interactive/hispeed_freq 1134000
-#    write /sys/devices/system/cpu/cpufreq/interactive/io_is_busy 1
 #    write /sys/devices/system/cpu/cpufreq/interactive/min_sample_time 90000
 #    write /sys/devices/system/cpu/cpufreq/interactive/sampling_down_factor 2
 #    write /sys/devices/system/cpu/cpufreq/interactive/sync_freq 810000
