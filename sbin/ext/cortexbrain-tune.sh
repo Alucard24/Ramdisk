@@ -246,7 +246,6 @@ CPU_HOTPLUG_TWEAKS()
 			echo "$maxcoreslimit" > /sys/kernel/alucard_hotplug/maxcoreslimit;
 			echo "$maxcoreslimit_sleep" > /sys/kernel/alucard_hotplug/maxcoreslimit_sleep;
 			echo "$min_cpus_online" > /sys/kernel/alucard_hotplug/min_cpus_online;
-			echo "$hp_io_is_busy" > /sys/kernel/alucard_hotplug/hp_io_is_busy;
 		fi;
 
 		log -p i -t "$FILE_NAME" "*** ALUCARD_HOTPLUG ***: enabled";
@@ -266,7 +265,6 @@ CPU_HOTPLUG_TWEAKS()
 
 		# tune-settings
 		if [ "$state" == "tune" ]; then
-			echo "$hp_io_is_busy" > /sys/module/msm_hotplug/hp_io_is_busy;
 			echo "$min_cpus_online" > /sys/module/msm_hotplug/min_cpus_online;
 			echo "$max_cpus_online" > /sys/module/msm_hotplug/max_cpus_online;
 		fi;
@@ -498,11 +496,6 @@ CPU_GOV_TWEAKS()
 						pump_dec_step_4_tmp="/dev/null";
 					fi;
 
-					local io_is_busy_tmp="/sys/devices/system/cpu/cpufreq/$SYSTEM_GOVERNOR/io_is_busy";
-					if [ ! -e $io_is_busy_tmp ]; then
-						io_is_busy_tmp="/dev/null";
-					fi;
-
 					local cpus_up_rate_tmp="/sys/devices/system/cpu/cpufreq/$SYSTEM_GOVERNOR/cpus_up_rate";
 					if [ ! -e $cpus_up_rate_tmp ]; then
 						cpus_up_rate_tmp="/dev/null";
@@ -544,7 +537,6 @@ CPU_GOV_TWEAKS()
 					echo "$pump_dec_step_2" > $pump_dec_step_2_tmp;
 					echo "$pump_dec_step_3" > $pump_dec_step_3_tmp;
 					echo "$pump_dec_step_4" > $pump_dec_step_4_tmp;
-					echo "$io_is_busy" > $io_is_busy_tmp;
 					echo "$cpus_up_rate" > $cpus_up_rate_tmp;
 					echo "$cpus_down_rate" > $cpus_down_rate_tmp;
 				fi;
