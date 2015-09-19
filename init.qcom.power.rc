@@ -157,17 +157,6 @@ on property:sys.boot_completed=1
     write /sys/devices/system/cpu/cpu1/online 1
     write /sys/devices/system/cpu/cpu2/online 1
     write /sys/devices/system/cpu/cpu3/online 1
-	write /sys/kernel/alucard_hotplug/hotplug_enable 1
-	write /sys/devices/system/cpu/cpufreq/alucard/cpu_up_rate 1
-	write /sys/devices/system/cpu/cpufreq/alucard/cpu_down_rate 1
-	write /sys/devices/system/cpu/cpufreq/alucard/pump_inc_step_at_minfreq_1 2
-	write /sys/devices/system/cpu/cpufreq/alucard/pump_inc_step_at_minfreq_2 2
-	write /sys/devices/system/cpu/cpufreq/alucard/pump_inc_step_at_minfreq_3 2
-	write /sys/devices/system/cpu/cpufreq/alucard/pump_inc_step_at_minfreq_4 2
-	write /sys/devices/system/cpu/cpufreq/alucard/pump_inc_step_1 1
-	write /sys/devices/system/cpu/cpufreq/alucard/pump_inc_step_2 1
-	write /sys/devices/system/cpu/cpufreq/alucard/pump_inc_step_3 1
-	write /sys/devices/system/cpu/cpufreq/alucard/pump_inc_step_4 1
     # write /sys/module/msm_thermal/core_control/core_control 1
     chown root system /sys/devices/system/cpu/mfreq
     chmod 220 /sys/devices/system/cpu/mfreq
