@@ -235,7 +235,7 @@
 
 	<settingsPane description="Tune alucard hotplug" name="alucard hotplug Tuning">
 
-		<seekBar description="Sampling Interval, measured in ms. This factor determines how often the governor should poll for CPU usage in terms of frequency and load percentage to make hotplugging decisions. (Default: 30 ms)" name="hotplug_sampling_rate" action="generic /sys/kernel/alucard_hotplug/hotplug_sampling_rate" unit="ms" min="10" reversed="false" step="10" max="100"/>
+		<seekBar description="Sampling Interval, measured in ms. This factor determines how often the governor should poll for CPU usage in terms of frequency and load percentage to make hotplugging decisions. (Default: 50 ms)" name="hotplug_sampling_rate" action="generic /sys/kernel/alucard_hotplug/hotplug_sampling_rate" unit="ms" min="10" reversed="false" step="10" max="100"/>
 
 		<seekBar description="Number of samples to evaluate cpu1 hotplug in. (Default: 1)" name="hotplug_rate_1_1" action="generic /sys/kernel/alucard_hotplug/hotplug_rate_1_1" unit="int" min="1" reversed="false" step="1" max="10"/>
 
