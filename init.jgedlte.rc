@@ -621,6 +621,9 @@ service wifi-crda /system/bin/sh /system/etc/init.crda.sh
 on property:sys.boot_completed=1
     start qcom-post-boot
 
+	# Set performance profile
+    setprop sys.perf.profile 1
+
 service atfwd /system/bin/ATFWD-daemon
     class late_start
     user system
@@ -753,3 +756,16 @@ service diag_mdlog_stop /system/bin/diag_mdlog -k
     group system qcom_diag sdcard_rw sdcard_r media_rw
     disabled
     oneshot
+
+# Balanced
+on property:sys.perf.profile=1
+    stop mpdecision
+    write /sys/kernel/intelli_plug/intelli_plug_active 0
+    write /sys/kernel/alucard_hotplug/hotplug_enable 0
+    write /sys/module/msm_hotplug/msm_enabled 0
+    write /sys/module/msm_thermal/core_control/core_control 0
+    write /sys/devices/system/cpu/cpu0/online 1
+    write /sys/devices/system/cpu/cpu1/online 1
+    write /sys/devices/system/cpu/cpu2/online 1
+    write /sys/devices/system/cpu/cpu3/online 1
+    write /sys/class/kgsl/kgsl-3d0/pwrscale/trustzone/governor ondemand
