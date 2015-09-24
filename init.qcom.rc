@@ -723,7 +723,7 @@ on property:persist.sys.ssr.restart_level=3
     write /sys/module/subsystem_restart/parameters/restart_level 3
 
 # Powersave
-#on property:sys.perf.profile=0
+on property:sys.perf.profile=0
     stop mpdecision
     write /sys/module/msm_thermal/core_control/core_control 0
     write /sys/devices/system/cpu/cpu0/online 1
@@ -742,7 +742,7 @@ on property:persist.sys.ssr.restart_level=3
     write /sys/devices/system/cpu/cpufreq/conservative/up_threshold 90
     write /sys/class/kgsl/kgsl-3d0/pwrscale/trustzone/governor ondemand
     write /sys/module/msm_thermal/core_control/core_control 1
-#    start mpdecision
+    start mpdecision
 
 # Balanced
 on property:sys.perf.profile=1
@@ -756,7 +756,7 @@ on property:sys.perf.profile=1
     write /sys/devices/system/cpu/cpu2/online 1
     write /sys/devices/system/cpu/cpu3/online 1
     write /sys/class/kgsl/kgsl-3d0/pwrscale/trustzone/governor ondemand
-    write /sys/module/msm_thermal/core_control/core_control 1
+#    write /sys/module/msm_thermal/core_control/core_control 1
 #    start mpdecision
 
 # High performance
