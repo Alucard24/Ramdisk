@@ -33,10 +33,6 @@ on early-init
     symlink /data/tombstones /tombstones
     mount debugfs debugfs /sys/kernel/debug
 
-# import cne init file
-on post-fs
-    #export LD_PRELOAD /vendor/lib/libNimsWrap.so
-
 #on init
        # This is no longer supported from KK release.
        #export BOOTCLASSPATH ${BOOTCLASSPATH}:/system/framework/WfdCommon.jar:/system/framework/qcmediaplayer.jar
@@ -124,12 +120,15 @@ on boot
 
 on post-fs-data
    mkdir /data/tombstones 0771 system system
+   mkdir /data/qcks 0771 system system
    mkdir /tombstones/modem 0771 system system
    mkdir /tombstones/lpass 0771 system system
    mkdir /tombstones/wcnss 0771 system system
    mkdir /tombstones/dsps 0771 system system
    mkdir /tombstones/mdm 0771 system system
    mkdir /tombstones/mdm2 0771 system system
+   mkdir /persist/data/sfs 0700 system system
+   mkdir /persist/data/tz 0700 system system
 
 #start camera server as daemon
 service qcamerasvr /system/bin/mm-qcamera-daemon
@@ -137,11 +136,6 @@ service qcamerasvr /system/bin/mm-qcamera-daemon
         user camera
         group camera system inet input graphics net_bt_stack
 
-#start GNSS/Sensor interface daemon
-service gsiff_daemon /system/bin/gsiff_daemon
-    class late_start
-    user system
-    group gps qcom_oncrpc net_raw
 
 service thermald /system/bin/thermald
    class main
@@ -156,6 +150,7 @@ service thermal-engine /system/bin/thermal-engine
    disabled
 
 service mpdecision /system/bin/mpdecision --avg_comp
+   class main
    user root
    disabled
 
@@ -192,7 +187,6 @@ service qseecomd /system/bin/qseecomd
 
 # Start kickstart if mdm is detected
 on property:ro.baseband=mdm
-    mkdir /data/qcks 0770 system system
     start kickstart
 
 # Start up mdm_helper if sglte detected

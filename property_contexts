@@ -50,6 +50,10 @@ selinux.                u:object_r:security_prop:s0
 vold.                   u:object_r:vold_prop:s0
 crypto.                 u:object_r:vold_prop:s0
 
+# ro.build.fingerprint is either set in /system/build.prop, or is
+# set at runtime by system_server.
+build.fingerprint       u:object_r:fingerprint_prop:s0
+
 # ctl properties
 ctl.bootanim            u:object_r:ctl_bootanim_prop:s0
 ctl.dumpstate           u:object_r:ctl_dumpstate_prop:s0
@@ -62,6 +66,16 @@ ctl.                    u:object_r:ctl_default_prop:s0
 
 # NFC properties
 nfc.                    u:object_r:nfc_prop:s0
+#line 1 "device/qcom/sepolicy/common/property_contexts"
+wc_transport.              u:object_r:bluetooth_prop:s0
+sys.usb_uicc.              u:object_r:uicc_prop:s0
+sys.ims.                   u:object_r:qcom_ims_prop:s0
+dolby.audio.               u:object_r:audio_prop:s0
+sys.usf.                   u:object_r:usf_prop:s0
+radio.atfwd.               u:object_r:radio_prop:s0
+camera.                    u:object_r:camera_prop:s0
+persist.camera.            u:object_r:camera_prop:s0
+persist.bluetooth.         u:object_r:bluetooth_prop:s0
 #line 1 "vendor/samsung/common/sepolicy/property_contexts"
 #fix build error - duplicate definition
 #bluetooth.	u:object_r:bt_prop:s0
