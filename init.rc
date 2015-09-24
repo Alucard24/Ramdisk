@@ -312,6 +312,9 @@ on post-fs-data
     # the following directory.
     mkdir /data/mediadrm 0770 mediadrm mediadrm
 
+    # create anr directory
+    mkdir /data/anr 0775 system system
+    
     mkdir /data/adb 0700 root root
 
     # symlink to bugreport storage location
