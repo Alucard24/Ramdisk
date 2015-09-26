@@ -26,7 +26,6 @@
 #
 
 on early-init
-    setprop sys.io.scheduler noop
     setprop sys.perf.profile 2
 
 on charger
@@ -103,24 +102,16 @@ on property:sys.perf.profile=1
     write /sys/devices/system/cpu/cpu1/cpufreq/scaling_governor alucard
     write /sys/devices/system/cpu/cpu2/cpufreq/scaling_governor alucard
     write /sys/devices/system/cpu/cpu3/cpufreq/scaling_governor alucard
-    # write /sys/devices/system/cpu/cpufreq/interactive/above_hispeed_delay 30000
-    # write /sys/devices/system/cpu/cpufreq/interactive/go_hispeed_load 90
-    # write /sys/devices/system/cpu/cpufreq/interactive/hispeed_freq 1134000
-    # write /sys/devices/system/cpu/cpufreq/interactive/min_sample_time 90000
-    # write /sys/devices/system/cpu/cpufreq/interactive/sampling_down_factor 2
-    # write /sys/devices/system/cpu/cpufreq/interactive/sync_freq 810000
-    # write /sys/devices/system/cpu/cpufreq/interactive/target_loads 90
-    # write /sys/devices/system/cpu/cpufreq/interactive/timer_rate 30000
-    # write /sys/devices/system/cpu/cpufreq/interactive/timer_slack 80000
-    # write /sys/devices/system/cpu/cpufreq/interactive/up_threshold_any_cpu_freq 810000
-    # write /sys/devices/system/cpu/cpufreq/interactive/up_threshold_any_cpu_load 70
     write /sys/class/kgsl/kgsl-3d0/pwrscale/trustzone/governor ondemand
-    # write /sys/module/msm_thermal/core_control/core_control 1
     # start mpdecision
 
 # High performance
 on property:sys.perf.profile=2
     stop mpdecision
+	write /sys/kernel/intelli_plug/intelli_plug_active 0
+	write /sys/kernel/alucard_hotplug/hotplug_enable 0
+	write /sys/module/msm_hotplug/msm_enabled 0
+    write /sys/module/msm_thermal/core_control/core_control 0
     write /sys/devices/system/cpu/cpu0/online 1
     write /sys/devices/system/cpu/cpu1/online 1
     write /sys/devices/system/cpu/cpu2/online 1
@@ -153,11 +144,9 @@ on property:sys.boot_completed=1
     write /sys/module/pm_8x60/modes/cpu2/standalone_power_collapse/idle_enabled 1
     write /sys/module/pm_8x60/modes/cpu3/standalone_power_collapse/idle_enabled 1
     write /sys/module/pm_8x60/modes/cpu0/power_collapse/idle_enabled 1
-    write /sys/module/msm_thermal/core_control/core_control 0
     write /sys/devices/system/cpu/cpu1/online 1
     write /sys/devices/system/cpu/cpu2/online 1
     write /sys/devices/system/cpu/cpu3/online 1
-    # write /sys/module/msm_thermal/core_control/core_control 1
     chown root system /sys/devices/system/cpu/mfreq
     chmod 220 /sys/devices/system/cpu/mfreq
     chown system system /sys/devices/system/cpu/cpu1/online
@@ -220,6 +209,3 @@ on property:sys.boot_completed=1
     # write /sys/module/cpu_boost/parameters/input_boost_ms 10
     # write /sys/module/cpu_boost/parameters/sync_threshold 1242000
     # write /sys/module/cpu_boost/parameters/input_boost_freq 1134000
-
-    # Set performance profile
-    setprop sys.perf.profile 1
