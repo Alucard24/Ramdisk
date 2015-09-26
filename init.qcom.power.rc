@@ -26,7 +26,7 @@
 #
 
 on early-init
-    setprop sys.perf.profile 2
+    setprop sys.perf.profile 1
 
 on charger
     mount ext4 /dev/block/platform/msm_sdcc.1/by-name/system /system wait ro
