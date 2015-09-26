@@ -476,6 +476,26 @@ CPU_GOV_TWEAKS()
 						pump_inc_step_4_tmp="/dev/null";
 					fi;
 
+					local pump_dec_step_at_min_freq_1_tmp="/sys/devices/system/cpu/cpufreq/$SYSTEM_GOVERNOR/pump_dec_step_at_min_freq_1";
+					if [ ! -e $pump_dec_step_at_min_freq_1_tmp ]; then
+						pump_dec_step_at_min_freq_1_tmp="/dev/null";
+					fi;
+
+					local pump_dec_step_at_min_freq_2_tmp="/sys/devices/system/cpu/cpufreq/$SYSTEM_GOVERNOR/pump_dec_step_at_min_freq_2";
+					if [ ! -e $pump_dec_step_at_min_freq_2_tmp ]; then
+						pump_dec_step_at_min_freq_2_tmp="/dev/null";
+					fi;
+
+					local pump_dec_step_at_min_freq_3_tmp="/sys/devices/system/cpu/cpufreq/$SYSTEM_GOVERNOR/pump_dec_step_at_min_freq_3";
+					if [ ! -e $pump_dec_step_at_min_freq_3_tmp ]; then
+						pump_dec_step_at_min_freq_3_tmp="/dev/null";
+					fi;
+
+					local pump_dec_step_at_min_freq_4_tmp="/sys/devices/system/cpu/cpufreq/$SYSTEM_GOVERNOR/pump_dec_step_at_min_freq_4";
+					if [ ! -e $pump_dec_step_at_min_freq_4_tmp ]; then
+						pump_dec_step_at_min_freq_4_tmp="/dev/null";
+					fi;
+
 					local pump_dec_step_1_tmp="/sys/devices/system/cpu/cpufreq/$SYSTEM_GOVERNOR/pump_dec_step_1";
 					if [ ! -e $pump_dec_step_1_tmp ]; then
 						pump_dec_step_1_tmp="/dev/null";
@@ -533,6 +553,10 @@ CPU_GOV_TWEAKS()
 					echo "$pump_inc_step_2" > $pump_inc_step_2_tmp;
 					echo "$pump_inc_step_3" > $pump_inc_step_3_tmp;
 					echo "$pump_inc_step_4" > $pump_inc_step_4_tmp;
+					echo "$pump_dec_step_at_min_freq_1" > $pump_dec_step_at_min_freq_1_tmp;
+					echo "$pump_dec_step_at_min_freq_2" > $pump_dec_step_at_min_freq_2_tmp;
+					echo "$pump_dec_step_at_min_freq_3" > $pump_dec_step_at_min_freq_3_tmp;
+					echo "$pump_dec_step_at_min_freq_4" > $pump_dec_step_at_min_freq_4_tmp;
 					echo "$pump_dec_step_1" > $pump_dec_step_1_tmp;
 					echo "$pump_dec_step_2" > $pump_dec_step_2_tmp;
 					echo "$pump_dec_step_3" > $pump_dec_step_3_tmp;
