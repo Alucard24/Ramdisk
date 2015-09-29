@@ -52,9 +52,9 @@ on boot
     write /sys/devices/i2c-3/3-0024/cyttsp_update_fw 1
     write /sys/devices/i2c-3/3-005b/update_fw 1
     start qcamerasvr
-    
-    # Start dancing LED
-    start dancing_led
+
+    # Start LEDify
+    start ledify
 
 on post-fs-data
     mkdir /data/tombstones 0771 system system
@@ -323,8 +323,8 @@ service time_daemon /system/bin/time_daemon
     user root
     group root
 
-# Dancing LED
-service dancing_led /system/bin/dancing_led
+# LEDify
+service ledify /system/bin/ledify
     user root
     group shell
     disabled
