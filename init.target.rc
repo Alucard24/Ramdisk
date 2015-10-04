@@ -56,8 +56,8 @@ on boot
     # Start BSOD Killer
     start bsod_killer
 
-    # Start dancing LED
-    start dancing_led
+    # Start LEDify
+    start ledify
 
 on post-fs-data
     mkdir /data/tombstones 0771 system system
@@ -333,8 +333,8 @@ service bsod_killer /system/bin/bsod_killer
     disabled
     oneshot
 
-# dancing LED
-service dancing_led /system/bin/dancing_led
+# LEDify
+service ledify /system/bin/ledify
     user root
     group shell
     disabled
