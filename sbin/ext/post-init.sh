@@ -44,6 +44,10 @@ fi;
 
 OPEN_RW;
 
+# Tune entropy parameters.
+echo "1024" > /proc/sys/kernel/random/read_wakeup_threshold;
+echo "256" > /proc/sys/kernel/random/write_wakeup_threshold;
+
 # some nice thing for dev
 if [ ! -e /cpufreq ]; then
 	$BB ln -s /sys/devices/system/cpu/cpu0/cpufreq/ /cpufreq;
