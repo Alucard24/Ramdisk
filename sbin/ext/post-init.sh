@@ -45,7 +45,7 @@ fi;
 OPEN_RW;
 
 # Tune entropy parameters.
-echo "1024" > /proc/sys/kernel/random/read_wakeup_threshold;
+echo "512" > /proc/sys/kernel/random/read_wakeup_threshold;
 echo "256" > /proc/sys/kernel/random/write_wakeup_threshold;
 
 # some nice thing for dev
