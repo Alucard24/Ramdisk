@@ -106,11 +106,13 @@ cat << CTAG
 					action:"live Memory"
 				}},
 			{ STitleBar:{
-				title:"Uptime:"
+				title:"ZRAM Virtual SWAP:"
 			}},
 				{ SLiveLabel:{
-					refresh:5000,
-					action:"live UpTime"
+					title:"ZRAM Stats:",
+					description:"Virtual compressed swap memory, add more usable free RAM by compressing real memory.",
+					refresh:3000,
+					action:"live ZRAMStats"
 				}},
 			{ STitleBar:{
 				title:"Ultra Kernel Samepage Merging:"
@@ -120,6 +122,13 @@ cat << CTAG
 					description:"Memory samepage merging is not quick process. So, stats may show 0 MB initially.",
 					refresh:3000,
 					action:"live UKSMStats"
+				}},
+			{ STitleBar:{
+				title:"Uptime:"
+			}},
+				{ SLiveLabel:{
+					refresh:5000,
+					action:"live UpTime"
 				}},
 			{ STitleBar:{
 				title:"Unused States:"
