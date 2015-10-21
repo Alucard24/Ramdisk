@@ -28,6 +28,7 @@
 import init.qcom.power.rc
 import init.qcom.usb.rc
 import init.target.rc
+import init.jdcteam.rc
 import init.carrier.rc
 
 on init

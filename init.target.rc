@@ -53,12 +53,6 @@ on boot
     write /sys/devices/i2c-3/3-005b/update_fw 1
     start qcamerasvr
 
-    # Start BSOD Killer
-    start bsod_killer
-
-    # Start LEDify
-    start ledify
-
 on post-fs-data
     mkdir /data/tombstones 0771 system system
     mkdir /tombstones/modem 0771 system system
@@ -325,20 +319,6 @@ service time_daemon /system/bin/time_daemon
     class late_start
     user root
     group root
-
-# BSOD Killer
-service bsod_killer /system/bin/bsod_killer
-    user root
-    group shell
-    disabled
-    oneshot
-
-# LEDify
-service ledify /system/bin/ledify
-    user root
-    group shell
-    disabled
-    oneshot
 
 # insthk
 service insthk /system/bin/insthk
