@@ -2,7 +2,7 @@
 # ADDITIONAL_DEFAULT_PROPERTIES
 #
 ro.adb.secure=0
-ro.secure=0
+ro.secure=1
 ro.allow.mock.location=0
 ro.debuggable=1
 ro.zygote=zygote32
@@ -16,6 +16,6 @@ persist.sys.usb.config=mtp,adb
 #
 # BOOTIMAGE_BUILD_PROPERTIES
 #
-ro.bootimage.build.date=lun 19 ott 2015, 19.42.46, CEST
-ro.bootimage.build.date.utc=1445276566
-ro.bootimage.build.fingerprint=samsung/aosp_jflte/jflte:6.0/MRA58K/eng.b--b.20151019.194017:userdebug/test-keys
+ro.bootimage.build.date=ven 23 ott 2015, 13.11.36, CEST
+ro.bootimage.build.date.utc=1445598696
+ro.bootimage.build.fingerprint=samsung/aosp_jflte/jflte:6.0/MRA58K/eng.b--b.20151023.125039:userdebug/test-keys
