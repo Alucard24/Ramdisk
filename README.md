@@ -1,2 +1,2 @@
-# AOSP-jflte-Ramdisk
-Untouched AOSP jflte ramdisk 
+# Ramdisk
+Untouched jflte MM Ramdisk
