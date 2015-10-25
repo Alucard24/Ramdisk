@@ -7,6 +7,7 @@ ro.allow.mock.location=0
 ro.debuggable=1
 ro.zygote=zygote32
 persist.sys.usb.config=mtp,adb
+media.stagefright.use-awesome=true
 dalvik.vm.dex2oat-Xms=64m
 dalvik.vm.dex2oat-Xmx=512m
 dalvik.vm.image-dex2oat-Xms=64m
