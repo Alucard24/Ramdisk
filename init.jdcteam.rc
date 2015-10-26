@@ -1,0 +1,24 @@
+# Copyright (c) 2015, JDCTeam
+#
+
+on fs
+     # Trim partitions
+     start emmc_trim
+
+on boot
+     # Start LEDify
+     start ledify
+
+# eMMC trim
+service emmc_trim /system/bin/emmc_trim
+     user root
+     group shell
+     disabled
+     oneshot
+
+# LEDify
+service ledify /system/bin/ledify
+     user root
+     group shell
+     disabled
+     oneshot
