@@ -529,6 +529,9 @@ service wifi-crda /system/bin/sh /system/etc/init.crda.sh
    disabled
    oneshot
 
+on property:sys.boot_completed=1
+    start qcom-post-boot
+
 service hdmid /system/bin/hdmid
     class late_start
     socket hdmid stream 0660 root system graphics
