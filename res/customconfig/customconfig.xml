@@ -629,9 +629,10 @@
 
 	<settingsPane description="AC and USB charging control" name="AC and USB charging control">
 
-		<spinner description="This will force fast charging! (Disabled: Disabled | Enabled: Substitute AC to USB) (Default: Disabled)" name="Force Fast Charging" action="generic /sys/kernel/fast_charge/force_fast_charge">
+		<spinner description="This will force fast charging! (Disabled: Disabled | Use stock AC level on USB(Max 1000mA) | Use custom mA on AC and USB) (Default: Disabled)" name="Force Fast Charging" action="generic /sys/kernel/fast_charge/force_fast_charge">
 			<spinnerItem name="Disabled" value="0"/>
-			<spinnerItem name="Enabled" value="1"/>
+			<spinnerItem name="Use stock AC level on USB(Max 1000mA)" value="1"/>
+			<spinnerItem name="Use custom mA on AC and USB" value="2"/>
 		</spinner>
 
 		<spinner description="When enabled, mtp can be used during fast_charge. (Default: Enabled)" name="Use MTP during Fast Charging" action="generic /sys/kernel/fast_charge/use_mtp_during_fast_charge">
