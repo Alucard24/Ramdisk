@@ -126,7 +126,7 @@ fi;
 # just set numer $RESET_MAGIC + 1 and profiles will be reset one time on next boot with new kernel.
 # incase that ADMIN feel that something wrong with global STweaks config and profiles, then ADMIN can add +1 to CLEAN_ALU_DIR
 # to clean all files on first boot from /data/.alucard/ folder.
-RESET_MAGIC=7;
+RESET_MAGIC=8;
 CLEAN_ALU_DIR=1;
 
 if [ ! -e /data/.alucard/reset_profiles ]; then
@@ -227,28 +227,26 @@ MODULES_LOAD()
 }
 
 # disable debugging on some modules
-if [ "$android_logger" -ge "1" ]; then
-	echo "N" > /sys/module/kernel/parameters/initcall_debug;
-#	echo "0" > /sys/module/smd/parameters/debug_mask
-#	echo "0" > /sys/module/rpm_regulator_smd/parameters/debug_mask
-#	echo "0" > /sys/module/ipc_router/parameters/debug_mask
-#	echo "0" > /sys/module/event_timer/parameters/debug_mask
-#	echo "0" > /sys/module/msm_serial_hs/parameters/debug_mask
-#	echo "0" > /sys/module/powersuspend/parameters/debug_mask
-#	echo "0" > /sys/module/msm_hotplug/parameters/debug_mask
-#	echo "0" > /sys/module/cpufreq_limit/parameters/debug_mask
-#	echo "0" > /sys/module/rpm_smd/parameters/debug_mask
-#	echo "0" > /sys/module/smd_pkt/parameters/debug_mask
-	echo "0" > /sys/module/xt_qtaguid/parameters/debug_mask
-#	echo "0" > /sys/module/binder/parameters/debug_mask
-#	echo "0" > /sys/module/msm_show_resume_irq/parameters/debug_mask
-#	echo "0" > /sys/module/alarm_dev/parameters/debug_mask
-#	echo "0" > /sys/module/pm_8x60/parameters/debug_mask;
-#	echo "0" > /sys/module/spm_v2/parameters/debug_mask
-#	echo "0" > /sys/module/alu_t_boost/parameters/debug_mask
-#	echo "0" > /sys/module/ipc_router_smd_xprt/parameters/debug_mask
-#	echo "0" > /sys/module/x_tables/parameters/debug_mask
-fi;
+echo "N" > /sys/module/kernel/parameters/initcall_debug;
+#echo "0" > /sys/module/smd/parameters/debug_mask
+#echo "0" > /sys/module/rpm_regulator_smd/parameters/debug_mask
+#echo "0" > /sys/module/ipc_router/parameters/debug_mask
+#echo "0" > /sys/module/event_timer/parameters/debug_mask
+#echo "0" > /sys/module/msm_serial_hs/parameters/debug_mask
+#echo "0" > /sys/module/powersuspend/parameters/debug_mask
+#echo "0" > /sys/module/msm_hotplug/parameters/debug_mask
+#echo "0" > /sys/module/cpufreq_limit/parameters/debug_mask
+#echo "0" > /sys/module/rpm_smd/parameters/debug_mask
+#echo "0" > /sys/module/smd_pkt/parameters/debug_mask
+echo "0" > /sys/module/xt_qtaguid/parameters/debug_mask
+#echo "0" > /sys/module/binder/parameters/debug_mask
+#echo "0" > /sys/module/msm_show_resume_irq/parameters/debug_mask
+#echo "0" > /sys/module/alarm_dev/parameters/debug_mask
+#echo "0" > /sys/module/pm_8x60/parameters/debug_mask;
+#echo "0" > /sys/module/spm_v2/parameters/debug_mask
+#echo "0" > /sys/module/alu_t_boost/parameters/debug_mask
+#echo "0" > /sys/module/ipc_router_smd_xprt/parameters/debug_mask
+#echo "0" > /sys/module/x_tables/parameters/debug_mask
 
 OPEN_RW;
 
