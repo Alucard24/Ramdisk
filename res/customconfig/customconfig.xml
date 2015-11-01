@@ -743,12 +743,6 @@
 
 	</settingsPane>
 
-	<settingsPane description="Android Additional Logs" name="Logger">
-
-		<checkbox description="Enable or Disable Android Additional Logs (needs reboot)" name="Android Logger" action="generic_cortex /tmp/logger" label="Android Logger"/>
-
-	</settingsPane>
-
 	<settingsPane description="General tweaks" name="General tweaks">
 
 		<seekBar description="Vibration force level. (Default: 75)" name="Vibration force" action="generic /sys/devices/virtual/timed_output/vibrator/pwm_value" unit="%" min="0" reversed="false" step="5" max="100"/>
@@ -792,13 +786,6 @@
 		</spinner>
 
 		<button description="Click to see if the CortexBrain-Background-Process is running or not." name="Check Background-Process" action="push-actions/cortexbrain_background_process_check" label="CHECK SERVICE"/>
-
-		<spinner description="Enable or Disable Android Additional Logs and LOGCAT. you can DISABLE always to save Power! or leave default, ON when screen ON, and OFF when screen OFF" name="Android Logcat Logger" action="android_logger">
-			<spinnerItem name="Always Enabled" value="0"/>
-			<spinnerItem name="OFF when screen is OFF" value="1"/>
-			<spinnerItem name="Always Disabled" value="2"/>
-			<spinnerItem name="Debug" value="3"/>
-		</spinner>
 
 		<checkbox description="Enable or Disable Memory-Tweaks (reboot needed)." name="Memory-Tweaks" action="generic_cortex /tmp/cortexbrain_memory" label="Memory-Tweaks"/>
 

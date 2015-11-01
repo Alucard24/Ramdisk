@@ -655,12 +655,7 @@ SLEEP_MODE()
 	PROFILE=$(cat "$DATA_DIR"/.active.profile);
 	. "$DATA_DIR"/"$PROFILE".profile;
 
-	# for devs use, if debug is on, then finish full sleep with usb connected
-	if [ "$android_logger" -eq "3" ]; then
-		CHARGING=1;
-	else
-		CHARGING=$(cat /sys/class/power_supply/battery/batt_charging_source);
-	fi;
+	CHARGING=$(cat /sys/class/power_supply/battery/batt_charging_source);
 
 	# check if we powered by USB, if not sleep
 	if [ "$CHARGING" -eq "1" ]; then
