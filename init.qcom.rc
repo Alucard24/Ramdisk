@@ -31,6 +31,9 @@ import init.target.rc
 import init.carrier.rc
 
 on init
+    # Use this trick to get a running rild
+    export LD_PRELOAD "/system/lib/libril_jflte.so"
+
     # Set permissions for persist partition
     mkdir /persist 0771 system system
 
