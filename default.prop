@@ -16,6 +16,6 @@ persist.sys.usb.config=mtp,adb
 #
 # BOOTIMAGE_BUILD_PROPERTIES
 #
-ro.bootimage.build.date=lun 2 nov 2015, 21.25.40, CET
-ro.bootimage.build.date.utc=1446495940
-ro.bootimage.build.fingerprint=samsung/aosp_jflte/jflte:6.0/MRA58K/eng.b--b.20151102.205533:userdebug/test-keys
+ro.bootimage.build.date=gio 5 nov 2015, 19.52.35, CET
+ro.bootimage.build.date.utc=1446749555
+ro.bootimage.build.fingerprint=samsung/aosp_jflte/jflte:6.0/MRA58V/eng.b--b.20151105.195000:userdebug/test-keys
