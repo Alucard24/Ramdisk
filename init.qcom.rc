@@ -529,13 +529,6 @@ on property:drmdiag.load=1
 on property:drmdiag.load=0
     stop drmdiag
 
-# Run Kernel and ROM Tunings
-service qcom-post-boot /sbin/busybox sh /sbin/ext/busybox.sh
-    class late_start
-    user root
-    disabled
-    oneshot
-
 service wifi-sdio-on /system/bin/sh /system/etc/init.qcom.sdio.sh
     class late_start
     group wifi inet
@@ -549,8 +542,7 @@ service wifi-crda /system/bin/sh /system/etc/init.crda.sh
    oneshot
 
 on property:sys.boot_completed=1
-    start qcom-post-boot
-    # write /sys/block/mmcblk0/queue/scheduler row
+    write /sys/block/mmcblk0/queue/scheduler row
 
     write /sys/module/rpm_resources/enable_low_power/L2_cache 1
     write /sys/module/rpm_resources/enable_low_power/pxo 1
@@ -573,25 +565,25 @@ on property:sys.boot_completed=1
     write /sys/module/pm_8x60/modes/cpu2/standalone_power_collapse/idle_enabled 1
     write /sys/module/pm_8x60/modes/cpu3/standalone_power_collapse/idle_enabled 1
     write /sys/module/pm_8x60/modes/cpu0/power_collapse/idle_enabled 1
-    # write /sys/module/msm_thermal/core_control/core_control 0
+    write /sys/module/msm_thermal/core_control/enabled 0
     write /sys/devices/system/cpu/cpu1/online 1
     write /sys/devices/system/cpu/cpu2/online 1
     write /sys/devices/system/cpu/cpu3/online 1
-    # write /sys/devices/system/cpu/cpufreq/interactive/min_sample_time 90000
-    # write /sys/devices/system/cpu/cpufreq/interactive/hispeed_freq 1134000
-    # write /sys/devices/system/cpu/cpufreq/interactive/above_hispeed_delay 30000
-    # write /sys/devices/system/cpu/cpufreq/interactive/timer_rate 30000
-    # write /sys/devices/system/cpu/cpufreq/interactive/sync_freq 810000
-    # write /sys/devices/system/cpu/cpufreq/interactive/sync_freq_load_threshold 80
-    # write /sys/devices/system/cpu/cpufreq/interactive/go_hispeed_load 90
-    # write /sys/devices/system/cpu/cpufreq/interactive/io_is_busy 1
-    # write /sys/devices/system/cpu/cpufreq/interactive/up_threshold_any_cpu_freq 810000
-    # write /sys/devices/system/cpu/cpufreq/interactive/up_threshold_any_cpu_load 70
+    write /sys/devices/system/cpu/cpufreq/interactive/min_sample_time 90000
+    write /sys/devices/system/cpu/cpufreq/interactive/hispeed_freq 1134000
+    write /sys/devices/system/cpu/cpufreq/interactive/above_hispeed_delay 30000
+    write /sys/devices/system/cpu/cpufreq/interactive/timer_rate 30000
+    write /sys/devices/system/cpu/cpufreq/interactive/sync_freq 810000
+    write /sys/devices/system/cpu/cpufreq/interactive/sync_freq_load_threshold 80
+    write /sys/devices/system/cpu/cpufreq/interactive/go_hispeed_load 90
+    write /sys/devices/system/cpu/cpufreq/interactive/io_is_busy 1
+    write /sys/devices/system/cpu/cpufreq/interactive/up_threshold_any_cpu_freq 810000
+    write /sys/devices/system/cpu/cpufreq/interactive/up_threshold_any_cpu_load 70
     write /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq 384000
     write /sys/devices/system/cpu/cpu1/cpufreq/scaling_min_freq 384000
     write /sys/devices/system/cpu/cpu2/cpufreq/scaling_min_freq 384000
     write /sys/devices/system/cpu/cpu3/cpufreq/scaling_min_freq 384000
-    # write /sys/module/msm_thermal/core_control/core_control 1
+    write /sys/module/msm_thermal/core_control/enabled 1
     chown root system /sys/devices/system/cpu/mfreq
     chmod 220 /sys/devices/system/cpu/mfreq
     chown system system /sys/devices/system/cpu/cpu1/online
@@ -681,13 +673,6 @@ service ppd /system/bin/mm-pp-daemon
     socket pps stream 0660 system system graphics
     group system graphics
 
-service hostapd /system/bin/hostapd -dddd /data/hostapd/hostapd.conf
-    class late_start
-    user root
-    group root
-    oneshot
-    disabled
-
 service ds_fmc_appd /system/bin/ds_fmc_appd -p "rmnet0" -D
     class late_start
     group radio wifi inet
@@ -744,68 +729,68 @@ on property:persist.sys.ssr.restart_level=3
     write /sys/module/subsystem_restart/parameters/restart_level 3
 
 # Powersave
-#on property:sys.perf.profile=0
-#    stop mpdecision
-#    write /sys/module/msm_thermal/core_control/core_control 0
-#    write /sys/devices/system/cpu/cpu0/online 1
-#    write /sys/devices/system/cpu/cpu1/online 1
-#    write /sys/devices/system/cpu/cpu2/online 1
-#    write /sys/devices/system/cpu/cpu3/online 1
-#    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor conservative
-#    write /sys/devices/system/cpu/cpu1/cpufreq/scaling_governor conservative
-#    write /sys/devices/system/cpu/cpu2/cpufreq/scaling_governor conservative
-#    write /sys/devices/system/cpu/cpu3/cpufreq/scaling_governor conservative
-#    write /sys/devices/system/cpu/cpufreq/conservative/down_threshold 65
-#    write /sys/devices/system/cpu/cpufreq/conservative/freq_step 5
-#    write /sys/devices/system/cpu/cpufreq/conservative/ignore_nice_load 1
-#    write /sys/devices/system/cpu/cpufreq/conservative/sampling_down_factor 1
-#    write /sys/devices/system/cpu/cpufreq/conservative/sampling_rate 180000
-#    write /sys/devices/system/cpu/cpufreq/conservative/sampling_rate_min 180000
-#    write /sys/devices/system/cpu/cpufreq/conservative/up_threshold 90
-#    write /sys/class/kgsl/kgsl-3d0/pwrscale/trustzone/governor ondemand
-#    write /sys/module/msm_thermal/core_control/core_control 1
-#    start mpdecision
+on property:sys.perf.profile=0
+    stop mpdecision
+    write /sys/module/msm_thermal/core_control/enabled 0
+    write /sys/devices/system/cpu/cpu0/online 1
+    write /sys/devices/system/cpu/cpu1/online 1
+    write /sys/devices/system/cpu/cpu2/online 1
+    write /sys/devices/system/cpu/cpu3/online 1
+    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor conservative
+    write /sys/devices/system/cpu/cpu1/cpufreq/scaling_governor conservative
+    write /sys/devices/system/cpu/cpu2/cpufreq/scaling_governor conservative
+    write /sys/devices/system/cpu/cpu3/cpufreq/scaling_governor conservative
+    write /sys/devices/system/cpu/cpufreq/conservative/down_threshold 50
+    write /sys/devices/system/cpu/cpufreq/conservative/freq_step 10
+    write /sys/devices/system/cpu/cpufreq/conservative/ignore_nice_load 1
+    write /sys/devices/system/cpu/cpufreq/conservative/sampling_down_factor 1
+    write /sys/devices/system/cpu/cpufreq/conservative/sampling_rate 160000
+    write /sys/devices/system/cpu/cpufreq/conservative/sampling_rate_min 160000
+    write /sys/devices/system/cpu/cpufreq/conservative/up_threshold 90
+    write /sys/class/kgsl/kgsl-3d0/pwrscale/trustzone/governor ondemand
+    write /sys/module/msm_thermal/core_control/enabled 1
+    start mpdecision
 
 # Balanced
-#on property:sys.perf.profile=1
-#    stop mpdecision
-#    write /sys/module/msm_thermal/core_control/core_control 0
-#    write /sys/devices/system/cpu/cpu0/online 1
-#    write /sys/devices/system/cpu/cpu1/online 1
-#    write /sys/devices/system/cpu/cpu2/online 1
-#    write /sys/devices/system/cpu/cpu3/online 1
-#    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor interactive
-#    write /sys/devices/system/cpu/cpu1/cpufreq/scaling_governor interactive
-#    write /sys/devices/system/cpu/cpu2/cpufreq/scaling_governor interactive
-#    write /sys/devices/system/cpu/cpu3/cpufreq/scaling_governor interactive
-#    write /sys/devices/system/cpu/cpufreq/interactive/above_hispeed_delay 30000
-#    write /sys/devices/system/cpu/cpufreq/interactive/go_hispeed_load 90
-#    write /sys/devices/system/cpu/cpufreq/interactive/hispeed_freq 1134000
-#    write /sys/devices/system/cpu/cpufreq/interactive/io_is_busy 1
-#    write /sys/devices/system/cpu/cpufreq/interactive/min_sample_time 90000
-#    write /sys/devices/system/cpu/cpufreq/interactive/sampling_down_factor 2
-#    write /sys/devices/system/cpu/cpufreq/interactive/sync_freq 810000
-#    write /sys/devices/system/cpu/cpufreq/interactive/target_loads 90
-#    write /sys/devices/system/cpu/cpufreq/interactive/timer_rate 30000
-#    write /sys/devices/system/cpu/cpufreq/interactive/timer_slack 80000
-#    write /sys/devices/system/cpu/cpufreq/interactive/up_threshold_any_cpu_freq 810000
-#    write /sys/devices/system/cpu/cpufreq/interactive/up_threshold_any_cpu_load 70
-#    write /sys/class/kgsl/kgsl-3d0/pwrscale/trustzone/governor ondemand
-#    write /sys/module/msm_thermal/core_control/core_control 1
-#    start mpdecision
+on property:sys.perf.profile=1
+    stop mpdecision
+    write /sys/module/msm_thermal/core_control/enabled 0
+    write /sys/devices/system/cpu/cpu0/online 1
+    write /sys/devices/system/cpu/cpu1/online 1
+    write /sys/devices/system/cpu/cpu2/online 1
+    write /sys/devices/system/cpu/cpu3/online 1
+    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor interactive
+    write /sys/devices/system/cpu/cpu1/cpufreq/scaling_governor interactive
+    write /sys/devices/system/cpu/cpu2/cpufreq/scaling_governor interactive
+    write /sys/devices/system/cpu/cpu3/cpufreq/scaling_governor interactive
+    write /sys/devices/system/cpu/cpufreq/interactive/above_hispeed_delay 30000
+    write /sys/devices/system/cpu/cpufreq/interactive/go_hispeed_load 90
+    write /sys/devices/system/cpu/cpufreq/interactive/hispeed_freq 1134000
+    write /sys/devices/system/cpu/cpufreq/interactive/io_is_busy 1
+    write /sys/devices/system/cpu/cpufreq/interactive/min_sample_time 90000
+    write /sys/devices/system/cpu/cpufreq/interactive/sampling_down_factor 2
+    write /sys/devices/system/cpu/cpufreq/interactive/sync_freq 810000
+    write /sys/devices/system/cpu/cpufreq/interactive/target_loads 90
+    write /sys/devices/system/cpu/cpufreq/interactive/timer_rate 30000
+    write /sys/devices/system/cpu/cpufreq/interactive/timer_slack 80000
+    write /sys/devices/system/cpu/cpufreq/interactive/up_threshold_any_cpu_freq 810000
+    write /sys/devices/system/cpu/cpufreq/interactive/up_threshold_any_cpu_load 70
+    write /sys/class/kgsl/kgsl-3d0/pwrscale/trustzone/governor ondemand
+    write /sys/module/msm_thermal/core_control/enabled 1
+    start mpdecision
 
 # High performance
-#on property:sys.perf.profile=2
-#    stop mpdecision
-#    write /sys/devices/system/cpu/cpu0/online 1
-#    write /sys/devices/system/cpu/cpu1/online 1
-#    write /sys/devices/system/cpu/cpu2/online 1
-#    write /sys/devices/system/cpu/cpu3/online 1
-#    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor performance
-#    write /sys/devices/system/cpu/cpu1/cpufreq/scaling_governor performance
-#    write /sys/devices/system/cpu/cpu2/cpufreq/scaling_governor performance
-#    write /sys/devices/system/cpu/cpu3/cpufreq/scaling_governor performance
-#    write /sys/class/kgsl/kgsl-3d0/pwrscale/trustzone/governor performance
+on property:sys.perf.profile=2
+    stop mpdecision
+    write /sys/devices/system/cpu/cpu0/online 1
+    write /sys/devices/system/cpu/cpu1/online 1
+    write /sys/devices/system/cpu/cpu2/online 1
+    write /sys/devices/system/cpu/cpu3/online 1
+    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor performance
+    write /sys/devices/system/cpu/cpu1/cpufreq/scaling_governor performance
+    write /sys/devices/system/cpu/cpu2/cpufreq/scaling_governor performance
+    write /sys/devices/system/cpu/cpu3/cpufreq/scaling_governor performance
+    write /sys/class/kgsl/kgsl-3d0/pwrscale/trustzone/governor performance
 
 on charger
     mount_all fstab.qcom
