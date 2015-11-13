@@ -56,7 +56,7 @@ IO_TWEAKS()
 			echo "$internal_iosched" > "$i"/queue/scheduler;
 			echo "0" > "$i"/queue/rotational;
 			echo "0" > "$i"/queue/iostats;
-			echo "1" > "$i"/queue/rq_affinity;
+			echo "2" > "$i"/queue/nomerges;
 		done;
 
 		# This controls how many requests may be allocated
@@ -70,8 +70,6 @@ IO_TWEAKS()
 		# see https://github.com/Keff/samsung-kernel-msm7x30/commit/a53f8445ff8d947bd11a214ab42340cc6d998600#L1R627
 		echo "$intsd_read_ahead_kb" > /sys/block/mmcblk0/queue/read_ahead_kb;
 		echo "$intsd_read_ahead_kb" > /sys/block/mmcblk0/bdi/read_ahead_kb;
-
-		# echo "64" > /sys/block/mmcblk1/queue/nr_requests; # default: 64
 
 		echo "$extsd_read_ahead_kb" > /sys/block/mmcblk1/queue/read_ahead_kb;
 
@@ -98,13 +96,6 @@ KERNEL_TWEAKS()
 	else
 		echo "kernel_tweaks disabled";
 	fi;
-	if [ "$cortexbrain_memory" == "on" ]; then
-		echo "32 32" > /proc/sys/vm/lowmem_reserve_ratio;
-
-		log -p i -t "$FILE_NAME" "*** MEMORY_TWEAKS ***: enabled";
-	else
-		echo "memory_tweaks disabled";
-	fi;
 }
 KERNEL_TWEAKS;
 
@@ -129,13 +120,15 @@ SYSTEM_TWEAKS;
 MEMORY_TWEAKS()
 {
 	if [ "$cortexbrain_memory" == "on" ]; then
-		echo "$dirty_background_ratio" > /proc/sys/vm/dirty_background_ratio; # default: 10
-		echo "$dirty_ratio" > /proc/sys/vm/dirty_ratio; # default: 20
+		echo "$dirty_background_ratio" > /proc/sys/vm/dirty_background_ratio; # default: 20
+		echo "$dirty_ratio" > /proc/sys/vm/dirty_ratio; # default: 25
 		echo "4" > /proc/sys/vm/min_free_order_shift; # default: 4
 		echo "1" > /proc/sys/vm/overcommit_memory; # default: 1
 		echo "50" > /proc/sys/vm/overcommit_ratio; # default: 50
 		echo "3" > /proc/sys/vm/page-cluster; # default: 3
-		echo "4096" > /proc/sys/vm/min_free_kbytes;
+		echo "8192" > /proc/sys/vm/min_free_kbytes; #default: 2572
+		# mem calc here in pages. so 16384 x 4 = 64MB reserved for fast access by kernel and VM
+		echo "32768" > /proc/sys/vm/mmap_min_addr; #default: 32768
 
 		log -p i -t "$FILE_NAME" "*** MEMORY_TWEAKS ***: enabled";
 	else
@@ -585,6 +578,18 @@ MOUNT_SD_CARD()
 # run dual mount on boot
 MOUNT_SD_CARD;
 
+UKSM_CONTROL()
+{
+	local state="$1";
+
+	if [ "$state" == "awake" ]; then
+		echo "$uskm_gov_on" > /sys/kernel/mm/uksm/cpu_governor;
+	elif [ "$state" == "sleep" ]; then
+		echo "$uskm_gov_sleep" > /sys/kernel/mm/uksm/cpu_governor;
+	fi;
+	log -p i -t "$FILE_NAME" "*** UKSM_CONTROL $state ***: done";
+}
+
 WORKQUEUE_CONTROL()
 {
 	local state="$1";
@@ -609,6 +614,7 @@ AWAKE_MODE()
 	# not on call, check if was powerd by USB on sleep, or didnt sleep at all
 	if [ "$USB_POWER" -eq "0" ]; then
 		WORKQUEUE_CONTROL "awake";
+		UKSM_CONTROL "awake";
 		echo "0" > /data/alu_cortex_sleep;
 	else
 		# Was powered by USB, and half sleep
@@ -617,6 +623,10 @@ AWAKE_MODE()
 		log -p i -t "$FILE_NAME" "*** USB_POWER_WAKE: done ***";
 	fi;
 	# Didn't sleep, and was not powered by USB
+	if [ "$auto_oom" == "on" ]; then
+		sleep 1;
+		$BB sh /res/uci.sh oom_config_screen_on $oom_config_screen_on;
+	fi;
 }
 
 # ==============================================================
@@ -632,12 +642,13 @@ SLEEP_MODE()
 	if [ "$android_logger" -eq "3" ]; then
 		CHARGING=1;
 	else
-		CHARGING=`cat /sys/class/power_supply/battery/batt_charging_source`;
+		CHARGING=$(cat /sys/class/power_supply/battery/batt_charging_source);
 	fi;
 
 	# check if we powered by USB, if not sleep
 	if [ "$CHARGING" -eq "1" ]; then
 		WORKQUEUE_CONTROL "sleep";
+		UKSM_CONTROL "sleep";
 		echo "1" > /data/alu_cortex_sleep;
 		log -p i -t "$FILE_NAME" "*** SLEEP mode ***";
 	else
@@ -657,13 +668,13 @@ cortexbrain_background_process=1;
 
 if [ "$cortexbrain_background_process" -eq "1" ] && [ "$(pgrep -f "/sbin/ext/cortexbrain-tune.sh" | wc -l)" -eq "2" ]; then
 	(while true; do
-		while [ "$(cat /sys/power/autosleep)" != "off" ]; do
+		while [ "$(cat /sys/module/powersuspend/parameters/sleep_state)" != "0" ]; do
 			sleep "3";
 		done;
 		# AWAKE State. all system ON
 		AWAKE_MODE;
 
-		while [ "$(cat /sys/power/autosleep)" != "mem" ]; do
+		while [ "$(cat /sys/module/powersuspend/parameters/sleep_state)" != "1" ]; do
 			sleep "3";
 		done;
 		# SLEEP state. All system to power save

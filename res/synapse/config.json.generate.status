@@ -4,125 +4,176 @@ cat << CTAG
 {
 	name:STATUS,
 		elements:[
-			{ SLiveLabel:{
-				title:"CPU0 Scaling Frequencies",
-				description: "CPU0 Scaling Min Max frequencies are affected by thermal engine/driver and CPU Boost driver. You may enable and use MSM Limiter Driver below to make sure scaling frequencies are desired ranges most of the time.",
-				refresh:2000,
-				action:"live CPU0_MAX_MIN_Freq"
+			{ STitleBar:{
+				title:"CPU0 Scaling Frequencies"
 			}},
-			{ SLiveLabel:{
-				title:"CPU1 Scaling Frequencies",
-				description: "CPU1 Scaling Min Max frequencies are affected by thermal engine/driver and CPU Boost driver. You may enable and use MSM Limiter Driver below to make sure scaling frequencies are desired ranges most of the time.",
-				refresh:2000,
-				action:"live CPU1_MAX_MIN_Freq"
+				{ SLiveLabel:{
+					description: "CPU0 Scaling Min Max frequencies are affected by thermal engine/driver and CPU Boost driver. You may enable and use MSM Limiter Driver below to make sure scaling frequencies are desired ranges most of the time.",
+					refresh:2000,
+					action:"live CPU0_MAX_MIN_Freq"
+				}},
+			{ STitleBar:{
+				title:"CPU1 Scaling Frequencies"
 			}},
-			{ SLiveLabel:{
-				title:"CPU2 Scaling Frequencies",
-				description: "CPU2 Scaling Min Max frequencies are affected by thermal engine/driver and CPU Boost driver. You may enable and use MSM Limiter Driver below to make sure scaling frequencies are desired ranges most of the time.",
-				refresh:2000,
-				action:"live CPU2_MAX_MIN_Freq"
+				{ SLiveLabel:{
+					description: "CPU1 Scaling Min Max frequencies are affected by thermal engine/driver and CPU Boost driver. You may enable and use MSM Limiter Driver below to make sure scaling frequencies are desired ranges most of the time.",
+					refresh:2000,
+					action:"live CPU1_MAX_MIN_Freq"
+				}},
+			{ STitleBar:{
+				title:"CPU2 Scaling Frequencies"
 			}},
-			{ SLiveLabel:{
-				title:"CPU3 Scaling Frequencies",
-				description: "CPU3 Scaling Min Max frequencies are affected by thermal engine/driver and CPU Boost driver. You may enable and use MSM Limiter Driver below to make sure scaling frequencies are desired ranges most of the time.",
-				refresh:2000,
-				action:"live CPU3_MAX_MIN_Freq"
+				{ SLiveLabel:{
+					description: "CPU2 Scaling Min Max frequencies are affected by thermal engine/driver and CPU Boost driver. You may enable and use MSM Limiter Driver below to make sure scaling frequencies are desired ranges most of the time.",
+					refresh:2000,
+					action:"live CPU2_MAX_MIN_Freq"
+				}},
+			{ STitleBar:{
+				title:"CPU3 Scaling Frequencies"
 			}},
-			{ SLiveLabel:{
-				title:"CPU Cores State",
-				description: "Actual CORES state, Active or Sleeping.",
-				refresh:1000,
-				action:"live CPU_CORES_ON_OFF"
+				{ SLiveLabel:{
+					description: "CPU3 Scaling Min Max frequencies are affected by thermal engine/driver and CPU Boost driver. You may enable and use MSM Limiter Driver below to make sure scaling frequencies are desired ranges most of the time.",
+					refresh:2000,
+					action:"live CPU3_MAX_MIN_Freq"
+				}},
+			{ STitleBar:{
+				title:"CPU Cores State"
 			}},
-			{ SLiveLabel:{
-				title:"CPU Temperature:",
-				refresh:3000,
-				action:"live CPUTemperature"
+				{ SLiveLabel:{
+					description: "Actual CORES state, Active or Sleeping.",
+					refresh:1000,
+					action:"live CPU_CORES_ON_OFF"
+				}},
+			{ STitleBar:{
+				title:"CPU Temperature:"
 			}},
-			{ SLiveLabel:{
-				title:"Current Active CPU0 Governor",
-				description: "Display Current Active CPU0 Governor",
-				refresh:10000,
-				action:"live DefaultCPU0Governor"
+				{ SLiveLabel:{
+					refresh:3000,
+					action:"live CPUTemperature"
+				}},
+			{ STitleBar:{
+				title:"Current Active CPU0 Governor"
 			}},
-			{ SLiveLabel:{
-				title:"Current Active CPU1 Governor",
-				description: "Display Current Active CPU1 Governor",
-				refresh:10000,
-				action:"live DefaultCPU1Governor"
+				{ SLiveLabel:{
+					description: "Display Current Active CPU0 Governor",
+					refresh:10000,
+					action:"live DefaultCPU0Governor"
+				}},
+			{ STitleBar:{
+				title:"Current Active CPU1 Governor"
 			}},
-			{ SLiveLabel:{
-				title:"Current Active CPU2 Governor",
-				description: "Display Current Active CPU2 Governor",
-				refresh:10000,
-				action:"live DefaultCPU2Governor"
+				{ SLiveLabel:{
+					description: "Display Current Active CPU1 Governor",
+					refresh:10000,
+					action:"live DefaultCPU1Governor"
+				}},
+			{ STitleBar:{
+				title:"Current Active CPU2 Governor"
 			}},
-			{ SLiveLabel:{
-				title:"Current Active CPU3 Governor",
-				description: "Display Current Active CPU3 Governor",
-				refresh:10000,
-				action:"live DefaultCPU3Governor"
+				{ SLiveLabel:{
+					description: "Display Current Active CPU2 Governor",
+					refresh:10000,
+					action:"live DefaultCPU2Governor"
+				}},
+			{ STitleBar:{
+				title:"Current Active CPU3 Governor"
 			}},
-			{ SLiveLabel:{
-				title:"Current Active CPU HotPlug",
-				description: "Display Current Active CPU HotPlug Driver",
-				refresh:8000,
-				action:"live CPU_HOTPLUG"
+				{ SLiveLabel:{
+					description: "Display Current Active CPU3 Governor",
+					refresh:10000,
+					action:"live DefaultCPU3Governor"
+				}},
+			{ STitleBar:{
+				title:"Current Active CPU HotPlug"
 			}},
-			{ SLiveLabel:{
-				title:"Battery Temperature:",
-				refresh:3000,
-				action:"live BatteryTemperature"
+				{ SLiveLabel:{
+					description: "Display Current Active CPU HotPlug Driver",
+					refresh:8000,
+					action:"live CPU_HOTPLUG"
+				}},
+			{ STitleBar:{
+				title:"Battery Temperature:"
 			}},
-			{ SLiveLabel:{
-				title:"Memory:",
-				refresh:3000,
-				action:"live Memory"
+				{ SLiveLabel:{
+					refresh:3000,
+					action:"live BatteryTemperature"
+				}},
+			{ STitleBar:{
+				title:"Memory:"
 			}},
-			{ SLiveLabel:{
-				title:"Uptime:",
-				refresh:5000,
-				action:"live UpTime"
+				{ SLiveLabel:{
+					refresh:3000,
+					action:"live Memory"
+				}},
+			{ STitleBar:{
+				title:"Uptime:"
 			}},
-			{ SLiveLabel:{
-				title:"Unused States:",
-				refresh:5000,
-				action:"live UnUsed"
+				{ SLiveLabel:{
+					refresh:5000,
+					action:"live UpTime"
+				}},
+			{ STitleBar:{
+				title:"Ultra Kernel Samepage Merging:"
 			}},
-			{ SLiveLabel:{
-				title:"Time in States:",
-				refresh:5000,
-				action:"live Time 0 9"
+				{ SLiveLabel:{
+					title:"UKSM Stats:",
+					description:"Memory samepage merging is not quick process. So, stats may show 0 MB initially.",
+					refresh:3000,
+					action:"live UKSMStats"
+				}},
+			{ STitleBar:{
+				title:"Unused States:"
 			}},
-			{ SLiveLabel:{
-				refresh:5000,
-				action:"live Time 10 19"
+				{ SLiveLabel:{
+					refresh:5000,
+					action:"live UnUsed"
+				}},
+			{ STitleBar:{
+				title:"Time in States:"
 			}},
-			{ SLiveLabel:{
-				title:"MMC0 IO Read Ahead Size:",
-				refresh:10000,
-				action:"live IntIOReadAheadSize"
+				{ SLiveLabel:{
+					refresh:5000,
+					action:"live Time 0 9"
+				}},
+				{ SLiveLabel:{
+					refresh:5000,
+					action:"live Time 10 19"
+				}},
+			{ STitleBar:{
+				title:"MMC0 IO Read Ahead Size:"
 			}},
-			{ SLiveLabel:{
-				title:"MMC1 IO Read Ahead Size:",
-				refresh:10000,
-				action:"live ExtIOReadAheadSize"
+				{ SLiveLabel:{
+					refresh:10000,
+					action:"live IntIOReadAheadSize"
+				}},
+			{ STitleBar:{
+				title:"MMC1 IO Read Ahead Size:"
 			}},
-			{ SLiveLabel:{
-				title:"MMC0 Current IO Scheduler:",
-				refresh:10000,
-				action:"live IntIOScheduler"
+				{ SLiveLabel:{
+					refresh:10000,
+					action:"live ExtIOReadAheadSize"
+				}},
+			{ STitleBar:{
+				title:"MMC0 Current IO Scheduler:"
 			}},
-			{ SLiveLabel:{
-				title:"MMC1 Current IO Scheduler:",
-				refresh:10000,
-				action:"live ExtIOScheduler"
+				{ SLiveLabel:{
+					refresh:10000,
+					action:"live IntIOScheduler"
+				}},
+			{ STitleBar:{
+				title:"MMC1 Current IO Scheduler:"
 			}},
-			{ SLiveLabel:{
-				title:"NET Current TCP Congestion:",
-				refresh:10000,
-				action:"live TCPCongestion"
+				{ SLiveLabel:{
+					refresh:10000,
+					action:"live ExtIOScheduler"
+				}},
+			{ STitleBar:{
+				title:"NET Current TCP Congestion:"
 			}},
+				{ SLiveLabel:{
+					refresh:10000,
+					action:"live TCPCongestion"
+				}},
 		]
 }
 CTAG

@@ -40,9 +40,9 @@
 
 		<checkbox description="Enable or disable Power-efficient Workqueues will help to reduce power consumption at the cost of slight performance overhead. By enabling this, PE workqueues are used for unbound scheduled work to save load on sibling CPU cores and queuing work on CPU 0." name="Power-efficient Workqueues"  action="generic01 /sys/module/workqueue/parameters/power_efficient" label="Power-efficient Workqueues"/>
 
-		<seekBar description="Maximum CPUs speed while using GPS. (Default: 1890.000 kHz)." name="scaling_max_gps_freq" action="genericfreq /sys/kernel/cpufreq_limit_manager/scaling_max_gps_freq" unit="kHz" min="810000" reversed="false" step="108000" max="1890000"/>
+		<seekBar description="Maximum CPUs speed while using GPS. (Default: 1242.000 kHz)." name="scaling_max_gps_freq" action="genericfreq /sys/kernel/cpufreq_limit_manager/scaling_max_gps_freq" unit="kHz" min="810000" reversed="false" step="108000" max="1890000"/>
 
-		<seekBar description="Maximum DEEP SLEEP CPUs speed. (Default: 1242.000 kHz)." name="scaling_max_suspend_freq" action="genericfreq /sys/kernel/cpufreq_limit_manager/scaling_max_suspend_freq" unit="kHz" min="378000" reversed="false" step="108000" max="1890000"/>
+		<seekBar description="Maximum DEEP SLEEP CPUs speed. (Default: 1134.000 kHz)." name="scaling_max_suspend_freq" action="genericfreq /sys/kernel/cpufreq_limit_manager/scaling_max_suspend_freq" unit="kHz" min="378000" reversed="false" step="108000" max="1890000"/>
 
 		<seekBar description="Maximum ON CALL CPUs speed. (Default: 810.000 kHz). When phone is on call and suspended." name="scaling_max_oncall_freq" action="genericfreq /sys/kernel/cpufreq_limit_manager/scaling_max_oncall_freq" unit="kHz" min="378000" reversed="false" step="108000" max="1890000"/>
 
@@ -278,17 +278,17 @@
 
 		<seekBar description="The CPU load at which governor scales CPU down. Current Load less than down_load and CPU online greater than 1: CPU Hotplug OUT. Value corresponding to 101 causes immediately HOTPLUG OUT. (Default: 20%)" name="hotplug_load_4_0" action="generic /sys/kernel/alucard_hotplug/hotplug_load_4_0" unit="%" min="0" reversed="false" step="1" max="101"/>
 
-		<seekBar description="Threshold run queue length for second core to turn on. (Default: 100)" name="hotplug_rq_1_1" action="generic /sys/kernel/alucard_hotplug/hotplug_rq_1_1" unit="uint" min="0" reversed="false" step="100" max="3000"/>
+		<seekBar description="Threshold run queue length for second core to turn on. (Default: 100)" name="hotplug_rq_1_1" action="generic /sys/kernel/alucard_hotplug/hotplug_rq_1_1" unit="uint" min="0" reversed="false" step="25" max="3000"/>
 
-		<seekBar description="Threshold run queue length for second core to turn off. (Default: 100)" name="hotplug_rq_2_0" action="generic /sys/kernel/alucard_hotplug/hotplug_rq_2_0" unit="uint" min="0" reversed="false" step="100" max="3000"/>
+		<seekBar description="Threshold run queue length for second core to turn off. (Default: 100)" name="hotplug_rq_2_0" action="generic /sys/kernel/alucard_hotplug/hotplug_rq_2_0" unit="uint" min="0" reversed="false" step="25" max="3000"/>
 
-		<seekBar description="Threshold run queue length for third core to turn on. (Default: 200)" name="hotplug_rq_2_1" action="generic /sys/kernel/alucard_hotplug/hotplug_rq_2_1" unit="uint" min="0" reversed="false" step="100" max="3000"/>
+		<seekBar description="Threshold run queue length for third core to turn on. (Default: 150)" name="hotplug_rq_2_1" action="generic /sys/kernel/alucard_hotplug/hotplug_rq_2_1" unit="uint" min="0" reversed="false" step="25" max="3000"/>
 
-		<seekBar description="Threshold run queue length for third core to turn off. (Default: 200)" name="hotplug_rq_3_0" action="generic /sys/kernel/alucard_hotplug/hotplug_rq_3_0" unit="uint" min="0" reversed="false" step="100" max="3000"/>
+		<seekBar description="Threshold run queue length for third core to turn off. (Default: 150)" name="hotplug_rq_3_0" action="generic /sys/kernel/alucard_hotplug/hotplug_rq_3_0" unit="uint" min="0" reversed="false" step="25" max="3000"/>
 
-		<seekBar description="Threshold run queue length for fourth core to turn on. (Default: 300)" name="hotplug_rq_3_1" action="generic /sys/kernel/alucard_hotplug/hotplug_rq_3_1" unit="uint" min="0" reversed="false" step="100" max="3000"/>
+		<seekBar description="Threshold run queue length for fourth core to turn on. (Default: 200)" name="hotplug_rq_3_1" action="generic /sys/kernel/alucard_hotplug/hotplug_rq_3_1" unit="uint" min="0" reversed="false" step="25" max="3000"/>
 
-		<seekBar description="Threshold run queue length for fourth core to turn off. (Default: 300)" name="hotplug_rq_4_0" action="generic /sys/kernel/alucard_hotplug/hotplug_rq_4_0" unit="uint" min="0" reversed="false" step="100" max="3000"/>
+		<seekBar description="Threshold run queue length for fourth core to turn off. (Default: 200)" name="hotplug_rq_4_0" action="generic /sys/kernel/alucard_hotplug/hotplug_rq_4_0" unit="uint" min="0" reversed="false" step="25" max="3000"/>
 
 		<seekBar description="Max CPU's hotplugging limit. (Default: 4)" name="maxcoreslimit" action="generic /sys/kernel/alucard_hotplug/maxcoreslimit" unit="int" min="1" reversed="false" step="1" max="4"/>
 
@@ -437,6 +437,11 @@
 
 		<seekBar description="Maximum number of kilobytes to read-ahead for EXTERNAL SDCARD! file systems on this device. (Default: 128 kB)" name="kilobytes to read-ahead" action="generic_cortex /tmp/extsd_read_ahead_kb" unit="kB" min="128" reversed="false" step="128" max="4096"/>
 
+		<spinner description="MMC power usage control, when set performance mode MMC I/O write speed will be very fast, when set in power save mode write performance will be degraded but more power saved." name="MMC Power Usage" action="mmc_mode">
+			<spinnerItem name="MMC Performance" value="performance"/> 
+			<spinnerItem name="MMC Power Save" value="power_save"/> 
+		</spinner>
+
 		<spinner description="This will set the default IO scheduler for internal sdcard. (Default: ROW)" name="Default IO Scheduler Int." action="iosched internal /sys/block/mmcblk0/queue/scheduler">
 			<spinnerItem name="BFQ" value="bfq"/>
 			<spinnerItem name="CFQ" value="cfq"/> 
@@ -473,6 +478,8 @@
 
 		<checkbox description="Enable AUTO OOM control using below profiles, disable if you want to set your own OOM tuning via APP or Script." name="Auto OOM" action="generic01 /sys/module/lowmemorykiller/parameters/auto_oom" label="AUTO OOM CONTROL"/>
 
+		<checkbox description="Adaptive LMK help to free RAM more faster when low RAM condition exist and vmpressure is in range of 90-94, apps cleaned from RAM to allow smooth ROM operation and faster load of on screen APP. Enabled by default." name="Adaptive LMK" action="generic01 /sys/module/lowmemorykiller/parameters/enable_adaptive_lmk" label="Adaptive LMK"/>
+
 		<spinner description="Set the level of low mem management by kernel lowmemkiller function. More aggressive, equals more free RAM but more killed apps." name="OOM Level Screen ON" action="oom_config_screen_on">
 			<spinnerItem name="low" value="low"/> 
 			<spinnerItem name="medium" value="medium"/> 
@@ -489,24 +496,40 @@
 			<spinnerItem name="exterminate" value="exterminate"/> 
 		</spinner>
 
+		<spinner description="Here you can set the low memory reserve ratio, higher ratio give you more free RAM if you see that your free RAM is always loaded and device LAG, but it's also uses more battery to gain more free RAM with loaded system. use relaxed ONLY if your free RAM is above 650MB always! if less than 280MB use recommended or high pressure." name="Low Memory Reserve" action="lowmem_reserve">
+			<spinnerItem name="Relaxed" value="relaxed"/>
+			<spinnerItem name="Default" value="default"/>
+			<spinnerItem name="Recommended" value="boosted"/>
+			<spinnerItem name="High Pressure Ratio" value="high_pressure"/>
+		</spinner>
+
 		<seekBar description="Dirty background memory buffer, more you set, more memory will be used for write buffer for background operations. Buffer is released on need to free RAM" name="Dirty Background ratio" action="generic /proc/sys/vm/dirty_background_ratio" unit="%" min="5" reversed="false" step="5" max="80"/>
 
 		<seekBar description="Dirty real time memory buffer, more you set, more memory will be used for write buffer for real time operations. Buffer is released on need to free RAM" name="Dirty ratio" action="generic /proc/sys/vm/dirty_ratio" unit="%" min="5" reversed="false" step="5" max="90"/>
 
 		<button description="Clean RAM Cache. This will release all cached and buffered RAM, please WAIT 3sec to get cleanup report" name="CLEAN RAM CACHE" action="push-actions/clean_ram_cache" label="CLEAN RAM CACHE NOW"/>
 
-		<spinner description="If you have enabled swap, then the higher a number set here, the more the system will swap. (Default: 60)" name="swappiness" action="generic /proc/sys/vm/swappiness">
-			<spinnerItem name="0" value="0"/> 
-			<spinnerItem name="10" value="10"/> 
-			<spinnerItem name="20" value="20"/> 
-			<spinnerItem name="30" value="30"/> 
-			<spinnerItem name="40" value="40"/> 
-			<spinnerItem name="50" value="50"/> 
-			<spinnerItem name="60" value="60"/> 
-			<spinnerItem name="70" value="70"/> 
-			<spinnerItem name="80" value="80"/> 
-			<spinnerItem name="90" value="90"/> 
-		</spinner>
+	</settingsPane>
+
+	<settingsPane description="Control UKSM module, Ultra KSM lets the hypervisor system share identical memory pages amongst different processes or virtualized guests. This increases CPU consumption but improves memory." name="UKSM">
+
+			<checkbox description="UKSM Enable and Disable main switch. (default ON)" name="Ultra Kernel Samepage Merging" action="generic01 /sys/kernel/mm/uksm/run" label="UKSM Switch"/>
+
+			<spinner description="UKSM CPU Governor power when screen is ON, you can set high or low operation to scan and share memory accross apps. (default is medium)" name="UKSM CPU AWAKE GOV" action="uskm_gov_on">
+				<spinnerItem name="Full Power" value="full"/> 
+				<spinnerItem name="Medium Power" value="medium"/> 
+				<spinnerItem name="Low Power" value="low"/> 
+				<spinnerItem name="No Power (idle)" value="quiet"/> 
+			</spinner>
+
+			<spinner description="UKSM CPU Governor power when screeen is OFF, you can set high or low operation to scan and share memory accross apps. (default is low)" name="UKSM CPU SLEEP GOV" action="generic_cortex /tmp/uskm_gov_sleep">
+				<spinnerItem name="Full Power" value="full"/> 
+				<spinnerItem name="Medium Power" value="medium"/> 
+				<spinnerItem name="Low Power" value="low"/> 
+				<spinnerItem name="No Power (idle)" value="quiet"/> 
+			</spinner>
+
+			<seekBar description="Scan Delay Interval (default 500)" name="UKSM Scan Delay Interval" action="generic /sys/kernel/mm/uksm/sleep_millisecs" unit="ms" min="50" reversed="false" step="50" max="3000"/>
 
 	</settingsPane>
 
@@ -631,6 +654,7 @@
 			<spinnerItem name="HTCP" value="htcp"/>
 			<spinnerItem name="HYBLA" value="hybla"/>
 			<spinnerItem name="RENO" value="reno"/>
+			<spinnerItem name="VENO" value="veno"/>
 			<spinnerItem name="WESTWOOD" value="westwood"/>
 		</spinner>
 

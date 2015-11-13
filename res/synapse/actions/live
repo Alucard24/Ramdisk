@@ -68,6 +68,19 @@ case $1 in
 	Memory)
 		$BB echo `sh $DEVICE LiveMemory`;
 	;;
+	UKSMStats)
+		UKSM="$(expr `cat /sys/kernel/mm/uksm/run`)"
+		if [ UKSM -eq "1" ]; then
+			SAVEDMEM=`echo "Saved memory: $((\`cat /sys/kernel/mm/uksm/pages_sharing\`*4096/1024/1024)) MB"`
+			SHARDMEM=`echo "Shared memory: $((\`cat /sys/kernel/mm/uksm/pages_shared\`*4096/1024/1024)) MB"`
+			CANTBESHAREDMEM=`echo "Cannot be shared memory: $((\`cat /sys/kernel/mm/uksm/pages_unshared\`*4096/1024/1024)) MB"`
+			MAXCPU=`echo "UKSM Max Allowed CPU Usage: \`cat /sys/kernel/mm/uksm/max_cpu_percentage\`%"`
+			SLEEPMS=`echo "UKSM Sleep Millisecs: \`cat /sys/kernel/mm/uksm/sleep_millisecs\`"`
+			echo $SAVEDMEM@n$SHARDMEM@n$CANTBESHAREDMEM@n$MAXCPU@n$SLEEPMS
+		else
+			echo UKSM is Disabled.
+		fi
+	;;
 	Time)
 		$BB echo `sh $DEVICE LiveTime $2 $3`;
 	;;
