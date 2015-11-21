@@ -185,6 +185,8 @@ qtitetherservice                               u:object_r:qtitetherservices_serv
 com.qualcomm.qti.auth.securesampleauthdaemon   u:object_r:fidotest_service:s0
 com.qualcomm.qti.qseeproxysample               u:object_r:qseeproxysample_service:s0
 
+#line 1 "device/samsung/jflte/sepolicy/service_contexts"
+com.sony.timekeep u:object_r:timekeep_service:s0
 #line 1 "vendor/aosp/sepolicy/service_contexts"
 #edgegestureservice                        u:object_r:edge_gesture_service:s0
 #torch                                     u:object_r:torch_service:s0

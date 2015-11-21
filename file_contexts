@@ -767,6 +767,8 @@
 /system/bin/macloader								u:object_r:macloader_exec:s0
 
 /sys/devices/virtual/graphics/fb0/rgb						u:object_r:display_sysfs:s0
+
+/system/bin/timekeep								u:object_r:timekeep_exec:s0
 #line 1 "vendor/aosp/sepolicy/file_contexts"
 /cache/dalvik-cache(/.*)? u:object_r:dalvikcache_data_file:s0
 
