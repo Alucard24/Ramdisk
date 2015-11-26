@@ -304,12 +304,12 @@ fi;
 	sleep 30;
 
 	# Reload usb driver to open MTP and fix fast charge.
-	CHARGER_STATE=$(cat /sys/class/power_supply/battery/batt_charging_source);
-	if [ "$CHARGER_STATE" -gt "1" ]; then
-			stop adbd
-			sleep 1;
-			start adbd
-	fi;
+	#CHARGER_STATE=$(cat /sys/class/power_supply/battery/batt_charging_source);
+	#if [ "$CHARGER_STATE" -gt "1" ]; then
+	#		stop adbd
+	#		sleep 1;
+	#		start adbd
+	#fi;
 
 	if [ "$gpservicefix" == "yes" ]; then
 		# stop google service and restart it on boot. this remove high cpu load and ram leak!
