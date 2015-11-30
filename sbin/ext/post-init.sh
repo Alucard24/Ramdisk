@@ -303,6 +303,10 @@ fi;
 (
 	sleep 30;
 
+	# get values from profile
+	PROFILE=$(cat /data/.alucard/.active.profile);
+	. /data/.alucard/"$PROFILE".profile;
+
 	# Reload usb driver to open MTP and fix fast charge.
 	#CHARGER_STATE=$(cat /sys/class/power_supply/battery/batt_charging_source);
 	#if [ "$CHARGER_STATE" -gt "1" ]; then
