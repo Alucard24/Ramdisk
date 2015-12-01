@@ -209,3 +209,5 @@ on property:sys.boot_completed=1
     # write /sys/module/cpu_boost/parameters/input_boost_ms 10
     # write /sys/module/cpu_boost/parameters/sync_threshold 1242000
     # write /sys/module/cpu_boost/parameters/input_boost_freq 1134000
+
+    rm /data/system/perfd/default_values
