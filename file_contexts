@@ -739,7 +739,7 @@
 # Data files
 #
 /data/qcks(/.*)?                                u:object_r:efs_data_file:s0
-#line 1 "device/samsung/jflte/sepolicy/file_contexts"
+#line 1 "device/samsung/jf-common/sepolicy/file_contexts"
 /data/.cid.info									u:object_r:wifi_data_file:s0
 /data/.psm.info									u:object_r:wifi_data_file:s0
 /data/.wifiver.info								u:object_r:wifi_data_file:s0
