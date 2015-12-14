@@ -143,6 +143,44 @@ on init
     write /dev/cpuctl/bg_non_interactive/cpu.rt_runtime_us 700000
     write /dev/cpuctl/bg_non_interactive/cpu.rt_period_us 1000000
 
+    # sets up initial cpusets for ActivityManager
+    mkdir /dev/cpuset
+    mount cpuset none /dev/cpuset
+
+    # this ensures that the cpusets are present and usable, but the device's
+    # init.rc must actually set the correct cpus
+    mkdir /dev/cpuset/foreground
+    write /dev/cpuset/foreground/cpus 0-3
+    write /dev/cpuset/foreground/mems 0
+    mkdir /dev/cpuset/foreground/boost
+    write /dev/cpuset/foreground/boost/cpus 0-3
+    write /dev/cpuset/foreground/boost/mems 0
+    mkdir /dev/cpuset/background
+    write /dev/cpuset/background/cpus 0-1
+    write /dev/cpuset/background/mems 0
+
+    # system-background is for system tasks that should only run on
+    # little cores, not on bigs
+    # to be used only by init, so don't change system-bg permissions
+    mkdir /dev/cpuset/system-background
+    write /dev/cpuset/system-background/cpus 0-1
+    write /dev/cpuset/system-background/mems 0
+
+    # change permissions for all cpusets we'll touch at runtime
+    chown system system /dev/cpuset
+    chown system system /dev/cpuset/foreground
+    chown system system /dev/cpuset/foreground/boost
+    chown system system /dev/cpuset/background
+    chown system system /dev/cpuset/tasks
+    chown system system /dev/cpuset/foreground/tasks
+    chown system system /dev/cpuset/foreground/boost/tasks
+    chown system system /dev/cpuset/background/tasks
+    chmod 0664 /dev/cpuset/foreground/tasks
+    chmod 0664 /dev/cpuset/foreground/boost/tasks
+    chmod 0664 /dev/cpuset/background/tasks
+    chmod 0664 /dev/cpuset/tasks
+
+
     # qtaguid will limit access to specific data based on group memberships.
     #   net_bw_acct grants impersonation of socket owners.
     #   net_bw_stats grants access to other apps' detailed tagged-socket stats.
@@ -474,6 +512,7 @@ service logd /system/bin/logd
     socket logdr seqpacket 0666 logd logd
     socket logdw dgram 0222 logd logd
     seclabel u:r:logd:s0
+    writepid /dev/cpuset/system-background/tasks
 
 service healthd /sbin/healthd
     class core
@@ -510,6 +549,7 @@ service lmkd /system/bin/lmkd
     class core
     critical
     socket lmkd seqpacket 0660 system system
+    writepid /dev/cpuset/system-background/tasks
 
 service servicemanager /system/bin/servicemanager
     class core
@@ -536,9 +576,11 @@ service netd /system/bin/netd
 
 service debuggerd /system/bin/debuggerd
     class main
+    writepid /dev/cpuset/system-background/tasks
 
 service debuggerd64 /system/bin/debuggerd64
     class main
+    writepid /dev/cpuset/system-background/tasks
 
 service ril-daemon /system/bin/rild
     class main
@@ -552,6 +594,7 @@ service surfaceflinger /system/bin/surfaceflinger
     user system
     group graphics drmrpc
     onrestart restart zygote
+    writepid /dev/cpuset/system-background/tasks
 
 service drm /system/bin/drmserver
     class main
