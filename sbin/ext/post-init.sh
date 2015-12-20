@@ -126,7 +126,7 @@ fi;
 # just set numer $RESET_MAGIC + 1 and profiles will be reset one time on next boot with new kernel.
 # incase that ADMIN feel that something wrong with global STweaks config and profiles, then ADMIN can add +1 to CLEAN_ALU_DIR
 # to clean all files on first boot from /data/.alucard/ folder.
-RESET_MAGIC=2;
+RESET_MAGIC=3;
 CLEAN_ALU_DIR=1;
 
 if [ ! -e /data/.alucard/reset_profiles ]; then
@@ -350,8 +350,8 @@ fi;
 	else
 		echo "0" > /sys/kernel/mm/uksm/run;
 	fi;
-	echo "100" > /sys/kernel/mm/ksm/pages_to_scan;
 	echo "$sleep_millisecs" > /sys/kernel/mm/uksm/sleep_millisecs;
+	echo "10" > /sys/kernel/mm/uksm/max_cpu_percentage;
 
 	# stop core control if need to
 	echo "$core_control" > /sys/module/msm_thermal/core_control/core_control;
