@@ -782,6 +782,11 @@
 # Themes
 /data/system/theme(/.*)?  u:object_r:theme_data_file:s0
 
+/system/bin/sysinit       u:object_r:sysinit_exec:s0
+
+# For F2FS partitions marked "formattable"
+/system/bin/mkfs\.f2fs    u:object_r:mkfs_exec:s0
+
 #############################
 # performance-related sysfs files (CM)
 /sys/devices/system/cpu.*/cpufreq(/.*)? --  u:object_r:sysfs_devices_system_cpu:s0
@@ -792,3 +797,10 @@
 #############
 # Lockscreen wallpaper
 /data/system/users/[0-9]+/keyguard_wallpaper   u:object_r:wallpaper_file:s0
+
+# Persistent properties
+/persist/properties(/.*)?         u:object_r:persist_property_file:s0
+
+# fsck
+/system/bin/fsck\.ntfs                          u:object_r:fsck_exec:s0
+/system/bin/fsck\.exfat                         u:object_r:fsck_exec:s0
