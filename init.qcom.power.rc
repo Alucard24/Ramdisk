@@ -26,7 +26,8 @@
 #
 
 on early-init
-    setprop sys.perf.profile 1
+    setprop sys.io.scheduler noop
+    # setprop sys.perf.profile 1
 
 on charger
     mount ext4 /dev/block/platform/msm_sdcc.1/by-name/system /system wait ro
@@ -111,15 +112,19 @@ on property:sys.boot_completed=1
     write /sys/module/pm_8x60/modes/cpu2/standalone_power_collapse/idle_enabled 1
     write /sys/module/pm_8x60/modes/cpu3/standalone_power_collapse/idle_enabled 1
     write /sys/module/pm_8x60/modes/cpu0/power_collapse/idle_enabled 1
+    write /sys/module/msm_thermal/core_control/enabled 0
+    stop mpdecision
     chown system system /sys/devices/system/cpu/cpu1/online
     chown system system /sys/devices/system/cpu/cpu2/online
     chown system system /sys/devices/system/cpu/cpu3/online
     chmod 664 /sys/devices/system/cpu/cpu1/online
     chmod 664 /sys/devices/system/cpu/cpu2/online
     chmod 664 /sys/devices/system/cpu/cpu3/online
+    write /sys/devices/system/cpu/cpu0/online 1
     write /sys/devices/system/cpu/cpu1/online 1
     write /sys/devices/system/cpu/cpu2/online 1
     write /sys/devices/system/cpu/cpu3/online 1
+    write /sys/class/kgsl/kgsl-3d0/pwrscale/trustzone/governor ondemand
     # Set msm_mpdecision parameters
     write /sys/module/msm_mpdecision/slack_time_max_us 45000
     write /sys/module/msm_mpdecision/slack_time_min_us 15000
