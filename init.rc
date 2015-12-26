@@ -39,7 +39,6 @@ on init
 
     # Backward compatibility
     symlink /system/etc /etc
-    symlink /system/bin /bin
     symlink /sys/kernel/debug /d
 
     # Right now vendor lives on the same filesystem as system,
