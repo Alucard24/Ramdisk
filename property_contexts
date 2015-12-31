@@ -111,9 +111,8 @@ location.                  u:object_r:location_prop:s0
 persist.rmnet.mux          u:object_r:rmnet_mux_prop:s0
 qemu.hw.mainkeys           u:object_r:qemu_hw_mainkeys_prop:s0
 dbg.coresight.cfg_file     u:object_r:coresight_prop:s0
-#line 1 "device/samsung/jf-common/sepolicy/property_contexts"
+#line 1 "device/samsung/jflte/sepolicy/property_contexts"
 persist.sys.camera.preview	u:object_r:camera_prop:s0
-persist.sys.timeadjust		u:object_r:timekeep_prop:s0
 sys.qseecomd.enable		u:object_r:qseecomd_prop:s0
 #line 1 "vendor/aosp/sepolicy/property_contexts"
 #service.adb.tcp.port          u:object_r:adbtcp_prop:s0

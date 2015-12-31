@@ -315,11 +315,10 @@ on property:ro.baseband=sglte
     mkdir /data/misc/mdmhelperdata 0700
     start mdm_helper
 
-service timekeep /system/bin/timekeep restore
+service time_daemon /system/bin/time_daemon
     class late_start
     user root
     group root
-    oneshot
 
 # LEDify
 service ledify /system/bin/ledify
