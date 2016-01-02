@@ -88,6 +88,16 @@ on boot
     mkdir /dev/socket/qmux_gps 0770 gps gps
     chmod 2770 /dev/socket/qmux_gps
 
+    #Create PERFD deamon related dirs
+    mkdir /data/misc/perfd 0770 root system
+    chmod 2770 /data/misc/perfd
+    mkdir /data/system/perfd 0770 root system
+    chmod 2770 /data/system/perfd
+
+    setprop wifi.interface wlan0
+
+    setprop ro.telephony.call_ring.multiple false
+
     #Set SUID bit for usbhub
     #chmod 4755 /system/bin/usbhub
     #chmod 755 /system/bin/usbhub_init
@@ -443,11 +453,10 @@ service iprenew_bt-pan /system/bin/dhcpcd -n
     disabled
     oneshot
 
-#for WiFi MFG(TestMode)
-service mfgloader /system/bin/mfgloader
-    class main
-    disabled
-    oneshot
+service loc_launcher /system/bin/loc_launcher
+    #loc_launcher will start as root and set its uid to gps
+    class late_start
+    group gps qcom_oncrpc inet net_raw qcom_diag net_admin wifi
 
 service wlandutservice /system/bin/wlandutservice
     class main
