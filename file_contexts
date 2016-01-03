@@ -371,6 +371,7 @@
 /dev/pta                                        u:object_r:pta_device:s0
 /dev/mdss_rotator                               u:object_r:graphics_device:s0
 /dev/hbtp_input                                 u:object_r:hbtp_device:s0
+/dev/hbtp_vm                                    u:object_r:hbtp_device:s0
 /dev/jdi-bu21150                                u:object_r:bu21150_device:s0
 /dev/voice_svc                                  u:object_r:voice_device:s0
 /dev/avtimer                                    u:object_r:avtimer_device:s0
@@ -514,15 +515,17 @@
 /system/vendor/bin/slim_daemon                  u:object_r:location_exec:s0
 /system/bin/energy-awareness                    u:object_r:energyawareness_exec:s0
 /system/vendor/bin/fidodaemon                   u:object_r:fidodaemon_exec:s0
+/system/bin/secotad                             u:object_r:secotad_exec:s0
 /system/vendor/bin/qseeproxydaemon              u:object_r:qseeproxy_exec:s0
 /system/bin/dts_configurator                    u:object_r:dtsconfigurator_exec:s0
 /system/bin/dts_eagle_service                   u:object_r:dtseagleservice_exec:s0
 /system/vendor/bin/qti                          u:object_r:qti_exec:s0
 /system/bin/wcnss_service                       u:object_r:wcnss_service_exec:s0
 /system/vendor/bin/hbtp_daemon                  u:object_r:hbtp_exec:s0
-/system/vendor/bin/touch_fusion                 u:object_r:touchfusion_exec:s0
+/system/vendor/bin/seemp_healthd                u:object_r:seemp_health_daemon_exec:s0
 /system/bin/seempd                              u:object_r:seempd_exec:s0
 /system/bin/sapd                                u:object_r:sapd_exec:s0
+/system/bin/btnvtool                            u:object_r:btnvtool_exec:s0
 /system/bin/btsnoop                             u:object_r:btsnoop_exec:s0
 /system/bin/dun-server                          u:object_r:dun-server_exec:s0
 /system/bin/wfdservice                          u:object_r:wfdservice_exec:s0
@@ -540,6 +543,7 @@
 /system/bin/tbaseLoader                         u:object_r:tbaseLoader_exec:s0
 /system/bin/mcStarter                           u:object_r:mcStarter_exec:s0
 /system/bin/fstman                              u:object_r:fstman_exec:s0
+/system/vendor/bin/mdtp_service                 u:object_r:mdtpdaemon_exec:s0
 
 ###################################
 # sysfs files
@@ -594,6 +598,7 @@
 /data/rfs.*                                                         u:object_r:rfs_file:s0
 /data/hlos_rfs(/.*)?                                                u:object_r:rfs_shared_hlos_file:s0
 /data/camera(/.*)?                                                  u:object_r:camera_socket:s0
+/data/fdAlbum                                                       u:object_r:camera_data_file:s0
 /data/misc/stargate(/.*)?                                           u:object_r:qfp-daemon_data_file:s0
 /data/system/sensors(/.*)?                                          u:object_r:sensors_data_file:s0
 /data/time(/.*)?                                                    u:object_r:time_data_file:s0
@@ -627,6 +632,7 @@
 # persist files
 #
 /persist(/.*)?                                                      u:object_r:persist_file:s0
+/persist/bluetooth(/.*)?                                            u:object_r:persist_bluetooth_file:s0
 /persist/drm(/.*)?                                                  u:object_r:persist_drm_file:s0
 /persist/sensors(/.*)?                                              u:object_r:sensors_persist_file:s0
 /persist/data(/.*)?                                                 u:object_r:persist_drm_file:s0
@@ -724,11 +730,28 @@
 #
 /dev/msm_camera(/.*)?                           u:object_r:camera_device:s0
 /dev/msm_rotator                                u:object_r:graphics_device:s0
+/dev/mdp_arb                                    u:object_r:graphics_device:s0
 /dev/mdm                                        u:object_r:mdm_device:s0
-/dev/block/bootdevice/by-name/m9kefs1           u:object_r:efs_boot_dev:s0
-/dev/block/bootdevice/by-name/m9kefs2           u:object_r:efs_boot_dev:s0
-/dev/block/bootdevice/by-name/m9kefs3           u:object_r:efs_boot_dev:s0
-/dev/block/bootdevice/by-name/m9kefsc           u:object_r:efs_boot_dev:s0
+
+###################################
+# Block devices
+#
+/dev/block/mmcblk0                              u:object_r:root_block_device:s0
+/dev/block/mmcblk0rpmb                          u:object_r:rpmb_device:s0
+/dev/block/platform/msm_sdcc\.1/by-name/boot    u:object_r:boot_block_device:s0
+/dev/block/platform/msm_sdcc\.1/by-name/cache   u:object_r:cache_block_device:s0
+/dev/block/platform/msm_sdcc\.1/by-name/fsg     u:object_r:modem_efs_partition_device:s0
+/dev/block/platform/msm_sdcc\.1/by-name/fsc     u:object_r:modem_efs_partition_device:s0
+/dev/block/platform/msm_sdcc\.1/by-name/m9kefs1 u:object_r:efs_boot_dev:s0
+/dev/block/platform/msm_sdcc\.1/by-name/m9kefs2 u:object_r:efs_boot_dev:s0
+/dev/block/platform/msm_sdcc\.1/by-name/m9kefs3 u:object_r:efs_boot_dev:s0
+/dev/block/platform/msm_sdcc\.1/by-name/m9kefsc u:object_r:efs_boot_dev:s0
+/dev/block/platform/msm_sdcc\.1/by-name/misc    u:object_r:misc_partition:s0
+/dev/block/platform/msm_sdcc\.1/by-name/modemst1    u:object_r:modem_efs_partition_device:s0
+/dev/block/platform/msm_sdcc\.1/by-name/modemst2    u:object_r:modem_efs_partition_device:s0
+/dev/block/platform/msm_sdcc\.1/by-name/recovery    u:object_r:recovery_block_device:s0
+/dev/block/platform/msm_sdcc\.1/by-name/ssd     u:object_r:ssd_device:s0
+/dev/block/platform/msm_sdcc\.1/by-name/userdata    u:object_r:userdata_block_device:s0
 
 ###################################
 # System files
