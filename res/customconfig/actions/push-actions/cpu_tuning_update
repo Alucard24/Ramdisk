@@ -3,17 +3,18 @@
 (
 	/sbin/ext/cortexbrain-tune.sh apply_cpu update > /dev/null;
 
-	local SYSTEM_GOVERNOR_PATH=$(find /sys/devices/system/cpu/cpufreq/all_cpus/scaling_governor_cpu*);
-	local i="";
-	local PREV_SYSTEM_GOVERNOR="";
+	SYSTEM_GOVERNOR_PATH_TMP=$(find /sys/devices/system/cpu/cpufreq/all_cpus/scaling_governor_cpu*);
+	PREV_SYSTEM_GOVERNOR_TMP="";
+	i="";
+
 	rm /data/.alucard/cpu_status;
-	for i in $SYSTEM_GOVERNOR_PATH; do
-		local SYSTEM_GOVERNOR=$(cat "$i");
-		if [ "$(echo "$PREV_SYSTEM_GOVERNOR" | grep "$SYSTEM_GOVERNOR" | wc -l)" -lt "1" ]; then
-			PREV_SYSTEM_GOVERNOR=$(printf "%s $SYSTEM_GOVERNOR" "$PREV_SYSTEM_GOVERNOR");
-			if [ -d /sys/devices/system/cpu/cpufreq/$SYSTEM_GOVERNOR ]; then
-				cd /sys/devices/system/cpu/cpufreq/$SYSTEM_GOVERNOR/;
-				echo "Tuning applied to '$SYSTEM_GOVERNOR' core!" >> /data/.alucard/cpu_status;
+	for i in $SYSTEM_GOVERNOR_PATH_TMP; do
+		SYSTEM_GOVERNOR_TMP=$(cat "$i");
+		if [ "$(echo "$PREV_SYSTEM_GOVERNOR_TMP" | grep "$SYSTEM_GOVERNOR_TMP" | wc -l)" -lt "1" ]; then
+			PREV_SYSTEM_GOVERNOR_TMP=$(printf "%s $SYSTEM_GOVERNOR_TMP" "$PREV_SYSTEM_GOVERNOR_TMP");
+			if [ -d /sys/devices/system/cpu/cpufreq/$SYSTEM_GOVERNOR_TMP ]; then
+				cd /sys/devices/system/cpu/cpufreq/$SYSTEM_GOVERNOR_TMP/;
+				echo "Tuning applied to '$SYSTEM_GOVERNOR_TMP' core!" >> /data/.alucard/cpu_status;
 				grep "." * >> /data/.alucard/cpu_status;
 				cd /;
 			fi;
