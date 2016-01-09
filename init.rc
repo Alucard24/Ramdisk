@@ -684,6 +684,7 @@ service installd /system/bin/installd
 service flash_recovery /system/bin/install-recovery.sh
     class main
     oneshot
+    disabled
 
 service racoon /system/bin/racoon
     class main
