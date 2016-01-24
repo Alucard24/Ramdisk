@@ -38,7 +38,7 @@
 
 		<checkbox description="Enable ARCH_POWER." name="ARCH_POWER" action="generic01 /sys/kernel/sched/arch_power" label="ARCH_POWER"/>
 
-		<checkbox description="Enable or disable Power-efficient Workqueues will help to reduce power consumption at the cost of slight performance overhead. By enabling this, PE workqueues are used for unbound scheduled work to save load on sibling CPU cores and queuing work on CPU 0." name="Power-efficient Workqueues"  action="generic01 /sys/module/workqueue/parameters/power_efficient" label="Power-efficient Workqueues"/>
+		<checkbox description="Enable or disable Power-efficient work queues will help to reduce power consumption at the cost of slight performance overhead. By enabling this, PE work queues are used for unbound scheduled work to save load on sibling CPU cores and queuing work on CPU 0." name="Power-efficient work queues"  action="generic01 /sys/module/workqueue/parameters/power_efficient" label="Power-efficient work queues"/>
 
 		<seekBar description="Maximum CPUs speed while using GPS. (Default: 1242.000 kHz)." name="scaling_max_gps_freq" action="genericfreq /sys/kernel/cpufreq_limit_manager/scaling_max_gps_freq" unit="kHz" min="810000" reversed="false" step="108000" max="1890000"/>
 
@@ -310,7 +310,7 @@
 
 	<settingsPane description="Tune in Common" name="Common">
 
-		<spinner description="CPU HotPlug Suspend Control - you can allow hotplug to be suspended when screen is OFF to save little more power on deepsleep, then resume when screen is ON, BUT it's will DELAY In Call screen wakeup! for 3sec as when screen is OFF, you have only ONE core active with suspend mode. also using suspend mode can prevent wake up for some devices for unknown reason!!!. so if you wish to test suspend mode go ahead, if you get SOD switch to Always Active mode and stay there (default mode). for many it's working fine. this is for all kernel hotplugs, default hotplug is not supported." name="Hot Plug Suspend Mode" action="hotplug_suspend">
+		<spinner description="CPU HotPlug Suspend Control - you can allow hotplug to be suspended when screen is OFF to save little more power on deepsleep, then resume when screen is ON, BUT it will DELAY In Call screen wakeup! for 3sec as when screen is OFF, you have only ONE core active with suspend mode. also using suspend mode can prevent wake up for some devices for unknown reason!!!. so if you wish to test suspend mode go ahead, if you get SOD switch to Always Active mode and stay there (default mode). for many it's working fine. this is for all kernel hotplugs, default hotplug is not supported." name="Hot Plug Suspend Mode" action="hotplug_suspend">
 			<spinnerItem name="Always Active" value="always_active"/> 
 			<spinnerItem name="HotPlug Suspend" value="suspend_when_off"/> 
 		</spinner>
@@ -333,7 +333,7 @@
 			<spinnerItem name="Intelli Temp Control Dual" value="intelli_temp_dual"/>
 		</spinner>
 
-		<spinner description="Hotplug CPU Thermal control main switch, this allow to shutdown cores 1,2,3 and leave core 0 as main core on high frequency. but it's reduces global performance on high temp, if set disabled then all CPU cores will be online and operate at lower frequencies when the temperature is high!" name="HotPlug Thermal CPU Control" action="generic /sys/module/msm_thermal/core_control/core_control">
+		<spinner description="Hotplug CPU Thermal control main switch, this allow to shutdown cores 1,2,3 and leave core 0 as main core on high frequency. but it reduces global performance on high temp, if set disabled then all CPU cores will be online and operate at lower frequencies when the temperature is high!" name="HotPlug Thermal CPU Control" action="generic /sys/module/msm_thermal/core_control/core_control">
 			<spinnerItem name="Enabled" value="1"/> 
 			<spinnerItem name="Disabled" value="0"/> 
 		</spinner>
@@ -480,9 +480,9 @@
 
 		<seekBar description="Adaptive LMK trigger point, when ram pressure is higher than set here, LMK is ordered to release RAM fast and allow fast load of something BIG to memory, we see it as fast app load and less LAG. lower the value, then more apps killed from RAM and with less actual need. for best performance keep it in range of 85 to 90%" name="Adaptive LMK Pressure Range" action="generic /sys/module/lowmemorykiller/parameters/vm_pressure_adaptive_start" unit="%" min="75" reversed="false" step="1" max="94"/>
 
-		<checkbox description="Control for kernel process memory reclaim, it's help to reduce used RAM of each APP that loaded in backgroung. when vm memory pressure jump higher and system needs RAM for something BIG to load, process reclaim start to shrink used RAM by backgroung APPS, it's also shrink the ZRAM swap if enabled in order to reduce cpu power usage if RAM is free." name="Process Memory Reclaim" action="generic01 /sys/module/process_reclaim/parameters/enable_process_reclaim" label="Process Reclaim"/>
+		<checkbox description="Control for kernel process memory reclaim, it help to reduce used RAM of each APP that loaded in background. when vm memory pressure jump higher and system needs RAM for something BIG to load, process reclaim start to shrink used RAM by background APPS, it also shrink the ZRAM swap if enabled in order to reduce cpu power usage if RAM is free." name="Process Memory Reclaim" action="generic01 /sys/module/process_reclaim/parameters/enable_process_reclaim" label="Process Reclaim"/>
 
-		<seekBar description="Control for max vm pressure for process memory reclaim, allow to shrink RAM from other apps when vm pressure is in range from 50 to set here value. when value is lower that default (80), then less ram shrinked when there is something BIG should be loaded to RAM, it's will reduce CPU usage when loading big app. but load it slower as memory should be free first by LMK." name="Max Process Reclaim Pressure" action="generic /sys/module/process_reclaim/parameters/pressure_max" unit="%" min="75" reversed="false" step="1" max="100"/>
+		<seekBar description="Control for max vm pressure for process memory reclaim, allow to shrink RAM from other apps when vm pressure is in range from 50 to set here value. when value is lower that default (80), then less ram shrink when there is something BIG should be loaded to RAM, it will reduce CPU usage when loading big app. but load it slower as memory should be free first by LMK." name="Max Process Reclaim Pressure" action="generic /sys/module/process_reclaim/parameters/pressure_max" unit="%" min="75" reversed="false" step="1" max="100"/>
 
 		<spinner description="Set the level of low mem management by kernel lowmemkiller function. More aggressive, equals more free RAM but more killed apps." name="OOM Level Screen ON" action="oom_config_screen_on">
 			<spinnerItem name="medium" value="medium"/> 
@@ -498,7 +498,7 @@
 			<spinnerItem name="exterminate" value="exterminate"/> 
 		</spinner>
 
-		<spinner description="Here you can set the low memory reserve ratio, higher ratio give you more free RAM if you see that your free RAM is always loaded and device LAG, but it's also uses more battery to gain more free RAM with loaded system. use relaxed ONLY if your free RAM is above 650MB always! if less than 280MB use recommended or high pressure." name="Low Memory Reserve" action="lowmem_reserve">
+		<spinner description="Here you can set the low memory reserve ratio, higher ratio give you more free RAM if you see that your free RAM is always loaded and device LAG, but it also uses more battery to gain more free RAM with loaded system. use relaxed ONLY if your free RAM is above 650MB always! if less than 280MB use recommended or high pressure." name="Low Memory Reserve" action="lowmem_reserve">
 			<spinnerItem name="Relaxed" value="relaxed"/>
 			<spinnerItem name="Default" value="default"/>
 			<spinnerItem name="Recommended" value="boosted"/>
@@ -515,16 +515,16 @@
 
 	</settingsPane>
 
-	<settingsPane description="Control ZRAM module, it's take real RAM and compress it by 40% and create much more FREE RAM for apps to use! more RAM allocated for zram then more given to user. but in cost of CPU power and some battery, when switching ZRAM size from one to other after some time, this will take TIME! more than 2min! and Dorimanx app will FREEZE! DO NOT PANIC! WAIT. you can just switch to home and open synapse and watch how memory is decompressed and ZRAM turned off. do not kill the app. just WAIT!" name="ZRAM">
+	<settingsPane description="Control ZRAM module, it takes real RAM and compress it by 40% and create much more FREE RAM for apps to use! more RAM allocated for zram then more given to user. but in cost of CPU power and some battery, when switching ZRAM size from one to other after some time, this will take TIME! more than 2min! and Dorimanx app will FREEZE! DO NOT PANIC! WAIT. you can just switch to home and open synapse and watch how memory is decompressed and ZRAM turned off. do not kill the app. just WAIT!" name="ZRAM">
 
-		<spinner description="ZRAM disksize controller. more set, more free RAM you will get, in cost of CPU power. but it's low usage. and device is operating GREAT. this is memory based module, so storage is not killed over time. you can see how it's works in synapse app! Compression is LZ4, PLEASE read instruction ABOVE about WAITING for selector to switch from one size to other after long usage!!!" name="ZRAM Selector" action="zramtweaks">
+		<spinner description="ZRAM size controller. more set, more free RAM you will get, in cost of CPU power. but it's low usage. and device is operating GREAT. this is memory based module, so storage is not killed over time. you can see how it works in synapse app! Compression is LZ4, PLEASE read instruction ABOVE about WAITING for selector to switch from one size to other after long usage!!!" name="ZRAM Selector" action="zramtweaks">
 			<spinnerItem name="ZRAM 768MB" value="768"/>
 			<spinnerItem name="ZRAM 512MB" value="512"/>
 			<spinnerItem name="ZRAM 256MB" value="256"/>
 			<spinnerItem name="ZRAM OFFLINE" value="0"/>
 		</spinner>
 
-		<seekBar description="Control for ZRAM Swap allocation, when you set higher here, ZRAM will be used more insted of real RAM and give you more RAM! with light cost of performance (default 60)" name="Swappiness" action="generic /proc/sys/vm/swappiness" unit="%" min="30" reversed="false" step="5" max="95"/>
+		<seekBar description="Control for ZRAM Swap allocation, when you set higher here, ZRAM will be used more instead of real RAM and give you more RAM! with light cost of performance (default 60)" name="Swappiness" action="generic /proc/sys/vm/swappiness" unit="%" min="30" reversed="false" step="5" max="95"/>
 
 	</settingsPane>
 
@@ -532,14 +532,14 @@
 
 			<checkbox description="UKSM Enable and Disable main switch. (default ON)" name="Ultra Kernel Samepage Merging" action="generic01 /sys/kernel/mm/uksm/run" label="UKSM Switch"/>
 
-			<spinner description="UKSM CPU Governor power when screen is ON, you can set high or low operation to scan and share memory accross apps. (default is medium)" name="UKSM CPU AWAKE GOV" action="uksm_gov_on">
+			<spinner description="UKSM CPU Governor power when screen is ON, you can set high or low operation to scan and share memory across apps. (default is medium)" name="UKSM CPU AWAKE GOV" action="uksm_gov_on">
 				<spinnerItem name="Full Power" value="full"/> 
 				<spinnerItem name="Medium Power" value="medium"/> 
 				<spinnerItem name="Low Power" value="low"/> 
 				<spinnerItem name="No Power (idle)" value="quiet"/> 
 			</spinner>
 
-			<spinner description="UKSM CPU Governor power when screeen is OFF, you can set high or low operation to scan and share memory accross apps. (default is No Power)" name="UKSM CPU SLEEP GOV" action="generic_cortex /tmp/uksm_gov_sleep">
+			<spinner description="UKSM CPU Governor power when screen is OFF, you can set high or low operation to scan and share memory across apps. (default is No Power)" name="UKSM CPU SLEEP GOV" action="generic_cortex /tmp/uksm_gov_sleep">
 				<spinnerItem name="Full Power" value="full"/> 
 				<spinnerItem name="Medium Power" value="medium"/> 
 				<spinnerItem name="Low Power" value="low"/> 
@@ -690,7 +690,7 @@
 
 		<button description="Click here to see current SELINUX status! ON or OFF globaly. default is OFF, you can turn it ON with button below." name="SELINUX STATUS CHECK" action="push-actions/selinux_check" label="SELINUX STATUS CHECK"/>
 
-		<button description="Click here to Enable or Disable Selinux Driver in Kernel! if selinux is OFF apps may get access to files in system but not change them, BUT if you have ROOT, they can! with or without selinux. if SELINUX is disabled! (default set on boot) then life is good! and all works! no problems with GSM connection or access permissions with differnt apps. when you push this button ONCE, kernel command line is updated and current kernel is reinstalled by auto!. so dont play with this too much. to see the change you need to REBOOT! then you can check using check button above! WARNING some USER apps loose some or all data! (mostly configurations) as permissions change. do app backup before switching selinux to ENABLE! no problem with DISABLE, when you will reboot Dalvik Cache will be cleaned and kernel will reboot! dont panic. wait for apps to be optimized." name="SELINUX ON OFF CONTROL" action="push-actions/selinux_switch" label="SELINUX HARD ON OFF"/>
+		<button description="Click here to Enable or Disable Selinux Driver in Kernel! if selinux is OFF apps may get access to files in system but not change them, BUT if you have ROOT, they can! with or without selinux. if SELINUX is disabled! (default set on boot) then life is good! and all works! no problems with GSM connection or access permissions with different apps. when you push this button ONCE, kernel command line is updated and current kernel is reinstalled by auto!. so dont play with this too much. to see the change you need to REBOOT! then you can check using check button above! WARNING some USER apps loose some or all data! (mostly configurations) as permissions change. do app backup before switching selinux to ENABLE! no problem with DISABLE, when you will reboot Dalvik Cache will be cleaned and kernel will reboot! dont panic. wait for apps to be optimized." name="SELINUX ON OFF CONTROL" action="push-actions/selinux_switch" label="SELINUX HARD ON OFF"/>
 
 		<spinner description="Allows you to change your SELinux (Security-Enhanced Linux) Status from Enforcing (policy is enforced) to Permissive (prints warnings instead of enforcing)." name="SeLinux Control" action="selinux_control">
 			<spinnerItem name="Enforcing" value="on"/> 
@@ -780,7 +780,7 @@
 
 	<settingsPane description="This script will manipulate many kernel settings, based on chosen STweaks profile + settings and on screen state (ON or OFF) and we call it CortexBrain. To reset the kernel-settings, after you disable a tweak, you must reboot!" name="CortexBrain Tweaks">
 
-		<spinner description="Enable or Disable the background-process from CortexBrain. If you disable it, you will lose the function that set different settings for screen state (ON or OFF)." name="Cortexbrain-Background-Process" action="cortexbrain_background_process">
+		<spinner description="Enable or Disable the background-process from CortexBrain. If you disable it, you will lose the function that set different settings for screen state (ON or OFF)." name="CortexBrain-Background-Process" action="cortexbrain_background_process">
 			<spinnerItem name="Enable" value="1"/> 
 			<spinnerItem name="Disable" value="0"/> 
 		</spinner>
