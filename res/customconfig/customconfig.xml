@@ -247,15 +247,15 @@
 
 		<seekBar description="Number of samples to evaluate cpu1 hotplug in. (Default: 1)" name="hotplug_rate_1_1" action="generic /sys/kernel/alucard_hotplug/hotplug_rate_1_1" unit="int" min="1" reversed="false" step="1" max="10"/>
 
-		<seekBar description="Number of samples to evaluate cpu1 hotplug out. (Default: 5)" name="hotplug_rate_2_0" action="generic /sys/kernel/alucard_hotplug/hotplug_rate_2_0" unit="int" min="1" reversed="false" step="1" max="10"/>
+		<seekBar description="Number of samples to evaluate cpu1 hotplug out. (Default: 2)" name="hotplug_rate_2_0" action="generic /sys/kernel/alucard_hotplug/hotplug_rate_2_0" unit="int" min="1" reversed="false" step="1" max="10"/>
 
 		<seekBar description="Number of samples to evaluate cpu2 hotplug in. (Default: 2)" name="hotplug_rate_2_1" action="generic /sys/kernel/alucard_hotplug/hotplug_rate_2_1" unit="int" min="1" reversed="false" step="1" max="10"/>
 
-		<seekBar description="Number of samples to evaluate cpu2 hotplug out. (Default: 5)" name="hotplug_rate_3_0" action="generic /sys/kernel/alucard_hotplug/hotplug_rate_3_0" unit="int" min="1" reversed="false" step="1" max="10"/>
+		<seekBar description="Number of samples to evaluate cpu2 hotplug out. (Default: 2)" name="hotplug_rate_3_0" action="generic /sys/kernel/alucard_hotplug/hotplug_rate_3_0" unit="int" min="1" reversed="false" step="1" max="10"/>
 
 		<seekBar description="Number of samples to evaluate cpu3 hotplug in. (Default: 2)" name="hotplug_rate_3_1" action="generic /sys/kernel/alucard_hotplug/hotplug_rate_3_1" unit="int" min="1" reversed="false" step="1" max="10"/>
 
-		<seekBar description="Number of samples to evaluate cpu3 hotplug out. (Default: 5)" name="hotplug_rate_4_0" action="generic /sys/kernel/alucard_hotplug/hotplug_rate_4_0" unit="int" min="1" reversed="false" step="1" max="10"/>
+		<seekBar description="Number of samples to evaluate cpu3 hotplug out. (Default: 2)" name="hotplug_rate_4_0" action="generic /sys/kernel/alucard_hotplug/hotplug_rate_4_0" unit="int" min="1" reversed="false" step="1" max="10"/>
 
 		<seekBar description="Up threshold frequency to turn second core On, when some other conditions is also met. ie If (minimum frequency greater than or equal to hotplug_freq 1 1) Hotplug IN Second Core. Higher value corresponds to delay in turning on second core. (Default: 1242.000 kHz)" name="hotplug_freq_1_1" action="genericfreq /sys/kernel/alucard_hotplug/hotplug_freq_1_1" unit="kHz" min="378000" reversed="false" step="108000" max="1890000"/>
 
@@ -289,9 +289,9 @@
 
 		<seekBar description="Threshold run queue length for third core to turn off. (Default: 150)" name="hotplug_rq_3_0" action="generic /sys/kernel/alucard_hotplug/hotplug_rq_3_0" unit="uint" min="0" reversed="false" step="25" max="3000"/>
 
-		<seekBar description="Threshold run queue length for fourth core to turn on. (Default: 200)" name="hotplug_rq_3_1" action="generic /sys/kernel/alucard_hotplug/hotplug_rq_3_1" unit="uint" min="0" reversed="false" step="25" max="3000"/>
+		<seekBar description="Threshold run queue length for fourth core to turn on. (Default: 150)" name="hotplug_rq_3_1" action="generic /sys/kernel/alucard_hotplug/hotplug_rq_3_1" unit="uint" min="0" reversed="false" step="25" max="3000"/>
 
-		<seekBar description="Threshold run queue length for fourth core to turn off. (Default: 200)" name="hotplug_rq_4_0" action="generic /sys/kernel/alucard_hotplug/hotplug_rq_4_0" unit="uint" min="0" reversed="false" step="25" max="3000"/>
+		<seekBar description="Threshold run queue length for fourth core to turn off. (Default: 150)" name="hotplug_rq_4_0" action="generic /sys/kernel/alucard_hotplug/hotplug_rq_4_0" unit="uint" min="0" reversed="false" step="25" max="3000"/>
 
 		<seekBar description="Max CPU's hotplugging limit. (Default: 4)" name="maxcoreslimit" action="generic /sys/kernel/alucard_hotplug/maxcoreslimit" unit="int" min="1" reversed="false" step="1" max="4"/>
 
