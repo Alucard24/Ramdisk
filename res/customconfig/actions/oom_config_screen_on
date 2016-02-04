@@ -23,6 +23,10 @@ if [ "$AUTO_OOM" -eq "1" ]; then
 			echo "18432,23040,27648,32356,46080,51200" > /sys/module/lowmemorykiller/parameters/minfree;
 			echo "32" > /sys/module/lowmemorykiller/parameters/cost;
 		;;
+		stock)
+			echo "18432,23040,27648,32356,49152,61440" > /sys/module/lowmemorykiller/parameters/minfree;
+			echo "32" > /sys/module/lowmemorykiller/parameters/cost;
+		;;
 		aggressive)
 			echo "18432,23040,27648,34816,51200,65536" > /sys/module/lowmemorykiller/parameters/minfree;
 			echo "16" > /sys/module/lowmemorykiller/parameters/cost;
