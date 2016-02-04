@@ -486,14 +486,16 @@
 
 		<spinner description="Set the level of low mem management by kernel lowmemkiller function. More aggressive, equals more free RAM but more killed apps." name="OOM Level Screen ON" action="oom_config_screen_on">
 			<spinnerItem name="medium" value="medium"/> 
-			<spinnerItem name="default" value="default"/> 
+			<spinnerItem name="Alu default" value="default"/>
+			<spinnerItem name="Stock ROM" value="stock"/>
 			<spinnerItem name="aggressive" value="aggressive"/> 
 			<spinnerItem name="exterminate" value="exterminate"/> 
 		</spinner>
 
 		<spinner description="Set the level of low mem management by kernel lowmemkiller function. More aggressive equals more free RAM but more killed apps." name="OOM Level Screen OFF" action="oom_config_screen_off">
 			<spinnerItem name="medium" value="medium"/> 
-			<spinnerItem name="default" value="default"/> 
+			<spinnerItem name="Alu default" value="default"/>
+			<spinnerItem name="Stock ROM" value="stock"/>
 			<spinnerItem name="aggressive" value="aggressive"/> 
 			<spinnerItem name="exterminate" value="exterminate"/> 
 		</spinner>
