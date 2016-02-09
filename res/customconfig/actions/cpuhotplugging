@@ -6,12 +6,12 @@
 
 BB=/sbin/busybox
 
-if [ -e /system/bin/mpdecision ]; then
-	if [ "$(pgrep -f "/system/bin/mpdecision" | wc -l)" -eq "0" ]; then
-		/system/bin/start mpdecision
-		$BB renice -n -20 -p "$(pgrep -f "/system/bin/mpdecision")";
-	fi;
-fi;
+#if [ -e /system/bin/mpdecision ]; then
+#	if [ "$(pgrep -f "/system/bin/mpdecision" | wc -l)" -eq "0" ]; then
+#		/system/bin/start mpdecision
+#		$BB renice -n -20 -p "$(pgrep -f "/system/bin/mpdecision")";
+#	fi;
+#fi;
 
 if [ "$(pgrep -f "/system/bin/thermal-engine" | wc -l)" -eq "1" ]; then
 	$BB renice -n -20 -p "$(pgrep -f "/system/bin/thermal-engine")";
@@ -30,7 +30,7 @@ if [ "a$2" != "a" ]; then
 				/system/bin/stop mpdecision
 				/system/bin/start mpdecision
 				$BB renice -n -20 -p "$(pgrep -f "/system/bin/mpdecision")";
-				echo "20" > /sys/devices/system/cpu/cpu0/rq-stats/run_queue_poll_ms;
+				echo "10" > /sys/devices/system/cpu/cpu0/rq-stats/run_queue_poll_ms;
 			else
 				echo "0" > /sys/devices/system/cpu/cpu0/rq-stats/hotplug_enable;
 				echo "1" > /sys/module/msm_hotplug/msm_enabled;
@@ -41,18 +41,27 @@ if [ "a$2" != "a" ]; then
 			echo "0" > /sys/module/msm_hotplug/msm_enabled;
 			echo "0" > /sys/devices/system/cpu/cpu0/rq-stats/hotplug_enable;
 			echo "1" > /sys/kernel/intelli_plug/intelli_plug_active;
+			if [ -e /system/bin/mpdecision ]; then
+				/system/bin/stop mpdecision
+			fi;
 		;;
 		3)
 			echo "0" > /sys/kernel/intelli_plug/intelli_plug_active;
 			echo "0" > /sys/module/msm_hotplug/msm_enabled;
 			echo "0" > /sys/devices/system/cpu/cpu0/rq-stats/hotplug_enable;
 			echo "1" > /sys/kernel/alucard_hotplug/hotplug_enable;
+			if [ -e /system/bin/mpdecision ]; then
+				/system/bin/stop mpdecision
+			fi;
 		;;
 		4)
 			echo "0" > /sys/kernel/intelli_plug/intelli_plug_active;
 			echo "0" > /sys/kernel/alucard_hotplug/hotplug_enable;
 			echo "0" > /sys/devices/system/cpu/cpu0/rq-stats/hotplug_enable;
 			echo "1" > /sys/module/msm_hotplug/msm_enabled;
+			if [ -e /system/bin/mpdecision ]; then
+				/system/bin/stop mpdecision
+			fi;
 		;;
 		*)
 			cpuhotplugging=3;
