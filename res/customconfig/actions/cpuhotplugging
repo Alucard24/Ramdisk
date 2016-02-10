@@ -13,10 +13,6 @@ BB=/sbin/busybox
 #	fi;
 #fi;
 
-if [ "$(pgrep -f "/system/bin/thermal-engine" | wc -l)" -eq "1" ]; then
-	$BB renice -n -20 -p "$(pgrep -f "/system/bin/thermal-engine")";
-fi;
-
 if [ "a$2" != "a" ]; then
 	cpuhotplugging=$2;
 
