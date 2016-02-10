@@ -146,10 +146,6 @@ CPU_HOTPLUG_TWEAKS()
 {
 	local state="$1";
 
-	if [ "$(pgrep -f "/system/bin/thermal-engine" | wc -l)" -eq "1" ]; then
-		$BB renice -n -20 -p "$(pgrep -f "/system/bin/thermal-engine")";
-	fi;
-
 	if [ "$cpuhotplugging" -eq "1" ]; then
 		if [ -e /system/bin/mpdecision ]; then
 			if [ "$(pgrep -f "/system/bin/mpdecision" | wc -l)" -eq "0" ]; then
