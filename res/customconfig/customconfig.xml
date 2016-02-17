@@ -446,9 +446,7 @@
 			<spinnerItem name="NOOP" value="noop"/> 
 			<spinnerItem name="ROW" value="row"/> 
 			<spinnerItem name="SIOPLUS" value="sioplus"/> 
-			<spinnerItem name="FIFO" value="fifo"/> 
 			<spinnerItem name="FIOPS" value="fiops"/> 
-			<spinnerItem name="VR" value="vr"/> 
 			<spinnerItem name="ZEN" value="zen"/> 
 		</spinner>
 
@@ -459,9 +457,7 @@
 			<spinnerItem name="NOOP" value="noop"/> 
 			<spinnerItem name="ROW" value="row"/> 
 			<spinnerItem name="SIOPLUS" value="sioplus"/> 
-			<spinnerItem name="FIFO" value="fifo"/> 
 			<spinnerItem name="FIOPS" value="fiops"/> 
-			<spinnerItem name="VR" value="vr"/> 
 			<spinnerItem name="ZEN" value="zen"/> 
 		</spinner>
 
