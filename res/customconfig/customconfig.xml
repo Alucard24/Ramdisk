@@ -697,7 +697,7 @@
 
 		<button description="Click here to see current SELINUX status! ON or OFF globaly. default is OFF, you can turn it ON with button below." name="SELINUX STATUS CHECK" action="push-actions/selinux_check" label="SELINUX STATUS CHECK"/>
 
-		<button description="Click here to Enable or Disable Selinux Driver in Kernel! if selinux is OFF apps may get access to files in system but not change them, BUT if you have ROOT, they can! with or without selinux. if SELINUX is disabled! (default set on boot) then life is good! and all works! no problems with GSM connection or access permissions with different apps. when you push this button ONCE, kernel command line is updated and current kernel is reinstalled by auto!. so dont play with this too much. to see the change you need to REBOOT! then you can check using check button above! WARNING some USER apps loose some or all data! (mostly configurations) as permissions change. do app backup before switching selinux to ENABLE! no problem with DISABLE, when you will reboot Dalvik Cache will be cleaned and kernel will reboot! dont panic. wait for apps to be optimized." name="SELINUX ON OFF CONTROL" action="push-actions/selinux_switch" label="SELINUX HARD ON OFF"/>
+		<button description="Touch here to Enable or Disable Selinux Driver. If selinux is OFF apps may get access to files in system but not changed them. With ROOT access they can (with or without selinux). If SELINUX is disabled (Default: set on boot) then life is good and all works with no problems with GSM connection or access permissions with different apps. When you push this button ONCE, kernel command line will be updated and current kernel will reinstall automatic. To see changes you'll need to REBOOT! Then you can check using check button above. WARNING some USER apps loose some or all data (mostly configurations) when permissions changed! Do backup before change selinux to ENABLE! When you'll reboot Dalvik Cache will be cleared out and kernel will reboot. Wait for apps to be optimized." name="SELINUX ON OFF CONTROL" action="push-actions/selinux_switch" label="SELINUX HARD ON OFF"/>
 
 		<spinner description="Allows you to change your SELinux (Security-Enhanced Linux) Status from Enforcing (policy is enforced) to Permissive (prints warnings instead of enforcing)." name="SeLinux Control" action="selinux_control">
 			<spinnerItem name="Enforcing" value="on"/> 
@@ -787,7 +787,7 @@
 
 	<settingsPane description="This script will manipulate many kernel settings, based on chosen STweaks profile + settings and on screen state (ON or OFF) and we call it CortexBrain. To reset the kernel-settings, after you disable a tweak, you must reboot!" name="CortexBrain Tweaks">
 
-		<spinner description="Enable or Disable the background-process from CortexBrain. If you disable it, you will lose the function that set different settings for screen state (ON or OFF)." name="CortexBrain-Background-Process" action="cortexbrain_background_process">
+		<spinner description="Enable the background-process from CortexBrain. Disabling it means, losing the functions that sets different settings for screen state (ON/OFF)." name="CortexBrain-Background-Process" action="cortexbrain_background_process">
 			<spinnerItem name="Enable" value="1"/> 
 			<spinnerItem name="Disable" value="0"/> 
 		</spinner>
