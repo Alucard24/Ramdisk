@@ -295,6 +295,9 @@ FORCE_CPUS_ONOFF()
 		if [ "$(cat /sys/devices/system/cpu/cpu0/rq-stats/hotplug_enable)" -eq "1" ]; then
 			echo "0" > /sys/devices/system/cpu/cpu0/rq-stats/hotplug_enable;
 		fi;
+		if [ -e /system/bin/mpdecision ]; then
+			/system/bin/stop mpdecision
+		fi;
 		echo "1" > /sys/devices/system/cpu/cpu1/online;
 		echo "1" > /sys/devices/system/cpu/cpu2/online;
 		echo "1" > /sys/devices/system/cpu/cpu3/online;
@@ -310,6 +313,9 @@ FORCE_CPUS_ONOFF()
 		fi;
 		if [ "$(cat /sys/devices/system/cpu/cpu0/rq-stats/hotplug_enable)" -eq "1" ]; then
 			echo "0" > /sys/devices/system/cpu/cpu0/rq-stats/hotplug_enable;
+		fi;
+		if [ -e /system/bin/mpdecision ]; then
+			/system/bin/stop mpdecision
 		fi;
 		echo "0" > /sys/devices/system/cpu/cpu1/online;
 		echo "0" > /sys/devices/system/cpu/cpu2/online;
