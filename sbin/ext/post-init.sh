@@ -5,7 +5,9 @@
 BB=/sbin/busybox
 
 # protect init from oom
-echo "-1000" > /proc/1/oom_score_adj;
+if [ -f /system/xbin/su ]; then
+	su -c echo "-1000" > /proc/1/oom_score_adj;
+fi;
 
 # clean dalvik after selinux change.
 if [ -e /data/.alucard/selinux_mode ]; then
@@ -362,3 +364,10 @@ fi;
 
 	$BB mount -o remount,ro /system;
 )&
+
+# Stop LG logging to /data/logger/$FILE we dont need that. draning power.
+setprop persist.service.events.enable 0
+setprop persist.service.main.enable 0
+setprop persist.service.power.enable 0
+setprop persist.service.radio.enable 0
+setprop persist.service.system.enable 0
