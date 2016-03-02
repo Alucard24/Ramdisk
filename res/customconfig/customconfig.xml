@@ -14,21 +14,149 @@
 
 	<settingsPane description="The following settings are for all global CPU configuration, use it only if you know what you are doing." name="CPU Global Settings">
 
-		<seekBar description="Maximum CPU-Speed for CPU0. CPU Frequency steps by 108.000 kHz, from 378.000 kHz to 1.890.000 kHz! (Default: 1.890.000 kHz)" name="Max Normal Frequency" action="scaling_max_freq_cpu0" unit="kHz" min="378000" reversed="false" step="108000" max="1890000"/>
+		<spinner description="Maximum CPU-Speed for CPU0. CPU Frequency steps from 384.000 kHz to 1.890.000 kHz! (Default: 1.890.000 kHz)" name="Max Normal Frequency" action="scaling_max_freq_cpu0">
+			<spinnerItem name="1.890.000 kHz" value="1890000"/> 
+			<spinnerItem name="1.782.000 kHz" value="1782000"/> 
+			<spinnerItem name="1.674.000 kHz" value="1674000"/> 
+			<spinnerItem name="1.566.000 kHz" value="1566000"/> 
+			<spinnerItem name="1.458.000 kHz" value="1458000"/> 
+			<spinnerItem name="1.350.000 kHz" value="1350000"/> 
+			<spinnerItem name="1.242.000 kHz" value="1242000"/> 
+			<spinnerItem name="1.134.000 kHz" value="1134000"/> 
+			<spinnerItem name="1.026.000 kHz" value="1026000"/> 
+			<spinnerItem name="918.000 kHz" value="918000"/> 
+			<spinnerItem name="810.000 kHz" value="810000"/> 
+			<spinnerItem name="702.000 kHz" value="702000"/> 
+			<spinnerItem name="594.000 kHz" value="594000"/> 
+			<spinnerItem name="486.000 kHz" value="486000"/> 
+			<spinnerItem name="384.000 kHz" value="384000"/> 
+		</spinner>
 
-		<seekBar description="Maximum CPU-Speed for CPU1. CPU Frequency steps by 108.000 kHz, from 378.000 kHz to 1.890.000 kHz! (Default: 1.890.000 kHz)" name="Max Normal Frequency" action="genericfreq /sys/devices/system/cpu/cpufreq/all_cpus/scaling_max_freq_cpu1" unit="kHz" min="378000" reversed="false" step="108000" max="1890000"/>
+		<spinner description="Maximum CPU-Speed for CPU1. CPU Frequency steps from 384.000 kHz to 1.890.000 kHz! (Default: 1.890.000 kHz)" name="Max Normal Frequency" action="genericfreq /sys/devices/system/cpu/cpufreq/all_cpus/scaling_max_freq_cpu1">
+			<spinnerItem name="1.890.000 kHz" value="1890000"/> 
+			<spinnerItem name="1.782.000 kHz" value="1782000"/> 
+			<spinnerItem name="1.674.000 kHz" value="1674000"/> 
+			<spinnerItem name="1.566.000 kHz" value="1566000"/> 
+			<spinnerItem name="1.458.000 kHz" value="1458000"/> 
+			<spinnerItem name="1.350.000 kHz" value="1350000"/> 
+			<spinnerItem name="1.242.000 kHz" value="1242000"/> 
+			<spinnerItem name="1.134.000 kHz" value="1134000"/> 
+			<spinnerItem name="1.026.000 kHz" value="1026000"/> 
+			<spinnerItem name="918.000 kHz" value="918000"/> 
+			<spinnerItem name="810.000 kHz" value="810000"/> 
+			<spinnerItem name="702.000 kHz" value="702000"/> 
+			<spinnerItem name="594.000 kHz" value="594000"/> 
+			<spinnerItem name="486.000 kHz" value="486000"/> 
+			<spinnerItem name="384.000 kHz" value="384000"/> 
+		</spinner>
 
-		<seekBar description="Maximum CPU-Speed for CPU2. CPU Frequency steps by 108.000 kHz, from 378.000 kHz to 1.890.000 kHz! (Default: 1.890.000 kHz)" name="Max Normal Frequency" action="genericfreq /sys/devices/system/cpu/cpufreq/all_cpus/scaling_max_freq_cpu2" unit="kHz" min="378000" reversed="false" step="108000" max="1890000"/>
+		<spinner description="Maximum CPU-Speed for CPU2. CPU Frequency steps from 384.000 kHz to 1.890.000 kHz! (Default: 1.890.000 kHz)" name="Max Normal Frequency" action="genericfreq /sys/devices/system/cpu/cpufreq/all_cpus/scaling_max_freq_cpu2">
+			<spinnerItem name="1.890.000 kHz" value="1890000"/> 
+			<spinnerItem name="1.782.000 kHz" value="1782000"/> 
+			<spinnerItem name="1.674.000 kHz" value="1674000"/> 
+			<spinnerItem name="1.566.000 kHz" value="1566000"/> 
+			<spinnerItem name="1.458.000 kHz" value="1458000"/> 
+			<spinnerItem name="1.350.000 kHz" value="1350000"/> 
+			<spinnerItem name="1.242.000 kHz" value="1242000"/> 
+			<spinnerItem name="1.134.000 kHz" value="1134000"/> 
+			<spinnerItem name="1.026.000 kHz" value="1026000"/> 
+			<spinnerItem name="918.000 kHz" value="918000"/> 
+			<spinnerItem name="810.000 kHz" value="810000"/> 
+			<spinnerItem name="702.000 kHz" value="702000"/> 
+			<spinnerItem name="594.000 kHz" value="594000"/> 
+			<spinnerItem name="486.000 kHz" value="486000"/> 
+			<spinnerItem name="384.000 kHz" value="384000"/> 
+		</spinner>
 
-		<seekBar description="Maximum CPU-Speed for CPU3. CPU Frequency steps by 108.000 kHz, from 378.000 kHz to 1.890.000 kHz! (Default: 1.890.000 kHz)" name="Max Normal Frequency" action="genericfreq /sys/devices/system/cpu/cpufreq/all_cpus/scaling_max_freq_cpu3" unit="kHz" min="378000" reversed="false" step="108000" max="1890000"/>
+		<spinner description="Maximum CPU-Speed for CPU3. CPU Frequency steps from 384.000 kHz to 1.890.000 kHz! (Default: 1.890.000 kHz)" name="Max Normal Frequency" action="genericfreq /sys/devices/system/cpu/cpufreq/all_cpus/scaling_max_freq_cpu3">
+			<spinnerItem name="1.890.000 kHz" value="1890000"/> 
+			<spinnerItem name="1.782.000 kHz" value="1782000"/> 
+			<spinnerItem name="1.674.000 kHz" value="1674000"/> 
+			<spinnerItem name="1.566.000 kHz" value="1566000"/> 
+			<spinnerItem name="1.458.000 kHz" value="1458000"/> 
+			<spinnerItem name="1.350.000 kHz" value="1350000"/> 
+			<spinnerItem name="1.242.000 kHz" value="1242000"/> 
+			<spinnerItem name="1.134.000 kHz" value="1134000"/> 
+			<spinnerItem name="1.026.000 kHz" value="1026000"/> 
+			<spinnerItem name="918.000 kHz" value="918000"/> 
+			<spinnerItem name="810.000 kHz" value="810000"/> 
+			<spinnerItem name="702.000 kHz" value="702000"/> 
+			<spinnerItem name="594.000 kHz" value="594000"/> 
+			<spinnerItem name="486.000 kHz" value="486000"/> 
+			<spinnerItem name="384.000 kHz" value="384000"/> 
+		</spinner>
 
-		<seekBar description="Minimum CPU-Speed for CPU0. CPU Frequency step by 108.000 kHz are valid from 378.000 kHz to 1.890.000 kHz! (Default: 378.000 kHz)" name="Min Frequency" action="scaling_min_freq_cpu0" unit="kHz" min="378000" reversed="false" step="108000" max="1890000"/>
+		<spinner description="Minimum CPU-Speed for CPU0. CPU Frequency step from 384.000 kHz to 1.890.000 kHz! (Default: 384.000 kHz)" name="Min Frequency" action="scaling_min_freq_cpu0">
+			<spinnerItem name="1.890.000 kHz" value="1890000"/> 
+			<spinnerItem name="1.782.000 kHz" value="1782000"/> 
+			<spinnerItem name="1.674.000 kHz" value="1674000"/> 
+			<spinnerItem name="1.566.000 kHz" value="1566000"/> 
+			<spinnerItem name="1.458.000 kHz" value="1458000"/> 
+			<spinnerItem name="1.350.000 kHz" value="1350000"/> 
+			<spinnerItem name="1.242.000 kHz" value="1242000"/> 
+			<spinnerItem name="1.134.000 kHz" value="1134000"/> 
+			<spinnerItem name="1.026.000 kHz" value="1026000"/> 
+			<spinnerItem name="918.000 kHz" value="918000"/> 
+			<spinnerItem name="810.000 kHz" value="810000"/> 
+			<spinnerItem name="702.000 kHz" value="702000"/> 
+			<spinnerItem name="594.000 kHz" value="594000"/> 
+			<spinnerItem name="486.000 kHz" value="486000"/> 
+			<spinnerItem name="384.000 kHz" value="384000"/> 
+		</spinner>
 
-		<seekBar description="Minimum CPU-Speed for CPU1. CPU Frequency step by 108.000 kHz are valid from 378.000 kHz to 1.890.000 kHz! (Default: 378.000 kHz)" name="Min Frequency" action="genericfreq /sys/devices/system/cpu/cpufreq/all_cpus/scaling_min_freq_cpu1" unit="kHz" min="378000" reversed="false" step="108000" max="1890000"/>
+		<spinner description="Minimum CPU-Speed for CPU1. CPU Frequency step from 384.000 kHz to 1.890.000 kHz! (Default: 384.000 kHz)" name="Min Frequency" action="genericfreq /sys/devices/system/cpu/cpufreq/all_cpus/scaling_min_freq_cpu1">
+			<spinnerItem name="1.890.000 kHz" value="1890000"/> 
+			<spinnerItem name="1.782.000 kHz" value="1782000"/> 
+			<spinnerItem name="1.674.000 kHz" value="1674000"/> 
+			<spinnerItem name="1.566.000 kHz" value="1566000"/> 
+			<spinnerItem name="1.458.000 kHz" value="1458000"/> 
+			<spinnerItem name="1.350.000 kHz" value="1350000"/> 
+			<spinnerItem name="1.242.000 kHz" value="1242000"/> 
+			<spinnerItem name="1.134.000 kHz" value="1134000"/> 
+			<spinnerItem name="1.026.000 kHz" value="1026000"/> 
+			<spinnerItem name="918.000 kHz" value="918000"/> 
+			<spinnerItem name="810.000 kHz" value="810000"/> 
+			<spinnerItem name="702.000 kHz" value="702000"/> 
+			<spinnerItem name="594.000 kHz" value="594000"/> 
+			<spinnerItem name="486.000 kHz" value="486000"/> 
+			<spinnerItem name="384.000 kHz" value="384000"/> 
+		</spinner>
 
-		<seekBar description="Minimum CPU-Speed for CPU2. CPU Frequency step by 108.000 kHz are valid from 378.000 kHz to 1.890.000 kHz! (Default: 378.000 kHz)" name="Min Frequency" action="genericfreq /sys/devices/system/cpu/cpufreq/all_cpus/scaling_min_freq_cpu2" unit="kHz" min="378000" reversed="false" step="108000" max="1890000"/>
+		<spinner description="Minimum CPU-Speed for CPU2. CPU Frequency step from 384.000 kHz to 1.890.000 kHz! (Default: 384.000 kHz)" name="Min Frequency" action="genericfreq /sys/devices/system/cpu/cpufreq/all_cpus/scaling_min_freq_cpu2">
+			<spinnerItem name="1.890.000 kHz" value="1890000"/> 
+			<spinnerItem name="1.782.000 kHz" value="1782000"/> 
+			<spinnerItem name="1.674.000 kHz" value="1674000"/> 
+			<spinnerItem name="1.566.000 kHz" value="1566000"/> 
+			<spinnerItem name="1.458.000 kHz" value="1458000"/> 
+			<spinnerItem name="1.350.000 kHz" value="1350000"/> 
+			<spinnerItem name="1.242.000 kHz" value="1242000"/> 
+			<spinnerItem name="1.134.000 kHz" value="1134000"/> 
+			<spinnerItem name="1.026.000 kHz" value="1026000"/> 
+			<spinnerItem name="918.000 kHz" value="918000"/> 
+			<spinnerItem name="810.000 kHz" value="810000"/> 
+			<spinnerItem name="702.000 kHz" value="702000"/> 
+			<spinnerItem name="594.000 kHz" value="594000"/> 
+			<spinnerItem name="486.000 kHz" value="486000"/> 
+			<spinnerItem name="384.000 kHz" value="384000"/> 
+		</spinner>
 
-		<seekBar description="Minimum CPU-Speed for CPU3. CPU Frequency step by 108.000 kHz are valid from 378.000 kHz to 1.890.000 kHz! (Default: 378.000 kHz)" name="Min Frequency" action="genericfreq /sys/devices/system/cpu/cpufreq/all_cpus/scaling_min_freq_cpu3" unit="kHz" min="378000" reversed="false" step="108000" max="1890000"/>
+		<spinner description="Minimum CPU-Speed for CPU3. CPU Frequency step from 384.000 kHz to 1.890.000 kHz! (Default: 384.000 kHz)" name="Min Frequency" action="genericfreq /sys/devices/system/cpu/cpufreq/all_cpus/scaling_min_freq_cpu3">
+			<spinnerItem name="1.890.000 kHz" value="1890000"/> 
+			<spinnerItem name="1.782.000 kHz" value="1782000"/> 
+			<spinnerItem name="1.674.000 kHz" value="1674000"/> 
+			<spinnerItem name="1.566.000 kHz" value="1566000"/> 
+			<spinnerItem name="1.458.000 kHz" value="1458000"/> 
+			<spinnerItem name="1.350.000 kHz" value="1350000"/> 
+			<spinnerItem name="1.242.000 kHz" value="1242000"/> 
+			<spinnerItem name="1.134.000 kHz" value="1134000"/> 
+			<spinnerItem name="1.026.000 kHz" value="1026000"/> 
+			<spinnerItem name="918.000 kHz" value="918000"/> 
+			<spinnerItem name="810.000 kHz" value="810000"/> 
+			<spinnerItem name="702.000 kHz" value="702000"/> 
+			<spinnerItem name="594.000 kHz" value="594000"/> 
+			<spinnerItem name="486.000 kHz" value="486000"/> 
+			<spinnerItem name="384.000 kHz" value="384000"/> 
+		</spinner>
 
 	</settingsPane>
 
@@ -40,13 +168,77 @@
 
 		<checkbox description="Enable or disable Power-efficient work queues will help to reduce power consumption at the cost of slight performance overhead. By enabling this, PE work queues are used for unbound scheduled work to save load on sibling CPU cores and queuing work on CPU 0." name="Power-efficient work queues"  action="generic01 /sys/module/workqueue/parameters/power_efficient" label="Power-efficient work queues"/>
 
-		<seekBar description="Maximum CPUs speed while using GPS. (Default: 1242.000 kHz)." name="scaling_max_gps_freq" action="genericfreq /sys/kernel/cpufreq_limit_manager/scaling_max_gps_freq" unit="kHz" min="810000" reversed="false" step="108000" max="1890000"/>
+		<spinner description="Maximum CPUs speed while using GPS. (Default: 1242.000 kHz)." name="scaling_max_gps_freq" action="genericfreq /sys/kernel/cpufreq_limit_manager/scaling_max_gps_freq">
+			<spinnerItem name="1.890.000 kHz" value="1890000"/> 
+			<spinnerItem name="1.782.000 kHz" value="1782000"/> 
+			<spinnerItem name="1.674.000 kHz" value="1674000"/> 
+			<spinnerItem name="1.566.000 kHz" value="1566000"/> 
+			<spinnerItem name="1.458.000 kHz" value="1458000"/> 
+			<spinnerItem name="1.350.000 kHz" value="1350000"/> 
+			<spinnerItem name="1.242.000 kHz" value="1242000"/> 
+			<spinnerItem name="1.134.000 kHz" value="1134000"/> 
+			<spinnerItem name="1.026.000 kHz" value="1026000"/> 
+			<spinnerItem name="918.000 kHz" value="918000"/> 
+			<spinnerItem name="810.000 kHz" value="810000"/> 
+			<spinnerItem name="702.000 kHz" value="702000"/> 
+			<spinnerItem name="594.000 kHz" value="594000"/> 
+			<spinnerItem name="486.000 kHz" value="486000"/> 
+			<spinnerItem name="384.000 kHz" value="384000"/> 
+		</spinner>
 
-		<seekBar description="Maximum DEEP SLEEP CPUs speed. (Default: 1242.000 kHz)." name="scaling_max_suspend_freq" action="genericfreq /sys/kernel/cpufreq_limit_manager/scaling_max_suspend_freq" unit="kHz" min="378000" reversed="false" step="108000" max="1890000"/>
+		<spinner description="Maximum DEEP SLEEP CPUs speed. (Default: 1242.000 kHz)." name="scaling_max_suspend_freq" action="genericfreq /sys/kernel/cpufreq_limit_manager/scaling_max_suspend_freq">
+			<spinnerItem name="1.890.000 kHz" value="1890000"/> 
+			<spinnerItem name="1.782.000 kHz" value="1782000"/> 
+			<spinnerItem name="1.674.000 kHz" value="1674000"/> 
+			<spinnerItem name="1.566.000 kHz" value="1566000"/> 
+			<spinnerItem name="1.458.000 kHz" value="1458000"/> 
+			<spinnerItem name="1.350.000 kHz" value="1350000"/> 
+			<spinnerItem name="1.242.000 kHz" value="1242000"/> 
+			<spinnerItem name="1.134.000 kHz" value="1134000"/> 
+			<spinnerItem name="1.026.000 kHz" value="1026000"/> 
+			<spinnerItem name="918.000 kHz" value="918000"/> 
+			<spinnerItem name="810.000 kHz" value="810000"/> 
+			<spinnerItem name="702.000 kHz" value="702000"/> 
+			<spinnerItem name="594.000 kHz" value="594000"/> 
+			<spinnerItem name="486.000 kHz" value="486000"/> 
+			<spinnerItem name="384.000 kHz" value="384000"/> 
+		</spinner>
 
-		<seekBar description="Maximum ON CALL CPUs speed. (Default: 1350.000 kHz). When phone is on call and suspended." name="scaling_max_oncall_freq" action="genericfreq /sys/kernel/cpufreq_limit_manager/scaling_max_oncall_freq" unit="kHz" min="378000" reversed="false" step="108000" max="1890000"/>
+		<spinner description="Maximum ON CALL CPUs speed. (Default: 1350.000 kHz). When phone is on call and suspended." name="scaling_max_oncall_freq" action="genericfreq /sys/kernel/cpufreq_limit_manager/scaling_max_oncall_freq">
+			<spinnerItem name="1.890.000 kHz" value="1890000"/> 
+			<spinnerItem name="1.782.000 kHz" value="1782000"/> 
+			<spinnerItem name="1.674.000 kHz" value="1674000"/> 
+			<spinnerItem name="1.566.000 kHz" value="1566000"/> 
+			<spinnerItem name="1.458.000 kHz" value="1458000"/> 
+			<spinnerItem name="1.350.000 kHz" value="1350000"/> 
+			<spinnerItem name="1.242.000 kHz" value="1242000"/> 
+			<spinnerItem name="1.134.000 kHz" value="1134000"/> 
+			<spinnerItem name="1.026.000 kHz" value="1026000"/> 
+			<spinnerItem name="918.000 kHz" value="918000"/> 
+			<spinnerItem name="810.000 kHz" value="810000"/> 
+			<spinnerItem name="702.000 kHz" value="702000"/> 
+			<spinnerItem name="594.000 kHz" value="594000"/> 
+			<spinnerItem name="486.000 kHz" value="486000"/> 
+			<spinnerItem name="384.000 kHz" value="384000"/> 
+		</spinner>
 
-		<seekBar description="Minimum DEEP SLEEP CPUs speed. (Default: 378.000 kHz)." name="scaling_min_suspend_freq" action="genericfreq /sys/kernel/cpufreq_limit_manager/scaling_min_suspend_freq" unit="kHz" min="378000" reversed="false" step="108000" max="1890000"/>
+		<spinner description="Minimum DEEP SLEEP CPUs speed. (Default: 384.000 kHz)." name="scaling_min_suspend_freq" action="genericfreq /sys/kernel/cpufreq_limit_manager/scaling_min_suspend_freq">
+			<spinnerItem name="1.890.000 kHz" value="1890000"/> 
+			<spinnerItem name="1.782.000 kHz" value="1782000"/> 
+			<spinnerItem name="1.674.000 kHz" value="1674000"/> 
+			<spinnerItem name="1.566.000 kHz" value="1566000"/> 
+			<spinnerItem name="1.458.000 kHz" value="1458000"/> 
+			<spinnerItem name="1.350.000 kHz" value="1350000"/> 
+			<spinnerItem name="1.242.000 kHz" value="1242000"/> 
+			<spinnerItem name="1.134.000 kHz" value="1134000"/> 
+			<spinnerItem name="1.026.000 kHz" value="1026000"/> 
+			<spinnerItem name="918.000 kHz" value="918000"/> 
+			<spinnerItem name="810.000 kHz" value="810000"/> 
+			<spinnerItem name="702.000 kHz" value="702000"/> 
+			<spinnerItem name="594.000 kHz" value="594000"/> 
+			<spinnerItem name="486.000 kHz" value="486000"/> 
+			<spinnerItem name="384.000 kHz" value="384000"/> 
+		</spinner>
 
 	</settingsPane>
 
@@ -60,35 +252,35 @@
 
 		<button description="Use this button to see what CPU Voltage is used right now!" name="Check Active CPU Voltage" action="push-actions/check_cpu_voltage" label="Check CPU Voltage"/>
 
-		<seekBar description="CPU Voltage for 1890.000 KHz." name="CPU Voltage 189.000 KHz" action="cpu-voltage 1" unit="µV" min="1062500" reversed="false" step="12500" max="1300000"/>
+		<seekBar description="CPU Voltage for 1890.000 kHz." name="CPU Voltage 189.000 kHz" action="cpu-voltage 1" unit="µV" min="1062500" reversed="false" step="12500" max="1300000"/>
 
-		<seekBar description="CPU Voltage for 1782.000 KHz." name="CPU Voltage 1782.000 KHz" action="cpu-voltage 2" unit="µV" min="1012500" reversed="false" step="12500" max="1225000"/>
+		<seekBar description="CPU Voltage for 1782.000 kHz." name="CPU Voltage 1782.000 kHz" action="cpu-voltage 2" unit="µV" min="1012500" reversed="false" step="12500" max="1225000"/>
 
-		<seekBar description="CPU Voltage for 1674.000 KHz." name="CPU Voltage 1674.000 KHz" action="cpu-voltage 3" unit="µV" min="962500" reversed="false" step="12500" max="1175000"/>
+		<seekBar description="CPU Voltage for 1674.000 kHz." name="CPU Voltage 1674.000 kHz" action="cpu-voltage 3" unit="µV" min="962500" reversed="false" step="12500" max="1175000"/>
 
-		<seekBar description="CPU Voltage for 1566.000 KHz." name="CPU Voltage 1566.000 KHz" action="cpu-voltage 4" unit="µV" min="925000" reversed="false" step="12500" max="1125000"/>
+		<seekBar description="CPU Voltage for 1566.000 kHz." name="CPU Voltage 1566.000 kHz" action="cpu-voltage 4" unit="µV" min="925000" reversed="false" step="12500" max="1125000"/>
 
-		<seekBar description="CPU Voltage for 1458.000 KHz." name="CPU Voltage 1458.000 KHz" action="cpu-voltage 5" unit="µV" min="900000" reversed="false" step="12500" max="1100000"/>
+		<seekBar description="CPU Voltage for 1458.000 kHz." name="CPU Voltage 1458.000 kHz" action="cpu-voltage 5" unit="µV" min="900000" reversed="false" step="12500" max="1100000"/>
 
-		<seekBar description="CPU Voltage for 1350.000 KHz." name="CPU Voltage 1350.000 KHz" action="cpu-voltage 6" unit="µV" min="862500" reversed="false" step="12500" max="1062500"/>
+		<seekBar description="CPU Voltage for 1350.000 kHz." name="CPU Voltage 1350.000 kHz" action="cpu-voltage 6" unit="µV" min="862500" reversed="false" step="12500" max="1062500"/>
 
-		<seekBar description="CPU Voltage for 1242.000 KHz." name="CPU Voltage 1242.000 KHz" action="cpu-voltage 7" unit="µV" min="837500" reversed="false" step="12500" max="1037500"/>
+		<seekBar description="CPU Voltage for 1242.000 kHz." name="CPU Voltage 1242.000 kHz" action="cpu-voltage 7" unit="µV" min="837500" reversed="false" step="12500" max="1037500"/>
 
-		<seekBar description="CPU Voltage for 1134.000 KHz." name="CPU Voltage 1134.000 KHz" action="cpu-voltage 8" unit="µV" min="825000" reversed="false" step="12500" max="1025000"/>
+		<seekBar description="CPU Voltage for 1134.000 kHz." name="CPU Voltage 1134.000 kHz" action="cpu-voltage 8" unit="µV" min="825000" reversed="false" step="12500" max="1025000"/>
 
-		<seekBar description="CPU Voltage for 1026.000 KHz." name="CPU Voltage 1026.000 KHz" action="cpu-voltage 9" unit="µV" min="800000" reversed="false" step="12500" max="1000000"/>
+		<seekBar description="CPU Voltage for 1026.000 kHz." name="CPU Voltage 1026.000 kHz" action="cpu-voltage 9" unit="µV" min="800000" reversed="false" step="12500" max="1000000"/>
 
-		<seekBar description="CPU Voltage for 918.000 KHz." name="CPU Voltage 918.000 KHz" action="cpu-voltage 10" unit="µV" min="775000" reversed="false" step="12500" max="975000"/>
+		<seekBar description="CPU Voltage for 918.000 kHz." name="CPU Voltage 918.000 kHz" action="cpu-voltage 10" unit="µV" min="775000" reversed="false" step="12500" max="975000"/>
 
-		<seekBar description="CPU Voltage for 810.000 KHz." name="CPU Voltage 810.000 KHz" action="cpu-voltage 11" unit="µV" min="762500" reversed="false" step="12500" max="962500"/>
+		<seekBar description="CPU Voltage for 810.000 kHz." name="CPU Voltage 810.000 kHz" action="cpu-voltage 11" unit="µV" min="762500" reversed="false" step="12500" max="962500"/>
 
-		<seekBar description="CPU Voltage for 702.000 KHz." name="CPU Voltage 702.000 KHz" action="cpu-voltage 12" unit="µV" min="750000" reversed="false" step="12500" max="950000"/>
+		<seekBar description="CPU Voltage for 702.000 kHz." name="CPU Voltage 702.000 kHz" action="cpu-voltage 12" unit="µV" min="750000" reversed="false" step="12500" max="950000"/>
 
-		<seekBar description="CPU Voltage for 594.000 KHz." name="CPU Voltage 594.000 KHz" action="cpu-voltage 13" unit="µV" min="750000" reversed="false" step="12500" max="950000"/>
+		<seekBar description="CPU Voltage for 594.000 kHz." name="CPU Voltage 594.000 kHz" action="cpu-voltage 13" unit="µV" min="750000" reversed="false" step="12500" max="950000"/>
 
-		<seekBar description="CPU Voltage for 486.000 KHz." name="CPU Voltage 486.000 KHz" action="cpu-voltage 14" unit="µV" min="750000" reversed="false" step="12500" max="950000"/>
+		<seekBar description="CPU Voltage for 486.000 kHz." name="CPU Voltage 486.000 kHz" action="cpu-voltage 14" unit="µV" min="750000" reversed="false" step="12500" max="950000"/>
 
-		<seekBar description="CPU Voltage for 378.000 KHz." name="CPU Voltage 378.000 KHz" action="cpu-voltage 15" unit="µV" min="750000" reversed="false" step="12500" max="925000"/>
+		<seekBar description="CPU Voltage for 384.000 kHz." name="CPU Voltage 384.000 kHz" action="cpu-voltage 15" unit="µV" min="750000" reversed="false" step="12500" max="925000"/>
 
 	</settingsPane>
 
@@ -152,7 +344,23 @@
 
 		<seekBar description="After spending sampling_down_factor X sampling_rate micro seconds at maximum frequency on high load, governor samples the load again to calculate an approx target frequency to scale-down-to which should not trigger up_threshold in the next sample. (Triggering up threshold may cause jumping to max frequency again). Max_load_freq is checked against (up_threshold - down_differential) X current frequency. If found to be smaller, CPU is scaled down to a target frequency as described above. Down_differential also act as the factor to prevent aggressive scale down. (Only for HYPER, Ondemand, PegasusQ) (default: 5)" name="down_differential" action="generic_cortex /tmp/down_differential" unit="int" min="1" reversed="false" step="1" max="80"/>
 
-		<seekBar description="Until freq_for_responsiveness, Up Threshold considered for sampling load is up_threshold_at_min_freq. Also during the part where CPU is at maximum load frequency, governor need to find the optimal frequency as the next frequency - which should not trigger up_threshold in the next sampling. When such a frequency_next is found to be a) less than freq_for_responsiveness b) will not trigger down_threshold in the next sample, then the optimal frequency is set to freq_for_responsiveness. (Only for HYPER, PegasusQ, Nightmare) (Default: 486.000 kHz)" name="freq_for_responsiveness" action="generic_cortex /tmp/freq_for_responsiveness" unit="kHz" min="378000" reversed="false" step="108000" max="1890000"/>
+		<spinner description="Until freq_for_responsiveness, Up Threshold considered for sampling load is up_threshold_at_min_freq. Also during the part where CPU is at maximum load frequency, governor need to find the optimal frequency as the next frequency - which should not trigger up_threshold in the next sampling. When such a frequency_next is found to be a) less than freq_for_responsiveness b) will not trigger down_threshold in the next sample, then the optimal frequency is set to freq_for_responsiveness. (Only for HYPER, PegasusQ, Nightmare) (Default: 486.000 kHz)" name="freq_for_responsiveness" action="generic_cortex /tmp/freq_for_responsiveness">
+			<spinnerItem name="1.890.000 kHz" value="1890000"/> 
+			<spinnerItem name="1.782.000 kHz" value="1782000"/> 
+			<spinnerItem name="1.674.000 kHz" value="1674000"/> 
+			<spinnerItem name="1.566.000 kHz" value="1566000"/> 
+			<spinnerItem name="1.458.000 kHz" value="1458000"/> 
+			<spinnerItem name="1.350.000 kHz" value="1350000"/> 
+			<spinnerItem name="1.242.000 kHz" value="1242000"/> 
+			<spinnerItem name="1.134.000 kHz" value="1134000"/> 
+			<spinnerItem name="1.026.000 kHz" value="1026000"/> 
+			<spinnerItem name="918.000 kHz" value="918000"/> 
+			<spinnerItem name="810.000 kHz" value="810000"/> 
+			<spinnerItem name="702.000 kHz" value="702000"/> 
+			<spinnerItem name="594.000 kHz" value="594000"/> 
+			<spinnerItem name="486.000 kHz" value="486000"/> 
+			<spinnerItem name="384.000 kHz" value="384000"/> 
+		</spinner>
 
 		<seekBar description="This is same as the up_threshold found for the Ondemand governor but for the opposite direction. For example when set to its default value of 30 it means that if the CPU usage needs to be below 30% between samples to have the frequency decreased. (Only for Conservative) (Default: 30%)" name="down_threshold" action="generic_cortex /tmp/down_threshold" unit="%" min="1" reversed="false" step="1" max="100"/>
 
@@ -168,9 +376,41 @@
 
 		<seekBar description="The frequency at which governor scales CPU down. Load less than dec_cpu_load: cpu scaled down. (Only for Nightmare, Alucard). (Default: 70%)" name="dec_cpu_load" action="generic_cortex /tmp/dec_cpu_load" unit="%" min="10" reversed="false" step="1" max="100"/>
 
-		<seekBar description="When current freq is greater than freq_for_responsiviness_max, freq_step_dec will be equal to freq_step_dec_at_max_freq. (Only for Nightmare). (Default: 1890.000 kHz)" name="freq_for_responsiveness_max" action="generic_cortex /tmp/freq_for_responsiveness_max" unit="kHz" min="378000" reversed="false" step="108000" max="1890000"/>
+		<spinner description="When current freq is greater than freq_for_responsiviness_max, freq_step_dec will be equal to freq_step_dec_at_max_freq. (Only for Nightmare). (Default: 1890.000 kHz)" name="freq_for_responsiveness_max" action="generic_cortex /tmp/freq_for_responsiveness_max">
+			<spinnerItem name="1.890.000 kHz" value="1890000"/> 
+			<spinnerItem name="1.782.000 kHz" value="1782000"/> 
+			<spinnerItem name="1.674.000 kHz" value="1674000"/> 
+			<spinnerItem name="1.566.000 kHz" value="1566000"/> 
+			<spinnerItem name="1.458.000 kHz" value="1458000"/> 
+			<spinnerItem name="1.350.000 kHz" value="1350000"/> 
+			<spinnerItem name="1.242.000 kHz" value="1242000"/> 
+			<spinnerItem name="1.134.000 kHz" value="1134000"/> 
+			<spinnerItem name="1.026.000 kHz" value="1026000"/> 
+			<spinnerItem name="918.000 kHz" value="918000"/> 
+			<spinnerItem name="810.000 kHz" value="810000"/> 
+			<spinnerItem name="702.000 kHz" value="702000"/> 
+			<spinnerItem name="594.000 kHz" value="594000"/> 
+			<spinnerItem name="486.000 kHz" value="486000"/> 
+			<spinnerItem name="384.000 kHz" value="384000"/> 
+		</spinner>
 
-		<seekBar description="Until freq_responsiveness, Up Threshold considered for sampling load is inc_cpu_load_at_min_freq. Also during the part where CPU is at maximum load frequency, governor need to find the optimal frequency as the next frequency - which should not trigger up_threshold in the next sampling. When such a frequency_next is found to be a) less than freq_responsiveness b) will not trigger down_threshold in the next sample, then the optimal frequency is set to freq_responsiveness. (Only for Alucard) (Default: 1134.000 kHz)" name="freq_responsiveness" action="generic_cortex /tmp/freq_responsiveness" unit="kHz" min="378000" reversed="false" step="108000" max="1890000"/>
+		<spinner description="Until freq_responsiveness, Up Threshold considered for sampling load is inc_cpu_load_at_min_freq. Also during the part where CPU is at maximum load frequency, governor need to find the optimal frequency as the next frequency - which should not trigger up_threshold in the next sampling. When such a frequency_next is found to be a) less than freq_responsiveness b) will not trigger down_threshold in the next sample, then the optimal frequency is set to freq_responsiveness. (Only for Alucard) (Default: 1134.000 kHz)" name="freq_responsiveness" action="generic_cortex /tmp/freq_responsiveness">
+			<spinnerItem name="1.890.000 kHz" value="1890000"/> 
+			<spinnerItem name="1.782.000 kHz" value="1782000"/> 
+			<spinnerItem name="1.674.000 kHz" value="1674000"/> 
+			<spinnerItem name="1.566.000 kHz" value="1566000"/> 
+			<spinnerItem name="1.458.000 kHz" value="1458000"/> 
+			<spinnerItem name="1.350.000 kHz" value="1350000"/> 
+			<spinnerItem name="1.242.000 kHz" value="1242000"/> 
+			<spinnerItem name="1.134.000 kHz" value="1134000"/> 
+			<spinnerItem name="1.026.000 kHz" value="1026000"/> 
+			<spinnerItem name="918.000 kHz" value="918000"/> 
+			<spinnerItem name="810.000 kHz" value="810000"/> 
+			<spinnerItem name="702.000 kHz" value="702000"/> 
+			<spinnerItem name="594.000 kHz" value="594000"/> 
+			<spinnerItem name="486.000 kHz" value="486000"/> 
+			<spinnerItem name="384.000 kHz" value="384000"/> 
+		</spinner>
 
 		<seekBar description="Governor should increase CPU0 frequency by n step each time CPU load reaches inc_cpu_load_at_min_freq. (Only for Alucard) (Default: 2)" name="pump_inc_step_at_min_freq_1" action="generic_cortex /tmp/pump_inc_step_at_min_freq_1" unit="step" min="1" reversed="false" step="1" max="3"/>
 
@@ -253,17 +493,113 @@
 
 		<seekBar description="Number of samples to evaluate cpu3 hotplug out. (Default: 2)" name="hotplug_rate_4_0" action="generic /sys/kernel/alucard_hotplug/hotplug_rate_4_0" unit="int" min="1" reversed="false" step="1" max="10"/>
 
-		<seekBar description="Up threshold frequency to turn second core On, when some other conditions is also met. ie If (minimum frequency greater than or equal to hotplug_freq 1 1) Hotplug IN Second Core. Higher value corresponds to delay in turning on second core. (Default: 1242.000 kHz)" name="hotplug_freq_1_1" action="genericfreq /sys/kernel/alucard_hotplug/hotplug_freq_1_1" unit="kHz" min="378000" reversed="false" step="108000" max="1890000"/>
+		<spinner description="Up threshold frequency to turn second core On, when some other conditions is also met. ie If (minimum frequency greater than or equal to hotplug_freq 1 1) Hotplug IN Second Core. Higher value corresponds to delay in turning on second core. (Default: 1242.000 kHz)" name="hotplug_freq_1_1" action="genericfreq /sys/kernel/alucard_hotplug/hotplug_freq_1_1">
+			<spinnerItem name="1.890.000 kHz" value="1890000"/> 
+			<spinnerItem name="1.782.000 kHz" value="1782000"/> 
+			<spinnerItem name="1.674.000 kHz" value="1674000"/> 
+			<spinnerItem name="1.566.000 kHz" value="1566000"/> 
+			<spinnerItem name="1.458.000 kHz" value="1458000"/> 
+			<spinnerItem name="1.350.000 kHz" value="1350000"/> 
+			<spinnerItem name="1.242.000 kHz" value="1242000"/> 
+			<spinnerItem name="1.134.000 kHz" value="1134000"/> 
+			<spinnerItem name="1.026.000 kHz" value="1026000"/> 
+			<spinnerItem name="918.000 kHz" value="918000"/> 
+			<spinnerItem name="810.000 kHz" value="810000"/> 
+			<spinnerItem name="702.000 kHz" value="702000"/> 
+			<spinnerItem name="594.000 kHz" value="594000"/> 
+			<spinnerItem name="486.000 kHz" value="486000"/> 
+			<spinnerItem name="384.000 kHz" value="384000"/> 
+		</spinner>
 
-		<seekBar description="Down threshold frequency to turn second core Off, when some other conditions is also met. ie If (maximum frequency less than hotplug_freq 2 0) Hotplug OUT Second Core. Lower value corresponds to delay in turning off second core. (Default: 810.000 kHz)" name="hotplug_freq_2_0" action="genericfreq /sys/kernel/alucard_hotplug/hotplug_freq_2_0" unit="kHz" min="378000" reversed="false" step="108000" max="1890000"/>
+		<spinner description="Down threshold frequency to turn second core Off, when some other conditions is also met. ie If (maximum frequency less than hotplug_freq 2 0) Hotplug OUT Second Core. Lower value corresponds to delay in turning off second core. (Default: 810.000 kHz)" name="hotplug_freq_2_0" action="genericfreq /sys/kernel/alucard_hotplug/hotplug_freq_2_0">
+			<spinnerItem name="1.890.000 kHz" value="1890000"/> 
+			<spinnerItem name="1.782.000 kHz" value="1782000"/> 
+			<spinnerItem name="1.674.000 kHz" value="1674000"/> 
+			<spinnerItem name="1.566.000 kHz" value="1566000"/> 
+			<spinnerItem name="1.458.000 kHz" value="1458000"/> 
+			<spinnerItem name="1.350.000 kHz" value="1350000"/> 
+			<spinnerItem name="1.242.000 kHz" value="1242000"/> 
+			<spinnerItem name="1.134.000 kHz" value="1134000"/> 
+			<spinnerItem name="1.026.000 kHz" value="1026000"/> 
+			<spinnerItem name="918.000 kHz" value="918000"/> 
+			<spinnerItem name="810.000 kHz" value="810000"/> 
+			<spinnerItem name="702.000 kHz" value="702000"/> 
+			<spinnerItem name="594.000 kHz" value="594000"/> 
+			<spinnerItem name="486.000 kHz" value="486000"/> 
+			<spinnerItem name="384.000 kHz" value="384000"/> 
+		</spinner>
 
-		<seekBar description="Up threshold frequency to turn third core On, when some other conditions is also met. ie If (minimum frequency greater than or equal to hotplug_freq 2 1) Hotplug IN Third Core. Higher value corresponds to delay in turning on Third core. (Default: 1242.000 kHz)" name="hotplug_freq_2_1" action="genericfreq /sys/kernel/alucard_hotplug/hotplug_freq_2_1" unit="kHz" min="378000" reversed="false" step="108000" max="1890000"/>
+		<spinner description="Up threshold frequency to turn third core On, when some other conditions is also met. ie If (minimum frequency greater than or equal to hotplug_freq 2 1) Hotplug IN Third Core. Higher value corresponds to delay in turning on Third core. (Default: 1242.000 kHz)" name="hotplug_freq_2_1" action="genericfreq /sys/kernel/alucard_hotplug/hotplug_freq_2_1">
+			<spinnerItem name="1.890.000 kHz" value="1890000"/> 
+			<spinnerItem name="1.782.000 kHz" value="1782000"/> 
+			<spinnerItem name="1.674.000 kHz" value="1674000"/> 
+			<spinnerItem name="1.566.000 kHz" value="1566000"/> 
+			<spinnerItem name="1.458.000 kHz" value="1458000"/> 
+			<spinnerItem name="1.350.000 kHz" value="1350000"/> 
+			<spinnerItem name="1.242.000 kHz" value="1242000"/> 
+			<spinnerItem name="1.134.000 kHz" value="1134000"/> 
+			<spinnerItem name="1.026.000 kHz" value="1026000"/> 
+			<spinnerItem name="918.000 kHz" value="918000"/> 
+			<spinnerItem name="810.000 kHz" value="810000"/> 
+			<spinnerItem name="702.000 kHz" value="702000"/> 
+			<spinnerItem name="594.000 kHz" value="594000"/> 
+			<spinnerItem name="486.000 kHz" value="486000"/> 
+			<spinnerItem name="384.000 kHz" value="384000"/> 
+		</spinner>
 
-		<seekBar description="Down threshold frequency to turn third core Off, when some other conditions is also met. ie If (maximum frequency less than hotplug_freq 3 0) Hotplug OUT Third Core. Lower value corresponds to delay in turning off third core. (Default: 810.000 kHz)" name="hotplug_freq_3_0" action="genericfreq /sys/kernel/alucard_hotplug/hotplug_freq_3_0" unit="kHz" min="378000" reversed="false" step="108000" max="1890000"/>
+		<spinner description="Down threshold frequency to turn third core Off, when some other conditions is also met. ie If (maximum frequency less than hotplug_freq 3 0) Hotplug OUT Third Core. Lower value corresponds to delay in turning off third core. (Default: 810.000 kHz)" name="hotplug_freq_3_0" action="genericfreq /sys/kernel/alucard_hotplug/hotplug_freq_3_0">
+			<spinnerItem name="1.890.000 kHz" value="1890000"/> 
+			<spinnerItem name="1.782.000 kHz" value="1782000"/> 
+			<spinnerItem name="1.674.000 kHz" value="1674000"/> 
+			<spinnerItem name="1.566.000 kHz" value="1566000"/> 
+			<spinnerItem name="1.458.000 kHz" value="1458000"/> 
+			<spinnerItem name="1.350.000 kHz" value="1350000"/> 
+			<spinnerItem name="1.242.000 kHz" value="1242000"/> 
+			<spinnerItem name="1.134.000 kHz" value="1134000"/> 
+			<spinnerItem name="1.026.000 kHz" value="1026000"/> 
+			<spinnerItem name="918.000 kHz" value="918000"/> 
+			<spinnerItem name="810.000 kHz" value="810000"/> 
+			<spinnerItem name="702.000 kHz" value="702000"/> 
+			<spinnerItem name="594.000 kHz" value="594000"/> 
+			<spinnerItem name="486.000 kHz" value="486000"/> 
+			<spinnerItem name="384.000 kHz" value="384000"/> 
+		</spinner>
 
-		<seekBar description="Up threshold frequency to turn fourth core On, when some other conditions is also met. ie If (minimum frequency greater than or equal to hotplug_freq 3 1) Hotplug IN Fourth Core. Higher value corresponds to delay in turning on Fourth core. (Default: 1242.000 kHz)" name="hotplug_freq_3_1" action="genericfreq /sys/kernel/alucard_hotplug/hotplug_freq_3_1" unit="kHz" min="378000" reversed="false" step="108000" max="1890000"/>
+		<spinner description="Up threshold frequency to turn fourth core On, when some other conditions is also met. ie If (minimum frequency greater than or equal to hotplug_freq 3 1) Hotplug IN Fourth Core. Higher value corresponds to delay in turning on Fourth core. (Default: 1242.000 kHz)" name="hotplug_freq_3_1" action="genericfreq /sys/kernel/alucard_hotplug/hotplug_freq_3_1">
+			<spinnerItem name="1.890.000 kHz" value="1890000"/> 
+			<spinnerItem name="1.782.000 kHz" value="1782000"/> 
+			<spinnerItem name="1.674.000 kHz" value="1674000"/> 
+			<spinnerItem name="1.566.000 kHz" value="1566000"/> 
+			<spinnerItem name="1.458.000 kHz" value="1458000"/> 
+			<spinnerItem name="1.350.000 kHz" value="1350000"/> 
+			<spinnerItem name="1.242.000 kHz" value="1242000"/> 
+			<spinnerItem name="1.134.000 kHz" value="1134000"/> 
+			<spinnerItem name="1.026.000 kHz" value="1026000"/> 
+			<spinnerItem name="918.000 kHz" value="918000"/> 
+			<spinnerItem name="810.000 kHz" value="810000"/> 
+			<spinnerItem name="702.000 kHz" value="702000"/> 
+			<spinnerItem name="594.000 kHz" value="594000"/> 
+			<spinnerItem name="486.000 kHz" value="486000"/> 
+			<spinnerItem name="384.000 kHz" value="384000"/> 
+		</spinner>
 
-		<seekBar description="Down threshold frequency to turn fourth core Off, when some other conditions is also met. ie If (maximum frequency less than hotplug_freq 4 0) Hotplug OUT Fourth Core. Lower value corresponds to delay in turning off fourth core. (Default: 810.000 kHz)" name="hotplug_freq_4_0" action="genericfreq /sys/kernel/alucard_hotplug/hotplug_freq_4_0" unit="kHz" min="378000" reversed="false" step="108000" max="1890000"/>
+		<spinner description="Down threshold frequency to turn fourth core Off, when some other conditions is also met. ie If (maximum frequency less than hotplug_freq 4 0) Hotplug OUT Fourth Core. Lower value corresponds to delay in turning off fourth core. (Default: 810.000 kHz)" name="hotplug_freq_4_0" action="genericfreq /sys/kernel/alucard_hotplug/hotplug_freq_4_0">
+			<spinnerItem name="1.890.000 kHz" value="1890000"/> 
+			<spinnerItem name="1.782.000 kHz" value="1782000"/> 
+			<spinnerItem name="1.674.000 kHz" value="1674000"/> 
+			<spinnerItem name="1.566.000 kHz" value="1566000"/> 
+			<spinnerItem name="1.458.000 kHz" value="1458000"/> 
+			<spinnerItem name="1.350.000 kHz" value="1350000"/> 
+			<spinnerItem name="1.242.000 kHz" value="1242000"/> 
+			<spinnerItem name="1.134.000 kHz" value="1134000"/> 
+			<spinnerItem name="1.026.000 kHz" value="1026000"/> 
+			<spinnerItem name="918.000 kHz" value="918000"/> 
+			<spinnerItem name="810.000 kHz" value="810000"/> 
+			<spinnerItem name="702.000 kHz" value="702000"/> 
+			<spinnerItem name="594.000 kHz" value="594000"/> 
+			<spinnerItem name="486.000 kHz" value="486000"/> 
+			<spinnerItem name="384.000 kHz" value="384000"/> 
+		</spinner>
 
 		<seekBar description="The CPU load at which governor scales CPU up. Current Load equal or greater than up_load: CPU Hotplug IN. Value corresponding to 101 causes not HOTPLUG IN. (Default: 60%)" name="hotplug_load_1_1" action="generic /sys/kernel/alucard_hotplug/hotplug_load_1_1" unit="%" min="10" reversed="false" step="1" max="101"/>
 
@@ -360,25 +696,25 @@
 			<spinnerItem name="performance" value="performance"/>
 		</spinner>
 
-		<spinner description="This it is the max value of GPU frequency. (Default: 450.000 KHz)" name="GPU Max Frequency" action="generic /sys/devices/platform/kgsl-3d0.0/kgsl/kgsl-3d0/max_pwrlevel">
-			<spinnerItem name="450.000 KHz" value="0"/>
-			<spinnerItem name="320.000 KHz" value="1"/>
-			<spinnerItem name="200.000 KHz" value="2"/>
-			<spinnerItem name="128.000 KHz" value="3"/>
+		<spinner description="This it is the max value of GPU frequency. (Default: 450.000 kHz)" name="GPU Max Frequency" action="generic /sys/devices/platform/kgsl-3d0.0/kgsl/kgsl-3d0/max_pwrlevel">
+			<spinnerItem name="450.000 kHz" value="0"/>
+			<spinnerItem name="320.000 kHz" value="1"/>
+			<spinnerItem name="200.000 kHz" value="2"/>
+			<spinnerItem name="128.000 kHz" value="3"/>
 		</spinner>
 
-		<spinner description="This it is the min value of GPU frequency. (Default: 128.000 KHz)" name="GPU Min Frequency" action="generic /sys/devices/platform/kgsl-3d0.0/kgsl/kgsl-3d0/min_pwrlevel">
-			<spinnerItem name="450.000 KHz" value="0"/>
-			<spinnerItem name="320.000 KHz" value="1"/>
-			<spinnerItem name="200.000 KHz" value="2"/>
-			<spinnerItem name="128.000 KHz" value="3"/>
+		<spinner description="This it is the min value of GPU frequency. (Default: 128.000 kHz)" name="GPU Min Frequency" action="generic /sys/devices/platform/kgsl-3d0.0/kgsl/kgsl-3d0/min_pwrlevel">
+			<spinnerItem name="450.000 kHz" value="0"/>
+			<spinnerItem name="320.000 kHz" value="1"/>
+			<spinnerItem name="200.000 kHz" value="2"/>
+			<spinnerItem name="128.000 kHz" value="3"/>
 		</spinner>
 
-		<spinner description="This it is the thermal value of GPU frequency. (Default: 450.000 KHz)" name="GPU thermal Frequency" action="generic /sys/devices/platform/kgsl-3d0.0/kgsl/kgsl-3d0/thermal_pwrlevel">
-			<spinnerItem name="450.000 KHz" value="0"/>
-			<spinnerItem name="320.000 KHz" value="1"/>
-			<spinnerItem name="200.000 KHz" value="2"/>
-			<spinnerItem name="128.000 KHz" value="3"/>
+		<spinner description="This it is the thermal value of GPU frequency. (Default: 450.000 kHz)" name="GPU thermal Frequency" action="generic /sys/devices/platform/kgsl-3d0.0/kgsl/kgsl-3d0/thermal_pwrlevel">
+			<spinnerItem name="450.000 kHz" value="0"/>
+			<spinnerItem name="320.000 kHz" value="1"/>
+			<spinnerItem name="200.000 kHz" value="2"/>
+			<spinnerItem name="128.000 kHz" value="3"/>
 		</spinner>
 
 	</settingsPane>
