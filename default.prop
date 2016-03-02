@@ -15,7 +15,7 @@ debug.atrace.tags.enableflags=0
 #
 # BOOTIMAGE_BUILD_PROPERTIES
 #
-ro.bootimage.build.date=sab 27 feb 2016, 19.37.07, CET
-ro.bootimage.build.date.utc=1456598227
-ro.bootimage.build.fingerprint=samsung/aosp_jflte/jflte:6.0.1/MMB29U/eng.b--b.20160227.193606:userdebug/test-keys
+ro.bootimage.build.date=mer 2 mar 2016, 18.00.50, CET
+ro.bootimage.build.date.utc=1456938050
+ro.bootimage.build.fingerprint=samsung/aosp_jflte/jflte:6.0.1/MMB29U/eng.b--b.20160302.174432:userdebug/test-keys
 persist.sys.usb.config=adb
