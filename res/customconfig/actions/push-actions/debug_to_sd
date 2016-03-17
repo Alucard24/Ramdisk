@@ -80,9 +80,14 @@ case "${debug_to_sd}" in
 			SEPARATOR;
 
 			# Profile
-			PROFILE=`cat /data/.alucard/.active.profile`;
+			PROFILE=$(cat /data/.alucard/.active.profile);
 			echo "Profile-Config: $PROFILE" >> $DEBUG_FILE;
-			cat /data/.alucard/${PROFILE}.profile >> $DEBUG_FILE;
+			PROFILE_CHANGED=$(diff /res/customconfig/${PROFILE}.profile /data/.alucard/${PROFILE}.profile | wc -l);
+			if [ "$PROFILE_CHANGED" -ne "0" ]; then
+				diff /res/customconfig/${PROFILE}.profile /data/.alucard/${PROFILE}.profile >> $DEBUG_FILE;
+			else
+				echo "Profile is not changed by user" >> $DEBUG_FILE;
+			fi;
 			SEPARATOR;
 
 			# Memory
