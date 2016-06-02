@@ -421,6 +421,7 @@
 /dev/socket/ims_rtpd                            u:object_r:ims_socket:s0
 /dev/socket/perfd(/.*)?                         u:object_r:mpctl_socket:s0
 /dev/socket/perfd                               u:object_r:mpctl_socket:s0
+/dev/socket/gamed                               u:object_r:gamed_socket:s0
 /dev/socket/qlogd                               u:object_r:qlogd_socket:s0
 /dev/socket/ipacm_log_file                      u:object_r:ipacm_socket:s0
 /dev/socket/dpmd                                u:object_r:dpmd_socket:s0
@@ -462,6 +463,7 @@
 /system/bin/mpdecision                          u:object_r:mpdecision_exec:s0
 /system/vendor/bin/perfd                        u:object_r:perfd_exec:s0
 /data/misc/perfd(/.*)?                          u:object_r:mpctl_socket:s0
+/system/vendor/bin/gamed                        u:object_r:gamed_exec:s0
 /system/bin/iop                                 u:object_r:dumpstate_exec:s0
 /system/bin/msm_irqbalance                      u:object_r:msm_irqbalanced_exec:s0
 /system/bin/imsdatadaemon                       u:object_r:ims_exec:s0
@@ -629,6 +631,7 @@
 /data/misc/audio_pp(/.*)?                                           u:object_r:audio_pp_data_file:s0
 /data/ramdump(/.*)?                                                 u:object_r:ssr_ramdump_data_file:s0
 /data/misc/SelfHost/socket(/.*)?                                    u:object_r:RIDL_socket:s0
+/data/system/swap(/.*)?                                             u:object_r:swap_data_file:s0
 
 ###################################
 # persist files
