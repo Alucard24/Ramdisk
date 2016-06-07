@@ -807,8 +807,8 @@
 
 		<seekBar description="Adaptive LMK trigger point, when ram pressure is higher than set here, LMK is ordered to release RAM fast and allow fast load of something BIG to memory, we see it as fast app load and less LAG. lower the value, then more apps killed from RAM and with less actual need. for best performance keep it in range of 85 to 90%" name="Adaptive LMK Pressure Range" action="generic /sys/module/lowmemorykiller/parameters/vm_pressure_adaptive_start" unit="%" min="75" reversed="false" step="1" max="94"/>
 
-		<seekBar description="When RAM pressure is higher than set above, and RAM is lower than set here, kernel will start releasing RAM by stopping background apps. Value calculation here is based on this formula PR * 4096 (example: 72 * 4096 = 294MB free RAM) default 72 PR" name="Adaptive LMK Lowest RAM Allowed"
-                        action="vmpressure_file_min" unit="PR" min="65" reversed="false" step="1" max="80"/>
+		<seekBar description="When RAM pressure is higher than set above, and RAM is lower than set here, kernel will start releasing RAM by stopping background apps. Value calculation here is based on this formula PR * 4096 (example: 68 * 4096 = 278MB free RAM) default 68 PR" name="Adaptive LMK Lowest RAM Allowed"
+                        action="vmpressure_file_min" unit="PR" min="65" reversed="false" step="1" max="78"/>
 
 		<checkbox description="Control for kernel process memory reclaim, it help to reduce used RAM of each APP that loaded in background. when vm memory pressure jump higher and system needs RAM for something BIG to load, process reclaim start to shrink used RAM by background APPS, it also shrink the ZRAM swap if enabled in order to reduce cpu power usage if RAM is free." name="Process Memory Reclaim" action="generic01 /sys/module/process_reclaim/parameters/enable_process_reclaim" label="Process Reclaim"/>
 
