@@ -124,6 +124,9 @@ debug.gralloc.             u:object_r:debug_gralloc_prop:s0
 persist.net.doxlat         u:object_r:xlat_prop:s0
 #line 1 "device/qcom/sepolicy/msm8960/property_contexts"
 ctl.thermal-engine             u:object_r:ctl_thermal-engine_prop:s0
+#line 1 "vendor/aosp/sepolicy/qcom/property_contexts"
+persist.dbg                   u:object_r:radio_prop:s0
+persist.data                  u:object_r:radio_prop:s0
 #line 1 "device/samsung/jflte/sepolicy/property_contexts"
 persist.sys.camera.preview	u:object_r:camera_prop:s0
 sys.qseecomd.enable		u:object_r:qseecomd_prop:s0
