@@ -1027,10 +1027,6 @@
 
 	<settingsPane description="Set some settings and options for your apps." name="Apps">
 
-		<button description="Click here to start Zipaligning ONLY user apps. System may be unresponsive, it is OK, do not use phone for 2 minutes. WARNING! Backup all user applications before use! This process will remove applications that are BROKEN and not compressed or compiled correctly, so you may find some apps missing. USE it AT YOUR OWN RISK, and update the broken applications!." name="ZIPALIGN" action="push-actions/zipalign" label="ZIPALIGN ALL APPS"/>
-
-		<button description="Click here to start applications Database Optimization. Compacting, cleaning and indexing will take max 2min." name="DB OPTIMIZATION" action="push-actions/database_optimizing" label="DATABASE OPTIMIZATON"/>
-
 		<button description="Click here to see current SELINUX status! ON or OFF globaly. default is OFF, you can turn it ON with button below." name="SELINUX STATUS CHECK" action="push-actions/selinux_check" label="SELINUX STATUS CHECK"/>
 
 		<button description="Touch here to Enable or Disable Selinux Driver. If selinux is OFF apps may get access to files in system but not changed them. With ROOT access they can (with or without selinux). If SELINUX is disabled (Default: set on boot) then life is good and all works with no problems with GSM connection or access permissions with different apps. When you push this button ONCE, kernel command line will be updated and current kernel will reinstall automatic. To see changes you'll need to REBOOT! Then you can check using check button above. WARNING some USER apps loose some or all data (mostly configurations) when permissions changed! Do backup before change selinux to ENABLE! When you'll reboot Dalvik Cache will be cleared out and kernel will reboot. Wait for apps to be optimized." name="SELINUX ON OFF CONTROL" action="push-actions/selinux_switch" label="SELINUX HARD ON OFF"/>
@@ -1038,11 +1034,6 @@
 		<spinner description="Allows you to change your SELinux (Security-Enhanced Linux) Status from Enforcing (policy is enforced) to Permissive (prints warnings instead of enforcing)." name="SeLinux Control" action="selinux_control">
 			<spinnerItem name="Enforcing" value="on"/> 
 			<spinnerItem name="Permissive" value="off"/> 
-		</spinner>
-
-		<spinner description="Google Play Services Battery Drain Workaround" name="Enable On Boot" action="generic_cortex /tmp/gpservicefix">
-			<spinnerItem name="Enabled" value="yes"/> 
-			<spinnerItem name="Disabled" value="no"/> 
 		</spinner>
 
 		<spinner description="Control to enable or disable logcat, logcat used to debug ROM services and apps, if you never used it, then keep it OFF, you get more battery and less CPU usage on idle." name="Logcat ON/OFF" action="logger">
@@ -1154,30 +1145,6 @@
 	<settingsPane description="Load all kernel modules on boot, this will allow some extra functions." name="Kernel Modules">
 
 		<checkbox description="Enable or Disable CIFS Module. This will allow to use apps that can mount internal storage and publish over network. User can access data and system over network. No support, effect only after reboot!" name="CIFS Module" action="generic_cortex /tmp/cifs_module" label="CIFS Module"/>
-
-	</settingsPane>
-
-</settingsTab>
-
-<settingsTab name="PROFILES">
-
-	<settingsPane description="You can check which profile is used." name="Online Profile">
-
-		<button description="This displays your currently used profile." name="Profile Check" action="push-actions/profile" label="Profile Check"/>
-
-	</settingsPane>
-
-	<settingsPane description="Select profile. You can also switch the default profiles (battery, default, performance) via Kernel-Recovery." name="STweaks Profiles">
-
-		<button description="extreme_battery.profile" name="extreme_battery.profile" action="push-actions/config_backup_restore 6" label="EXTREME BATTERY"/>
-
-		<button description="battery.profile" name="battery.profile" action="push-actions/config_backup_restore 3" label="BATTERY"/>
-
-		<button description="default.profile" name="default.profile" action="push-actions/config_backup_restore 4" label="DEFAULT"/>
-
-		<button description="performance.profile" name="performance.profile" action="push-actions/config_backup_restore 5" label="PERFORMANCE"/>
-
-		<button description="extreme_performance.profile" name="extreme_performance.profile" action="push-actions/config_backup_restore 7" label="EXTREME PERFORMANCE"/>
 
 	</settingsPane>
 
