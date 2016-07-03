@@ -91,13 +91,16 @@ on enable-low-power
     write /sys/module/pm_8x60/modes/cpu3/standalone_power_collapse/idle_enabled 1
     write /sys/module/pm_8x60/modes/cpu0/power_collapse/idle_enabled 1
     write /sys/module/msm_thermal/core_control/enabled 0
-	write /sys/devices/system/cpu/cpu0/rq-stats/hotplug_enable 0
-	stop mpdecision
+    write /sys/devices/system/cpu/cpu0/rq-stats/hotplug_enable 0
+    stop mpdecision
+
     write /sys/devices/system/cpu/cpu0/online 1
     write /sys/devices/system/cpu/cpu1/online 1
     write /sys/devices/system/cpu/cpu2/online 1
     write /sys/devices/system/cpu/cpu3/online 1
     write /sys/class/kgsl/kgsl-3d0/pwrscale/trustzone/governor ondemand
+
+    write /dev/cpuctl/cpu.notify_on_migrate 1
 
 on property:init.svc.recovery=running
     trigger enable-low-power
