@@ -252,7 +252,7 @@
 
 		<button description="Use this button to see what CPU Voltage is used right now!" name="Check Active CPU Voltage" action="push-actions/check_cpu_voltage" label="Check CPU Voltage"/>
 
-		<seekBar description="CPU Voltage for 1890.000 kHz." name="CPU Voltage 189.000 kHz" action="cpu-voltage 1" unit="µV" min="1062500" reversed="false" step="12500" max="1300000"/>
+		<seekBar description="CPU Voltage for 1890.000 kHz." name="CPU Voltage 1890.000 kHz" action="cpu-voltage 1" unit="µV" min="1062500" reversed="false" step="12500" max="1300000"/>
 
 		<seekBar description="CPU Voltage for 1782.000 kHz." name="CPU Voltage 1782.000 kHz" action="cpu-voltage 2" unit="µV" min="1012500" reversed="false" step="12500" max="1225000"/>
 
