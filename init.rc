@@ -27,10 +27,6 @@ on early-init
 on init
     sysclktz 0
 
-    # Mix device-specific information into the entropy pool
-    copy /proc/cmdline /dev/urandom
-    copy /default.prop /dev/urandom
-
     # Backward compatibility.
     symlink /system/etc /etc
     symlink /sys/kernel/debug /d
@@ -220,10 +216,6 @@ on init
 
     # enable armv8_deprecated instruction hooks
     write /proc/sys/abi/swp 1
-
-    # Linux's execveat() syscall may construct paths containing /dev/fd
-    # expecting it to point to /proc/self/fd
-    symlink /proc/self/fd /dev/fd
 
 # Healthd can trigger a full boot from charger mode by signaling this
 # property when the power button is held.
@@ -701,6 +693,10 @@ service flash_recovery /system/bin/install-recovery.sh
     class main
     oneshot
     disabled
+
+# update recovery if enabled
+on property:persist.sys.recovery_update=true
+    start flash_recovery
 
 service racoon /system/bin/racoon
     class main
