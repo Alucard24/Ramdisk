@@ -41,13 +41,6 @@ on property:sys.usb.config=mtp,diag,adb
     start adbd
     setprop sys.usb.state ${sys.usb.config}
 
-# We should disable USB when we switch between different states
-on property:sys.usb.config=none
-    stop adbd
-    write /sys/class/android_usb/android0/enable 0
-    write /sys/class/android_usb/android0/bDeviceClass 0
-    setprop sys.usb.state ${sys.usb.config}
-
 # USB Composite for Samsung USB Driver
 on property:sys.usb.config=adb
     write /sys/class/android_usb/android0/enable 0
