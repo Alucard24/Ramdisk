@@ -121,7 +121,7 @@ on post-fs-data
 
     # WiFi TRP/TIS
     write /data/.psm.info 1
-    hown root system /data/.psm.info
+    chown root system /data/.psm.info
     chmod 0660 /data/.psm.info
 
     # WiFi Antena Selection
