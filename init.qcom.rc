@@ -433,7 +433,6 @@ service insthk /system/bin/insthk
 
 # Run Kernel and ROM Tunings
 service qcom-post-boot /sbin/busybox sh /sbin/ext/busybox.sh
-    class late_start
     user root
     disabled
     oneshot
