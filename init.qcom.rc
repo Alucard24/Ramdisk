@@ -438,13 +438,6 @@ service qcom-post-boot /sbin/busybox sh /sbin/ext/busybox.sh
     disabled
     oneshot
 
-# BSOD Killer
-service bsod_killer /system/bin/bsod_killer
-    class late_start
-    user root
-    group shell
-    oneshot
-
 # LEDify
 service ledify /system/bin/ledify
     class late_start
