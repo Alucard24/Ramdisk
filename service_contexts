@@ -133,6 +133,7 @@ window                                    u:object_r:window_service:s0
 *                                         u:object_r:default_android_service:s0
 #line 1 "device/qcom/sepolicy/common/service_contexts"
 android.apps.IQfpService                       u:object_r:iqfp_service:s0
+android.apps.IQfpAndroidService                u:object_r:qfp_proxy_service:s0
 AtCmdFwd                                       u:object_r:atfwd_service:s0
 dpmservice                                     u:object_r:dpmservice:s0
 listen.service                                 u:object_r:mediaserver_service:s0

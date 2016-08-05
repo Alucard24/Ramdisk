@@ -333,6 +333,7 @@
 /dev/mhi_pipe_.*                                u:object_r:mhi_device:s0
 /dev/bhi                                        u:object_r:bhi_device:s0
 /dev/msm_.*                                     u:object_r:audio_device:s0
+/dev/i2c-6                                      u:object_r:audio_device:s0
 /dev/usf1                                       u:object_r:usf_device:s0
 /dev/msm_dsps                                   u:object_r:sensors_device:s0
 /dev/msm_thermal_query                          u:object_r:thermal_device:s0
@@ -342,6 +343,7 @@
 /dev/seemplog                                   u:object_r:seemplog_device:s0
 /dev/radio0                                     u:object_r:fm_radio_device:s0
 /dev/rtc0                                       u:object_r:rtc_device:s0
+/dev/sdsprpc-smd                                u:object_r:dsp_device:s0
 /dev/sensors                                    u:object_r:sensors_device:s0
 /dev/smd.*                                      u:object_r:smd_device:s0
 /dev/smem_log                                   u:object_r:smem_log_device:s0
@@ -422,6 +424,7 @@
 /dev/socket/perfd(/.*)?                         u:object_r:mpctl_socket:s0
 /dev/socket/perfd                               u:object_r:mpctl_socket:s0
 /dev/socket/gamed                               u:object_r:gamed_socket:s0
+/dev/socket/iop                                 u:object_r:iop_socket:s0
 /dev/socket/qlogd                               u:object_r:qlogd_socket:s0
 /dev/socket/ipacm_log_file                      u:object_r:ipacm_socket:s0
 /dev/socket/dpmd                                u:object_r:dpmd_socket:s0
@@ -775,12 +778,14 @@
 /system/bin/qcks                                u:object_r:mdm_helper_exec:s0
 /system/bin/efks                                u:object_r:mdm_helper_exec:s0
 /system/bin/DR_AP_Service                       u:object_r:location_exec:s0
-
+/system/bin/boot                                u:object_r:bootanim_exec:s0
+/system/bin/earlyaudio                          u:object_r:earlyaudio_exec:s0
 ###################################
 # Data files
 #
 /data/qcks(/.*)?                                u:object_r:efs_data_file:s0
 /sys/bootkpi/marker_entry                       u:object_r:sys_bootkpi:s0
+/data/misc/earlyaudio(/.*)?                     u:object_r:earlyaudio_data_file:s0
 #line 1 "device/samsung/jflte/sepolicy/file_contexts"
 /data/.cid.info									u:object_r:wifi_data_file:s0
 /data/.psm.info									u:object_r:wifi_data_file:s0
