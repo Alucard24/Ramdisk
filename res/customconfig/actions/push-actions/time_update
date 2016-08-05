@@ -21,7 +21,7 @@ if [ "$WGET_CHECK1" -eq "1" ] || [ "$WGET_CHECK2" -eq "1" ] || [ "$WGET_CHECK3" 
 	echo "nameserver $DNS2" >> /system/etc/resolv.conf;
 	echo "nameserver $DNS3" >> /system/etc/resolv.conf;
 
-	TESTCONNECTION=`/system/wget/wget http://www.google.com -O $TMPFILE > /dev/null 2>&1`;
+	TESTCONNECTION=`wget http://www.google.com -O $TMPFILE > /dev/null 2>&1`;
 	if [ $? != 0 ]; then
 		echo "Problem: no internet connection! connect and try again";
 	else

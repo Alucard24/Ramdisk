@@ -13,15 +13,15 @@ fi;
 	selinux_status=$(grep -c "selinux=0" /proc/cmdline)
 	if [ "$selinux_status" -eq "1" ]; then
 		echo "Enabling Kernel Selinux Please wait!";
-		/sbin/busybox find /data/.alucard/boot.img -type f -exec sed -i 's/console=ttyHSL0,115200,n8 androidboot.hardware=qcom user_debug=31 ehci-hcd.park=3 enforcing=0 selinux=0/console=ttyHSL0,115200,n8 androidboot.hardware=qcom user_debug=31 ehci-hcd.park=3 enforcing=0 selinux=1/g' {} \;
-		echo "Selinux Enabled on boot! Please REBOOT!";
+		/sbin/busybox find /data/.alucard/boot.img -type f -exec sed -i 's/console=ttyHSL0,115200,n8 androidboot.hardware=qcom user_debug=31 ehci-hcd.park=3 enforcing=0 selinux=1/console=ttyHSL0,115200,n8 androidboot.hardware=qcom user_debug=31 ehci-hcd.park=3 enforcing=1 selinux=1/g' {} \;
+		echo "Selinux set as Enforcing on boot! Please REBOOT!";
 		dd if=/data/.alucard/boot.img of=/dev/block/platform/msm_sdcc.1/by-name/boot
 		echo "1" > /data/.alucard/selinux_mode;
 		sync;
 	else
 		echo "Disabling Kernel Selinux Please wait!";
-		/sbin/busybox find /data/.alucard/boot.img -type f -exec sed -i 's/console=ttyHSL0,115200,n8 androidboot.hardware=qcom user_debug=31 ehci-hcd.park=3 enforcing=0 selinux=1/console=ttyHSL0,115200,n8 androidboot.hardware=qcom user_debug=31 ehci-hcd.park=3 enforcing=0 selinux=0/g' {} \;
-		echo "Selinux Disabled on boot! Please REBOOT!";
+		/sbin/busybox find /data/.alucard/boot.img -type f -exec sed -i 's/console=ttyHSL0,115200,n8 androidboot.hardware=qcom user_debug=31 ehci-hcd.park=3 enforcing=1 selinux=1/console=ttyHSL0,115200,n8 androidboot.hardware=qcom user_debug=31 ehci-hcd.park=3 enforcing=0 selinux=1/g' {} \;
+		echo "Selinux set as Permissive on boot! Please REBOOT!";
 		dd if=/data/.alucard/boot.img of=/dev/block/platform/msm_sdcc.1/by-name/boot
 		echo "1" > /data/.alucard/selinux_mode;
 		sync;

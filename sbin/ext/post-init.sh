@@ -30,7 +30,7 @@ OPEN_RW()
 }
 OPEN_RW;
 
-selinux_status=$(grep -c "selinux=1" /proc/cmdline);
+selinux_status=$(grep -c "enforcing=1" /proc/cmdline);
 if [ "$selinux_status" -eq "1" ]; then
 	umount /firmware;
 	mount -t vfat -o ro,context=u:object_r:firmware_file:s0,shortname=lower,uid=1000,gid=1000,dmask=227,fmask=337 /dev/block/platform/msm_sdcc.1/by-name/apnhlos /firmware

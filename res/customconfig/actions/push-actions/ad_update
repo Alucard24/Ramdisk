@@ -1,11 +1,12 @@
 #!/sbin/busybox sh
 
-
-WGET_CHECK1=$(ls -la /system/wget/wget | wc -l);
+WGET_CHECK1=`ls -la /system/xbin/wget | wc -l`;
+WGET_CHECK2=`ls -la /system/bin/wget | wc -l`;
+WGET_CHECK3=`ls -la /system/wget/wget | wc -l`;
 
 BB=/sbin/busybox
 
-if [ "$WGET_CHECK1" -eq "1" ]; then
+if [ "$WGET_CHECK1" -eq "1" ] || [ "$WGET_CHECK2" -eq "1" ] || [ "$WGET_CHECK3" -eq "1" ]; then
 
 	if [ "$($BB mount | grep rootfs | cut -c 26-27 | grep -c ro)" -eq "1" ]; then
 		$BB mount -o remount,rw /;

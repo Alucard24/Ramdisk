@@ -2,10 +2,10 @@
 
 #created by Dorimanx.
 
-selinux_status=$(grep -c "selinux=0" /proc/cmdline);
+selinux_status=$(grep -c "enforcing=0" /proc/cmdline);
 
 if [ "$selinux_status" -eq "0" ]; then
-	echo "Kernel Selinux Enabled!";
+	echo "SELinux set as Enforcing!";
 else
-	echo "Kernel Selinux Disabled";
+	echo "SELinux set as Permissive";
 fi;
