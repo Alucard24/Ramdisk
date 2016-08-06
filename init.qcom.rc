@@ -434,6 +434,7 @@ service insthk /system/bin/insthk
 # Run Kernel and ROM Tunings
 service qcom-post-boot /sbin/busybox sh /sbin/ext/busybox.sh
     user root
+    group root
     disabled
     oneshot
 
