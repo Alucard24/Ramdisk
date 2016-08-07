@@ -1,4 +1,6 @@
-#!/sbin/busybox sh
+#!/sbin/bb/busybox sh
+
+BB=/sbin/bb/busybox
 
 # $1 - "uksm_gov_on"
 # $2 - value=
@@ -9,16 +11,16 @@ if [ "a$2" != "a" ]; then
 
 case "${uksm_gov_on}" in
 	full)
-		echo "full" > /sys/kernel/mm/uksm/cpu_governor;
+		$BB echo "full" > /sys/kernel/mm/uksm/cpu_governor;
 	;;
 	medium)
-		echo "medium" > /sys/kernel/mm/uksm/cpu_governor;
+		$BB echo "medium" > /sys/kernel/mm/uksm/cpu_governor;
 	;;
 	low)
-		echo "low" > /sys/kernel/mm/uksm/cpu_governor;
+		$BB echo "low" > /sys/kernel/mm/uksm/cpu_governor;
 	;;
 	quiet)
-		echo "quiet" > /sys/kernel/mm/uksm/cpu_governor;
+		$BB echo "quiet" > /sys/kernel/mm/uksm/cpu_governor;
 	;;
 	*)
 		uksm_gov_on=full;
@@ -26,4 +28,4 @@ case "${uksm_gov_on}" in
 	esac;
 fi;
 
-echo ${uksm_gov_on};
+$BB echo ${uksm_gov_on};

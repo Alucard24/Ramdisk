@@ -1,4 +1,4 @@
-BB=/sbin/busybox;
+BB=/sbin/bb/busybox;
 
 if [ -d /data/data/com.af.synapse ]; then
   SYNAPSE_CONFIG_DIR=/sdcard/Synapse/saved_profiles;

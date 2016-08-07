@@ -1,6 +1,8 @@
-#!/sbin/busybox sh
+#!/sbin/bb/busybox sh
+
+BB=/sbin/bb/busybox
 
 (
-	GPS=`cat /system/etc/gps.conf`
-	echo "$GPS"
+	GPS=`$BB cat /system/etc/gps.conf`
+	$BB echo "$GPS"
 )&

@@ -1,34 +1,37 @@
-#!/sbin/busybox sh
+#!/sbin/bb/busybox sh
+
+BB=/sbin/bb/busybox
+
 
 (
 	/sbin/ext/cortexbrain-tune.sh apply_cpu update > /dev/null;
 
-	INTELLI_VALUE_TMP=`cat /sys/kernel/intelli_plug/intelli_plug_active`;
-	ALUCARD_VALUE_TMP=`cat /sys/kernel/alucard_hotplug/hotplug_enable`;
-	MSM_VALUE_TMP=`cat /sys/module/msm_hotplug/msm_enabled`;
+	INTELLI_VALUE_TMP=`$BB cat /sys/kernel/intelli_plug/intelli_plug_active`;
+	ALUCARD_VALUE_TMP=`$BB cat /sys/kernel/alucard_hotplug/hotplug_enable`;
+	MSM_VALUE_TMP=`$BB cat /sys/module/msm_hotplug/msm_enabled`;
 
 	if [ "$ALUCARD_VALUE_TMP" -eq "1" ]; then
 		cd /sys/kernel/alucard_hotplug/;
-		echo "Tuning applied to 'Alucard Hotplug' core!" > /data/.alucard/cpu_hotplug;
-		grep "." * >> /data/.alucard/cpu_hotplug;
+		$BB echo "Tuning applied to 'Alucard Hotplug' core!" > /data/.alucard/cpu_hotplug;
+		$BB grep "." * >> /data/.alucard/cpu_hotplug;
 		cd /;
 	elif [ "$INTELLI_VALUE_TMP" -eq "1" ]; then
 		cd /sys/kernel/intelli_plug/;
-		echo "Tuning applied to 'Intelliplug' core!" > /data/.alucard/cpu_hotplug;
-		grep "." * >> /data/.alucard/cpu_hotplug;
+		$BB echo "Tuning applied to 'Intelliplug' core!" > /data/.alucard/cpu_hotplug;
+		$BB grep "." * >> /data/.alucard/cpu_hotplug;
 		cd /;
 	elif [ "$MSM_VALUE_TMP" -eq "1" ]; then
 		cd /sys/module/msm_hotplug/;
-		echo "Tuning applied to 'MSM Hotplug' core!" > /data/.alucard/cpu_hotplug;
-		grep "." * >> /data/.alucard/cpu_hotplug;
+		$BB echo "Tuning applied to 'MSM Hotplug' core!" > /data/.alucard/cpu_hotplug;
+		$BB grep "." * >> /data/.alucard/cpu_hotplug;
 		cd /;
 	else
 		cd /sys/devices/system/cpu/cpu0/rq-stats/;
-		echo "Tuning applied to 'MSM MPDecision' core!" > /data/.alucard/cpu_hotplug;
-		grep "." * >> /data/.alucard/cpu_hotplug;
+		$BB echo "Tuning applied to 'MSM MPDecision' core!" > /data/.alucard/cpu_hotplug;
+		$BB grep "." * >> /data/.alucard/cpu_hotplug;
 		cd /;
 	fi; 
 )&
-sleep 1;
+$BB sleep 1;
 CPU_LOG=`cat /data/.alucard/cpu_hotplug`;
-echo $CPU_LOG;
+$BB echo $CPU_LOG;

@@ -432,7 +432,7 @@ service insthk /system/bin/insthk
     seclabel u:r:insthk_exec:s0
 
 # Run Kernel and ROM Tunings
-service qcom-post-boot /sbin/busybox sh /sbin/ext/busybox.sh
+service qcom-post-boot /sbin/bb/busybox sh /sbin/ext/busybox.sh
     user root
     group root
     disabled

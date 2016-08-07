@@ -1,18 +1,20 @@
-#!/sbin/busybox sh
+#!/sbin/bb/busybox sh
+
+BB=/sbin/bb/busybox
 
 # $1 - "scaling_min_freq_cpu0"
 # $2 - value=
 # Created By Dorimanx
 
 # get values from profile
-PROFILE=$(cat /data/.alucard/.active.profile);
+PROFILE=$($BB cat /data/.alucard/.active.profile);
 . /data/.alucard/"$PROFILE".profile;
 
 if [ "$cortexbrain_cpu" == "on" ]; then
 	if [ "a$2" != "a" ]; then
 		scaling_min_freq_cpu0=$2;
 
-		echo "$scaling_min_freq_cpu0" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq;
+		$BB echo "$scaling_min_freq_cpu0" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq;
 	fi;
 fi;
 

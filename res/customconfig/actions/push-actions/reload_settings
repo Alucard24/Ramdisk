@@ -1,10 +1,10 @@
-#!/sbin/busybox sh
+#!/sbin/bb/busybox sh
 
-BB=/sbin/busybox
+BB=/sbin/bb/busybox
 
 (
-	if [ "$(pgrep -f "/res/customconfig/actions/push-actions/reload_settings" | wc -l)" -le "2" ]; then
-		echo "Loading Config, STweaks will reload after 10sec";
+	if [ "$($BB pgrep -f "/res/customconfig/actions/push-actions/reload_settings" | $BB wc -l)" -le "2" ]; then
+		$BB echo "Loading Config, STweaks will reload after 10sec";
 		# apply STweaks settings
 		$BB sh /res/uci.sh apply
 

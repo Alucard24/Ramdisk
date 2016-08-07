@@ -1,4 +1,6 @@
-#!/sbin/busybox sh
+#!/sbin/bb/busybox sh
+
+BB=/sbin/bb/busybox
 
 # $1 - "lowmem_reserve"
 # $2 - value=
@@ -9,16 +11,16 @@ if [ "a$2" != "a" ]; then
 
 case "${lowmem_reserve}" in
 	relaxed)
-		echo "48 48" > /proc/sys/vm/lowmem_reserve_ratio;
+		$BB echo "48 48" > /proc/sys/vm/lowmem_reserve_ratio;
 	;;
 	default)
-		echo "32 32" > /proc/sys/vm/lowmem_reserve_ratio;
+		$BB echo "32 32" > /proc/sys/vm/lowmem_reserve_ratio;
 	;;
 	boosted)
-		echo "24 24" > /proc/sys/vm/lowmem_reserve_ratio;
+		$BB echo "24 24" > /proc/sys/vm/lowmem_reserve_ratio;
 	;;
 	high_pressure)
-		echo "16 16" > /proc/sys/vm/lowmem_reserve_ratio;
+		$BB echo "16 16" > /proc/sys/vm/lowmem_reserve_ratio;
 	;;
 	*)
 		lowmem_reserve=boosted;
@@ -26,4 +28,4 @@ case "${lowmem_reserve}" in
 	esac;
 fi;
 
-echo ${lowmem_reserve};
+$BB echo ${lowmem_reserve};

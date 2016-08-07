@@ -1,6 +1,8 @@
-#!/sbin/busybox sh
+#!/sbin/bb/busybox sh
+
+BB=/sbin/bb/busybox
 
 (
-	CPU_VOT=`cat /sys/devices/system/cpu/cpufreq/vdd_table/vdd_levels`;
-	echo "$CPU_VOT";
+	CPU_VOT=`$BB cat /sys/devices/system/cpu/cpufreq/vdd_table/vdd_levels`;
+	$BB echo "$CPU_VOT";
 )&

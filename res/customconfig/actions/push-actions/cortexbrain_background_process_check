@@ -1,11 +1,14 @@
-#!/sbin/busybox sh
+#!/sbin/bb/busybox sh
+
+BB=/sbin/bb/busybox
+
 export PATH="/res/customconfig/actions/push-actions:${PATH}";
 
 (
-	CORTEX_CHECK=$(pgrep -f "/sbin/ext/cortexbrain-tune.sh" | wc -l);
+	CORTEX_CHECK=$($BB pgrep -f "/sbin/ext/cortexbrain-tune.sh" | $BB wc -l);
 	if [ "$CORTEX_CHECK" != "0" ]; then
-		echo "SERVICE ONLINE";
+		$BB echo "SERVICE ONLINE";
 	else
-		echo "SERVICE OFFLINE";
+		$BB echo "SERVICE OFFLINE";
 	fi;
 )&

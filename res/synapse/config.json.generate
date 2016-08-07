@@ -1,4 +1,4 @@
-BB=/sbin/busybox;
+BB=/sbin/bb/busybox;
 DEVICE=/res/synapse/files/sgs4.sh;
 
 bool() {

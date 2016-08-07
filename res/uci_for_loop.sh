@@ -1,4 +1,4 @@
-#!/sbin/busybox sh
+#!/sbin/bb/busybox sh
 # universal configurator interface
 # by Gokhan Moral
 

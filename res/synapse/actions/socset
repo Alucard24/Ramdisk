@@ -1,4 +1,4 @@
-BB=/sbin/busybox;
+BB=/sbin/bb/busybox;
 
 [ -d "/sys/module/pm_8x60" ] && PM=/sys/module/pm_8x60;
 			

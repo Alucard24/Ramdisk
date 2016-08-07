@@ -1,4 +1,6 @@
-#!/sbin/busybox sh
+#!/sbin/bb/busybox sh
+
+BB=/sbin/bb/busybox
 
 # $1 - "mmc_mode"
 # $2 - value=
@@ -10,17 +12,17 @@ if [ "a$2" != "a" ]; then
 
 case "${mmc_mode}" in
 	performance)
-		if [ "$(cat /sys/devices/platform/msm_sdcc.1/mmc_host/mmc0/clk_scaling/scale_down_in_low_wr_load)" -eq "0" ]; then
-			echo "1" > /sys/devices/platform/msm_sdcc.1/mmc_host/mmc0/clk_scaling/scale_down_in_low_wr_load;
-			echo "1" > /sys/devices/platform/msm_sdcc.3/mmc_host/mmc1/clk_scaling/scale_down_in_low_wr_load;
-			echo "1" > /sys/devices/platform/msm_sdcc.2/mmc_host/mmc2/clk_scaling/scale_down_in_low_wr_load;
+		if [ "$($BB cat /sys/devices/platform/msm_sdcc.1/mmc_host/mmc0/clk_scaling/scale_down_in_low_wr_load)" -eq "0" ]; then
+			$BB echo "1" > /sys/devices/platform/msm_sdcc.1/mmc_host/mmc0/clk_scaling/scale_down_in_low_wr_load;
+			$BB echo "1" > /sys/devices/platform/msm_sdcc.3/mmc_host/mmc1/clk_scaling/scale_down_in_low_wr_load;
+			$BB echo "1" > /sys/devices/platform/msm_sdcc.2/mmc_host/mmc2/clk_scaling/scale_down_in_low_wr_load;
 		fi;
 	;;
 	power_save)
-		if [ "$(cat /sys/devices/platform/msm_sdcc.1/mmc_host/mmc0/clk_scaling/scale_down_in_low_wr_load)" -eq "1" ]; then
-			echo "0" > /sys/devices/platform/msm_sdcc.1/mmc_host/mmc0/clk_scaling/scale_down_in_low_wr_load;
-			echo "0" > /sys/devices/platform/msm_sdcc.3/mmc_host/mmc1/clk_scaling/scale_down_in_low_wr_load;
-			echo "0" > /sys/devices/platform/msm_sdcc.2/mmc_host/mmc2/clk_scaling/scale_down_in_low_wr_load;
+		if [ "$($BB cat /sys/devices/platform/msm_sdcc.1/mmc_host/mmc0/clk_scaling/scale_down_in_low_wr_load)" -eq "1" ]; then
+			$BB echo "0" > /sys/devices/platform/msm_sdcc.1/mmc_host/mmc0/clk_scaling/scale_down_in_low_wr_load;
+			$BB echo "0" > /sys/devices/platform/msm_sdcc.3/mmc_host/mmc1/clk_scaling/scale_down_in_low_wr_load;
+			$BB echo "0" > /sys/devices/platform/msm_sdcc.2/mmc_host/mmc2/clk_scaling/scale_down_in_low_wr_load;
 		fi;
 	;;
 	*)
@@ -29,4 +31,4 @@ case "${mmc_mode}" in
 	esac;
 fi;
 
-echo ${mmc_mode};
+$BB echo ${mmc_mode};

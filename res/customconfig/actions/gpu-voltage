@@ -1,18 +1,20 @@
-#!/sbin/busybox sh
+#!/sbin/bb/busybox sh
+
+BB=/sbin/bb/busybox
 
 PROFILE=`cat /data/.alucard/.active.profile`;
 GPU_VOLT_SWITCH=`cat /data/.alucard/${PROFILE}.profile | grep gpu_voltage_switch=on | wc -l`;
 
 if [ "a$3" == "a" ]; then
-	evalcmd='eval "echo \$GPUVOLT$2"';
+	evalcmd='eval "$BB echo \$GPUVOLT$2"';
 	eval $evalcmd;
 else
 	evalcmd='eval "GPUVOLT$2=$3"';
 	eval $evalcmd;
-	evalcmd='eval "echo \$GPUVOLT$2"';
+	evalcmd='eval "$BB echo \$GPUVOLT$2"';
 	eval $evalcmd;
 
 	if [ "$GPU_VOLT_SWITCH" -eq "1" ]; then
-		echo "$GPUVOLT1 $GPUVOLT2 $GPUVOLT3" > /sys/devices/system/cpu/cpufreq/gpu_vdd_table/gpu_vdd_levels;
+		$BB echo "$GPUVOLT1 $GPUVOLT2 $GPUVOLT3" > /sys/devices/system/cpu/cpufreq/gpu_vdd_table/gpu_vdd_levels;
 	fi;
 fi;

@@ -1,16 +1,16 @@
-#!/sbin/busybox sh
+#!/sbin/bb/busybox sh
 
 # $1 - "vmpressure_file_min"
 # $2 - value=
 # Created By Dorimanx
 
-BB=/sbin/busybox
+BB=/sbin/bb/busybox
 
 if [ "a$2" != "a" ]; then
 	vmpressure_file_min=$2;
 
 	file_min=$((vmpressure_file_min * 1024));
-	echo "$file_min" > /sys/module/lowmemorykiller/parameters/vmpressure_file_min;
+	$BB echo "$file_min" > /sys/module/lowmemorykiller/parameters/vmpressure_file_min;
 fi;
 
-echo ${vmpressure_file_min};
+$BB echo ${vmpressure_file_min};

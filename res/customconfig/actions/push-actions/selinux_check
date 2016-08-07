@@ -1,11 +1,13 @@
-#!/sbin/busybox sh
+#!/sbin/bb/busybox sh
+
+BB=/sbin/bb/busybox
 
 #created by Dorimanx.
 
 selinux_status=$(grep -c "enforcing=0" /proc/cmdline);
 
 if [ "$selinux_status" -eq "0" ]; then
-	echo "SELinux set as Enforcing!";
+	$BB echo "SELinux set as Enforcing!";
 else
-	echo "SELinux set as Permissive";
+	$BB echo "SELinux set as Permissive";
 fi;

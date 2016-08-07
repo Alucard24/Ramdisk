@@ -1,10 +1,13 @@
-#!/sbin/busybox sh
+#!/sbin/bb/busybox sh
+
+BB=/sbin/bb/busybox
+
 export PATH="/res/customconfig/actions/push-actions:${PATH}";
 
 (
 	if [ -e /dev/block/vold/179:32 ]; then
-		echo "/dev/block/vold/179:32" > /sys/devices/virtual/android_usb/android0/f_mass_storage/lun0/file;
+		$BB echo "/dev/block/vold/179:32" > /sys/devices/virtual/android_usb/android0/f_mass_storage/lun0/file;
 	fi;
 )&
 
-echo "Try now to open usb drive/s.";
+$BB echo "Try now to open usb drive/s.";

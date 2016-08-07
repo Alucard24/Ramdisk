@@ -1,8 +1,8 @@
-#!/sbin/busybox sh
+#!/sbin/bb/busybox sh
 
 # Kernel Tuning by Alucard. Thanks to Dorimanx.
 
-BB=/sbin/busybox
+BB=/sbin/bb/busybox
 
 # protect init from oom
 if [ -f /system/xbin/su ]; then
@@ -15,25 +15,25 @@ if [ -e /data/.alucard/selinux_mode ]; then
 	$BB rm /data/dalvik-cache/profiles/*;
 	$BB rm /data/.alucard/selinux_mode;
 	stop;
-	sync;
+	$BB sync;
 	reboot;
 fi;
 
 OPEN_RW()
 {
-	if [ "$($BB mount | grep rootfs | cut -c 26-27 | grep -c ro)" -eq "1" ]; then
+	if [ "$($BB mount | $BB grep rootfs | $BB cut -c 26-27 | $BB grep -c ro)" -eq "1" ]; then
 		$BB mount -o remount,rw /;
 	fi;
-	if [ "$($BB mount | grep system | grep -c ro)" -eq "1" ]; then
+	if [ "$($BB mount | $BB grep system | $BB grep -c ro)" -eq "1" ]; then
 		$BB mount -o remount,rw /system;
 	fi;
 }
 OPEN_RW;
 
-selinux_status=$(grep -c "enforcing=1" /proc/cmdline);
+selinux_status=$($BB grep -c "enforcing=1" /proc/cmdline);
 if [ "$selinux_status" -eq "1" ]; then
-	umount /firmware;
-	mount -t vfat -o ro,context=u:object_r:firmware_file:s0,shortname=lower,uid=1000,gid=1000,dmask=227,fmask=337 /dev/block/platform/msm_sdcc.1/by-name/apnhlos /firmware
+	$BB umount /firmware;
+	$BB mount -t vfat -o ro,context=u:object_r:firmware_file:s0,shortname=lower,uid=1000,gid=1000,dmask=227,fmask=337 /dev/block/platform/msm_sdcc.1/by-name/apnhlos /firmware
 	restorecon -RF /system
 	if [ -e /system/bin/app_process32_xposed ]; then
 		chcon u:object_r:zygote_exec:s0 /system/bin/app_process32_xposed
@@ -59,15 +59,15 @@ fi;
 
 # create init.d folder if missing
 if [ ! -d /system/etc/init.d ]; then
-	mkdir -p /system/etc/init.d/
+	$BB mkdir -p /system/etc/init.d/
 	$BB chmod -R 755 /system/etc/init.d/;
 fi;
 
 OPEN_RW;
 
 # Tune entropy parameters.
-echo "512" > /proc/sys/kernel/random/read_wakeup_threshold;
-echo "256" > /proc/sys/kernel/random/write_wakeup_threshold;
+$BB echo "512" > /proc/sys/kernel/random/read_wakeup_threshold;
+$BB echo "256" > /proc/sys/kernel/random/write_wakeup_threshold;
 
 # some nice thing for dev
 if [ ! -e /cpufreq ]; then
@@ -90,8 +90,7 @@ CRITICAL_PERM_FIX()
 	$BB chmod -R 777 /tmp/;
 	$BB chmod -R 775 /res/;
 	$BB chmod -R 06755 /sbin/ext/;
-	$BB chmod 06755 /sbin/busybox;
-	$BB chmod 06755 /system/xbin/busybox;
+	$BB chmod 06755 /sbin/bb/busybox;
 }
 CRITICAL_PERM_FIX;
 
@@ -132,54 +131,54 @@ RESET_MAGIC=5;
 CLEAN_ALU_DIR=2;
 
 if [ ! -e /data/.alucard/reset_profiles ]; then
-	echo "$RESET_MAGIC" > /data/.alucard/reset_profiles;
+	$BB echo "$RESET_MAGIC" > /data/.alucard/reset_profiles;
 fi;
 if [ ! -e /data/reset_alu_dir ]; then
-	echo "$CLEAN_ALU_DIR" > /data/reset_alu_dir;
+	$BB echo "$CLEAN_ALU_DIR" > /data/reset_alu_dir;
 fi;
 if [ -e /data/.alucard/.active.profile ]; then
-	PROFILE=$(cat /data/.alucard/.active.profile);
+	PROFILE=$($BB cat /data/.alucard/.active.profile);
 else
 	echo "default" > /data/.alucard/.active.profile;
-	PROFILE=$(cat /data/.alucard/.active.profile);
+	PROFILE=$($BB cat /data/.alucard/.active.profile);
 fi;
 if [ "$(cat /data/reset_alu_dir)" -eq "$CLEAN_ALU_DIR" ]; then
-	if [ "$(cat /data/.alucard/reset_profiles)" != "$RESET_MAGIC" ]; then
+	if [ "$($BB cat /data/.alucard/reset_profiles)" != "$RESET_MAGIC" ]; then
 		if [ ! -e /data/.alucard_old ]; then
-			mkdir /data/.alucard_old;
+			$BB mkdir /data/.alucard_old;
 		fi;
-		cp -a /data/.alucard/*.profile /data/.alucard_old/;
+		$BB cp -a /data/.alucard/*.profile /data/.alucard_old/;
 		$BB rm -f /data/.alucard/*.profile;
 		if [ -e /data/data/com.af.synapse/databases ]; then
 			$BB rm -R /data/data/com.af.synapse/databases;
 		fi;
-		echo "$RESET_MAGIC" > /data/.alucard/reset_profiles;
+		$BB echo "$RESET_MAGIC" > /data/.alucard/reset_profiles;
 	else
-		echo "no need to reset profiles or delete .alucard folder";
+		$BB echo "no need to reset profiles or delete .alucard folder";
 	fi;
 else
 	# Clean /data/.alucard/ folder from all files to fix any mess but do it in smart way.
 	if [ -e /data/.alucard/"$PROFILE".profile ]; then
-		cp /data/.alucard/"$PROFILE".profile /sdcard/"$PROFILE".profile_backup;
+		$BB cp /data/.alucard/"$PROFILE".profile /sdcard/"$PROFILE".profile_backup;
 	fi;
 	if [ ! -e /data/.alucard_old ]; then
-		mkdir /data/.alucard_old;
+		$BB mkdir /data/.alucard_old;
 	fi;
-	cp -a /data/.alucard/* /data/.alucard_old/;
+	$BB cp -a /data/.alucard/* /data/.alucard_old/;
 	$BB rm -f /data/.alucard/*
 	if [ -e /data/data/com.af.synapse/databases ]; then
 		$BB rm -R /data/data/com.af.synapse/databases;
 	fi;
-	echo "$CLEAN_ALU_DIR" > /data/reset_alu_dir;
-	echo "$RESET_MAGIC" > /data/.alucard/reset_profiles;
-	echo "$PROFILE" > /data/.alucard/.active.profile;
+	$BB echo "$CLEAN_ALU_DIR" > /data/reset_alu_dir;
+	$BB echo "$RESET_MAGIC" > /data/.alucard/reset_profiles;
+	$BB echo "$PROFILE" > /data/.alucard/.active.profile;
 fi;
 
-[ ! -f /data/.alucard/default.profile ] && cp -a /res/customconfig/default.profile /data/.alucard/default.profile;
-[ ! -f /data/.alucard/battery.profile ] && cp -a /res/customconfig/battery.profile /data/.alucard/battery.profile;
-[ ! -f /data/.alucard/performance.profile ] && cp -a /res/customconfig/performance.profile /data/.alucard/performance.profile;
-[ ! -f /data/.alucard/extreme_performance.profile ] && cp -a /res/customconfig/extreme_performance.profile /data/.alucard/extreme_performance.profile;
-[ ! -f /data/.alucard/extreme_battery.profile ] && cp -a /res/customconfig/extreme_battery.profile /data/.alucard/extreme_battery.profile;
+[ ! -f /data/.alucard/default.profile ] && $BB cp -a /res/customconfig/default.profile /data/.alucard/default.profile;
+[ ! -f /data/.alucard/battery.profile ] && $BB cp -a /res/customconfig/battery.profile /data/.alucard/battery.profile;
+[ ! -f /data/.alucard/performance.profile ] && $BB cp -a /res/customconfig/performance.profile /data/.alucard/performance.profile;
+[ ! -f /data/.alucard/extreme_performance.profile ] && $BB cp -a /res/customconfig/extreme_performance.profile /data/.alucard/extreme_performance.profile;
+[ ! -f /data/.alucard/extreme_battery.profile ] && $BB cp -a /res/customconfig/extreme_battery.profile /data/.alucard/extreme_battery.profile;
 
 $BB chmod -R 0777 /data/.alucard/;
 
@@ -189,12 +188,12 @@ read_config;
 
 # Load parameters for Synapse
 DEBUG=/data/.alucard/;
-BUSYBOX_VER=$(busybox | grep "BusyBox v" | cut -c0-15);
-echo "$BUSYBOX_VER" > $DEBUG/busybox_ver;
+BUSYBOX_VER=$(busybox | $BB grep "BusyBox v" | $BB cut -c0-15);
+$BB echo "$BUSYBOX_VER" > $DEBUG/busybox_ver;
 
 # start CORTEX by tree root, so it's will not be terminated.
-sed -i "s/cortexbrain_background_process=[0-1]*/cortexbrain_background_process=1/g" /sbin/ext/cortexbrain-tune.sh;
-if [ "$(pgrep -f "cortexbrain-tune.sh" | wc -l)" -eq "0" ]; then
+$BB sed -i "s/cortexbrain_background_process=[0-1]*/cortexbrain_background_process=1/g" /sbin/ext/cortexbrain-tune.sh;
+if [ "$(pgrep -f "cortexbrain-tune.sh" | $BB wc -l)" -eq "0" ]; then
 	$BB nohup $BB sh /sbin/ext/cortexbrain-tune.sh > /data/.alucard/cortex.txt &
 fi;
 
@@ -224,31 +223,31 @@ MODULES_LOAD()
 			$BB insmod /lib/modules/cifs.ko;
 		fi;
 	else
-		echo "no user modules loaded";
+		$BB echo "no user modules loaded";
 	fi;
 }
 
 # disable debugging on some modules
-echo "N" > /sys/module/kernel/parameters/initcall_debug;
-#echo "0" > /sys/module/smd/parameters/debug_mask
-#echo "0" > /sys/module/rpm_regulator_smd/parameters/debug_mask
-#echo "0" > /sys/module/ipc_router/parameters/debug_mask
-#echo "0" > /sys/module/event_timer/parameters/debug_mask
-#echo "0" > /sys/module/msm_serial_hs/parameters/debug_mask
-#echo "0" > /sys/module/powersuspend/parameters/debug_mask
-#echo "0" > /sys/module/msm_hotplug/parameters/debug_mask
-#echo "0" > /sys/module/cpufreq_limit/parameters/debug_mask
-#echo "0" > /sys/module/rpm_smd/parameters/debug_mask
-#echo "0" > /sys/module/smd_pkt/parameters/debug_mask
-echo "0" > /sys/module/xt_qtaguid/parameters/debug_mask
-#echo "0" > /sys/module/binder/parameters/debug_mask
-#echo "0" > /sys/module/msm_show_resume_irq/parameters/debug_mask
-#echo "0" > /sys/module/alarm_dev/parameters/debug_mask
-#echo "0" > /sys/module/pm_8x60/parameters/debug_mask;
-#echo "0" > /sys/module/spm_v2/parameters/debug_mask
-#echo "0" > /sys/module/alu_t_boost/parameters/debug_mask
-#echo "0" > /sys/module/ipc_router_smd_xprt/parameters/debug_mask
-#echo "0" > /sys/module/x_tables/parameters/debug_mask
+$BB echo "N" > /sys/module/kernel/parameters/initcall_debug;
+#$BB echo "0" > /sys/module/smd/parameters/debug_mask
+#$BB echo "0" > /sys/module/rpm_regulator_smd/parameters/debug_mask
+#$BB echo "0" > /sys/module/ipc_router/parameters/debug_mask
+#$BB echo "0" > /sys/module/event_timer/parameters/debug_mask
+#$BB echo "0" > /sys/module/msm_serial_hs/parameters/debug_mask
+#$BB echo "0" > /sys/module/powersuspend/parameters/debug_mask
+#$BB echo "0" > /sys/module/msm_hotplug/parameters/debug_mask
+#$BB echo "0" > /sys/module/cpufreq_limit/parameters/debug_mask
+#$BB echo "0" > /sys/module/rpm_smd/parameters/debug_mask
+#$BB echo "0" > /sys/module/smd_pkt/parameters/debug_mask
+$BB echo "0" > /sys/module/xt_qtaguid/parameters/debug_mask
+#$BB echo "0" > /sys/module/binder/parameters/debug_mask
+#$BB echo "0" > /sys/module/msm_show_resume_irq/parameters/debug_mask
+#$BB echo "0" > /sys/module/alarm_dev/parameters/debug_mask
+#$BB echo "0" > /sys/module/pm_8x60/parameters/debug_mask;
+#$BB echo "0" > /sys/module/spm_v2/parameters/debug_mask
+#$BB echo "0" > /sys/module/alu_t_boost/parameters/debug_mask
+#$BB echo "0" > /sys/module/ipc_router_smd_xprt/parameters/debug_mask
+#$BB echo "0" > /sys/module/x_tables/parameters/debug_mask
 
 OPEN_RW;
 
@@ -262,7 +261,7 @@ else
 	if [ -e /system/etc/init.d/99SuperSUDaemon ]; then
 		$BB nohup $BB sh /system/etc/init.d/99SuperSUDaemon > /data/.alucard/root.txt &
 	else
-		echo "no root script in init.d";
+		$BB echo "no root script in init.d";
 	fi;
 fi;
 
@@ -277,7 +276,7 @@ if [ "$stweaks_boot_control" == "yes" ]; then
 	MODULES_LOAD;
 fi;
 
-echo "0" > /cputemp/freq_limit_debug;
+$BB echo "0" > /cputemp/freq_limit_debug;
 
 # tune I/O controls to boost I/O performance
 
@@ -286,9 +285,9 @@ echo "0" > /cputemp/freq_limit_debug;
 #enabled. When set to 1 only simple one-hit merges will be tried. When
 #set to 2 no merge algorithms will be tried (including one-hit or more
 #complex tree/hash lookups).
-if [ "$(cat /sys/devices/msm_sdcc.1/mmc_host/mmc0/mmc0:0001/block/mmcblk0/queue/nomerges)" != "2" ]; then
-	echo "2" > /sys/devices/msm_sdcc.1/mmc_host/mmc0/mmc0:0001/block/mmcblk0/queue/nomerges;
-	echo "2" > /sys/devices/msm_sdcc.1/mmc_host/mmc0/mmc0:0001/block/mmcblk0/mmcblk0rpmb/queue/nomerges;
+if [ "$($BB cat /sys/devices/msm_sdcc.1/mmc_host/mmc0/mmc0:0001/block/mmcblk0/queue/nomerges)" != "2" ]; then
+	$BB echo "2" > /sys/devices/msm_sdcc.1/mmc_host/mmc0/mmc0:0001/block/mmcblk0/queue/nomerges;
+	$BB echo "2" > /sys/devices/msm_sdcc.1/mmc_host/mmc0/mmc0:0001/block/mmcblk0/mmcblk0rpmb/queue/nomerges;
 fi;
 
 #If this option is '1', the block layer will migrate request completions to the
@@ -297,16 +296,16 @@ fi;
 #For storage configurations that need to maximize distribution of completion
 #processing setting this option to '2' forces the completion to run on the
 #requesting cpu (bypassing the "group" aggregation logic).
-if [ "$(cat /sys/devices/msm_sdcc.1/mmc_host/mmc0/mmc0:0001/block/mmcblk0/queue/rq_affinity)" != "1" ]; then
-	echo "1" > /sys/devices/msm_sdcc.1/mmc_host/mmc0/mmc0:0001/block/mmcblk0/queue/rq_affinity;
-	echo "1" > /sys/devices/msm_sdcc.1/mmc_host/mmc0/mmc0:0001/block/mmcblk0/mmcblk0rpmb/queue/rq_affinity;
+if [ "$($BB cat /sys/devices/msm_sdcc.1/mmc_host/mmc0/mmc0:0001/block/mmcblk0/queue/rq_affinity)" != "1" ]; then
+	$BB echo "1" > /sys/devices/msm_sdcc.1/mmc_host/mmc0/mmc0:0001/block/mmcblk0/queue/rq_affinity;
+	$BB echo "1" > /sys/devices/msm_sdcc.1/mmc_host/mmc0/mmc0:0001/block/mmcblk0/mmcblk0rpmb/queue/rq_affinity;
 fi;
 
 (
-	sleep 30;
+	$BB sleep 30;
 
 	# get values from profile
-	PROFILE=$(cat /data/.alucard/.active.profile);
+	PROFILE=$($BB cat /data/.alucard/.active.profile);
 	. /data/.alucard/"$PROFILE".profile;
 
 	# Reload usb driver to open MTP and fix fast charge.
@@ -319,19 +318,19 @@ fi;
 
 	# Update UKSM in case ROM changed to other setting.
 	if [ "$run" == "on" ]; then
-		echo "1" > /sys/kernel/mm/uksm/run;
+		$BB echo "1" > /sys/kernel/mm/uksm/run;
 	else
-		echo "0" > /sys/kernel/mm/uksm/run;
+		$BB echo "0" > /sys/kernel/mm/uksm/run;
 	fi;
-	echo "$sleep_millisecs" > /sys/kernel/mm/uksm/sleep_millisecs;
-	echo "10" > /sys/kernel/mm/uksm/max_cpu_percentage;
+	$BB echo "$sleep_millisecs" > /sys/kernel/mm/uksm/sleep_millisecs;
+	$BB echo "10" > /sys/kernel/mm/uksm/max_cpu_percentage;
 
 	# stop core control if need to
-	echo "$core_control" > /sys/module/msm_thermal/core_control/core_control;
+	$BB echo "$core_control" > /sys/module/msm_thermal/core_control/core_control;
 
 	# script finish here, so let me know when
 	TIME_NOW=$(date)
-	echo "$TIME_NOW" > /data/boot_log_dm
+	$BB echo "$TIME_NOW" > /data/boot_log_dm
 
 	$BB mount -o remount,ro /system;
 )&

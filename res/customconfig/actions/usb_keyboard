@@ -1,4 +1,6 @@
-#!/sbin/busybox sh
+#!/sbin/bb/busybox sh
+
+BB=/sbin/bb/busybox
 
 # $1 - "usb_keyboard"
 # $2 - value=
@@ -9,21 +11,21 @@ if [ "a$2" != "a" ]; then
 
 	case "${usb_keyboard}" in
 		enable)
-			echo "0" > /sys/devices/virtual/android_usb/android0/enable;
-			echo "1" > /sys/module/g_android/parameters/usb_keyboard;
-			echo "9039" > /sys/class/android_usb/android0/idProduct;
-			echo "mtp,adb" > /sys/devices/virtual/android_usb/android0/functions;
-			echo "1" > /sys/devices/virtual/android_usb/android0/enable;
-			chown system.system /dev/hidg*;
-			chmod 777 /dev/hidg*
+			$BB echo "0" > /sys/devices/virtual/android_usb/android0/enable;
+			$BB echo "1" > /sys/module/g_android/parameters/usb_keyboard;
+			$BB echo "9039" > /sys/class/android_usb/android0/idProduct;
+			$BB echo "mtp,adb" > /sys/devices/virtual/android_usb/android0/functions;
+			$BB echo "1" > /sys/devices/virtual/android_usb/android0/enable;
+			$BB chown system.system /dev/hidg*;
+			$BB chmod 777 /dev/hidg*
 		;;
 		disable)
-			if [ "$(cat /sys/module/g_android/parameters/usb_keyboard)" == "1" ]; then
-				echo "0" > /sys/devices/virtual/android_usb/android0/enable;
-				echo "0" > /sys/module/g_android/parameters/usb_keyboard;
-				echo "633E" > /sys/class/android_usb/android0/idProduct;
-				echo "mtp:mtp,acm,diag,adb" > /sys/devices/virtual/android_usb/android0/functions;
-				echo "1" > /sys/devices/virtual/android_usb/android0/enable;
+			if [ "$($BB cat /sys/module/g_android/parameters/usb_keyboard)" == "1" ]; then
+				$BB echo "0" > /sys/devices/virtual/android_usb/android0/enable;
+				$BB echo "0" > /sys/module/g_android/parameters/usb_keyboard;
+				$BB echo "633E" > /sys/class/android_usb/android0/idProduct;
+				$BB echo "mtp:mtp,acm,diag,adb" > /sys/devices/virtual/android_usb/android0/functions;
+				$BB echo "1" > /sys/devices/virtual/android_usb/android0/enable;
 			fi;
 		;;
 		*)
@@ -32,4 +34,4 @@ if [ "a$2" != "a" ]; then
 	esac;
 fi;
 
-echo ${usb_keyboard};
+$BB echo ${usb_keyboard};

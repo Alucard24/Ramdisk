@@ -1,5 +1,7 @@
-#!/sbin/busybox sh
+#!/sbin/bb/busybox sh
 # custom script helper by Gokhan Moral
+
+BB=/sbin/bb/busybox
 
 DEFAULT_PROFILE="/res/customconfig/default.profile";
 BATTERY_PROFILE="/res/customconfig/battery.profile";
@@ -16,10 +18,10 @@ apply_config()
 {
 	# read the xml-config and ... 
 	while IFS=\> read -r key value; do
-		action=$(echo "$key" |  grep -v "\<button" | sed -e 's/action=/\naction=/g' | grep "action" | awk -F '"' '{print $2}');
+		action=$($BB echo "$key" |  $BB grep -v "\<button" | $BB sed -e 's/action=/\naction=/g' | $BB grep "action" | $BB awk -F '"' '{print $2}');
 		if [ "a$action" != "a" ]; then
 			actionval=`/res/uci_for_loop.sh $action`;
-			echo "applying: /res/uci_for_loop.sh $action $actionval";
+			$BB echo "applying: /res/uci_for_loop.sh $action $actionval";
 			# ... start all scripts
 			eval /res/uci_for_loop.sh $action $actionval;
 		fi;
@@ -28,98 +30,98 @@ apply_config()
 
 print_config()
 {
-	cat $CONFIG_XML;
+	$BB cat $CONFIG_XML;
 }
 
 list_profile()
 {
-	ls -1 $PROFILE_PATH | grep "\.profile" | sed -e 's/.profile//g';
+	$BB ls -1 $PROFILE_PATH | $BB grep "\.profile" | $BB sed -e 's/.profile//g';
 }
 
 select_profile()
 {
 	if [ "a$1" == "a" ]; then
-		cat $ACTIVE_PROFILE;
+		$BB cat $ACTIVE_PROFILE;
 	else
 		# if there is no such profile, create one
 		_ACTIVE_PROFILE=`cat $ACTIVE_PROFILE`;
 		if [ ! -f ${PROFILE_PATH}/${_ACTIVE_PROFILE}.profile ]; then
-			cp -a $DEFAULT_PROFILE ${PROFILE_PATH}/${1}.profile;
-			[ "$_ACTIVE_PROFILE" == "battery" ] && cp -a $BATTERY_PROFILE ${PROFILE_PATH}/${1}.profile;
-			[ "$_ACTIVE_PROFILE" == "performance" ] && cp -a $PERFORMANCE_PROFILE ${PROFILE_PATH}/${1}.profile;
-			[ "$_ACTIVE_PROFILE" == "extreme_performance" ] && cp -a $EXTREME_PERFORMANCE_PROFILE ${PROFILE_PATH}/${1}.profile;
-			[ "$_ACTIVE_PROFILE" == "extreme_battery" ] && cp -a $EXTREME_BATTERY_PROFILE ${PROFILE_PATH}/${1}.profile;
+			$BB cp -a $DEFAULT_PROFILE ${PROFILE_PATH}/${1}.profile;
+			[ "$_ACTIVE_PROFILE" == "battery" ] && $BB cp -a $BATTERY_PROFILE ${PROFILE_PATH}/${1}.profile;
+			[ "$_ACTIVE_PROFILE" == "performance" ] && $BB cp -a $PERFORMANCE_PROFILE ${PROFILE_PATH}/${1}.profile;
+			[ "$_ACTIVE_PROFILE" == "extreme_performance" ] && $BB cp -a $EXTREME_PERFORMANCE_PROFILE ${PROFILE_PATH}/${1}.profile;
+			[ "$_ACTIVE_PROFILE" == "extreme_battery" ] && $BB cp -a $EXTREME_BATTERY_PROFILE ${PROFILE_PATH}/${1}.profile;
 		fi;
 		if [ ! -f ${PROFILE_PATH}/${1}.profile ]; then
-			cp -a ${PROFILE_PATH}/${_ACTIVE_PROFILE}.profile ${PROFILE_PATH}/${1}.profile;
+			$BB cp -a ${PROFILE_PATH}/${_ACTIVE_PROFILE}.profile ${PROFILE_PATH}/${1}.profile;
 		fi;
-		echo "$1" > $ACTIVE_PROFILE;
-		chmod 777 ${PROFILE_PATH}/${1}.profile;
+		$BB echo "$1" > $ACTIVE_PROFILE;
+		$BB chmod 777 ${PROFILE_PATH}/${1}.profile;
 	fi;
 }
 
 delete_profile()
 {
-	if [ "`cat $ACTIVE_PROFILE`" == "$1" ]; then
+	if [ "`$BB cat $ACTIVE_PROFILE`" == "$1" ]; then
 		select_profile "default";
 	fi;
-	rm ${PROFILE_PATH}/${1}.profile;
+	$BB rm ${PROFILE_PATH}/${1}.profile;
 }
 
 rename_profile()
 {
 	# move old profile to new
-	mv ${PROFILE_PATH}/${1}.profile ${PROFILE_PATH}/${2}.profile;
+	$BB mv ${PROFILE_PATH}/${1}.profile ${PROFILE_PATH}/${2}.profile;
 
 	# if old profile is active, set the new profile as active profile
-	if [ "`cat $ACTIVE_PROFILE`" == "$1" ]; then
-		echo "$2" > $ACTIVE_PROFILE;
+	if [ "`$BB cat $ACTIVE_PROFILE`" == "$1" ]; then
+		$BB echo "$2" > $ACTIVE_PROFILE;
 	fi;
 }
 
 write_config()
 {
 	if [ "a$1" == "a" ]; then
-		_CONFIG_FILE=$PROFILE_PATH/`cat ${PROFILE_PATH}/${LAST_SELECTED}`.profile;
+		_CONFIG_FILE=$PROFILE_PATH/`$BB cat ${PROFILE_PATH}/${LAST_SELECTED}`.profile;
 	else
 		_CONFIG_FILE=$PROFILE_PATH/${1}.profile;
 	fi;
 
-	rm -f $TEMP_CONFIG;
+	$BB rm -f $TEMP_CONFIG;
 	# read the default profile "keys" and set the "values" from variables
 	while IFS="=" read -r key value; do
 		if [ -n $key ]; then
-			evalexpr=$(eval "echo \$$key");
-			echo "$key=$evalexpr";
+			evalexpr=$(eval "$BB echo \$$key");
+			$BB echo "$key=$evalexpr";
 		fi;
 	done < $DEFAULT_PROFILE > $TEMP_CONFIG;
 
 	# copy the new config to the actual profile
-	cp $TEMP_CONFIG $_CONFIG_FILE;
-	chmod 777 $_CONFIG_FILE;
-	rm -f $TEMP_CONFIG;
+	$BB cp $TEMP_CONFIG $_CONFIG_FILE;
+	$BB chmod 777 $_CONFIG_FILE;
+	$BB rm -f $TEMP_CONFIG;
 }
 
 read_config()
 {
 	if [ "a$1" == "a" ]; then
-		_CONFIG_FILE=$PROFILE_PATH/`cat ${PROFILE_PATH}/${LAST_SELECTED}`.profile;
+		_CONFIG_FILE=$PROFILE_PATH/`$BB cat ${PROFILE_PATH}/${LAST_SELECTED}`.profile;
 	else
 		_CONFIG_FILE=${1};
 	fi;
 
-	eval `sed -e 's/[[:space:]]*\=[[:space:]]*/=/g' \
+	eval `$BB sed -e 's/[[:space:]]*\=[[:space:]]*/=/g' \
 	-e 's/;.*$//' \
 	-e 's/[[:space:]]*$//' \
 	-e 's/^[[:space:]]*//' \
 	-e "s/^\(.*\)=\([^\"']*\)$/\1=\"\2\"/" \
-	< $_CONFIG_FILE | grep "="`;
+	< $_CONFIG_FILE | $BB grep "="`;
 }
 
 read_defaults()
 {
 	read_config $DEFAULT_PROFILE;
-	_ACTIVE_PROFILE=`cat $ACTIVE_PROFILE`;
+	_ACTIVE_PROFILE=`$BB cat $ACTIVE_PROFILE`;
 	[ "$_ACTIVE_PROFILE" == "battery" ] && read_config $BATTERY_PROFILE;
 	[ "$_ACTIVE_PROFILE" == "performance" ] && read_config $PERFORMANCE_PROFILE;
 	[ "$_ACTIVE_PROFILE" == "extreme_performance" ] && read_config $EXTREME_PERFORMANCE_PROFILE;
@@ -129,25 +131,25 @@ read_defaults()
 # some initialization code
 
 if [ ! -f $PROFILE_PATH/$LAST_SELECTED ]; then 
-	echo "default" > $PROFILE_PATH/$LAST_SELECTED;
-	chmod 777 $PROFILE_PATH/$LAST_SELECTED;
+	$BB echo "default" > $PROFILE_PATH/$LAST_SELECTED;
+	$BB chmod 777 $PROFILE_PATH/$LAST_SELECTED;
 fi;
 
 if [ ! -f $PROFILE_PATH/default.profile ]; then
-	cp -a $DEFAULT_PROFILE $PROFILE_PATH/default.profile;
+	$BB cp -a $DEFAULT_PROFILE $PROFILE_PATH/default.profile;
 fi;
 if [ ! -f $PROFILE_PATH/battery.profile ]; then
-	cp -a $BATTERY_PROFILE $PROFILE_PATH/battery.profile;
+	$BB cp -a $BATTERY_PROFILE $PROFILE_PATH/battery.profile;
 fi;
 if [ ! -f $PROFILE_PATH/performance.profile ]; then
-	cp -a $PERFORMANCE_PROFILE $PROFILE_PATH/performance.profile;
+	$BB cp -a $PERFORMANCE_PROFILE $PROFILE_PATH/performance.profile;
 fi;
 if [ ! -f $PROFILE_PATH/extreme_performance.profile ]; then
-	cp -a $EXTREME_PERFORMANCE_PROFILE $PROFILE_PATH/extreme_performance.profile
+	$BB cp -a $EXTREME_PERFORMANCE_PROFILE $PROFILE_PATH/extreme_performance.profile
 fi;
 if [ ! -f $PROFILE_PATH/extreme_battery.profile ]; then
-	cp -a $EXTREME_BATTERY_PROFILE $PROFILE_PATH/extreme_battery.profile
+	$BB cp -a $EXTREME_BATTERY_PROFILE $PROFILE_PATH/extreme_battery.profile
 fi;
 
-chmod 777 $PROFILE_PATH/*.profile;
+$BB chmod 777 $PROFILE_PATH/*.profile;
 

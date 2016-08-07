@@ -1,4 +1,6 @@
-#!/sbin/busybox sh
+#!/sbin/bb/busybox sh
+
+BB=/sbin/bb/busybox
 
 # $1 - "logger"
 # $2 - value=
@@ -8,9 +10,9 @@ if [ "a$2" != "a" ]; then
 	logger=$2;
 
 	if [ -f /system/bin/logd-old ]; then
-		mount -o remount,rw /system
-		mv /system/bin/logd-old /system/bin/logd
-		mount -o remount,ro /system
+		$BB mount -o remount,rw /system
+		$BB mv /system/bin/logd-old /system/bin/logd
+		$BB mount -o remount,ro /system
 	fi;
 
 	case "${logger}" in
@@ -18,7 +20,7 @@ if [ "a$2" != "a" ]; then
 		stop logd
 	;;
 	1)
-		LOG_STATUS=$(pgrep logd | wc -l);
+		LOG_STATUS=$($BB pgrep logd | $BB wc -l);
 		if [ "$LOG_STATUS" -gt "0" ]; then
 			stop logd
 		fi;
@@ -32,4 +34,4 @@ if [ "a$2" != "a" ]; then
 	;;
 	esac;
 fi;
-echo ${logger};
+$BB echo ${logger};

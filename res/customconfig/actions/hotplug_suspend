@@ -1,24 +1,24 @@
-#!/sbin/busybox sh
+#!/sbin/bb/busybox sh
 
 # $1 - "hotplug_suspend"
 # $2 - value=
 # Created By Dorimanx
 
-BB=/sbin/busybox
+BB=/sbin/bb/busybox
 
 if [ "a$2" != "a" ]; then
 	hotplug_suspend=$2;
 
 	case "${hotplug_suspend}" in
 		always_active)
-			echo "0" > /sys/kernel/alucard_hotplug/hotplug_suspend;
-			echo "0" > /sys/module/msm_hotplug/parameters/hotplug_suspend;
-			echo "0" > /sys/kernel/intelli_plug/hotplug_suspend;
+			$BB echo "0" > /sys/kernel/alucard_hotplug/hotplug_suspend;
+			$BB echo "0" > /sys/module/msm_hotplug/parameters/hotplug_suspend;
+			$BB echo "0" > /sys/kernel/intelli_plug/hotplug_suspend;
 		;;
 		suspend_when_off)
-			echo "1" > /sys/kernel/alucard_hotplug/hotplug_suspend;
-			echo "1" > /sys/module/msm_hotplug/parameters/hotplug_suspend;
-			echo "1" > /sys/kernel/intelli_plug/hotplug_suspend;
+			$BB echo "1" > /sys/kernel/alucard_hotplug/hotplug_suspend;
+			$BB echo "1" > /sys/module/msm_hotplug/parameters/hotplug_suspend;
+			$BB echo "1" > /sys/kernel/intelli_plug/hotplug_suspend;
 		;;
 		*)
 			hotplug_suspend=always_active;
@@ -26,4 +26,4 @@ if [ "a$2" != "a" ]; then
 	esac;
 fi;
 
-echo ${hotplug_suspend};
+$BB echo ${hotplug_suspend};

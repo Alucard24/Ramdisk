@@ -1,6 +1,6 @@
-#!/sbin/busybox sh
+#!/sbin/bb/busybox sh
 
-BB=/sbin/busybox;
+BB=/sbin/bb/busybox;
 DEVICE=`sh /res/synapse/files/sgs4.sh`;
 
 UCI_CONFIG=/res/synapse/config.json;

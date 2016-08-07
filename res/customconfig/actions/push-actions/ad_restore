@@ -1,6 +1,6 @@
-#!/sbin/busybox sh
+#!/sbin/bb/busybox sh
 
-BB=/sbin/busybox
+BB=/sbin/bb/busybox
 if [ "$($BB mount | grep system | grep -c ro)" -eq "1" ]; then
         $BB mount -o remount,rw /system;
 fi;

@@ -1,4 +1,4 @@
-BB=/sbin/busybox;
+BB=/sbin/bb/busybox;
 DEVICE=/res/synapse/files/sgs4.sh;
 
 case $1 in
@@ -71,93 +71,93 @@ case $1 in
 	ZRAMStats)
 		ZRAM="$(expr `cat /sys/devices/virtual/block/zram0/initstate`)"
 		if [ $ZRAM -eq "1" ]; then
-			compr_data_size_tmp=`echo "$((\`cat /sys/block/zram0/compr_data_size\`/1024))"`
-			mem_used_total_tmp=`echo "$((\`cat /sys/block/zram0/mem_used_total\`/1024))"`
-			orig_data_size_tmp=`echo "$((\`cat /sys/block/zram0/orig_data_size\`/1024))"`
-			zero_pages_tmp=`echo "$((\`cat /sys/block/zram0/zero_pages\`*4))"`
-			disksize_tmp=`echo "$((\`cat /sys/block/zram0/disksize\`/1024))"`
-			SwapCached_tmp=`echo "\`cat /proc/meminfo | grep SwapCached | cut -d " " -f9\`"`
+			compr_data_size_tmp=`$BB echo "$((\`$BB cat /sys/block/zram0/compr_data_size\`/1024))"`
+			mem_used_total_tmp=`$BB echo "$((\`$BB cat /sys/block/zram0/mem_used_total\`/1024))"`
+			orig_data_size_tmp=`$BB echo "$((\`$BB cat /sys/block/zram0/orig_data_size\`/1024))"`
+			zero_pages_tmp=`$BB echo "$((\`$BB cat /sys/block/zram0/zero_pages\`*4))"`
+			disksize_tmp=`$BB echo "$((\`$BB cat /sys/block/zram0/disksize\`/1024))"`
+			SwapCached_tmp=`$BB echo "\`$BB cat /proc/meminfo | $BB grep SwapCached | $BB cut -d " " -f9\`"`
 
-			notify_free=`echo "Notify free: \`cat /sys/block/zram0/notify_free\`"`
-			num_reads=`echo "Num reads: \`cat /sys/block/zram0/num_reads\`"`
-			num_writes=`echo "Num writes: \`cat /sys/block/zram0/num_writes\`"`
+			notify_free=`$BB echo "Notify free: \`$BB cat /sys/block/zram0/notify_free\`"`
+			num_reads=`$BB echo "Num reads: \`$BB cat /sys/block/zram0/num_reads\`"`
+			num_writes=`$BB echo "Num writes: \`$BB cat /sys/block/zram0/num_writes\`"`
 
-			max_comp_streams=`echo "Concurrent Compressors: \`cat /sys/block/zram0/max_comp_streams\`"`
+			max_comp_streams=`$BB echo "Concurrent Compressors: \`$BB cat /sys/block/zram0/max_comp_streams\`"`
 
-			saved_tmp=`echo "$((\`echo orig_data_size_tmp\`+\`echo zero_pages_tmp\`-\`echo mem_used_total_tmp\`-\`echo SwapCached_tmp\`))"`
-			saved=`echo "Memory saved: $((\`echo saved_tmp\`/1024))MB"`
-			Compression=`echo "Compression: $((\`echo compr_data_size_tmp\`*100/\`echo orig_data_size_tmp\`))%"`
-			Compression_with_overhead=`echo "Compression with overhead: $((\`echo mem_used_total_tmp\`*100/\`echo orig_data_size_tmp\`))%"`
-			Used_stage1=`echo "$((\`echo orig_data_size_tmp\`+\`echo zero_pages_tmp\`))"`
-			Used_stage2=`echo "$((\`echo Used_stage1\`*100))"`
-			Used=`echo "Used ZRAM $((\`echo Used_stage2\`/\`echo disksize_tmp\`))%"`
+			saved_tmp=`$BB echo "$((\`$BB echo orig_data_size_tmp\`+\`$BB echo zero_pages_tmp\`-\`$BB echo mem_used_total_tmp\`-\`$BB echo SwapCached_tmp\`))"`
+			saved=`$BB echo "Memory saved: $((\`$BB echo saved_tmp\`/1024))MB"`
+			Compression=`$BB echo "Compression: $((\`$BB echo compr_data_size_tmp\`*100/\`$BB echo orig_data_size_tmp\`))%"`
+			Compression_with_overhead=`$BB echo "Compression with overhead: $((\`$BB echo mem_used_total_tmp\`*100/\`$BB echo orig_data_size_tmp\`))%"`
+			Used_stage1=`$BB echo "$((\`$BB echo orig_data_size_tmp\`+\`$BB echo zero_pages_tmp\`))"`
+			Used_stage2=`$BB echo "$((\`$BB echo Used_stage1\`*100))"`
+			Used=`$BB echo "Used ZRAM $((\`$BB echo Used_stage2\`/\`$BB echo disksize_tmp\`))%"`
 
-			compr_data_size=`echo "Compression data size: $((\`cat /sys/block/zram0/compr_data_size\`/1024/1024))MB"`
-			mem_used_total=`echo "Mem used total: $((\`cat /sys/block/zram0/mem_used_total\`/1024/1024))MB"`
-			orig_data_size=`echo "Original data size: $((\`cat /sys/block/zram0/orig_data_size\`/1024/1024))MB"`
-			zero_pages=`echo "Zero pages: $((\`cat /sys/block/zram0/zero_pages\`*4))KiB"`
-			SwapCached=`echo "SwapCached: $((\`echo SwapCached_tmp\`/1024))MB"`
+			compr_data_size=`$BB echo "Compression data size: $((\`$BB cat /sys/block/zram0/compr_data_size\`/1024/1024))MB"`
+			mem_used_total=`$BB echo "Mem used total: $((\`$BB cat /sys/block/zram0/mem_used_total\`/1024/1024))MB"`
+			orig_data_size=`$BB echo "Original data size: $((\`$BB cat /sys/block/zram0/orig_data_size\`/1024/1024))MB"`
+			zero_pages=`$BB echo "Zero pages: $((\`$BB cat /sys/block/zram0/zero_pages\`*4))KiB"`
+			SwapCached=`$BB echo "SwapCached: $((\`$BB echo SwapCached_tmp\`/1024))MB"`
 
-			echo ZRAM Online!@n$compr_data_size@n$mem_used_total@n$orig_data_size@n$zero_pages@n@n$notify_free@n$num_reads@n$num_writes@n@n$max_comp_streams@n@n$SwapCached@n$saved@n$Compression@n$Compression_with_overhead@n$Used
+			$BB echo ZRAM Online!@n$compr_data_size@n$mem_used_total@n$orig_data_size@n$zero_pages@n@n$notify_free@n$num_reads@n$num_writes@n@n$max_comp_streams@n@n$SwapCached@n$saved@n$Compression@n$Compression_with_overhead@n$Used
 		else
-			echo ZRAM is Offline.
+			$BB echo ZRAM is Offline.
 		fi
 	;;
 	SWAP_STATE)
 		ZRAM_CHECK="$(expr `cat /sys/devices/virtual/block/zram0/initstate`)"
 		if [ $ZRAM_CHECK -eq "1" ]; then
-			ZRAM_SIZE=`echo "ZRAM Swap Size: $((\`cat /sys/block/zram0/disksize\`/1024/1024))MB"`
+			ZRAM_SIZE=`$BB echo "ZRAM Swap Size: $((\`$BB cat /sys/block/zram0/disksize\`/1024/1024))MB"`
 		else
-			ZRAM_SIZE=`echo "ZRAM Swap Disabled"`
+			ZRAM_SIZE=`$BB echo "ZRAM Swap Disabled"`
 		fi;
 		if [ -f /data/swapfile ]; then
-			SWAP_SIZE=`echo "Storage SWAP Size: \`ls -lah /data/swapfile | awk '{ print $5}' | cut -c 1-3\`MB"`
+			SWAP_SIZE=`$BB echo "Storage SWAP Size: \`$BB ls -lah /data/swapfile | $BB awk '{ print $5}' | $BB cut -c 1-3\`MB"`
 		else
-			SWAP_SIZE=`echo "Storage SWAP is Disabled"`
+			SWAP_SIZE=`$BB echo "Storage SWAP is Disabled"`
 		fi;
-		total_swap_size=`echo "Total Swap Size: $((\`free | grep Swap | awk '{ print $2}'\`/1024+1))MB"`
-		used_swap_size=`echo "Used Swap Size: $((\`free | grep Swap | awk '{ print $3}'\`/1024))MB"`
-		free_swap_size=`echo "Free Swap Size: $((\`free | grep Swap | awk '{ print $4}'\`/1024))MB"`
+		total_swap_size=`$BB echo "Total Swap Size: $((\`free | $BB grep Swap | $BB awk '{ print $2}'\`/1024+1))MB"`
+		used_swap_size=`$BB echo "Used Swap Size: $((\`free | $BB grep Swap | $BB awk '{ print $3}'\`/1024))MB"`
+		free_swap_size=`$BB echo "Free Swap Size: $((\`free | $BB grep Swap | $BB awk '{ print $4}'\`/1024))MB"`
 
-		echo $SWAP_SIZE@n$ZRAM_SIZE@n@n$total_swap_size@n$used_swap_size@n$free_swap_size
+		$BB echo $SWAP_SIZE@n$ZRAM_SIZE@n@n$total_swap_size@n$used_swap_size@n$free_swap_size
 	;;
 	RAMStats)
-		PROCESS_REC="$(expr `cat /sys/module/process_reclaim/parameters/enable_process_reclaim`)"
+		PROCESS_REC="$(expr `$BB cat /sys/module/process_reclaim/parameters/enable_process_reclaim`)"
 		if [ $PROCESS_REC -eq "1" ]; then
-			pressure_max=`echo "Process Reclaim Max Pressure: \`cat /sys/module/process_reclaim/parameters/pressure_max\`"`
-			pressure_min=`echo "Process Reclaim Min Pressure: \`cat /sys/module/process_reclaim/parameters/pressure_min\`"`
-			process_reclaim_pressure=`echo "Process Reclaim Current Pressure: \`cat /sys/module/process_reclaim/parameters/process_reclaim_pressure\`"`
-			reclaim_avg_efficiency=`echo "Process Reclaim Avg Efficiency: \`cat /sys/module/process_reclaim/parameters/reclaim_avg_efficiency\`%"`
+			pressure_max=`$BB echo "Process Reclaim Max Pressure: \`$BB cat /sys/module/process_reclaim/parameters/pressure_max\`"`
+			pressure_min=`$BB echo "Process Reclaim Min Pressure: \`$BB cat /sys/module/process_reclaim/parameters/pressure_min\`"`
+			process_reclaim_pressure=`$BB echo "Process Reclaim Current Pressure: \`$BB cat /sys/module/process_reclaim/parameters/process_reclaim_pressure\`"`
+			reclaim_avg_efficiency=`$BB echo "Process Reclaim Avg Efficiency: \`$BB cat /sys/module/process_reclaim/parameters/reclaim_avg_efficiency\`%"`
 		fi
 
-		ADAPTIVE_LMK="$(expr `cat /sys/module/lowmemorykiller/parameters/enable_adaptive_lmk`)"
+		ADAPTIVE_LMK="$(expr `$BB cat /sys/module/lowmemorykiller/parameters/enable_adaptive_lmk`)"
 		if [ $ADAPTIVE_LMK -eq "1" ]; then
-			vm_pressure_adaptive_start=`echo "Adaptive LMK Pressure Start Point: \`cat /sys/module/lowmemorykiller/parameters/vm_pressure_adaptive_start\`"`
-			vmpressure_file_min=`echo "Adaptive LMK Min Free RAM Point: $((\`cat /sys/module/lowmemorykiller/parameters/vmpressure_file_min\`*4/1024))MB"`
-			lmk_vm_pressure=`echo "Adaptive LMK Current Pressure: \`cat /sys/module/lowmemorykiller/parameters/lmk_vm_pressure\`"`
+			vm_pressure_adaptive_start=`$BB echo "Adaptive LMK Pressure Start Point: \`$BB cat /sys/module/lowmemorykiller/parameters/vm_pressure_adaptive_start\`"`
+			vmpressure_file_min=`$BB echo "Adaptive LMK Min Free RAM Point: $((\`$BB cat /sys/module/lowmemorykiller/parameters/vmpressure_file_min\`*4/1024))MB"`
+			lmk_vm_pressure=`$BB echo "Adaptive LMK Current Pressure: \`$BB cat /sys/module/lowmemorykiller/parameters/lmk_vm_pressure\`"`
 		fi
 
 		if [ $PROCESS_REC -eq "1" ] && [ $ADAPTIVE_LMK -eq "1" ]; then
-			echo Process Reclaim Online!@n$pressure_max@n$pressure_min@n$process_reclaim_pressure@n$reclaim_avg_efficiency@n@n@nAdaptive LMK Online!@n$vm_pressure_adaptive_start@n$vmpressure_file_min@n$lmk_vm_pressure
+			$BB echo Process Reclaim Online!@n$pressure_max@n$pressure_min@n$process_reclaim_pressure@n$reclaim_avg_efficiency@n@n@nAdaptive LMK Online!@n$vm_pressure_adaptive_start@n$vmpressure_file_min@n$lmk_vm_pressure
 		elif [ $PROCESS_REC -eq "1" ] && [ $ADAPTIVE_LMK -eq "0" ]; then
-			echo Process Reclaim Online!@n$pressure_max@n$pressure_min@n$process_reclaim_pressure@n$reclaim_avg_efficiency@n@n@nAdaptive LMK is Offline
+			$BB echo Process Reclaim Online!@n$pressure_max@n$pressure_min@n$process_reclaim_pressure@n$reclaim_avg_efficiency@n@n@nAdaptive LMK is Offline
 		elif [ $PROCESS_REC -eq "0" ] && [ $ADAPTIVE_LMK -eq "1" ]; then
-			echo Adaptive LMK Online!@n$vm_pressure_adaptive_start@n$vmpressure_file_min@n$lmk_vm_pressure@n@n@nProcess Reclaim is Offline
+			$BB echo Adaptive LMK Online!@n$vm_pressure_adaptive_start@n$vmpressure_file_min@n$lmk_vm_pressure@n@n@nProcess Reclaim is Offline
 		else
-			echo Process Reclaim is Offline@n@n@nAdaptive LMK is Offline
+			$BB echo Process Reclaim is Offline@n@n@nAdaptive LMK is Offline
 		fi
 	;;
 	UKSMStats)
 		UKSM="$(expr `cat /sys/kernel/mm/uksm/run`)"
 		if [ $UKSM -eq "1" ]; then
-			SAVEDMEM=`echo "Saved memory: $((\`cat /sys/kernel/mm/uksm/pages_sharing\`*4096/1024/1024)) MB"`
-			SHARDMEM=`echo "Shared memory: $((\`cat /sys/kernel/mm/uksm/pages_shared\`*4096/1024/1024)) MB"`
-			CANTBESHAREDMEM=`echo "Cannot be shared memory: $((\`cat /sys/kernel/mm/uksm/pages_unshared\`*4096/1024/1024)) MB"`
-			MAXCPU=`echo "UKSM Max Allowed CPU Usage: \`cat /sys/kernel/mm/uksm/max_cpu_percentage\`%"`
-			SLEEPMS=`echo "UKSM Sleep Millisecs: \`cat /sys/kernel/mm/uksm/sleep_millisecs\`"`
-			echo $SAVEDMEM@n$SHARDMEM@n$CANTBESHAREDMEM@n$MAXCPU@n$SLEEPMS
+			SAVEDMEM=`$BB echo "Saved memory: $((\`cat /sys/kernel/mm/uksm/pages_sharing\`*4096/1024/1024)) MB"`
+			SHARDMEM=`$BB echo "Shared memory: $((\`cat /sys/kernel/mm/uksm/pages_shared\`*4096/1024/1024)) MB"`
+			CANTBESHAREDMEM=`$BB echo "Cannot be shared memory: $((\`cat /sys/kernel/mm/uksm/pages_unshared\`*4096/1024/1024)) MB"`
+			MAXCPU=`echo "UKSM Max Allowed CPU Usage: \`$BB cat /sys/kernel/mm/uksm/max_cpu_percentage\`%"`
+			SLEEPMS=`echo "UKSM Sleep Millisecs: \`$BB cat /sys/kernel/mm/uksm/sleep_millisecs\`"`
+			$BB echo $SAVEDMEM@n$SHARDMEM@n$CANTBESHAREDMEM@n$MAXCPU@n$SLEEPMS
 		else
-			echo UKSM is Disabled.
+			$BB echo UKSM is Disabled.
 		fi
 	;;
 	Time)

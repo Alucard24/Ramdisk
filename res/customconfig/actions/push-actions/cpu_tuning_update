@@ -1,4 +1,6 @@
-#!/sbin/busybox sh
+#!/sbin/bb/busybox sh
+
+BB=/sbin/bb/busybox
 
 (
 	/sbin/ext/cortexbrain-tune.sh apply_cpu update > /dev/null;
@@ -7,20 +9,20 @@
 	PREV_SYSTEM_GOVERNOR_TMP="";
 	i="";
 
-	rm /data/.alucard/cpu_status;
+	$BB rm /data/.alucard/cpu_status;
 	for i in $SYSTEM_GOVERNOR_PATH_TMP; do
 		SYSTEM_GOVERNOR_TMP=$(cat "$i");
-		if [ "$(echo "$PREV_SYSTEM_GOVERNOR_TMP" | grep "$SYSTEM_GOVERNOR_TMP" | wc -l)" -lt "1" ]; then
+		if [ "$($BB echo "$PREV_SYSTEM_GOVERNOR_TMP" | $BB grep "$SYSTEM_GOVERNOR_TMP" | $BB wc -l)" -lt "1" ]; then
 			PREV_SYSTEM_GOVERNOR_TMP=$(printf "%s $SYSTEM_GOVERNOR_TMP" "$PREV_SYSTEM_GOVERNOR_TMP");
 			if [ -d /sys/devices/system/cpu/cpufreq/$SYSTEM_GOVERNOR_TMP ]; then
 				cd /sys/devices/system/cpu/cpufreq/$SYSTEM_GOVERNOR_TMP/;
-				echo "Tuning applied to '$SYSTEM_GOVERNOR_TMP' core!" >> /data/.alucard/cpu_status;
-				grep "." * >> /data/.alucard/cpu_status;
+				$BB echo "Tuning applied to '$SYSTEM_GOVERNOR_TMP' core!" >> /data/.alucard/cpu_status;
+				$BB grep "." * >> /data/.alucard/cpu_status;
 				cd /;
 			fi;
 		fi;
 	done;
 )&
-sleep 2;
+$BB sleep 2;
 CPU_LOG=`cat /data/.alucard/cpu_status`;
-echo $CPU_LOG;
+$BB echo $CPU_LOG;

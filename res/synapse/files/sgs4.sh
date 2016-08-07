@@ -1,6 +1,6 @@
-#!/sbin/busybox sh
+#!/sbin/bb/busybox sh
 
-BB=/sbin/busybox;
+BB=/sbin/bb/busybox;
 
 case "$1" in
 	LiveCPUFrequencyList)
@@ -42,66 +42,66 @@ case "$1" in
 		$BB echo "`$BB cat /proc/sys/net/ipv4/tcp_congestion_control`";
 	;;
 	LiveCPU0_MAX_MIN_Freq)
-		FREQMAXCPU0="$(expr `cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq` / 1000)MHz"
-		FREQMINCPU0="$(expr `cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq` / 1000)MHz"
+		FREQMAXCPU0="$(expr `$BB cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq` / 1000)MHz"
+		FREQMINCPU0="$(expr `$BB cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq` / 1000)MHz"
 		echo "Max CPU0 Freq: $FREQMAXCPU0@nMin CPU0 Freq: $FREQMINCPU0"
 	;;
 	LiveCPU1_MAX_MIN_Freq)
-		FREQMAXCPU1="$(expr `cat /sys/devices/system/cpu/cpufreq/all_cpus/scaling_max_freq_cpu1` / 1000)MHz"
-		FREQMINCPU1="$(expr `cat /sys/devices/system/cpu/cpufreq/all_cpus/scaling_min_freq_cpu1` / 1000)MHz"
+		FREQMAXCPU1="$(expr `$BB cat /sys/devices/system/cpu/cpufreq/all_cpus/scaling_max_freq_cpu1` / 1000)MHz"
+		FREQMINCPU1="$(expr `$BB cat /sys/devices/system/cpu/cpufreq/all_cpus/scaling_min_freq_cpu1` / 1000)MHz"
 		echo "Max CPU1 Freq: $FREQMAXCPU1@nMin CPU1 Freq: $FREQMINCPU1"
 	;;
 	LiveCPU2_MAX_MIN_Freq)
-		FREQMAXCPU2="$(expr `cat /sys/devices/system/cpu/cpufreq/all_cpus/scaling_max_freq_cpu2` / 1000)MHz"
-		FREQMINCPU2="$(expr `cat /sys/devices/system/cpu/cpufreq/all_cpus/scaling_min_freq_cpu2` / 1000)MHz"
+		FREQMAXCPU2="$(expr `$BB cat /sys/devices/system/cpu/cpufreq/all_cpus/scaling_max_freq_cpu2` / 1000)MHz"
+		FREQMINCPU2="$(expr `$BB cat /sys/devices/system/cpu/cpufreq/all_cpus/scaling_min_freq_cpu2` / 1000)MHz"
 		echo "Max CPU2 Freq: $FREQMAXCPU2@nMin CPU2 Freq: $FREQMINCPU2"
 	;;
 	LiveCPU3_MAX_MIN_Freq)
-		FREQMAXCPU3="$(expr `cat /sys/devices/system/cpu/cpufreq/all_cpus/scaling_max_freq_cpu3` / 1000)MHz"
-		FREQMINCPU3="$(expr `cat /sys/devices/system/cpu/cpufreq/all_cpus/scaling_min_freq_cpu3` / 1000)MHz"
+		FREQMAXCPU3="$(expr `$BB cat /sys/devices/system/cpu/cpufreq/all_cpus/scaling_max_freq_cpu3` / 1000)MHz"
+		FREQMINCPU3="$(expr `$BB cat /sys/devices/system/cpu/cpufreq/all_cpus/scaling_min_freq_cpu3` / 1000)MHz"
 		echo "Max CPU3 Freq: $FREQMAXCPU3@nMin CPU3 Freq: $FREQMINCPU3"
 	;;
 	LiveCPU_HOTPLUG)
-		if [ "$(cat /sys/devices/system/cpu/cpu0/rq-stats/hotplug_enable)" -eq "1" ]; then
+		if [ "$($BB cat /sys/devices/system/cpu/cpu0/rq-stats/hotplug_enable)" -eq "1" ]; then
 			DEFAULT_HOTPLUG=Active;
 		else
 			DEFAULT_HOTPLUG=Inactive;
 		fi;
-		if [ "$(cat /sys/kernel/alucard_hotplug/hotplug_enable)" -eq "1" ]; then
+		if [ "$($BB cat /sys/kernel/alucard_hotplug/hotplug_enable)" -eq "1" ]; then
 			ALUCARD_HOTPLUG=Active;
 		else
 			ALUCARD_HOTPLUG=Inactive;
 		fi;
-		if [ "$(cat /sys/module/msm_hotplug/msm_enabled)" -eq "1" ]; then
+		if [ "$($BB cat /sys/module/msm_hotplug/msm_enabled)" -eq "1" ]; then
 			MSM_HOTPLUG=Active;
 		else
 			MSM_HOTPLUG=Inactive;
 		fi;
-		if [ "$(cat /sys/kernel/intelli_plug/intelli_plug_active)" -eq "1" ]; then
+		if [ "$($BB cat /sys/kernel/intelli_plug/intelli_plug_active)" -eq "1" ]; then
 			INTELLI_HOTPLUG=Active;
 		else
 			INTELLI_HOTPLUG=Inactive;
 		fi;
-		echo "Default HotPlug: $DEFAULT_HOTPLUG@nAlucard HotPlug: $ALUCARD_HOTPLUG@nMSM HotPlug: $MSM_HOTPLUG@nIntelli HotPlug: $INTELLI_HOTPLUG"
+		$BB echo "Default HotPlug: $DEFAULT_HOTPLUG@nAlucard HotPlug: $ALUCARD_HOTPLUG@nMSM HotPlug: $MSM_HOTPLUG@nIntelli HotPlug: $INTELLI_HOTPLUG"
 	;;
 	LiveCPU_CORES_ON_OFF)
 		CPU0_CORE_STATE=Active;
-		if [ "$(cat /sys/devices/system/cpu/cpu1/online)" -eq "1" ]; then
+		if [ "$($BB cat /sys/devices/system/cpu/cpu1/online)" -eq "1" ]; then
 			CPU1_CORE_STATE=Active;
 		else
 			CPU1_CORE_STATE=Sleeping;
 		fi;
-		if [ "$(cat /sys/devices/system/cpu/cpu2/online)" -eq "1" ]; then
+		if [ "$($BB cat /sys/devices/system/cpu/cpu2/online)" -eq "1" ]; then
 			CPU2_CORE_STATE=Active;
 		else
 			CPU2_CORE_STATE=Sleeping;
 		fi;
-		if [ "$(cat /sys/devices/system/cpu/cpu3/online)" -eq "1" ]; then
+		if [ "$($BB cat /sys/devices/system/cpu/cpu3/online)" -eq "1" ]; then
 			CPU3_CORE_STATE=Active;
 		else
 			CPU3_CORE_STATE=Sleeping;
 		fi;
-		echo "CPU0 IS: $CPU0_CORE_STATE@nCPU1 IS: $CPU1_CORE_STATE@nCPU2 IS: $CPU2_CORE_STATE@nCPU3 IS: $CPU3_CORE_STATE"
+		$BB echo "CPU0 IS: $CPU0_CORE_STATE@nCPU1 IS: $CPU1_CORE_STATE@nCPU2 IS: $CPU2_CORE_STATE@nCPU3 IS: $CPU3_CORE_STATE"
 	;;
 	LiveBatteryTemperature)
 		BAT_C=`$BB awk '{ print $1 / 10 }' /sys/class/power_supply/battery/temp`;

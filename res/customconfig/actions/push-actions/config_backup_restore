@@ -1,17 +1,17 @@
-#!/sbin/busybox sh
+#!/sbin/bb/busybox sh
 export PATH="/res/customconfig/actions/push-actions:${PATH}";
 
-BB=/sbin/busybox
+BB=/sbin/bb/busybox
 
 if [ "a$2" == "a" ]; then
-	echo "$config_backup_restore";
+	$BB echo "$config_backup_restore";
 else
 	config_backup_restore=$2;
-	echo "$config_backup_restore";
+	$BB echo "$config_backup_restore";
 fi;
 
-if [ "$(pgrep -f "push-actions/config_backup_restore" | wc -l)" -ge "3" ]; then
-	echo "Already working! dont push me!";
+if [ "$($BB pgrep -f "push-actions/config_backup_restore" | $BB wc -l)" -ge "3" ]; then
+	$BB echo "Already working! dont push me!";
 	exit 0;
 fi;
 
@@ -28,27 +28,27 @@ RELOAD_STWEAKS()
 LOAD_NEW_SETTINGS()
 {
 	# get values from profile
-	NEW_PROFILE=$(cat /data/.alucard/.active.profile);
+	NEW_PROFILE=$($BB cat /data/.alucard/.active.profile);
 	. /data/.alucard/"$NEW_PROFILE".profile;
 
 	# Set new CPU freq based on profile.
-	echo "scaling_min_freq_cpu0" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq;
-	echo "scaling_min_freq_cpu1" > /sys/devices/system/cpu/cpufreq/all_cpus/scaling_min_freq_cpu1;
-	echo "scaling_min_freq_cpu2" > /sys/devices/system/cpu/cpufreq/all_cpus/scaling_min_freq_cpu2;
-	echo "scaling_min_freq_cpu3" > /sys/devices/system/cpu/cpufreq/all_cpus/scaling_min_freq_cpu3;
+	$BB echo "scaling_min_freq_cpu0" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq;
+	$BB echo "scaling_min_freq_cpu1" > /sys/devices/system/cpu/cpufreq/all_cpus/scaling_min_freq_cpu1;
+	$BB echo "scaling_min_freq_cpu2" > /sys/devices/system/cpu/cpufreq/all_cpus/scaling_min_freq_cpu2;
+	$BB echo "scaling_min_freq_cpu3" > /sys/devices/system/cpu/cpufreq/all_cpus/scaling_min_freq_cpu3;
 
-	echo "scaling_max_freq_cpu0" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq;
-	echo "scaling_max_freq_cpu1" > /sys/devices/system/cpu/cpufreq/all_cpus/scaling_max_freq_cpu1;
-	echo "scaling_max_freq_cpu2" > /sys/devices/system/cpu/cpufreq/all_cpus/scaling_max_freq_cpu2;
-	echo "scaling_max_freq_cpu3" > /sys/devices/system/cpu/cpufreq/all_cpus/scaling_max_freq_cpu3;
+	$BB echo "scaling_max_freq_cpu0" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq;
+	$BB echo "scaling_max_freq_cpu1" > /sys/devices/system/cpu/cpufreq/all_cpus/scaling_max_freq_cpu1;
+	$BB echo "scaling_max_freq_cpu2" > /sys/devices/system/cpu/cpufreq/all_cpus/scaling_max_freq_cpu2;
+	$BB echo "scaling_max_freq_cpu3" > /sys/devices/system/cpu/cpufreq/all_cpus/scaling_max_freq_cpu3;
 }
 
 case "${config_backup_restore}" in
 	1)
-		cp /data/.alucard/"$PROFILE".profile /data/.alucard/"$PROFILE".profile_backup;
-		cp /data/.alucard/"$PROFILE".profile /sdcard/"$PROFILE".profile_backup;
-		chmod 777 /data/.alucard/"$PROFILE".profile_backup;
-		echo "Backup of ${PROFILE} profile is Done!";
+		$BB cp /data/.alucard/"$PROFILE".profile /data/.alucard/"$PROFILE".profile_backup;
+		$BB cp /data/.alucard/"$PROFILE".profile /sdcard/"$PROFILE".profile_backup;
+		$BB chmod 777 /data/.alucard/"$PROFILE".profile_backup;
+		$BB echo "Backup of ${PROFILE} profile is Done!";
 	;;
 	2)
 		(
@@ -60,25 +60,25 @@ case "${config_backup_restore}" in
 			fi;
 
 			if [ ! -e "$file2" ]; then
-				echo "You are using ${PROFILE} did you made backup for it??? if you made for other, switch to that profile first!";
+				$BB echo "You are using ${PROFILE} did you made backup for it??? if you made for other, switch to that profile first!";
 				exit;
 			fi;
 
 			file1="/data/.alucard/${PROFILE}.profile";
 
-			echo "Restoring ${PROFILE} config file, wait for APP RELOAD";
+			$BB echo "Restoring ${PROFILE} config file, wait for APP RELOAD";
 
 			# read in file1->line1
 			while read line1; do
 				# split the config into variables where we find "="
-				line1_1=$(echo "$line1" | cut -f 1 -d '=');
-				line1_2=$(echo "$line1" | cut -f 2 -d '=');
+				line1_1=$($BB echo "$line1" | $BB cut -f 1 -d '=');
+				line1_2=$($BB echo "$line1" | $BB cut -f 2 -d '=');
 
 				# grep the content from backup-file ...
-				line2=$(grep "^${line1_1}\=" "$file2")
+				line2=$($BB grep "^${line1_1}\=" "$file2")
 				# ... and also split into variables
-				line2_1=$(echo "$line2" | cut -f 1 -d '=');
-				line2_2=$(echo "$line2" | cut -f 2 -d '=');
+				line2_1=$($BB echo "$line2" | $BB cut -f 1 -d '=');
+				line2_2=$($BB echo "$line2" | $BB cut -f 2 -d '=');
 
 				# compare config- and backup-file
 				if [ "a${line1_1}" != "a${line2_1}" ]; then
@@ -89,11 +89,11 @@ case "${config_backup_restore}" in
 					if [ "a${line1_2}" != "a${line2_2}" ]; then
 						if [ "${line2_2}" != "" ]; then
 							$BB sed -i "s/${line1_1}=${line1_2}/${line2_1}=${line2_2}/" "$file1";
-							echo "edit: ${line1_1}=${line1_2} -> ${line2_1}=${line2_2}";
+							$BB echo "edit: ${line1_1}=${line1_2} -> ${line2_1}=${line2_2}";
 						fi;
 					else
 						# nothing to do -> continue the loop
-						# echo "not_edit: ${line1_1}=${line1_2} -> ${line2_1}=${line2_2}";
+						# $BB echo "not_edit: ${line1_1}=${line1_2} -> ${line2_1}=${line2_2}";
 						continue;
 					fi;
 				fi;
@@ -107,8 +107,8 @@ case "${config_backup_restore}" in
 	3)
 		(
 			$BB cp -a /res/customconfig/battery.profile /data/.alucard/;
-			echo "battery" > /data/.alucard/.active.profile;
-			echo "Restoring battery config file, wait for APP RELOAD";
+			$BB echo "battery" > /data/.alucard/.active.profile;
+			$BB echo "Restoring battery config file, wait for APP RELOAD";
 			$BB sh /res/uci.sh apply > /dev/null;
 			LOAD_NEW_SETTINGS;
 			RELOAD_STWEAKS;
@@ -117,8 +117,8 @@ case "${config_backup_restore}" in
 	4)
 		(
 			$BB cp -a /res/customconfig/default.profile /data/.alucard/;
-			echo "default" > /data/.alucard/.active.profile;
-			echo "Restoring default config file, wait for APP RELOAD";
+			$BB echo "default" > /data/.alucard/.active.profile;
+			$BB echo "Restoring default config file, wait for APP RELOAD";
 			$BB sh /res/uci.sh apply > /dev/null;
 			LOAD_NEW_SETTINGS;
 			RELOAD_STWEAKS;
@@ -127,8 +127,8 @@ case "${config_backup_restore}" in
 	5)
 		(
 			$BB cp -a /res/customconfig/performance.profile /data/.alucard/;
-			echo "performance" > /data/.alucard/.active.profile;
-			echo "Restoring performance config file, wait for APP RELOAD";
+			$BB echo "performance" > /data/.alucard/.active.profile;
+			$BB echo "Restoring performance config file, wait for APP RELOAD";
 			$BB sh /res/uci.sh apply > /dev/null;
 			LOAD_NEW_SETTINGS;
 			RELOAD_STWEAKS;
@@ -137,8 +137,8 @@ case "${config_backup_restore}" in
 	6)
 		(
 			$BB cp -a /res/customconfig/extreme_battery.profile /data/.alucard/;
-			echo "extreme_battery" > /data/.alucard/.active.profile;
-			echo "Restoring extreme_battery config file, wait for APP RELOAD";
+			$BB echo "extreme_battery" > /data/.alucard/.active.profile;
+			$BB echo "Restoring extreme_battery config file, wait for APP RELOAD";
 			$BB sh /res/uci.sh apply > /dev/null;
 			LOAD_NEW_SETTINGS;
 			RELOAD_STWEAKS;
@@ -147,8 +147,8 @@ case "${config_backup_restore}" in
 	7)
 		(
 			$BB cp -a /res/customconfig/extreme_performance.profile /data/.alucard/;
-			echo "extreme_performance" > /data/.alucard/.active.profile;
-			echo "Restoring extreme_performance config file, wait for APP RELOAD";
+			$BB echo "extreme_performance" > /data/.alucard/.active.profile;
+			$BB echo "Restoring extreme_performance config file, wait for APP RELOAD";
 			$BB sh /res/uci.sh apply > /dev/null;
 			LOAD_NEW_SETTINGS;
 			RELOAD_STWEAKS;

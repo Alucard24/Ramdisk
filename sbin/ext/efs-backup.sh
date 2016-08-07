@@ -1,6 +1,6 @@
-#!/sbin/busybox sh
+#!/sbin/bb/busybox sh
 
-BB=/sbin/busybox
+BB=/sbin/bb/busybox
 
 if [ ! -f /data/.alucard/efsbackup.tar.gz ]; then
 	$BB mkdir /data/.alucard;
@@ -12,7 +12,7 @@ if [ ! -f /data/.alucard/efsbackup.tar.gz ]; then
 	$BB chmod 777 /data/media/efsdev-mmcblk0p3.img;
 	$BB chmod 777 /data/media/efsbackup.tar.gz;
 	(
-		sleep 120;
-		cp /data/media/efs* /sdcard/;
+		$BB sleep 120;
+		$BB cp /data/media/efs* /sdcard/;
 	)&
 fi;

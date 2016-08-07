@@ -1,15 +1,15 @@
-#!/sbin/busybox sh
+#!/sbin/bb/busybox sh
 # universal configurator interface
 # by Gokhan Moral
 
 # You probably won't need to modify this file
 # You'll need to modify the files in /res/customconfig directory
 
-BB=/sbin/busybox
+BB=/sbin/bb/busybox
 
 OPEN_RW()
 {
-	ROOTFS_MOUNT=$(mount | grep rootfs | cut -c26-27 | grep -c rw)
+	ROOTFS_MOUNT=$($BB mount | $BB grep rootfs | $BB cut -c26-27 | $BB grep -c rw)
 	if [ "$ROOTFS_MOUNT" -eq "0" ]; then
 		$BB mount -o remount,rw /;
 	fi;
@@ -43,11 +43,11 @@ case "${1}" in
 	apply)
 		OPEN_RW;
 		# stop uci.sh from running all the PUSH Buttons in stweaks on boot
-		chmod -R 0755 /res/customconfig/actions/;
+		$BB chmod -R 0755 /res/customconfig/actions/;
 		$BB mv /res/customconfig/actions/push-actions/* /res/no-push-on-boot/;
-		chmod 0755 /res/no-push-on-boot/*;
+		$BB chmod 0755 /res/no-push-on-boot/*;
 		$BB cp /res/no-push-on-boot/config_backup_restore /res/customconfig/actions/push-actions/;
-		chmod 0755 /res/customconfig/actions/push-actions/config_backup_restore;
+		$BB chmod 0755 /res/customconfig/actions/push-actions/config_backup_restore;
 
 		apply_config;
 		write_config;
@@ -55,7 +55,7 @@ case "${1}" in
 		OPEN_RW;
 		# restore all the PUSH Button Actions back to there location
 		$BB mv /res/no-push-on-boot/* /res/customconfig/actions/push-actions/;
-		chmod 0755 /res/customconfig/actions/push-actions/*
+		$BB chmod 0755 /res/customconfig/actions/push-actions/*
 	;;
 	restore)
 		apply_config;

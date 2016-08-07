@@ -1,30 +1,32 @@
-#!/sbin/busybox sh
+#!/sbin/bb/busybox sh
+
+BB=/sbin/bb/busybox
 
 #created by Dorimanx.
 
-if [ "$(pgrep -f "push-actions/selinux_switch" | wc -l)" -ge "3" ]; then
-	echo "WAIT! DONT PUSH ME AGAIN!";
+if [ "$($BB pgrep -f "push-actions/selinux_switch" | $BB wc -l)" -ge "3" ]; then
+	$BB echo "WAIT! DONT PUSH ME AGAIN!";
 	exit 0;
 fi;
 
 (
-	dd if=/dev/block/platform/msm_sdcc.1/by-name/boot of=/data/.alucard/boot.img
+	$BB dd if=/dev/block/platform/msm_sdcc.1/by-name/boot of=/data/.alucard/boot.img
 
-	selinux_status=$(grep -c "selinux=0" /proc/cmdline)
+	selinux_status=$($BB grep -c "selinux=0" /proc/cmdline)
 	if [ "$selinux_status" -eq "1" ]; then
-		echo "Enabling Kernel Selinux Please wait!";
-		/sbin/busybox find /data/.alucard/boot.img -type f -exec sed -i 's/console=ttyHSL0,115200,n8 androidboot.hardware=qcom user_debug=31 ehci-hcd.park=3 enforcing=0 selinux=1/console=ttyHSL0,115200,n8 androidboot.hardware=qcom user_debug=31 ehci-hcd.park=3 enforcing=1 selinux=1/g' {} \;
-		echo "Selinux set as Enforcing on boot! Please REBOOT!";
-		dd if=/data/.alucard/boot.img of=/dev/block/platform/msm_sdcc.1/by-name/boot
-		echo "1" > /data/.alucard/selinux_mode;
-		sync;
+		$BB echo "Enabling Kernel Selinux Please wait!";
+		/sbin/bb/busybox $BB find /data/.alucard/boot.img -type f -exec $BB sed -i 's/console=ttyHSL0,115200,n8 androidboot.hardware=qcom user_debug=31 ehci-hcd.park=3 enforcing=0 selinux=1/console=ttyHSL0,115200,n8 androidboot.hardware=qcom user_debug=31 ehci-hcd.park=3 enforcing=1 selinux=1/g' {} \;
+		$BB echo "Selinux set as Enforcing on boot! Please REBOOT!";
+		$BB dd if=/data/.alucard/boot.img of=/dev/block/platform/msm_sdcc.1/by-name/boot
+		$BB echo "1" > /data/.alucard/selinux_mode;
+		$BB sync;
 	else
-		echo "Disabling Kernel Selinux Please wait!";
-		/sbin/busybox find /data/.alucard/boot.img -type f -exec sed -i 's/console=ttyHSL0,115200,n8 androidboot.hardware=qcom user_debug=31 ehci-hcd.park=3 enforcing=1 selinux=1/console=ttyHSL0,115200,n8 androidboot.hardware=qcom user_debug=31 ehci-hcd.park=3 enforcing=0 selinux=1/g' {} \;
-		echo "Selinux set as Permissive on boot! Please REBOOT!";
-		dd if=/data/.alucard/boot.img of=/dev/block/platform/msm_sdcc.1/by-name/boot
-		echo "1" > /data/.alucard/selinux_mode;
-		sync;
+		$BB echo "Disabling Kernel Selinux Please wait!";
+		/sbin/bb/busybox $BB find /data/.alucard/boot.img -type f -exec $BB sed -i 's/console=ttyHSL0,115200,n8 androidboot.hardware=qcom user_debug=31 ehci-hcd.park=3 enforcing=1 selinux=1/console=ttyHSL0,115200,n8 androidboot.hardware=qcom user_debug=31 ehci-hcd.park=3 enforcing=0 selinux=1/g' {} \;
+		$BB echo "Selinux set as Permissive on boot! Please REBOOT!";
+		$BB dd if=/data/.alucard/boot.img of=/dev/block/platform/msm_sdcc.1/by-name/boot
+		$BB echo "1" > /data/.alucard/selinux_mode;
+		$BB sync;
 	fi;
-	rm /data/.alucard/boot.img
+	$BB rm /data/.alucard/boot.img
 )&

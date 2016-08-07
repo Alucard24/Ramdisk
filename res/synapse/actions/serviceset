@@ -1,4 +1,4 @@
-BB=/sbin/busybox;
+BB=/sbin/bb/busybox;
 
 if [[ ! -z $2 ]]; then
 	if [ $2 -eq 1 ]; then
