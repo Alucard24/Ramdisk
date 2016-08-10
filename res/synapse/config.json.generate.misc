@@ -1,6 +1,8 @@
 #!/sbin/bb/busybox sh
 
-cat << CTAG
+BB=/sbin/bb/busybox
+
+$BB cat << CTAG
 {
     name:MISC,
     elements:[

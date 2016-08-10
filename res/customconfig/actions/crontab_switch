@@ -1,0 +1,29 @@
+#!/sbin/bb/busybox sh
+
+# $1 - "crontab_switch"
+# $2 - value=
+# Created By Dorimanx and Dairinin
+
+BB=/sbin/bb/busybox
+
+if [ "a$2" != "a" ]; then
+	crontab_switch=$2;
+
+	case "${crontab_switch}" in
+		on)
+			(
+				if [ "$($BB pidof crond | $BB wc -l)" -eq "0" ]; then
+					$BB sh /res/crontab_service/service.sh > /dev/null;
+				fi;
+			)&
+		;;
+		off)
+			$BB pkill -f crond;
+		;;
+		*)
+			crontab_switch=on;
+		;;
+	esac;
+fi;
+
+$BB echo ${crontab_switch};

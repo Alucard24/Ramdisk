@@ -9,7 +9,7 @@ bool() {
 # Mount root as RW to apply tweaks and settings
 $BB mount -o remount,rw /;
 
-cat << CTAG
+$BB cat << CTAG
 {
     sections: [
 		`if [ -n "$DEVICE" ]; then

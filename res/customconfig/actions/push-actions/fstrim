@@ -2,7 +2,7 @@
 
 BB=/sbin/bb/busybox
 
-$BB fstrim -v /system >> /data/.alucard/fstrim_log;
+$BB fstrim -v /system > /data/.alucard/fstrim_log;
 $BB fstrim -v /data >> /data/.alucard/fstrim_log;
 $BB fstrim -v /cache >> /data/.alucad/fstrim_log;
 

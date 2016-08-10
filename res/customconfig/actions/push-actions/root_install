@@ -55,8 +55,8 @@ export PATH="/res/customconfig/actions/push-actions:${PATH}";
 			$BB chmod 6755 /system/xbin/daemonsu;
 			$BB chmod 644 /system/app/SuperSU.apk;
 			$BB chmod 644 /system/app/SuperSUNoNag-v1.00.apk;
-			$BB chown 0.0 /system/app/SuperSU.apk;
-			$BB chown 0.0 /system/app/SuperSUNoNag-v1.00.apk;
+			$BB chown 0:0 /system/app/SuperSU.apk;
+			$BB chown 0:0 /system/app/SuperSUNoNag-v1.00.apk;
 			$BB cp -a /system/xbin/su /system/bin/.ext/;
 		fi;
 

@@ -1,0 +1,20 @@
+#!/sbin/bb/busybox sh
+
+BB=/sbin/bb/busybox
+
+# get values from profile
+PROFILE=$($BB cat /data/.alucard/.active.profile);
+. /data/.alucard/"$PROFILE".profile;
+
+if [ "$crontab_switch" == "on" ]; then
+	if [ "$($BB pidof crond | $BB wc -l)" -eq "0" ]; then
+		$BB sh /res/crontab_service/service.sh > /dev/null;
+	fi;
+fi;
+
+CRON_SERVICE=$($BB pidof crond | $BB wc -l);
+if [ "$CRON_SERVICE" -eq "1" ]; then
+	$BB echo "Service is ONLINE and supported";
+else
+	$BB echo "Service is OFFLINE or NOT supported";
+fi;

@@ -889,7 +889,52 @@
 				<spinnerItem name="No Power (idle)" value="quiet"/> 
 			</spinner>
 
-			<seekBar description="Scan Delay Interval (default 1000) lower we set, more ram we can gain, but in cost of performance impact and battery. best leave it 1000" name="UKSM Scan Delay Interval" action="generic /sys/kernel/mm/uksm/sleep_millisecs" unit="ms" min="50" reversed="false" step="50" max="1000"/>
+			<seekBar description="The lower is set, more RAM we can gain at cost of slight performance (Default: 1000 ms)." name="UKSM Scan Delay Interval"
+			action="generic /sys/kernel/mm/uksm/sleep_millisecs" unit="ms" min="50" reversed="false" step="50" max="1000"/>
+
+	</settingsPane>
+
+</settingsTab>
+
+<settingsTab name="Cron Tasks">
+
+	<settingsPane description="Activate some scripts which automatically runs in the background at the specified time." name="Cron">
+
+		<spinner description="Cron Tasks Main Switch. If you set this OFF, then all tasks below will have no effect." name="Cron Task Master Switch"
+			action="crontab_switch">
+			<spinnerItem name="ON" value="on"/>
+			<spinnerItem name="OFF" value="off"/>
+		</spinner>
+
+		<button description="Use this button to test, if this Cron Task service is ONLINE and supported. Make sure that Main Switch is ON." name="Test Cron Task Service" action="push-actions/crontab_test" label="Test Cron Task Service"/>
+
+		<button description="Use this button to RESET the scripts and jobs from kernel and refresh the configuration. Note that it will clear all your custom changes!" name="CRON Resetter" action="push-actions/crontab_reset" label="Reset Cron"/>
+
+		<checkbox description="Cron that clears file-cache every 3 hours, but only if CPU is in idle and when more than 50% of memory is used. This will free RAM from unused buffers and cache." name="Clear file-cache"
+			action="generic_cortex /tmp/cron_drop_cache" label="Clear RAM cache every 3 hours"/>
+
+		<checkbox description="Cron that reset SystemUI memory usage and release locked RAM that can't be freed by kernel, SystemUI service will automatically restart after 5 sec and use from 70 to 90 MiB memory less than before." name="Reset SystemUI"
+			action="generic_cortex /tmp/cron_reset_systemui" label="Reset SystemUI every 02:00 AM"/>
+
+		<checkbox description="Enable Trim of System, Data and Cache partitions every day at 10:00 PM to speed up NAND Read and Write Access Time. NOTE that screen will be AWAKE during the fstrim to prevent MMC crash, then if screen was OFF it's will be auto turned off. Some devices don't like to be trimmed, so if device get stuck after 10:00 PM, don't enable this." name="Trim system, data and cache"
+			action="generic_cortex /tmp/cron_fstrim" label="Trim every day at 10:00 PM"/>
+
+		<checkbox description="Enable reclaiming RAM from apps. It's smart memory kernel feature used to take back all cached RAM from apps without killing them. It helps to maintain stable and fast device for a long time. Task will run in every 3 hours." name="Reclaime RAM from apps"
+			action="generic_cortex /tmp/cron_process_reclaim" label="Reclaim RAM from apps in every 3 hours"/>
+
+		<checkbox description="Enable restarting Google Service to prevent memory leaks and CPU nonstop activity. This is one of the MAIN LP RAM leak BUGS. Service gets stuck, drains RAM and force CPU to work nonstop." name="Restart Google Service"
+			action="generic_cortex /tmp/cron_ram_release" label="Restart LP Google Service in every 8 hours"/>
+
+		<checkbox description="Cron that updates AD-BLOCKER every week at SAT 6:00 AM, from official site. The cron will check if phone is connected to the internet, otherwise it will try to use WIFI! Script turns WIFI and DATA on, wait for connection and update and when it's finished, turns WIFI OFF. If there is no connection, an error will be written into the log. If you use other app for blocking adds, no need to use it." name="Update AD-Block"
+			action="generic_cortex /tmp/ad_block_update" label="Update AD-BLOCKER every week"/>
+
+		<checkbox description="Cron for DB Optimization every day at 3:00 AM only if CPU is in idle." name="DB Optimization"
+			action="generic_cortex /tmp/cron_db_optimizing" label="DB Optimization every day at 3:00 AM"/>
+
+		<checkbox description="Cron for clearing app cache every day at 4:00 AM only if CPU is in idle." name="Clear app cache"
+			action="generic_cortex /tmp/cron_clear_app_cache" label="Disk Clean task every day at 4:00 AM"/>
+
+		<button description="Check if CRON Task Jobs are done as requested. It will show the log for all finished jobs." name="Test Cron Task Jobs" action="push-actions/crontab_log" label="Test Cron Task Jobs"/>
 
 	</settingsPane>
 
@@ -1026,6 +1071,7 @@
 <settingsTab name="Other">
 
 	<settingsPane description="Set some settings and options for your apps." name="Apps">
+		<button description="Click here to start applications Database Optimization. Compacting, cleaning and indexing will take max 2min." name="DB OPTIMIZATION" action="push-actions/database_optimizing" label="DATABASE OPTIMIZATON"/>
 
 		<button description="Click here to see current SELINUX status! Enforcing or Permissive globally. default is Permissive, you can switch to Enforcing with button below." name="SELINUX STATUS CHECK" action="push-actions/selinux_check" label="SELINUX STATUS CHECK"/>
 
@@ -1081,7 +1127,7 @@
 
 		<seekBar description="Vibration force level. (Default: 75)" name="Vibration force" action="generic /sys/devices/virtual/timed_output/vibrator/pwm_value" unit="%" min="0" reversed="false" step="5" max="100"/>
 
-		<button description="Use this button to Trim System, Data and Cache Nand partitions to speed up Read and Write Access, good to use once in a day or two." name="Trim System, Data and Cache" action="push-actions/fstrim" label="Trim NOW"/>
+		<button description="Push Trim Now button in order to speed up Read and Write Access Time. It's good to use it once in a day or two, or let the cron to do it for you." name="Trim System, Data and Cache" action="push-actions/fstrim" label="Trim NOW"/>
 
 	</settingsPane>
 

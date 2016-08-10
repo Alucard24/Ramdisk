@@ -69,6 +69,9 @@ OPEN_RW;
 $BB echo "512" > /proc/sys/kernel/random/read_wakeup_threshold;
 $BB echo "256" > /proc/sys/kernel/random/write_wakeup_threshold;
 
+# start CROND by tree root, so it's will not be terminated.
+$BB sh /res/crontab_service/service.sh;
+
 # some nice thing for dev
 if [ ! -e /cpufreq ]; then
 	$BB ln -s /sys/devices/system/cpu/cpu0/cpufreq/ /cpufreq;
@@ -127,7 +130,7 @@ fi;
 # just set numer $RESET_MAGIC + 1 and profiles will be reset one time on next boot with new kernel.
 # incase that ADMIN feel that something wrong with global STweaks config and profiles, then ADMIN can add +1 to CLEAN_ALU_DIR
 # to clean all files on first boot from /data/.alucard/ folder.
-RESET_MAGIC=5;
+RESET_MAGIC=6;
 CLEAN_ALU_DIR=2;
 
 if [ ! -e /data/.alucard/reset_profiles ]; then
@@ -188,13 +191,13 @@ read_config;
 
 # Load parameters for Synapse
 DEBUG=/data/.alucard/;
-BUSYBOX_VER=$(busybox | $BB grep "BusyBox v" | $BB cut -c0-15);
+BUSYBOX_VER=$($BB busybox | $BB grep "BusyBox v" | $BB cut -c0-15);
 $BB echo "$BUSYBOX_VER" > $DEBUG/busybox_ver;
 
 # start CORTEX by tree root, so it's will not be terminated.
 $BB sed -i "s/cortexbrain_background_process=[0-1]*/cortexbrain_background_process=1/g" /sbin/ext/cortexbrain-tune.sh;
-if [ "$(pgrep -f "cortexbrain-tune.sh" | $BB wc -l)" -eq "0" ]; then
-	$BB nohup $BB sh /sbin/ext/cortexbrain-tune.sh > /data/.alucard/cortex.txt &
+if [ "$($BB pgrep -f "cortexbrain-tune.sh" | $BB wc -l)" -eq "0" ]; then
+	$BB nohup /sbin/bb/sh /sbin/ext/cortexbrain-tune.sh > /data/.alucard/cortex.txt &
 fi;
 
 OPEN_RW;
@@ -255,11 +258,11 @@ OPEN_RW;
 $BB chmod -R 755 /system/etc/init.d/;
 if [ "$init_d" == "on" ]; then
 	(
-		$BB nohup $BB run-parts /system/etc/init.d/ > /data/.alucard/init.d.txt &
+		$BB nohup /sbin/bb/run-parts /system/etc/init.d/ > /data/.alucard/init.d.txt &
 	)&
 else
 	if [ -e /system/etc/init.d/99SuperSUDaemon ]; then
-		$BB nohup $BB sh /system/etc/init.d/99SuperSUDaemon > /data/.alucard/root.txt &
+		$BB nohup /sbin/bb/sh /system/etc/init.d/99SuperSUDaemon > /data/.alucard/root.txt &
 	else
 		$BB echo "no root script in init.d";
 	fi;

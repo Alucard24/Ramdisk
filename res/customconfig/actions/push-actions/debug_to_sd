@@ -95,7 +95,7 @@ case "${debug_to_sd}" in
 
 			# Memory
 			$BB echo "Memory-Info:" >> $DEBUG_FILE;
-			free >> $DEBUG_FILE;
+			$BB free >> $DEBUG_FILE;
 			$BB cat /proc/meminfo >> $DEBUG_FILE;
 			SEPARATOR;
 

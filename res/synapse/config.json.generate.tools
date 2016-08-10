@@ -1,4 +1,6 @@
-cat << CTAG
+BB=/sbin/bb/busybox
+
+$BB cat << CTAG
 {
 	name:TOOLS,
 		elements:[
@@ -46,7 +48,7 @@ cat << CTAG
 				default:"None",
 				values:[ "None",
 					`for BAK in \`/res/synapse/actions/restorebackup listconfig\`; do
-						echo "\"$BAK\","
+						$BB echo "\"$BAK\","
 					done`
 				],
 				notify:[

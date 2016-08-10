@@ -138,6 +138,22 @@ MEMORY_TWEAKS()
 }
 MEMORY_TWEAKS;
 
+
+# if crond used, then give it root perent - if started by STweaks, then it will be killed in time
+CROND_SAFETY()
+{
+	if [ "$crontab" == "on" ]; then
+		if [ "$($BB pgrep -f crond | $BB wc -l)" -eq "0" ]; then
+			$BB sh /res/crontab_service/service.sh > /dev/null;
+			log -p i -t "$FILE_NAME" "*** CROND STARTED ***";
+		else
+			log -p i -t "$FILE_NAME" "*** CROND IS ONLINE ***";
+		fi;
+	else
+		log -p i -t "$FILE_NAME" "*** CROND IS OFFLINE ***";
+	fi;
+}
+
 # ==============================================================
 # CPU-TWEAKS
 # ==============================================================
@@ -667,6 +683,8 @@ SLEEP_MODE()
 	. "$DATA_DIR"/"$PROFILE".profile;
 
 	CHARGING=$($BB cat /sys/class/power_supply/battery/batt_charging_source);
+
+	CROND_SAFETY;
 
 	# check if we powered by USB, if not sleep
 	if [ "$CHARGING" -eq "1" ]; then

@@ -44,7 +44,7 @@ if [ "a$2" != "a" ]; then
 				$BB echo "$limit_temp_degC" > /sys/module/msm_thermal/parameters/limit_temp_degC;
 				$BB echo "$core_limit_temp_degC" > /sys/module/msm_thermal/parameters/core_limit_temp_degC;
 			fi;
-			$BB renice -n -17 -p "$(pgrep -f "/system/bin/thermal-engine")";
+			$BB renice -n -17 -p "$($BB pgrep -f "/system/bin/thermal-engine")";
 		;;
 		*)
 			msm_thermal=intelli_temp;

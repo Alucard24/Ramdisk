@@ -7,15 +7,15 @@ $BB echo "START" > /tmp/ram_clean;
 $BB chmod 777 /tmp/ram_clean;
 
 (
-	MEM_FREE=`free | $BB grep Mem | $BB awk '{ print $4 }'`;
+	MEM_FREE=`$BB free | $BB grep Mem | $BB awk '{ print $4 }'`;
 	CALC_MEM=`$BB echo $(($MEM_FREE/1024))M`;
-	$BB echo "FREE BEFORE $CALC_MEM" >> /tmp/ram_clean;
+	$BB echo "FREE BEFORE $CALC_MEM" > /tmp/ram_clean;
 	$BB echo "PLEASE WAIT WORKING"  >> /tmp/ram_clean;
 
-	sync;
+	$BB sync;
 	$BB sleep 1;
 	$BB sysctl -w vm.drop_caches=2 > /dev/null 2>&1;
-	MEM_FREE_AFTER=`free | $BB grep Mem | $BB awk '{ print $4 }'`;
+	MEM_FREE_AFTER=`$BB free | $BB grep Mem | $BB awk '{ print $4 }'`;
 	CALC_MEM_AFTER=`$BB echo $(($MEM_FREE_AFTER/1024))M`;
 	$BB echo "FREE AFTER $CALC_MEM_AFTER" >> /tmp/ram_clean;
 	$BB echo "All-Done" >> /tmp/ram_clean;

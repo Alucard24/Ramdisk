@@ -19,7 +19,7 @@ PROFILE=$(cat /data/.alucard/.active.profile);
 
 RELOAD_STWEAKS()
 {
-	sync;
+	$BB sync;
 	am force-stop com.gokhanmoral.stweaks.app 2> /dev/null;
 	am start -a android.intent.action.MAIN -n com.gokhanmoral.stweaks.app/.MainActivity 2> /dev/null;
 	exit 0;

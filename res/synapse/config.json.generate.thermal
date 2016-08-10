@@ -1,4 +1,6 @@
-cat << CTAG
+BB=/sbin/bb/busybox
+
+$BB cat << CTAG
 {
     name:THERMAL,
 		elements:[
@@ -12,7 +14,7 @@ cat << CTAG
 						0:"Disabled", 1:"Enabled"
 					}
 				}},'
-				FTT=$(cat /sys/module/msm_thermal/parameters/limit_temp_degC)
+				FTT=$($BB cat /sys/module/msm_thermal/parameters/limit_temp_degC)
 				$BB echo '{ SSeekBar:{
 					title:"Frequency Throttle Temperature",
 					description:"Temperature to start throttling frequencies.",
@@ -23,7 +25,7 @@ cat << CTAG
 					default:'$FTT',
 					action:"generic /sys/module/msm_thermal/parameters/limit_temp_degC"
 				}},'
-				CTP=$(cat /sys/module/msm_thermal/parameters/core_limit_temp_degC)
+				CTP=$($BB cat /sys/module/msm_thermal/parameters/core_limit_temp_degC)
 				$BB echo '{ SSeekBar:{
 					title:"Core Throttle Temperature",
 					description:"Temperature to start shutting down cores",
@@ -34,7 +36,7 @@ cat << CTAG
 					default:'$CTP',
 					action:"generic /sys/module/msm_thermal/parameters/core_limit_temp_degC"
 				}},'
-				CTH=$(cat /sys/module/msm_thermal/parameters/core_temp_hysteresis_degC)
+				CTH=$($BB cat /sys/module/msm_thermal/parameters/core_temp_hysteresis_degC)
 				$BB echo '{ SSeekBar:{
 					title:"Core Temperature Hysteresis",
 					unit:"ºC",
@@ -44,7 +46,7 @@ cat << CTAG
 					default:'$CTH',
 					action:"generic /sys/module/msm_thermal/parameters/core_temp_hysteresis_degC"
 				}},'
-				FS=$(cat /sys/module/msm_thermal/parameters/freq_step)
+				FS=$($BB cat /sys/module/msm_thermal/parameters/freq_step)
 				$BB echo '{ SSeekBar:{
 					title:"Frequency Step",
 					step:1,
@@ -59,7 +61,7 @@ cat << CTAG
 					default:'$ILS',
 					action:"boolean /sys/module/msm_thermal/parameters/immediately_limit_stop"
 				}},'
-				POLL=$(cat /sys/module/msm_thermal/parameters/poll_ms)
+				POLL=$($BB cat /sys/module/msm_thermal/parameters/poll_ms)
 				$BB echo '{ SSeekBar:{
 					title:"Poll",
 					unit:" ms",
@@ -69,7 +71,7 @@ cat << CTAG
 					default:'$POLL',
 					action:"generic /sys/module/msm_thermal/parameters/poll_ms"
 				}},'
-				TH=$(cat /sys/module/msm_thermal/parameters/temp_hysteresis_degC)
+				TH=$($BB cat /sys/module/msm_thermal/parameters/temp_hysteresis_degC)
 				$BB echo '{ SSeekBar:{
 					title:"Temperature Hysteresis",
 					unit:"ºC",
@@ -79,7 +81,7 @@ cat << CTAG
 					default:'$TH',
 					action:"generic /sys/module/msm_thermal/parameters/temp_hysteresis_degC"
 				}},'
-				TLLF=$(cat /sys/module/msm_thermal/parameters/thermal_limit_low)
+				TLLF=$($BB cat /sys/module/msm_thermal/parameters/thermal_limit_low)
 				$BB echo '{ SSeekBar:{
 					title:"Thermal Limit Lowest Frequency 4 = 810MHz 5 = 918MHz ETC",
 					step:1,
@@ -90,7 +92,7 @@ cat << CTAG
 				}},'
 			fi`
 			`if [ -f "/sys/module/msm_thermal/parameters/freq_limit_debug" ]; then
-				FLD=$(cat /sys/module/msm_thermal/parameters/freq_limit_debug)
+				FLD=$($BB cat /sys/module/msm_thermal/parameters/freq_limit_debug)
 				$BB echo '{ SPane:{
 					title:"Frequency Limit Debug"
 				}},
