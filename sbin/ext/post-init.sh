@@ -191,7 +191,7 @@ read_config;
 
 # Load parameters for Synapse
 DEBUG=/data/.alucard/;
-BUSYBOX_VER=$($BB busybox | $BB grep "BusyBox v" | $BB cut -c0-15);
+BUSYBOX_VER=$(/sbin/bb/busybox | $BB grep "BusyBox v" | $BB cut -c0-15);
 $BB echo "$BUSYBOX_VER" > $DEBUG/busybox_ver;
 
 # start CORTEX by tree root, so it's will not be terminated.

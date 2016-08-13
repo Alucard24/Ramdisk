@@ -1,8 +1,8 @@
 #!/sbin/bb/busybox sh
 
-WGET_CHECK1=`ls -la /system/xbin/wget | wc -l`;
-WGET_CHECK2=`ls -la /system/bin/wget | wc -l`;
-WGET_CHECK3=`ls -la /system/wget/wget | wc -l`;
+WGET_CHECK1=`$BB ls -la /system/xbin/wget | $BB wc -l`;
+WGET_CHECK2=`$BB ls -la /system/bin/wget | $BB wc -l`;
+WGET_CHECK3=`$BB ls -la /system/wget/wget | $BB wc -l`;
 
 BB=/sbin/bb/busybox
 

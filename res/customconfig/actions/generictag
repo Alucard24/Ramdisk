@@ -8,14 +8,14 @@ if [ -f $3 ];then
 	if [ -z $4 ]; then
 		evalcmd='eval echo \$$FILEVAR'
 		if [ "a`eval $evalcmd`" == "a" ]; then
-			eval $FILEVAR=`cat $3`
-			$BB echo $FILEVAR=`cat $3` >> $DEFAULT_PROFILE
+			eval $FILEVAR=`$BB cat $3`
+			$BB echo $FILEVAR=`$BB cat $3` >> $DEFAULT_PROFILE
 		fi
 	else
 		if [ "$CONTROLSWITCH_$2" == "on" -o "$CONFIG_BOOTED" == true ]; then
 			$BB echo $4 > $3
 		fi
-		eval $FILEVAR=`cat $3`
+		eval $FILEVAR=`$BB cat $3`
 	fi
 
 	eval $BB echo \$$FILEVAR

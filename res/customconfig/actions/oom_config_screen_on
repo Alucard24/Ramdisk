@@ -13,7 +13,7 @@ else
 fi;
 
 PROFILE=`$BB cat /data/.alucard/.active.profile`;
-AUTO_OOM=`$BB cat /data/.alucard/${PROFILE}.profile | $BB grep auto_oom=on | wc -l`
+AUTO_OOM=`$BB cat /data/.alucard/${PROFILE}.profile | $BB grep auto_oom=on | $BB wc -l`
 
 if [ "$AUTO_OOM" -eq "1" ]; then
 	case "${oom_config_screen_on}" in
