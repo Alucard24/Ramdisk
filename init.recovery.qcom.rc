@@ -135,18 +135,10 @@ on enable-low-power
 
     write /sys/module/msm_thermal/core_control/enabled 1
 
-    write /sys/module/cpu_boost/parameters/boost_ms 20
     write /sys/module/cpu_boost/parameters/input_boost_ms 40
-    write /sys/module/cpu_boost/parameters/sync_threshold 1566000
     write /sys/module/cpu_boost/parameters/input_boost_freq 1458000
-    write /sys/module/cpu_boost/parameters/load_based_syncs 1
 
     write /sys/class/kgsl/kgsl-3d0/pwrscale/trustzone/governor ondemand
-
-    write /dev/cpuctl/cpu.notify_on_migrate 1
-
-    rm /data/system/perfd/default_values
-    start mpdecision
 
 on boot
     trigger enable-low-power
@@ -168,3 +160,6 @@ on property:recovery.perf.mode=0
 
 on property:dev.bootcomplete=1
     setprop sys.io.scheduler bfq
+
+    rm /data/system/perfd/default_values
+    start mpdecision
