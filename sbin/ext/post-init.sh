@@ -130,7 +130,7 @@ fi;
 # just set numer $RESET_MAGIC + 1 and profiles will be reset one time on next boot with new kernel.
 # incase that ADMIN feel that something wrong with global STweaks config and profiles, then ADMIN can add +1 to CLEAN_ALU_DIR
 # to clean all files on first boot from /data/.alucard/ folder.
-RESET_MAGIC=6;
+RESET_MAGIC=7;
 CLEAN_ALU_DIR=2;
 
 if [ ! -e /data/.alucard/reset_profiles ]; then
@@ -337,6 +337,10 @@ fi;
 
 	$BB mount -o remount,ro /system;
 )&
+
+# Set io scheduler prop
+IOSCHED=$($BB cat /sys/block/mmcblk0/queue/scheduler | $BB sed -n -e '/\[[^]]/s/^[^[]*\[\([^]]*\)].*$/\1/p');
+setprop sys.io.scheduler $IOSCHED
 
 # Stop LG logging to /data/logger/$FILE we dont need that. draning power.
 setprop persist.service.events.enable 0
