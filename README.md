@@ -1,2 +1,2 @@
 # Ramdisk
-Untouched jflte MM Ramdisk
+Untouched jflte N Ramdisk
