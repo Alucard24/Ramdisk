@@ -2,11 +2,6 @@
 
 BB=/sbin/bb/busybox
 
-# Set file context here for some files as in Nougat file_context is a binary file
-chcon u:object_r:rootfs:s0 /sbin/bb/busybox
-chcon u:object_r:rootfs:s0 /system/xbin/wget
-chcon u:object_r:rootfs:s0 /system/xbin/zip
-
 if [ "$($BB mount | $BB grep rootfs | $BB cut -c 26-27 | $BB grep -c ro)" -eq "1" ]; then
 	$BB mount -o remount,rw /;
 fi;
