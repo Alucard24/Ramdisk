@@ -96,56 +96,7 @@ ro.dalvik.              u:object_r:dalvik_prop:s0
 #line 1 "/media/b--b/Android/N/out/target/product/jflte/obj/ETC/sectxfile_nl_intermediates/sectxfile_nl"
 
 #line 1 "device/qcom/sepolicy/common/property_contexts"
-wc_transport.              u:object_r:bluetooth_prop:s0
-sys.usb_uicc.              u:object_r:uicc_prop:s0
-dolby.audio.               u:object_r:audio_prop:s0
-persist.bluetooth.         u:object_r:bluetooth_prop:s0
-sys.ims.                   u:object_r:qcom_ims_prop:s0
-hw.fm.                     u:object_r:fm_prop:s0
-sys.usf.                   u:object_r:usf_prop:s0
-qc.sdk.us.                 u:object_r:usf_prop:s0
-radio.atfwd.               u:object_r:radio_prop:s0
-ctl.qmuxd                  u:object_r:ctl_qmuxd_prop:s0
-ctl.netmgrd                u:object_r:ctl_netmgrd_prop:s0
-ctl.port-bridge            u:object_r:ctl_port-bridge_prop:s0
-min_freq_0                 u:object_r:freq_prop:s0
-min_freq_4                 u:object_r:freq_prop:s0
-ctl.perfd                  u:object_r:perfd_prop:s0
-ctl.gamed                  u:object_r:gamed_prop:s0
-ctl.iop                    u:object_r:perfd_prop:s0
-ctl.vm_bms                 u:object_r:vm_bms_prop:s0
-qualcomm.bluetooth.        u:object_r:bluetooth_prop:s0
-ctl.ipacm                  u:object_r:ipacm_prop:s0
-ctl.ipacm-diag             u:object_r:ipacm-diag_prop:s0
-ctl.qti                    u:object_r:qti_prop:s0
-ctl.sensors                u:object_r:sensors_prop:s0
-ctl.msm_irqbalance         u:object_r:msm_irqbalance_prop:s0
-ctl.msm_irqbal_lb          u:object_r:msm_irqbalance_prop:s0
-camera.                    u:object_r:camera_prop:s0
-persist.camera.            u:object_r:camera_prop:s0
-sf.lcd_density             u:object_r:sf_lcd_density_prop:s0
-opengles.version           u:object_r:opengles_prop:s0
-qualcomm.bt.hci_transport  u:object_r:bluetooth_prop:s0
-ctl.mdm_helper             u:object_r:mdm_helper_prop:s0
-ctl.mpdecision             u:object_r:mpdecision_prop:s0
-qualcomm.perf.cores_online u:object_r:mpdecision_prop:s0
-netd.fstman.               u:object_r:netd_prop:s0
-location.                  u:object_r:location_prop:s0
-qc.izat.                   u:object_r:location_prop:s0
-persist.rmnet.mux          u:object_r:rmnet_mux_prop:s0
-qemu.hw.mainkeys           u:object_r:qemu_hw_mainkeys_prop:s0
-dbg.coresight.cfg_file     u:object_r:coresight_prop:s0
-ctl.hbtp                   u:object_r:ctl_hbtp_prop:s0
-sys.audio.init             u:object_r:audio_prop:s0
-alarm_boot                 u:object_r:alarm_boot_prop:s0
-debug.sf.nobootanimation   u:object_r:boot_animation_prop:s0
-radio.noril                u:object_r:radio_noril_prop:s0
-debug.gralloc.             u:object_r:debug_gralloc_prop:s0
-persist.net.doxlat         u:object_r:xlat_prop:s0
-#line 1 "/media/b--b/Android/N/out/target/product/jflte/obj/ETC/sectxfile_nl_intermediates/sectxfile_nl"
-
-#line 1 "device/qcom/sepolicy/msm8960/property_contexts"
-# Copyright (c) 2015, The Linux Foundation. All rights reserved.
+# Copyright (c) 2015-2016 Dolby Laboratories, Inc. All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions are
@@ -156,9 +107,6 @@ persist.net.doxlat         u:object_r:xlat_prop:s0
 #       copyright notice, this list of conditions and the following
 #       disclaimer in the documentation and/or other materials provided
 #       with the distribution.
-#     * Neither the name of The Linux Foundation nor the names of its
-#       contributors may be used to endorse or promote products derived
-#       from this software without specific prior written permission.
 #
 # THIS SOFTWARE IS PROVIDED "AS IS" AND ANY EXPRESS OR IMPLIED
 # WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
@@ -172,11 +120,67 @@ persist.net.doxlat         u:object_r:xlat_prop:s0
 # OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN
 # IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-#This is need for the nativehmi bootanimation
+wc_transport.              u:object_r:bluetooth_prop:s0
+sys.usb_uicc.              u:object_r:uicc_prop:s0
+dolby.audio.               u:object_r:audio_prop:s0
+persist.bluetooth.         u:object_r:bluetooth_prop:s0
+sys.ims.                   u:object_r:qcom_ims_prop:s0
+hw.fm.                     u:object_r:fm_prop:s0
+sys.usf.                   u:object_r:usf_prop:s0
+ro.qc.sdk.us.                 u:object_r:usf_prop:s0
+radio.atfwd.               u:object_r:radio_prop:s0
+ctl.qmuxd                  u:object_r:ctl_qmuxd_prop:s0
+ctl.netmgrd                u:object_r:ctl_netmgrd_prop:s0
+ctl.port-bridge            u:object_r:ctl_port-bridge_prop:s0
+ro.min_freq_0                 u:object_r:freq_prop:s0
+ro.min_freq_4                 u:object_r:freq_prop:s0
+ctl.perfd                  u:object_r:perfd_prop:s0
+ctl.gamed                  u:object_r:gamed_prop:s0
+ctl.iop                    u:object_r:perfd_prop:s0
+ctl.vm_bms                 u:object_r:vm_bms_prop:s0
+ro.qualcomm.bluetooth.        u:object_r:bluetooth_prop:s0
+ctl.ipacm                  u:object_r:ipacm_prop:s0
+ctl.ipacm-diag             u:object_r:ipacm-diag_prop:s0
+ctl.qti                    u:object_r:qti_prop:s0
+ctl.sensors                u:object_r:sensors_prop:s0
+ctl.msm_irqbalance         u:object_r:msm_irqbalance_prop:s0
+camera.                    u:object_r:camera_prop:s0
+persist.camera.            u:object_r:camera_prop:s0
+ro.sf.lcd_density             u:object_r:sf_lcd_density_prop:s0
+ro.opengles.version           u:object_r:opengles_prop:s0
+ro.qualcomm.bt.hci_transport  u:object_r:bluetooth_prop:s0
+ctl.mdm_helper             u:object_r:mdm_helper_prop:s0
+ctl.mpdecision             u:object_r:mpdecision_prop:s0
+qualcomm.perf.cores_online u:object_r:mpdecision_prop:s0
+netd.fstman.               u:object_r:netd_prop:s0
+location.                  u:object_r:location_prop:s0
+qc.izat.                   u:object_r:location_prop:s0
+persist.rmnet.mux          u:object_r:rmnet_mux_prop:s0
+sys.usb.controller         u:object_r:sys_usb_controller_prop:s0
+sys.usb.configfs           u:object_r:sys_usb_configfs_prop:s0
+qemu.hw.mainkeys           u:object_r:qemu_hw_mainkeys_prop:s0
+ro.dbg.coresight.cfg_file     u:object_r:coresight_prop:s0
+ctl.hbtp                   u:object_r:ctl_hbtp_prop:s0
+sys.audio.init             u:object_r:audio_prop:s0
+ro.alarm_boot                 u:object_r:alarm_boot_prop:s0
+debug.sf.nobootanimation   u:object_r:boot_animation_prop:s0
+debug.gralloc.             u:object_r:debug_gralloc_prop:s0
+persist.net.doxlat         u:object_r:xlat_prop:s0
+# DOLBY_START
+dolby.                     u:object_r:dolby_prop:s0
+# DOLBY_END
+wifi.ftmd.                 u:object_r:wififtmd_prop:s0
+ro.bluetooth.              u:object_r:bluetooth_prop:s0
+# WIGIG
+persist.fst.               u:object_r:fst_prop:s0
+ro.alarm_handled           u:object_r:alarm_handled_prop:s0
+ro.alarm_instance          u:object_r:alarm_instance_prop:s0
+#HWUI Property
+ro.hwui.texture_cache_size u:object_r:hwui_prop:s0
+#line 1 "/media/b--b/Android/N/out/target/product/jflte/obj/ETC/sectxfile_nl_intermediates/sectxfile_nl"
+
+#line 1 "device/qcom/sepolicy/msm8960/property_contexts"
 ctl.thermal-engine             u:object_r:ctl_thermal-engine_prop:s0
-persist.nativehmi.exit         u:object_r:ctl_bootanim_prop:s0
-nativehmi.appname              u:object_r:ctl_bootanim_prop:s0
-sys.mediaserver.ready          u:object_r:audio_prop:s0
 #line 1 "/media/b--b/Android/N/out/target/product/jflte/obj/ETC/sectxfile_nl_intermediates/sectxfile_nl"
 
 #line 1 "vendor/aosp/sepolicy/qcom/property_contexts"
