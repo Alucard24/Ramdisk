@@ -3,7 +3,7 @@
 #
 ro.adb.secure=0
 ro.secure=0
-security.perf_harden=1
+security.perf_harden=0
 ro.allow.mock.location=0
 ro.debuggable=1
 ro.zygote=zygote32
@@ -28,7 +28,7 @@ debug.atrace.tags.enableflags=0
 #
 # BOOTIMAGE_BUILD_PROPERTIES
 #
-ro.bootimage.build.date=dom 4 set 2016, 14.11.44, CEST
-ro.bootimage.build.date.utc=1472991104
-ro.bootimage.build.fingerprint=samsung/aosp_jflte/jflte:7.0/NRD90M/b--b09041411:userdebug/test-keys
+ro.bootimage.build.date=lun 5 set 2016, 21.42.41, CEST
+ro.bootimage.build.date.utc=1473104561
+ro.bootimage.build.fingerprint=samsung/jdc_jflte/jflte:7.0/NRD90M/4f242047c8:userdebug/test-keys
 persist.sys.usb.config=adb
