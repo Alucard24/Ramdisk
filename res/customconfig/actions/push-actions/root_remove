@@ -4,11 +4,11 @@ export PATH="/res/customconfig/actions/push-actions:${PATH}";
 (
 	BB=/sbin/bb/busybox
 
-	if [ -f /system/xbin/su ]; then
+	if [ -f /su/bin/su ]; then
 			$BB mount -o remount,rw /dev/block/mmcblk0p9 /system;
 			$BB mount -t rootfs -o remount,rw rootfs;
 			$BB rm -f /system/bin/su > /dev/null 2>&1;
-			$BB rm -f /system/xbin/su > /dev/null 2>&1;
+			$BB rm -f /su/bin/su > /dev/null 2>&1;
 			$BB rm -f /system/bin/.ext/su > /dev/null 2>&1;
 
 			if [ -e /data/app/*chainfire?supersu.pr*.apk ]; then
@@ -42,7 +42,7 @@ export PATH="/res/customconfig/actions/push-actions:${PATH}";
 )&
 
 $BB sleep 3;
-if [ ! -f /system/xbin/su ]; then
+if [ ! -f /su/bin/su ]; then
 	$BB echo "ROOT REMOVED! STOCK SYSTEM!";
 else
 	$BB echo "ROOT NOT REMOVED! Try again";

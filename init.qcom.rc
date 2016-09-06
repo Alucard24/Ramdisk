@@ -432,8 +432,15 @@ service insthk /system/bin/insthk
 # Run Kernel and ROM Tunings
 service qcom-post-boot /sbin/bb/busybox sh /sbin/ext/busybox.sh
     user root
-    group root
+    seclabel u:r:init:s0
     disabled
+    oneshot
+
+# Install busybox
+service kernel-bb /sbin/ext/bb.sh
+    class late_start
+    user root
+    seclabel u:r:init:s0
     oneshot
 
 # LEDify

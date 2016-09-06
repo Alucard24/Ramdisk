@@ -2,19 +2,19 @@
 
 BB=/sbin/bb/busybox
 
-if [ -f /system/xbin/su ] && [ -f /system/app/*uper?ser.apk ]; then
+if [ -f /su/bin/su ] && [ -f /system/app/*uper?ser.apk ]; then
 	$BB echo "You have full working ROOT Installed!";
-elif [ -f /system/xbin/su ] && [ -f /system/app/SuperSU.apk ]; then
+elif [ -f /su/bin/su ] && [ -f /system/app/SuperSU.apk ]; then
 	$BB echo "You have full working ROOT Installed!";
-elif [ -f /system/xbin/su ] && [ -f /system/app/Superuser.apk ]; then
+elif [ -f /su/bin/su ] && [ -f /system/app/Superuser.apk ]; then
 	$BB echo "You have full working ROOT Installed!";
-elif [ -f /system/xbin/su ] && [ -f /data/app/Superuser.apk ]; then
+elif [ -f /su/bin/su ] && [ -f /data/app/Superuser.apk ]; then
 	$BB echo "You have full working ROOT Installed!";
-elif [ -f /system/xbin/su ] && [ -f /data/app/*uper?ser.apk ]; then
+elif [ -f /su/bin/su ] && [ -f /data/app/*uper?ser.apk ]; then
 	$BB echo "You have full working ROOT Installed!";
-elif [ -f /system/xbin/su ] && [ -f /data/app/Superuser.apk ]; then
+elif [ -f /su/bin/su ] && [ -f /data/app/Superuser.apk ]; then
 	$BB echo "You have full working ROOT Installed!";
-elif [ -x /system/xbin/su ] && [ -u /system/xbin/su ]; then
+elif [ -x /su/bin/su ] && [ -u /su/bin/su ]; then
 	$BB echo "You have working ROOT Installed!!";
 else
 	$BB echo "You don't have ROOT installed!";

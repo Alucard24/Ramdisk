@@ -5,7 +5,7 @@
 BB=/sbin/bb/busybox
 
 # protect init from oom
-if [ -f /system/xbin/su ]; then
+if [ -f /su/bin/su ]; then
 	su -c echo "-1000" > /proc/1/oom_score_adj;
 fi;
 
