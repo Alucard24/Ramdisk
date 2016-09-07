@@ -2,6 +2,6 @@
 
 BB=/sbin/bb/busybox
 
-PROFILE=`$BB cat /data/.alucard/.active.profile`;
+PROFILE=`$BB cat /data/.b--b/.active.profile`;
 
 $BB echo "your profile: \"$PROFILE\"";

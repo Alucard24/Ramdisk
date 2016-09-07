@@ -12,26 +12,26 @@ BB=/sbin/bb/busybox
 
 	if [ "$ALUCARD_VALUE_TMP" -eq "1" ]; then
 		cd /sys/kernel/alucard_hotplug/;
-		$BB echo "Tuning applied to 'Alucard Hotplug' core!" > /data/.alucard/cpu_hotplug;
-		$BB grep "." * >> /data/.alucard/cpu_hotplug;
+		$BB echo "Tuning applied to 'Alucard Hotplug' core!" > /data/.b--b/cpu_hotplug;
+		$BB grep "." * >> /data/.b--b/cpu_hotplug;
 		cd /;
 	elif [ "$INTELLI_VALUE_TMP" -eq "1" ]; then
 		cd /sys/kernel/intelli_plug/;
-		$BB echo "Tuning applied to 'Intelliplug' core!" > /data/.alucard/cpu_hotplug;
-		$BB grep "." * >> /data/.alucard/cpu_hotplug;
+		$BB echo "Tuning applied to 'Intelliplug' core!" > /data/.b--b/cpu_hotplug;
+		$BB grep "." * >> /data/.b--b/cpu_hotplug;
 		cd /;
 	elif [ "$MSM_VALUE_TMP" -eq "1" ]; then
 		cd /sys/module/msm_hotplug/;
-		$BB echo "Tuning applied to 'MSM Hotplug' core!" > /data/.alucard/cpu_hotplug;
-		$BB grep "." * >> /data/.alucard/cpu_hotplug;
+		$BB echo "Tuning applied to 'MSM Hotplug' core!" > /data/.b--b/cpu_hotplug;
+		$BB grep "." * >> /data/.b--b/cpu_hotplug;
 		cd /;
 	else
 		cd /sys/devices/system/cpu/cpu0/rq-stats/;
-		$BB echo "Tuning applied to 'MSM MPDecision' core!" > /data/.alucard/cpu_hotplug;
-		$BB grep "." * >> /data/.alucard/cpu_hotplug;
+		$BB echo "Tuning applied to 'MSM MPDecision' core!" > /data/.b--b/cpu_hotplug;
+		$BB grep "." * >> /data/.b--b/cpu_hotplug;
 		cd /;
 	fi; 
 )&
 $BB sleep 1;
-CPU_LOG=`cat /data/.alucard/cpu_hotplug`;
+CPU_LOG=`cat /data/.b--b/cpu_hotplug`;
 $BB echo $CPU_LOG;

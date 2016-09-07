@@ -9,20 +9,20 @@ BB=/sbin/bb/busybox
 	PREV_SYSTEM_GOVERNOR_TMP="";
 	i="";
 
-	$BB rm /data/.alucard/cpu_status;
+	$BB rm /data/.b--b/cpu_status;
 	for i in $SYSTEM_GOVERNOR_PATH_TMP; do
 		SYSTEM_GOVERNOR_TMP=$(cat "$i");
 		if [ "$($BB echo "$PREV_SYSTEM_GOVERNOR_TMP" | $BB grep "$SYSTEM_GOVERNOR_TMP" | $BB wc -l)" -lt "1" ]; then
 			PREV_SYSTEM_GOVERNOR_TMP=$(printf "%s $SYSTEM_GOVERNOR_TMP" "$PREV_SYSTEM_GOVERNOR_TMP");
 			if [ -d /sys/devices/system/cpu/cpufreq/$SYSTEM_GOVERNOR_TMP ]; then
 				cd /sys/devices/system/cpu/cpufreq/$SYSTEM_GOVERNOR_TMP/;
-				$BB echo "Tuning applied to '$SYSTEM_GOVERNOR_TMP' core!" >> /data/.alucard/cpu_status;
-				$BB grep "." * >> /data/.alucard/cpu_status;
+				$BB echo "Tuning applied to '$SYSTEM_GOVERNOR_TMP' core!" >> /data/.b--b/cpu_status;
+				$BB grep "." * >> /data/.b--b/cpu_status;
 				cd /;
 			fi;
 		fi;
 	done;
 )&
 $BB sleep 2;
-CPU_LOG=`cat /data/.alucard/cpu_status`;
+CPU_LOG=`cat /data/.b--b/cpu_status`;
 $BB echo $CPU_LOG;

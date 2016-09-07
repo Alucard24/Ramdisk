@@ -12,8 +12,8 @@ else
 	$BB echo "$oom_config_screen_off";
 fi;
 
-PROFILE=`$BB cat /data/.alucard/.active.profile`;
-AUTO_OOM=`$BB cat /data/.alucard/${PROFILE}.profile | $BB grep auto_oom=on | $BB wc -l`
+PROFILE=`$BB cat /data/.b--b/.active.profile`;
+AUTO_OOM=`$BB cat /data/.b--b/${PROFILE}.profile | $BB grep auto_oom=on | $BB wc -l`
 
 if [ "$AUTO_OOM" -eq "1" ]; then
 	case "${oom_config_screen_off}" in

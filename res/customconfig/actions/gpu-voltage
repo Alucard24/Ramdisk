@@ -2,8 +2,8 @@
 
 BB=/sbin/bb/busybox
 
-PROFILE=`cat /data/.alucard/.active.profile`;
-GPU_VOLT_SWITCH=`cat /data/.alucard/${PROFILE}.profile | grep gpu_voltage_switch=on | wc -l`;
+PROFILE=`cat /data/.b--b/.active.profile`;
+GPU_VOLT_SWITCH=`cat /data/.b--b/${PROFILE}.profile | grep gpu_voltage_switch=on | wc -l`;
 
 if [ "a$3" == "a" ]; then
 	evalcmd='eval "$BB echo \$GPUVOLT$2"';

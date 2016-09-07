@@ -15,7 +15,7 @@ if [ "$($BB pgrep -f "push-actions/config_backup_restore" | $BB wc -l)" -ge "3" 
 	exit 0;
 fi;
 
-PROFILE=$(cat /data/.alucard/.active.profile);
+PROFILE=$(cat /data/.b--b/.active.profile);
 
 RELOAD_STWEAKS()
 {
@@ -28,8 +28,8 @@ RELOAD_STWEAKS()
 LOAD_NEW_SETTINGS()
 {
 	# get values from profile
-	NEW_PROFILE=$($BB cat /data/.alucard/.active.profile);
-	. /data/.alucard/"$NEW_PROFILE".profile;
+	NEW_PROFILE=$($BB cat /data/.b--b/.active.profile);
+	. /data/.b--b/"$NEW_PROFILE".profile;
 
 	# Set new CPU freq based on profile.
 	$BB echo "scaling_min_freq_cpu0" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq;
@@ -45,14 +45,14 @@ LOAD_NEW_SETTINGS()
 
 case "${config_backup_restore}" in
 	1)
-		$BB cp /data/.alucard/"$PROFILE".profile /data/.alucard/"$PROFILE".profile_backup;
-		$BB cp /data/.alucard/"$PROFILE".profile /sdcard/"$PROFILE".profile_backup;
-		$BB chmod 777 /data/.alucard/"$PROFILE".profile_backup;
+		$BB cp /data/.b--b/"$PROFILE".profile /data/.b--b/"$PROFILE".profile_backup;
+		$BB cp /data/.b--b/"$PROFILE".profile /sdcard/"$PROFILE".profile_backup;
+		$BB chmod 777 /data/.b--b/"$PROFILE".profile_backup;
 		$BB echo "Backup of ${PROFILE} profile is Done!";
 	;;
 	2)
 		(
-			file2="/data/.alucard/${PROFILE}.profile_backup";
+			file2="/data/.b--b/${PROFILE}.profile_backup";
 
 			# if someone full wipe the system, then use the profile_backup from sd-card
 			if [ ! -e "$file2" ]; then
@@ -64,7 +64,7 @@ case "${config_backup_restore}" in
 				exit;
 			fi;
 
-			file1="/data/.alucard/${PROFILE}.profile";
+			file1="/data/.b--b/${PROFILE}.profile";
 
 			$BB echo "Restoring ${PROFILE} config file, wait for APP RELOAD";
 
@@ -106,8 +106,8 @@ case "${config_backup_restore}" in
 	;;
 	3)
 		(
-			$BB cp -a /res/customconfig/battery.profile /data/.alucard/;
-			$BB echo "battery" > /data/.alucard/.active.profile;
+			$BB cp -a /res/customconfig/battery.profile /data/.b--b/;
+			$BB echo "battery" > /data/.b--b/.active.profile;
 			$BB echo "Restoring battery config file, wait for APP RELOAD";
 			$BB sh /res/uci.sh apply > /dev/null;
 			LOAD_NEW_SETTINGS;
@@ -116,8 +116,8 @@ case "${config_backup_restore}" in
 	;;
 	4)
 		(
-			$BB cp -a /res/customconfig/default.profile /data/.alucard/;
-			$BB echo "default" > /data/.alucard/.active.profile;
+			$BB cp -a /res/customconfig/default.profile /data/.b--b/;
+			$BB echo "default" > /data/.b--b/.active.profile;
 			$BB echo "Restoring default config file, wait for APP RELOAD";
 			$BB sh /res/uci.sh apply > /dev/null;
 			LOAD_NEW_SETTINGS;
@@ -126,8 +126,8 @@ case "${config_backup_restore}" in
 	;;
 	5)
 		(
-			$BB cp -a /res/customconfig/performance.profile /data/.alucard/;
-			$BB echo "performance" > /data/.alucard/.active.profile;
+			$BB cp -a /res/customconfig/performance.profile /data/.b--b/;
+			$BB echo "performance" > /data/.b--b/.active.profile;
 			$BB echo "Restoring performance config file, wait for APP RELOAD";
 			$BB sh /res/uci.sh apply > /dev/null;
 			LOAD_NEW_SETTINGS;
@@ -136,8 +136,8 @@ case "${config_backup_restore}" in
 	;;
 	6)
 		(
-			$BB cp -a /res/customconfig/extreme_battery.profile /data/.alucard/;
-			$BB echo "extreme_battery" > /data/.alucard/.active.profile;
+			$BB cp -a /res/customconfig/extreme_battery.profile /data/.b--b/;
+			$BB echo "extreme_battery" > /data/.b--b/.active.profile;
 			$BB echo "Restoring extreme_battery config file, wait for APP RELOAD";
 			$BB sh /res/uci.sh apply > /dev/null;
 			LOAD_NEW_SETTINGS;
@@ -146,8 +146,8 @@ case "${config_backup_restore}" in
 	;;
 	7)
 		(
-			$BB cp -a /res/customconfig/extreme_performance.profile /data/.alucard/;
-			$BB echo "extreme_performance" > /data/.alucard/.active.profile;
+			$BB cp -a /res/customconfig/extreme_performance.profile /data/.b--b/;
+			$BB echo "extreme_performance" > /data/.b--b/.active.profile;
 			$BB echo "Restoring extreme_performance config file, wait for APP RELOAD";
 			$BB sh /res/uci.sh apply > /dev/null;
 			LOAD_NEW_SETTINGS;

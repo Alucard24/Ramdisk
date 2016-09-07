@@ -2,8 +2,8 @@
 
 (
 	BB=/sbin/bb/busybox
-	PROFILE=$($BB cat /data/.alucard/.active.profile);
-	. /data/.alucard/${PROFILE}.profile;
+	PROFILE=$($BB cat /data/.b--b/.active.profile);
+	. /data/.b--b/${PROFILE}.profile;
 
 	if [ "$cron_ram_release" == "on" ]; then
 		if [ "$($BB pidof com.google.android.gms | $BB wc -l)" -eq "1" ]; then

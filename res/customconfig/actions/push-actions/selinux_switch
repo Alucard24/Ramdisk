@@ -10,23 +10,23 @@ if [ "$($BB pgrep -f "push-actions/selinux_switch" | $BB wc -l)" -ge "3" ]; then
 fi;
 
 (
-	$BB dd if=/dev/block/platform/msm_sdcc.1/by-name/boot of=/data/.alucard/boot.img
+	$BB dd if=/dev/block/platform/msm_sdcc.1/by-name/boot of=/data/.b--b/boot.img
 
 	selinux_status=$($BB grep -c "selinux=0" /proc/cmdline)
 	if [ "$selinux_status" -eq "1" ]; then
 		$BB echo "Enabling Kernel Selinux Please wait!";
-		/sbin/bb/busybox $BB find /data/.alucard/boot.img -type f -exec $BB sed -i 's/console=ttyHSL0,115200,n8 androidboot.hardware=qcom user_debug=31 ehci-hcd.park=3 enforcing=0 selinux=1/console=ttyHSL0,115200,n8 androidboot.hardware=qcom user_debug=31 ehci-hcd.park=3 enforcing=1 selinux=1/g' {} \;
+		/sbin/bb/busybox $BB find /data/.b--b/boot.img -type f -exec $BB sed -i 's/console=ttyHSL0,115200,n8 androidboot.hardware=qcom user_debug=31 ehci-hcd.park=3 enforcing=0 selinux=1/console=ttyHSL0,115200,n8 androidboot.hardware=qcom user_debug=31 ehci-hcd.park=3 enforcing=1 selinux=1/g' {} \;
 		$BB echo "Selinux set as Enforcing on boot! Please REBOOT!";
-		$BB dd if=/data/.alucard/boot.img of=/dev/block/platform/msm_sdcc.1/by-name/boot
-		$BB echo "1" > /data/.alucard/selinux_mode;
+		$BB dd if=/data/.b--b/boot.img of=/dev/block/platform/msm_sdcc.1/by-name/boot
+		$BB echo "1" > /data/.b--b/selinux_mode;
 		$BB sync;
 	else
 		$BB echo "Disabling Kernel Selinux Please wait!";
-		/sbin/bb/busybox $BB find /data/.alucard/boot.img -type f -exec $BB sed -i 's/console=ttyHSL0,115200,n8 androidboot.hardware=qcom user_debug=31 ehci-hcd.park=3 enforcing=1 selinux=1/console=ttyHSL0,115200,n8 androidboot.hardware=qcom user_debug=31 ehci-hcd.park=3 enforcing=0 selinux=1/g' {} \;
+		/sbin/bb/busybox $BB find /data/.b--b/boot.img -type f -exec $BB sed -i 's/console=ttyHSL0,115200,n8 androidboot.hardware=qcom user_debug=31 ehci-hcd.park=3 enforcing=1 selinux=1/console=ttyHSL0,115200,n8 androidboot.hardware=qcom user_debug=31 ehci-hcd.park=3 enforcing=0 selinux=1/g' {} \;
 		$BB echo "Selinux set as Permissive on boot! Please REBOOT!";
-		$BB dd if=/data/.alucard/boot.img of=/dev/block/platform/msm_sdcc.1/by-name/boot
-		$BB echo "1" > /data/.alucard/selinux_mode;
+		$BB dd if=/data/.b--b/boot.img of=/dev/block/platform/msm_sdcc.1/by-name/boot
+		$BB echo "1" > /data/.b--b/selinux_mode;
 		$BB sync;
 	fi;
-	$BB rm /data/.alucard/boot.img
+	$BB rm /data/.b--b/boot.img
 )&

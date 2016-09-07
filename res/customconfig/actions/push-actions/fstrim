@@ -2,11 +2,11 @@
 
 BB=/sbin/bb/busybox
 
-$BB fstrim -v /system > /data/.alucard/fstrim_log;
-$BB fstrim -v /data >> /data/.alucard/fstrim_log;
+$BB fstrim -v /system > /data/.b--b/fstrim_log;
+$BB fstrim -v /data >> /data/.b--b/fstrim_log;
 $BB fstrim -v /cache >> /data/.alucad/fstrim_log;
 
-fstrim_log=$($BB cat /data/.alucard/fstrim_log);
+fstrim_log=$($BB cat /data/.b--b/fstrim_log);
 
 $BB echo "$fstrim_log"
 

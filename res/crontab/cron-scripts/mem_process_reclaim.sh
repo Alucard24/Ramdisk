@@ -3,8 +3,8 @@
 
 (
 	BB=/sbin/bb/busybox
-	PROFILE=$($BB cat /data/.alucard/.active.profile);
-	. /data/.alucard/${PROFILE}.profile;
+	PROFILE=$($BB cat /data/.b--b/.active.profile);
+	. /data/.b--b/${PROFILE}.profile;
 
 	if [ ! -f /su/bin/su ]; then
 		exit 1;

@@ -10,16 +10,16 @@ else
 	$BB echo "$debug_to_sd";
 fi;
 
-DEBUG_FILE="/sdcard/alucard_debug.txt";
-DEBUG_FILE_ZIP="/sdcard/alucard_debug";
-DEBUG_FILE_USELESS_ZIP="/sdcard/alucard_useless_debug";
-DEBUG_FILE_LOGCAT="/sdcard/alucard_debug_logcat.txt"
+DEBUG_FILE="/sdcard/b--b_debug.txt";
+DEBUG_FILE_ZIP="/sdcard/b--b_debug";
+DEBUG_FILE_USELESS_ZIP="/sdcard/b--b_useless_debug";
+DEBUG_FILE_LOGCAT="/sdcard/b--b_debug_logcat.txt"
 KERNEL_VER=$($BB uname -r | $BB cut -c 30-34);
-ACTIVE_DEBUG_FILE="/sdcard/alucard_active_debug.txt";
-ACTIVE_DEBUG_FILE_ZIP="/sdcard/alucard_active_debug";
+ACTIVE_DEBUG_FILE="/sdcard/b--b_active_debug.txt";
+ACTIVE_DEBUG_FILE_ZIP="/sdcard/b--b_active_debug";
 
-PROFILE=$(cat /data/.alucard/.active.profile);
-. /data/.alucard/${PROFILE}.profile;
+PROFILE=$(cat /data/.b--b/.active.profile);
+. /data/.b--b/${PROFILE}.profile;
 
 case "${debug_to_sd}" in
 	1)
@@ -83,11 +83,11 @@ case "${debug_to_sd}" in
 			SEPARATOR;
 
 			# Profile
-			PROFILE=$($BB cat /data/.alucard/.active.profile);
+			PROFILE=$($BB cat /data/.b--b/.active.profile);
 			$BB echo "Profile-Config: $PROFILE" >> $DEBUG_FILE;
-			PROFILE_CHANGED=$($BB diff /res/customconfig/${PROFILE}.profile /data/.alucard/${PROFILE}.profile | $BB wc -l);
+			PROFILE_CHANGED=$($BB diff /res/customconfig/${PROFILE}.profile /data/.b--b/${PROFILE}.profile | $BB wc -l);
 			if [ "$PROFILE_CHANGED" -ne "0" ]; then
-				$BB diff /res/customconfig/${PROFILE}.profile /data/.alucard/${PROFILE}.profile >> $DEBUG_FILE;
+				$BB diff /res/customconfig/${PROFILE}.profile /data/.b--b/${PROFILE}.profile >> $DEBUG_FILE;
 			else
 				$BB echo "Profile is not changed by user" >> $DEBUG_FILE;
 			fi;
@@ -369,11 +369,11 @@ case "${debug_to_sd}" in
 			SEPARATOR;
 
 			# Profile
-			PROFILE=$($BB cat /data/.alucard/.active.profile);
+			PROFILE=$($BB cat /data/.b--b/.active.profile);
 			$BB echo "Profile-Config: $PROFILE" >> $ACTIVE_DEBUG_FILE;
-			PROFILE_CHANGED=$($BB diff /res/customconfig/${PROFILE}.profile /data/.alucard/${PROFILE}.profile | $BB wc -l);
+			PROFILE_CHANGED=$($BB diff /res/customconfig/${PROFILE}.profile /data/.b--b/${PROFILE}.profile | $BB wc -l);
 			if [ "$PROFILE_CHANGED" -ne "0" ]; then
-				$BB diff /res/customconfig/${PROFILE}.profile /data/.alucard/${PROFILE}.profile >> $ACTIVE_DEBUG_FILE;
+				$BB diff /res/customconfig/${PROFILE}.profile /data/.b--b/${PROFILE}.profile >> $ACTIVE_DEBUG_FILE;
 			else
 				$BB echo "Profile is not changed by user" >> $ACTIVE_DEBUG_FILE;
 			fi;

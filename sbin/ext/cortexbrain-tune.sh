@@ -27,8 +27,8 @@ $BB chmod -R 777 /tmp/;
 # ==============================================================
 
 FILE_NAME=$0;
-# (since we don't have the recovery source code I can't change the ".alucard" dir, so just leave it there for history)
-DATA_DIR=/data/.alucard;
+# (since we don't have the recovery source code I can't change the ".b--b" dir, so just leave it there for history)
+DATA_DIR=/data/.b--b;
 USB_POWER=0;
 
 # ==============================================================

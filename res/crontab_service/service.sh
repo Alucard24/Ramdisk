@@ -123,7 +123,7 @@ export TZ
 
 # use /var/spool/cron/crontabs/ call the crontab file "root"
 if [ "$($BB pidof crond | $BB wc -l)" -eq "0" ]; then
-	$BB nohup /sbin/bb/crond -c /var/spool/cron/crontabs/ > /data/.alucard/cron.txt &
+	$BB nohup /sbin/bb/crond -c /var/spool/cron/crontabs/ > /data/.b--b/cron.txt &
 	$BB sleep 1;
 	PIDOFCRON=$($BB pidof crond);
 	if [ -f /su/bin/su ]; then

@@ -1,8 +1,8 @@
 #!/sbin/bb/busybox sh
 
 BB=/sbin/bb/busybox
-PROFILE=$($BB cat /data/.alucard/.active.profile);
-. /data/.alucard/${PROFILE}.profile;
+PROFILE=$($BB cat /data/.b--b/.active.profile);
+. /data/.b--b/${PROFILE}.profile;
 
 if [ "$cron_reset_systemui" == "on" ]; then
 	$BB pkill -f com.android.systemui

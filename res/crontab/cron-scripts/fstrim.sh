@@ -2,8 +2,8 @@
 
 (
 	BB=/sbin/bb/busybox
-	PROFILE=$($BB cat /data/.alucard/.active.profile);
-	. /data/.alucard/${PROFILE}.profile;
+	PROFILE=$($BB cat /data/.b--b/.active.profile);
+	. /data/.b--b/${PROFILE}.profile;
 
 	if [ "$cron_fstrim" == "on" ]; then
 		SCREEN_WAS_OFF=0;
