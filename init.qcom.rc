@@ -36,7 +36,7 @@ on early-init
 
 on init
     # Use this trick to get a running rild
-    export LD_PRELOAD "/system/lib/libril_jflte.so"
+    export LD_SHIM_LIBS /system/lib/libril.so|libril_jflte.so
 
     # Set permissions for efs partition
     mkdir /efs 0771 system radio
