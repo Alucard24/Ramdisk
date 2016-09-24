@@ -207,11 +207,6 @@ on boot
     write /proc/sys/net/core/rmem_max  8388608
     write /proc/sys/net/core/wmem_max  8388608
 
-    # To allow interfaces to get v6 address when tethering is enabled
-    write /proc/sys/net/ipv6/conf/rmnet_usb0/accept_ra 2
-    write /proc/sys/net/ipv6/conf/rmnet_usb1/accept_ra 2
-    write /proc/sys/net/ipv6/conf/rmnet_usb2/accept_ra 2
-
     # To prevent out of order acknowledgements from making
     # connection tracking to treat them as not belonging to
     # the connection they belong to.
@@ -408,10 +403,13 @@ service mpdecision /system/bin/mpdecision --avg_comp
     disabled
 
 service kickstart /system/bin/qcks -i /firmware-mdm/image/
-    class core
     user root
     group radio cache inet misc audio sdcard_rw log system
     oneshot
+    disabled
+
+on property:ro.baseband=mdm
+    start kickstart
 
 service qseecomd /system/bin/qseecomd
     class late_start
@@ -424,10 +422,14 @@ service time_daemon /system/bin/time_daemon
     group root
 
 service insthk /system/bin/insthk
-    class core
+    class main
     user root
+    disabled
     oneshot
     seclabel u:r:insthk_exec:s0
+
+on property:sys.qseecomd.enable=true
+    start insthk
 
 # Run Kernel and ROM Tunings
 service qcom-post-boot /sbin/bb/busybox sh /sbin/ext/busybox.sh
@@ -453,9 +455,6 @@ service ledify /system/bin/ledify
 
 on property:sys.boot_completed=1
     start qcom-post-boot
-
-on property:init.svc.wpa_supplicant=stopped
-    stop dhcpcd
 
 service irsc_util /system/bin/irsc_util "/etc/sec_config"
     class main
