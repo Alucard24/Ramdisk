@@ -15,7 +15,7 @@ if [ "$($BB pgrep -f "push-actions/config_backup_restore" | $BB wc -l)" -ge "3" 
 	exit 0;
 fi;
 
-PROFILE=$(cat /data/.b--b/.active.profile);
+PROFILE=$($BB cat /data/.b--b/.active.profile);
 
 RELOAD_STWEAKS()
 {
